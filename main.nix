@@ -31,20 +31,20 @@ let
     in
       start // {
         "artiq-board-${board.target}-${board.variant}" = boardBinaries;
-        "conda-artiq-board-${board.target}-${board.variant}" = import "${generatedNix}/conda-board.nix" { inherit pkgs; } {
-          artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
-          boardBinaries = boardBinaries;
-          target = board.target;
-          variant = board.variant;
-      };
-  }) {} boards;
+        #"conda-artiq-board-${board.target}-${board.variant}" = import "${generatedNix}/conda-board.nix" { inherit pkgs; } {
+        #  artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
+        #  boardBinaries = boardBinaries;
+        #  target = board.target;
+        #  variant = board.variant;
+        #};
+      }) {} boards;
 
   jobs = {
-    conda-artiq = import "${generatedNix}/conda-build.nix" { inherit pkgs; } {
-      name = "conda-artiq";
-      src = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
-      recipe = "conda/artiq";
-    };
+    #conda-artiq = import "${generatedNix}/conda-build.nix" { inherit pkgs; } {
+    #  name = "conda-artiq";
+    #  src = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
+    #  recipe = "conda/artiq";
+    #};
   } // boardJobs // artiqPkgs;
 in
   jobs // {
