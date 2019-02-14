@@ -8,12 +8,7 @@ let
     HASH=`nix-hash --type sha256 --base32 ${artiqSrc}`
     cat > $out/pkgs/artiq-src.nix << EOF
     { fetchgit }:
-    fetchgit {
-      url = "git://github.com/m-labs/artiq.git";
-      rev = "$REV";
-      sha256 = "$HASH";
-      deepClone = true;
-      leaveDotGit = true;
+    ${artiqSrc}
     }
     EOF
     '';
