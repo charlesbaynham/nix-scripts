@@ -38,8 +38,9 @@ let
   } // boardJobs // artiqPkgs;
 in
   jobs // {
-    channel = import "${generatedNix}/channel.nix" {
-      inherit pkgs;
+    channel = pkgs.releaseTools.channel {
+      name = "main";
+      src = "${generatedNix}";
       constituents = builtins.attrValues jobs;
     };
   }
