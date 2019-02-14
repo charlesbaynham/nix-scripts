@@ -9,7 +9,6 @@ let
     cat > $out/pkgs/artiq-src.nix << EOF
     { fetchgit }:
     ${artiqSrc}
-    }
     EOF
     '';
   artiqPkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
