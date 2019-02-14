@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> {}}:
 let
-  artiqSrc = /nix/store/5418k539bag65rpdpn3jvhx9c3yn3jvp-artiq;
+  artiqSrc = <artiqSrc>;
   generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
     ''
     cp --no-preserve=mode,ownership -R ${./artiq} $out
