@@ -1,15 +1,10 @@
 { pkgs ? import <nixpkgs> {}}:
 let
-  artiqSrc = <artiqSrc>;
-  generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
+  artiqSrc = builtins.toString <artiqSrc>;
+  generatedNix = pkgs.runCommand "generated-nix" { }
     ''
     cp --no-preserve=mode,ownership -R ${./artiq} $out
-    REV=`git --git-dir ${artiqSrc}/.git rev-parse HEAD`
-    HASH=`nix-hash --type sha256 --base32 ${artiqSrc}`
-    cat > $out/pkgs/artiq-src.nix << EOF
-    { fetchgit }:
-    ${artiqSrc}
-    EOF
+    echo ${artiqSrc} > $out/pkgs/artiq-src.nix
     '';
   artiqPkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
 
@@ -27,7 +22,7 @@ let
       start // {
         "artiq-board-${board.target}-${board.variant}" = boardBinaries;
         "conda-artiq-board-${board.target}-${board.variant}" = import "${generatedNix}/conda-board.nix" { inherit pkgs; } {
-          artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
+          artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix";
           boardBinaries = boardBinaries;
           target = board.target;
           variant = board.variant;
@@ -37,7 +32,7 @@ let
   jobs = {
     conda-artiq = import "${generatedNix}/conda-build.nix" { inherit pkgs; } {
       name = "conda-artiq";
-      src = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
+      src = import "${generatedNix}/pkgs/artiq-src.nix";
       recipe = "conda/artiq";
     };
   } // boardJobs // artiqPkgs;

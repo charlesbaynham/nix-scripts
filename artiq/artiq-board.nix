@@ -9,7 +9,7 @@ let
   fetchcargo = import ./fetchcargo.nix {
     inherit (pkgs) stdenv cacert git cargo cargo-vendor;
   };
-  artiqSrc = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
+  artiqSrc = import ./pkgs/artiq-src.nix;
   cargoDeps = fetchcargo rec {
     name = "artiq-firmware-cargo-deps";
     src = "${artiqSrc}/artiq/firmware";
