@@ -40,7 +40,7 @@ in
   jobs // {
     channel = pkgs.releaseTools.channel {
       name = "main";
-      src = ./artiq;
+      src = generatedNix;
       constituents = builtins.attrValues jobs;
     };
   }
