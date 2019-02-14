@@ -12,7 +12,6 @@ let
       url = "git://github.com/m-labs/artiq.git";
       rev = "$REV";
       sha256 = "$HASH";
-      deepClone = true;
       leaveDotGit = true;
     }
     EOF
