@@ -31,12 +31,12 @@ let
     in
       start // {
         "artiq-board-${board.target}-${board.variant}" = boardBinaries;
-        #"conda-artiq-board-${board.target}-${board.variant}" = import "${generatedNix}/conda-board.nix" { inherit pkgs; } {
-        #  artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
-        #  boardBinaries = boardBinaries;
-        #  target = board.target;
-        #  variant = board.variant;
-        #};
+        "conda-artiq-board-${board.target}-${board.variant}" = import "${generatedNix}/conda-board.nix" { inherit pkgs; } {
+          artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
+          boardBinaries = boardBinaries;
+          target = board.target;
+          variant = board.variant;
+        };
       }) {} boards;
 
   jobs = {

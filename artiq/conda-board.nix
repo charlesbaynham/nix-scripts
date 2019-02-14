@@ -12,15 +12,13 @@ let
     cat << EOF > $out/fake-conda/meta.yaml
     package:
       name: artiq-board-${target}-${variant}
-      version: {{ environ["GIT_DESCRIBE_TAG"] }}
+      version: 5e-{{ environ["GIT_FULL_HASH"][:8] }}
 
     source:
       git_url: ..
 
     build:
       noarch: python
-      number: {{ environ["GIT_DESCRIBE_NUMBER"] }}
-      string: {{ environ["GIT_DESCRIBE_NUMBER"] }}+git{{ environ["GIT_FULL_HASH"][:8] }}
       ignore_prefix_files: True
 
     outputs:
