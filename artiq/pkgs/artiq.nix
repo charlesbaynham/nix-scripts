@@ -1,4 +1,4 @@
-{ stdenv, git, fetchFromGitHub, python3Packages, qt5Full, binutils-or1k, llvm-or1k, llvmlite, python3 }:
+{ stdenv, git, fetchFromGitHub, fetchgit, python3Packages, qt5Full, binutils-or1k, llvm-or1k, llvmlite, python3 }:
 
 let
 
@@ -65,7 +65,7 @@ in
 
 python3Packages.buildPythonPackage rec {
   name = "artiq";
-  src = import ./artiq-src.nix;
+  src = import ./artiq-src.nix { inherit fetchgit; };
   buildInputs = [ git ];
   propagatedBuildInputs = with python3Packages; [ binutils-or1k llvm-or1k llvmlite levenshtein pyqtgraph-qt5 aiohttp pygit2 pythonparser numpy dateutil quamash scipy prettytable pyserial asyncserial h5py cython regex qt5Full pyqt5 ];
   checkPhase = "python -m unittest discover -v artiq.test";
