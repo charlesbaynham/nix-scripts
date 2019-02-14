@@ -13,6 +13,7 @@ let
       rev = "$REV";
       sha256 = "$HASH";
       deepClone = true;
+      leaveDotGit = true;
     }
     EOF
     '';
