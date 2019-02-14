@@ -40,7 +40,7 @@ in
   jobs // {
     channel = pkgs.releaseTools.channel {
       name = "main";
-      src = ./.;
+      src = generatedNix;
       constituents = builtins.attrValues jobs;
     };
   }
