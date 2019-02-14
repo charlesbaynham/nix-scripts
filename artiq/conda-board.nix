@@ -12,7 +12,7 @@ let
     cat << EOF > $out/fake-conda/meta.yaml
     package:
       name: artiq-board-${target}-${variant}
-      version: 5e-{{ environ["GIT_FULL_HASH"][:8] }}
+      version: 5e.{{ environ["GIT_FULL_HASH"][:8] }}
 
     source:
       git_url: ..
