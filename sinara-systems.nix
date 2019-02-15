@@ -1,5 +1,6 @@
-{ pkgs ? import <nixpkgs> {}, mainBuild}:
+{ pkgs ? import <nixpkgs> {}}:
+{ mainBuild }:
 
 {
-  foo = pkgs.runCommand "xxxxabcd" { } "echo ${mainBuild} > $out";
+  fooxx = pkgs.runCommand "xxxxabcd" { } "echo ${mainBuild} > $out";
 }
