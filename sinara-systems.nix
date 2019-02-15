@@ -10,7 +10,7 @@ let
   sinaraSystemsPkgs = pkgs.lib.lists.foldr (variant: start:
     let
       json = <sinaraSystemsSrc> + "/${variant}.json";
-      boardBinaries = conda-artiq-board {
+      boardBinaries = artiq-board {
         inherit target variant;
         buildCommand = "python -m artiq.gateware.targets.kasli_generic ${json}";
       };
