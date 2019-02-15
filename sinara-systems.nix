@@ -24,4 +24,4 @@ let
       };
   }) {} variants;
 in
-  pkgs.runCommand "xxxxabcd" { } "echo ${mainBuild} > $out";
+  pkgs.runCommand "xxxxabcd" { } "echo ${mainBuild} > $out"
