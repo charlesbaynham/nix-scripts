@@ -20,20 +20,9 @@ let
     targetPkgs = pkgs: ([ condaSrcChmod ] ++ condaDeps);
   };
 
-  # Git depends on libiconv
-  condaIconv = fetchurl {
-    url = "https://anaconda.org/conda-forge/libiconv/1.15/download/linux-64/libiconv-1.15-h14c3975_1004.tar.bz2";
-    sha256 = "167j8jpr6mnyrzwp18dr52xr3xjsf39q452ag247ijlmp092v8ns";
-  };
-  condaGit = fetchurl {
-    url = "https://anaconda.org/conda-forge/git/2.20.1/download/linux-64/git-2.20.1-pl526hc122a05_1001.tar.bz2";
-    sha256 = "03s01xq2jj7zbx7jfzz6agy40jj7xkq6dwar3lw1z5j2rbmh8h0h";
-  };
   condaInstalled = runCommand "conda-installed" { }
     ''
     ${condaInstallerEnv}/bin/conda-installer-env -c "${condaSrcChmod}/conda-installer.sh -p $out -b"
-    ${condaInstallerEnv}/bin/conda-installer-env -c "$out/bin/conda install ${condaIconv}"
-    ${condaInstallerEnv}/bin/conda-installer-env -c "$out/bin/conda install ${condaGit}"
     '';
   condaBuilderEnv = buildFHSUserEnv {
     name = "conda-builder-env";
