@@ -1,21 +1,18 @@
 { pkgs }:
-{ artiqSrc, boardBinaries, target, variant }:
+{ target, variant, boardBinaries }:
 
 with pkgs;
 
 let
+  version = import ./pkgs/artiq-version.nix;
   fakeCondaSource = runCommand "fake-condasrc-artiq-board-${target}-${variant}" { }
     ''
-    cp --no-preserve=mode,ownership -R ${artiqSrc} $out
-    mkdir $out/fake-conda;
+    mkdir -p $out/fake-conda;
 
     cat << EOF > $out/fake-conda/meta.yaml
     package:
       name: artiq-board-${target}-${variant}
-      version: 5e.{{ environ["GIT_FULL_HASH"][:8] }}
-
-    source:
-      git_url: ..
+      version: ${version}
 
     build:
       noarch: python

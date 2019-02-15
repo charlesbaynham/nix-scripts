@@ -4,18 +4,25 @@ with pkgs;
 
 let
   artiqSrc = import ./pkgs/artiq-src.nix { inherit fetchgit; };
+  version = import ./pkgs/artiq-version.nix;
   fakeCondaSource = runCommand "fake-condasrc-artiq" { }
     ''
-    cp --no-preserve=mode,ownership -R ${artiqSrc} $out
-    mkdir $out/fake-conda;
+    mkdir -p $out/fake-conda;
+
+    # work around yet more idiotic conda behavior - build breaks if write permissions aren't set on source files.
+    cp --no-preserve=mode,ownership -R ${artiqSrc} workaround-conda
+    pushd workaround-conda
+    tar cf $out/src.tar .
+    popd
+    rm -rf workaround-conda
 
     cat << EOF > $out/fake-conda/meta.yaml
     package:
       name: artiq
-      version: 5e.{{ environ["GIT_FULL_HASH"][:8] }}
+      version: ${version}
 
     source:
-      git_url: ..
+      url: ../src.tar
 
     {% set data = load_setup_py_data() %}
 

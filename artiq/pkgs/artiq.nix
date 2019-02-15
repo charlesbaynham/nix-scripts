@@ -64,7 +64,8 @@ pyqtgraph-qt5 = python3Packages.buildPythonPackage rec {
 in
 
 python3Packages.buildPythonPackage rec {
-  name = "artiq";
+  name = "artiq-${version}";
+  version = import ./artiq-version.nix;
   src = import ./artiq-src.nix { inherit fetchgit; };
   buildInputs = [ git ];
   propagatedBuildInputs = with python3Packages; [ binutils-or1k llvm-or1k llvmlite levenshtein pyqtgraph-qt5 aiohttp pygit2 pythonparser numpy dateutil quamash scipy prettytable pyserial asyncserial h5py cython regex qt5Full pyqt5 ];

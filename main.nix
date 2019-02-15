@@ -15,6 +15,7 @@ let
       leaveDotGit = true;
     }
     EOF
+    echo \"5e.`cut -c1-8 <<< $REV`\" > $out/pkgs/artiq-version.nix
     '';
   artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
   jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs;

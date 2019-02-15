@@ -22,10 +22,9 @@ let
       start // {
         "artiq-board-${board.target}-${board.variant}" = boardBinaries;
         "conda-artiq-board-${board.target}-${board.variant}" = import ./conda-artiq-board.nix { inherit pkgs; } {
-          artiqSrc = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
-          boardBinaries = boardBinaries;
           target = board.target;
           variant = board.variant;
+          boardBinaries = boardBinaries;
         };
       }) {} boards;
 in rec {
