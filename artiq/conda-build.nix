@@ -1,7 +1,7 @@
 # We need to pass the whole source to conda for the git variables to work.
 # recipe must be a string pointing to a path within the source.
 
-{ pkgs ? import <nixpkgs> {}}:
+{ pkgs }:
 { name, src, recipe }:
 
 with pkgs;

@@ -1,9 +1,9 @@
-{ pkgs ? import <nixpkgs> {}}:
-{ artiqSrc }:
+{ pkgs }:
 
 with pkgs;
 
 let
+  artiqSrc = import ./pkgs/artiq-src.nix { inherit fetchgit; };
   fakeCondaSource = runCommand "fake-condasrc-artiq" { }
     ''
     cp --no-preserve=mode,ownership -R ${artiqSrc} $out

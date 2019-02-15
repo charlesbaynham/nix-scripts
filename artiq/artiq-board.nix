@@ -5,7 +5,6 @@
 { target, variant, buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}" }:
 
 let
-  artiqPkgs = import ./default.nix { inherit pkgs; };
   fetchcargo = import ./fetchcargo.nix {
     inherit (pkgs) stdenv cacert git cargo cargo-vendor;
   };

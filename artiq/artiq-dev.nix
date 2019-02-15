@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {}}:
+{ pkgs }:
 
 let 
   artiqpkgs = import ./default.nix { inherit pkgs; };

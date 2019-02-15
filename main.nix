@@ -16,34 +16,8 @@ let
     }
     EOF
     '';
-  artiqPkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
-
-  boards = [
-    { target = "kasli"; variant = "tester"; }
-    { target = "kc705"; variant = "nist_clock"; }
-  ];
-  boardJobs = pkgs.lib.lists.foldr (board: start:
-    let
-      boardBinaries = import "${generatedNix}/artiq-board.nix" { inherit pkgs; } {
-        target = board.target;
-        variant = board.variant;
-      };
-    in
-      start // {
-        "artiq-board-${board.target}-${board.variant}" = boardBinaries;
-        "conda-artiq-board-${board.target}-${board.variant}" = import "${generatedNix}/conda-artiq-board.nix" { inherit pkgs; } {
-          artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
-          boardBinaries = boardBinaries;
-          target = board.target;
-          variant = board.variant;
-        };
-      }) {} boards;
-
-  jobs = {
-    conda-artiq = import "${generatedNix}/conda-artiq.nix" { inherit pkgs; } {
-      artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
-    };
-  } // boardJobs // artiqPkgs;
+  artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
+  jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs;
 in
   jobs // {
     channel = pkgs.releaseTools.channel {

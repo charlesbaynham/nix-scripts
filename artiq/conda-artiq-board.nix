@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {}}:
+{ pkgs }:
 { artiqSrc, boardBinaries, target, variant }:
 
 with pkgs;
