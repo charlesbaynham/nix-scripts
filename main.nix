@@ -40,11 +40,9 @@ let
       }) {} boards;
 
   jobs = {
-    #conda-artiq = import "${generatedNix}/conda-build.nix" { inherit pkgs; } {
-    #  name = "conda-artiq";
-    #  src = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
-    #  recipe = "conda/artiq";
-    #};
+    conda-artiq = import "${generatedNix}/conda-artiq.nix" { inherit pkgs; } {
+      artiqSrc = import "${generatedNix}/pkgs/artiq-src.nix" { fetchgit = pkgs.fetchgit; };
+    };
   } // boardJobs // artiqPkgs;
 in
   jobs // {

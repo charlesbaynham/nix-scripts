@@ -4,7 +4,7 @@
 with pkgs;
 
 let
-  fakeCondaSource = runCommand "fake-conda-source-${target}-${variant}" { }
+  fakeCondaSource = runCommand "fake-condasrc-artiq-board-${target}-${variant}" { }
     ''
     cp --no-preserve=mode,ownership -R ${artiqSrc} $out
     mkdir $out/fake-conda;

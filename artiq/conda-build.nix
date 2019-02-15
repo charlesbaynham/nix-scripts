@@ -46,18 +46,8 @@ in stdenv.mkDerivation {
   buildCommand =
     ''
     HOME=`pwd`
-    # Build requirements make conda-build fail when disconnected from the internet, e.g. in the nix sandbox.
-    # Just ignore them - python and setuptools are installed anyway.
-    cat << EOF > clobber.yaml
-      requirements:
-        build:
-
-      build:
-        script_env:
-          - PYTHON
-    EOF
     mkdir $out
-    ${condaBuilderEnv}/bin/conda-builder-env -c "PYTHON=python conda build --clobber-file clobber.yaml --no-anaconda-upload --no-test --output-folder $out $src/${recipe}"
+    ${condaBuilderEnv}/bin/conda-builder-env -c "PYTHON=python conda build --no-anaconda-upload --no-test --output-folder $out $src/${recipe}"
 
     mkdir -p $out/nix-support
     echo file conda $out/noarch/*.tar.bz2 >> $out/nix-support/hydra-build-products
