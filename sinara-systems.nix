@@ -1,8 +1,9 @@
 { pkgs ? import <nixpkgs> {}}:
 
 let
-  artiq-board = import <mainChannel/artiq-board.nix> { inherit pkgs; };
-  conda-artiq-board = import <mainChannel/conda-artiq-board.nix> { inherit pkgs; };
+  mainBuild = import <mainBuild>;
+  #artiq-board = import <mainChannel/artiq-board.nix> { inherit pkgs; };
+  #conda-artiq-board = import <mainChannel/conda-artiq-board.nix> { inherit pkgs; };
 
   target = "kasli";
 
