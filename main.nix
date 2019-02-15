@@ -21,6 +21,7 @@ let
   jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs;
 in
   jobs // {
+    generated-nix = pkgs.lib.hydraJob generatedNix;
     channel = pkgs.releaseTools.channel {
       name = "main";
       src = generatedNix;
