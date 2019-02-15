@@ -42,7 +42,8 @@ let
   buildenv = import ./artiq-dev.nix { inherit pkgs; };
 
 in pkgs.python3Packages.buildPythonPackage {
-  name = "artiq-board-${target}-${variant}";
+  name = "artiq-board-${target}-${variant}-${version}";
+  version = import ./pkgs/artiq-version.nix;
   src = null;
   phases = [ "buildPhase" "installPhase" ];
   buildPhase = 
