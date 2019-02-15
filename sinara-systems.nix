@@ -1,27 +1,52 @@
 { pkgs ? import <nixpkgs> {}}:
 
 let
-  artiq-board = import <mainChannel/artiq-board.nix> { inherit pkgs; };
-  conda-artiq-board = import <mainChannel/conda-artiq-board.nix> { inherit pkgs; };
+  sinaraSystemsSrc = <sinaraSystemsSrc>;
 
-  target = "kasli";
+  generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
+    ''
+    mkdir $out
+    REV=`git --git-dir ${sinaraSystemsSrc}/.git rev-parse HEAD`
+    HASH=`nix-hash --type sha256 --base32 ${sinaraSystemsSrc}`
+    cat > $out/default.nix << EOF
+    { pkgs ? import <nixpkgs> {}}:
 
-  variants = ["berkeley" "mitll2" "mitll" "nudt" "sysu" "tsinghua2" "tsinghua" "unsw" "ustc" "wipm"];
-  sinaraSystemsPkgs = pkgs.lib.lists.foldr (variant: start:
     let
-      json = <sinaraSystemsSrc> + "/${variant}.json";
-      boardBinaries = artiq-board {
-        inherit target variant;
-        buildCommand = "python -m artiq.gateware.targets.kasli_generic ${json}";
+      target = "kasli";
+      variants = ["berkeley" "mitll2" "mitll" "nudt" "sysu" "tsinghua2" "tsinghua" "unsw" "ustc" "wipm"];
+
+      artiq-board = import <m-labs/artiq-board.nix> { inherit pkgs; };
+      conda-artiq-board = import <m-labs/conda-artiq-board.nix> { inherit pkgs; };
+      src = pkgs.fetchgit {
+        url = "git://github.com/m-labs/sinara-systems.git";
+        rev = "$REV";
+        sha256 = "$HASH";
+        leaveDotGit = true;
       };
     in
-      start // {
-        "artiq-board-${target}-${variant}" = boardBinaries;
-        "conda-artiq-board-${target}-${variant}" = conda-artiq-board {
-          boardBinaries = boardBinaries;
-          inherit target variant;
-      };
-     }) {} variants;
-  jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) sinaraSystemsPkgs;
+      pkgs.lib.lists.foldr (variant: start:
+        let
+          json = src + "/\''${variant}.json";
+          boardBinaries = artiq-board {
+            inherit target variant;
+            buildCommand = "python -m artiq.gateware.targets.kasli_generic \''${json}";
+          };
+        in
+          start // {
+            "artiq-board-\''${target}-\''${variant}" = boardBinaries;
+            "conda-artiq-board-\''${target}-\''${variant}" = conda-artiq-board {
+              boardBinaries = boardBinaries;
+              inherit target variant;
+          };
+         }) {} variants
+    EOF
+    '';
+  jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) (import generatedNix { inherit pkgs; });
 in
-  jobs
+  jobs // {
+    channel = pkgs.releaseTools.channel {
+      name = "sinara-systems";
+      src = generatedNix;
+      constituents = builtins.attrValues jobs;
+    };
+  }
