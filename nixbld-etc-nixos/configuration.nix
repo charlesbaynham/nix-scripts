@@ -142,6 +142,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
       </runcommand>
       '';
   };
+  users.users.hydra-queue-runner.extraGroups = [ "plugdev" "dialout" ];
 
   nix.extraOptions = ''
     secret-key-files = /etc/nixos/secret/nixbld.m-labs.hk-1
