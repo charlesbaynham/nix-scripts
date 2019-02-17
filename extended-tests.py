@@ -1,8 +1,3 @@
 import os
 
-print("hello world")
-os.system("artiq_client --version")
-os.system("whoami")
-os.system("ls /")
-os.system("ls ~/")
-os.system("ls -l /tmp")
+os.system("artiq_flash -t kc705 -V nist_clock")
