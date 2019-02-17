@@ -27,5 +27,7 @@ in
       src = generatedNix;
       constituents = builtins.attrValues jobs;
     };
-    extended-tests = pkgs.runCommand "extended-tests" { propagatedBuildInputs = [artiq artiq-board-kc705-nist_clock]; } "cp ${./extended-tests.py} $out;";
+    extended-tests = pkgs.runCommand "extended-tests" {
+      propagatedBuildInputs = [pkgs.python3.withPackages(ps: [artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock])];
+    } "cp ${./extended-tests.py} $out;";
   }
