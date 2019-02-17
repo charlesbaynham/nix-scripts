@@ -26,7 +26,7 @@ let
     in
       pkgs.lib.lists.foldr (variant: start:
         let
-          json = src + "/\''${variant}.json";
+          json = builtins.toPath (src + "/\''${variant}.json");
           boardBinaries = artiq-board {
             inherit target variant;
             buildCommand = "python -m artiq.gateware.targets.kasli_generic \''${json}";
