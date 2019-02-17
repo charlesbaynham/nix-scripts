@@ -22,10 +22,10 @@ let
 in
   jobs // {
     generated-nix = pkgs.lib.hydraJob generatedNix;
-    channel = pkgs.releaseTools.channel {
+    channel = pkgs.releaseTools.channel rec {
       name = "main";
       src = generatedNix;
       constituents = builtins.attrValues jobs;
     };
-    extended-tests = pkgs.runCommand "extended-tests" {} "cp ${./extended-tests.py} $out;";
+    extended-tests = pkgs.runCommand "extended-tests" { propagatedBuildInputs = [artiq artiq-board-kc705-nist_clock]; } "cp ${./extended-tests.py} $out;";
   }
