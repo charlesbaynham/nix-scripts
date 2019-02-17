@@ -4,6 +4,7 @@
 , guile, perl, postgresql, nukeReferences, git, boehmgc, nlohmann_json
 , docbook_xsl, openssh, gnused, coreutils, findutils, gzip, lzma, gnutar
 , rpm, dpkg, cdrkit, pixz, lib, fetchpatch, boost, autoreconfHook
+, jq, bash
 }:
 
 with stdenv;
@@ -98,6 +99,7 @@ in releaseTools.nixBuild rec {
   hydraPath = lib.makeBinPath (
     [ sqlite subversion openssh nix coreutils findutils pixz
       gzip bzip2 lzma gnutar unzip git gitAndTools.topGit mercurial darcs gnused bazaar
+      jq bash
     ] ++ lib.optionals stdenv.isLinux [ rpm dpkg cdrkit ] );
 
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
