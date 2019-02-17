@@ -125,14 +125,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
   services.hydra = {
     enable = true;
-    package = pkgs.hydra.overrideAttrs (oldAttrs: {
-      src = pkgs.fetchFromGitHub {
-        owner = "m-labs";
-        repo = "hydra";
-        rev = "6d511f43da4317f8f44ed75accf369bd3da95890";
-        sha256 = "0yysj9sinki05r3kri4krdn6p8js5cngjmd7gf2ckc4rhibyicwx";
-      };
-    });
+    package = pkgs.callPackage ./hydra.nix {};
     hydraURL = "https://nixbld.m-labs.hk";
     notificationSender = "hydra@m-labs.hk";
     minimumDiskFree = 2;  # in GB
