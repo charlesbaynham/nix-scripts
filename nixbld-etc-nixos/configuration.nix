@@ -126,6 +126,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
   services.hydra = {
     enable = true;
     package = pkgs.callPackage ./hydra.nix {};
+    useSubstitutes = true;
     hydraURL = "https://nixbld.m-labs.hk";
     notificationSender = "hydra@m-labs.hk";
     minimumDiskFree = 2;  # in GB
