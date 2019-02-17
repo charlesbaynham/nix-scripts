@@ -1,0 +1,15 @@
+{
+    "enabled": 1,
+    "hidden": false,
+    "description": "js",
+    "nixexprinput": "nixScripts",
+    "nixexprpath": "jobsets.nix",
+    "checkinterval": 300,
+    "schedulingshares": 10,
+    "enableemail": false,
+    "emailoverride": "",
+    "keepnr": 10,
+    "inputs": {
+        "nixScripts": { "type": "git", "value": "git://github.com/m-labs/nix-scripts.git", "emailresponsible": false },
+    }
+}
