@@ -132,10 +132,15 @@ ACTION=="add", SUBSYSTEM=="tty", \
     minimumDiskFree = 2;  # in GB
     minimumDiskFreeEvaluator = 1;
     buildMachinesFiles = [];
-    extraConfig = ''
+    extraConfig =
+      ''
       binary_cache_secret_key_file = /etc/nixos/secret/nixbld.m-labs.hk-1
       max_output_size = 4294967296
-    '';
+      <runcommand>
+      job = artiq:main:extended-tests
+      command = nix-shell `jq -r .drvPath $HYDRA_JSON` --run "python `jq -r .outputs[0].path $HYDRA_JSON` $HYDRA_JSON"
+      </runcommand>
+      '';
   };
 
   nix.extraOptions = ''
