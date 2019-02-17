@@ -27,4 +27,5 @@ in
       src = generatedNix;
       constituents = builtins.attrValues jobs;
     };
+    extended-tests = pkgs.runCommand "extended-tests" {} "cp ${./extended-tests.py} $out;";
   }
