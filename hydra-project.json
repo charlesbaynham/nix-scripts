@@ -1,6 +1,6 @@
 {
     "enabled": 1,
-    "hidden": false,
+    "hidden": true,
     "description": "js",
     "nixexprinput": "nixScripts",
     "nixexprpath": "jobsets.nix",
