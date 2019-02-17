@@ -69,6 +69,7 @@ let
     #!/bin/bash
     set -e
 
+    export VERSIONEER_OVERRIDE=${version}
     python setup.py install \
       --prefix=\$PREFIX \
       --single-version-externally-managed \
