@@ -21,9 +21,10 @@ with open(hydra_log, "w") as log:
 
     run("artiq_flash", "-t", "kc705", "-V", "nist_clock")
 
-    time.sleep(10)
+    time.sleep(15)
 
-    run("ping", "kc705-1", "-c10", "-w30")
+    # ping: socket: Operation not permitted
+    #run("ping", "kc705-1", "-c10", "-w30")
 
     env = {
         "ARTIQ_ROOT": artiq.__path__ + "/examples/kc705_nist_clock",
