@@ -1,5 +1,5 @@
 { stdenv, fetchFromGitHub, llvm-or1k, makeWrapper, python3, ncurses, zlib, python3Packages }:
-stdenv.mkDerivation rec {
+python3Packages.buildPythonPackage rec {
   name = "llvmlite-artiq";
   src = fetchFromGitHub {
     rev = "1d167be4eec5d6c32498952be8b3ac17dd30df8d";
