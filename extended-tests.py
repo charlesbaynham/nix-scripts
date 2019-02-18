@@ -31,4 +31,4 @@ with open(hydra_log, "w") as log:
         "ARTIQ_LOW_LATENCY": "1"
     }
     env.update(os.environ)
-    run("python", "-m", "unittest", "-v", "artiq.test.coredevice", env=env)
+    run("python", "-m", "unittest", "discover", "-v", "artiq.test.coredevice", env=env)
