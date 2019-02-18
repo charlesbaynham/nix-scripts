@@ -1,4 +1,4 @@
-{ stdenv, git, fetchFromGitHub, fetchgit, python3Packages, qt5Full, binutils-or1k, llvm-or1k, llvmlite, python3 }:
+{ stdenv, git, fetchFromGitHub, fetchgit, python3Packages, qt5Full, binutils-or1k, llvm-or1k, llvmlite-artiq, python3 }:
 
 let
 
@@ -68,7 +68,7 @@ python3Packages.buildPythonPackage rec {
   version = import ./artiq-version.nix;
   src = import ./artiq-src.nix { inherit fetchgit; };
   preBuild = "export VERSIONEER_OVERRIDE=${version}";
-  propagatedBuildInputs = with python3Packages; [ binutils-or1k llvm-or1k llvmlite levenshtein pyqtgraph-qt5 aiohttp pygit2 pythonparser numpy dateutil quamash scipy prettytable pyserial asyncserial h5py cython regex qt5Full pyqt5 ];
+  propagatedBuildInputs = with python3Packages; [ binutils-or1k llvm-or1k llvmlite-artiq levenshtein pyqtgraph-qt5 aiohttp pygit2 pythonparser numpy dateutil quamash scipy prettytable pyserial asyncserial h5py cython regex qt5Full pyqt5 ];
   checkPhase = "python -m unittest discover -v artiq.test";
   meta = with stdenv.lib; {
     description = "A leading-edge control system for quantum information experiments";

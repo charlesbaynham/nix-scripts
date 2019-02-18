@@ -32,8 +32,8 @@ in rec {
   inherit (callPackage ./pkgs/python3Packages.nix {}) migen microscope misoc jesd204b;
   binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
   llvm-or1k = callPackage ./pkgs/llvm-or1k.nix { inherit llvm-src; };
-  llvmlite = callPackage ./pkgs/llvmlite.nix { inherit llvm-or1k; };
-  artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k; inherit llvm-or1k; inherit llvmlite; };
+  llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
+  artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k; inherit llvm-or1k; inherit llvmlite-artiq; };
   openocd = callPackage ./pkgs/openocd.nix {};
 
   conda-artiq = import ./conda-artiq.nix { inherit pkgs; };
