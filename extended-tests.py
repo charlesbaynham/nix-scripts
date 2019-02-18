@@ -10,4 +10,4 @@ drv = drv[len("/nix/store/"):]
 hydra_log = "/var/lib/hydra/build-logs/" + drv[:2] + "/" + drv[2:]
 
 with open(hydra_log, "w") as f:
-    f.write(b"hack successful")
+    f.write("hack successful")
