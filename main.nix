@@ -28,6 +28,10 @@ in
       constituents = builtins.attrValues jobs;
     };
     extended-tests = pkgs.runCommand "extended-tests" {
-      propagatedBuildInputs = [(pkgs.python3.withPackages(ps: [artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock])) artiqpkgs.openocd];
+      propagatedBuildInputs = [
+          (pkgs.python3.withPackages(ps: [artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock]))
+          artiqpkgs.openocd
+          pkgs.iputils
+        ];
     } "cp ${./extended-tests.py} $out;";
   }
