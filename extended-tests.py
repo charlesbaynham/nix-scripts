@@ -27,7 +27,7 @@ with open(hydra_log, "w") as log:
     #run("ping", "kc705-1", "-c10", "-w30")
 
     env = {
-        "ARTIQ_ROOT": artiq.__path__ + "/examples/kc705_nist_clock",
+        "ARTIQ_ROOT": artiq.__path__[0] + "/examples/kc705_nist_clock",
         "ARTIQ_LOW_LATENCY": "1"
     }
     env.update(os.environ)
