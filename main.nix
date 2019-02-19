@@ -30,6 +30,7 @@ in
     extended-tests = pkgs.runCommand "extended-tests" {
       propagatedBuildInputs = [
           (pkgs.python3.withPackages(ps: [artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock]))
+          artiqpkgs.binutils-or1k
           artiqpkgs.openocd
           pkgs.iputils
         ];
