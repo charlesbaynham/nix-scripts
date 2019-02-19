@@ -19,6 +19,7 @@ let
     '';
   artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
   python3pkgs = pkgs.callPackage "${generatedNix}/pkgs/python3Packages.nix" {};
+  artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix";
   jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs;
 in
   jobs // {
@@ -36,7 +37,7 @@ in
       }
       ''
       mkdir $out
-      HOME=`mktemp -d` sphinx-build ${artiqSrc}/doc/manual $out/html
+      VERSIONEER_OVERRIDE=${artiqVersion} HOME=`mktemp -d` sphinx-build ${artiqSrc}/doc/manual $out/html
       mkdir $out/nix-support
       echo doc manual $out/html >> $out/nix-support/hydra-build-products
       '';
