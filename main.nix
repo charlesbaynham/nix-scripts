@@ -37,7 +37,7 @@ in
       }
       ''
       mkdir $out
-      VERSIONEER_OVERRIDE=${artiqVersion} HOME=`mktemp -d` sphinx-build ${artiqSrc}/doc/manual $out/html
+      VERSIONEER_OVERRIDE=${artiqVersion} sphinx-build ${artiqSrc}/doc/manual $out/html
       mkdir $out/nix-support
       echo doc manual $out/html >> $out/nix-support/hydra-build-products
       '';
