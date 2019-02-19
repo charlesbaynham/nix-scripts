@@ -7,7 +7,7 @@
         "main": {
             "enabled": 1,
             "hidden": false,
-            "description": "Main ARTIQ packages",
+            "description": "Main ARTIQ packages and board support packages for HITL CI",
             "nixexprinput": "nixScripts",
             "nixexprpath": "main.nix",
             "checkinterval": 300,
@@ -24,7 +24,7 @@
         "sinara-systems": {
             "enabled": 1,
             "hidden": false,
-            "description": "Board support artefacts for generic Sinara systems",
+            "description": "Board support packages for other Sinara systems",
             "nixexprinput": "nixScripts",
             "nixexprpath": "sinara-systems.nix",
             "checkinterval": 86400,

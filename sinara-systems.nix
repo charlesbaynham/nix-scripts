@@ -23,8 +23,7 @@ let
         sha256 = "$HASH";
         leaveDotGit = true;
       };
-    in
-      pkgs.lib.lists.foldr (variant: start:
+      generic-kasli = pkgs.lib.lists.foldr (variant: start:
         let
           json = builtins.toPath (src + "/\''${variant}.json");
           boardBinaries = artiq-board {
@@ -38,7 +37,15 @@ let
               boardBinaries = boardBinaries;
               inherit target variant;
           };
-         }) {} variants
+         }) {} variants;
+    in
+      generic-kasli // {
+        artiq-board-sayma-satellite = artiq-board {
+          target = "sayma";
+          variant = "satellite";
+          buildCommand = "python -m artiq.gateware.targets.sayma_rtm && python -m artiq.gateware.targets.sayma_amc -V satellite";
+        };
+      }
     EOF
     '';
   jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) (import generatedNix { inherit pkgs; });
