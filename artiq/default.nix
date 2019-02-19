@@ -1,6 +1,8 @@
 { pkgs ? import <nixpkgs> {}}:
 with pkgs;
 let
+  pythonDeps = callPackage ./pkgs/python-deps.nix {};
+
   # this code was copied from nipxkgs rev. ffafe9 (nixcloud team) and slightly modified
   rust = callPackage ./pkgs/rust
     (stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
@@ -27,14 +29,14 @@ let
           boardBinaries = boardBinaries;
         };
       }) {} boards;
-in rec {
-  inherit (rust) rustc;
-  inherit (callPackage ./pkgs/python3Packages.nix {}) migen microscope misoc jesd204b;
-  binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
-  llvm-or1k = callPackage ./pkgs/llvm-or1k.nix { inherit llvm-src; };
-  llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
-  artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k; inherit llvm-or1k; inherit llvmlite-artiq; };
-  openocd = callPackage ./pkgs/openocd.nix {};
-
-  conda-artiq = import ./conda-artiq.nix { inherit pkgs; };
-} // boardPackages
+in
+  rec {
+    inherit (rust) rustc;
+    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b sphinx-argparse wavedrom sphinxcontrib-wavedrom;
+    binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
+    llvm-or1k = callPackage ./pkgs/llvm-or1k.nix { inherit llvm-src; };
+    llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
+    artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k; inherit llvm-or1k; inherit llvmlite-artiq; };
+    openocd = callPackage ./pkgs/openocd.nix {};
+    conda-artiq = import ./conda-artiq.nix { inherit pkgs; };
+  } //  boardPackages

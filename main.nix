@@ -18,7 +18,6 @@ let
     echo \"5e.`cut -c1-8 <<< $REV`\" > $out/pkgs/artiq-version.nix
     '';
   artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
-  python3pkgs = pkgs.callPackage "${generatedNix}/pkgs/python3Packages.nix" {};
   artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix";
   jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs;
 in
@@ -32,7 +31,7 @@ in
     docs = pkgs.runCommand "docs"
       {
         buildInputs = [
-          (pkgs.python3.withPackages(ps: [python3pkgs.sphinx-argparse python3pkgs.sphinxcontrib-wavedrom ps.sphinx_rtd_theme ps.sphinx]))
+          (pkgs.python3.withPackages(ps: [ artiqpkgs.sphinx-argparse artiqpkgs.sphinxcontrib-wavedrom ps.sphinx_rtd_theme ps.sphinx ]))
         ];
       }
       ''
@@ -43,7 +42,7 @@ in
       '';
     extended-tests = pkgs.runCommand "extended-tests" {
       propagatedBuildInputs = [
-          (pkgs.python3.withPackages(ps: [artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock]))
+          (pkgs.python3.withPackages(ps: [ artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock ]))
           artiqpkgs.binutils-or1k
           artiqpkgs.openocd
           pkgs.iputils
