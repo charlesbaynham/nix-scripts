@@ -2,7 +2,10 @@
 #  nix.sandboxPaths = ["/opt"];
 
 { pkgs ? import <nixpkgs> {}}:
-{ target, variant, buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}" }:
+{ target
+, variant
+, buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}"
+, extraInstallCommands ? ""}:
 
 let
   fetchcargo = import ./fetchcargo.nix {
@@ -60,5 +63,6 @@ in pkgs.python3Packages.buildPythonPackage rec {
     then cp artiq_${target}/${variant}/software/runtime/runtime.{elf,fbi} $TARGET_DIR
     else cp artiq_${target}/${variant}/software/satman/satman.{elf,fbi} $TARGET_DIR
     fi
+    ${extraInstallCommands}
     '';
 }
