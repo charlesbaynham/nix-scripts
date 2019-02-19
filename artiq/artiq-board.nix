@@ -56,6 +56,9 @@ in pkgs.python3Packages.buildPythonPackage rec {
     mkdir -p $TARGET_DIR
     cp artiq_${target}/${variant}/gateware/top.bit $TARGET_DIR
     cp artiq_${target}/${variant}/software/bootloader/bootloader.bin $TARGET_DIR
-    cp artiq_${target}/${variant}/software/runtime/runtime.{elf,fbi} $TARGET_DIR
+    if [ -e artiq_${target}/${variant}/software/runtime ]
+    then cp artiq_${target}/${variant}/software/runtime/runtime.{elf,fbi} $TARGET_DIR
+    else cp artiq_${target}/${variant}/software/satman/satman.{elf,fbi} $TARGET_DIR
+    fi
     '';
 }
