@@ -104,4 +104,67 @@ rec {
       platforms   = platforms.unix;
     };
   };
+
+  # sphinx-argparse will be included in nixpkgs 19.03
+  sphinx-argparse = python3Packages.buildPythonPackage rec {
+    pname = "sphinx-argparse";
+    version = "0.2.5";
+
+    src = python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "05wc8f5hb3jsg2vh2jf7jsyan8d4i09ifrz2c8fp6f7x1zw9iav0";
+    };
+
+    checkInputs = [ python3Packages.pytest ];
+    checkPhase = "py.test";
+
+    propagatedBuildInputs = [ python3Packages.sphinx ];
+
+    meta = with stdenv.lib; {
+      description = "A sphinx extension that automatically documents argparse commands and options";
+      homepage = https://github.com/ribozz/sphinx-argparse;
+      license = licenses.mit;
+      maintainers = with maintainers; [ clacke ];
+    };
+  };
+
+  wavedrom = python3Packages.buildPythonPackage rec {
+    pname = "wavedrom";
+    version = "0.1";
+
+    src = python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "006w683zlmmwcw5xz1n5dwg34ims5jg3gl2700ql4wr0myjz6710";
+    };
+
+    buildInputs = [ python3Packages.setuptools_scm ];
+    propagatedBuildInputs = with python3Packages; [ svgwrite attrdict ];
+
+    doCheck = false;
+
+    meta = with stdenv.lib; {
+      description = "WaveDrom compatible Python module and command line";
+      homepage    = "https://pypi.org/project/wavedrom/";
+      license     = licenses.mit;
+    };
+  };
+
+  sphinxcontrib-wavedrom = python3Packages.buildPythonPackage rec {
+    pname = "sphinxcontrib-wavedrom";
+    version = "1.3.1";
+
+    src = python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "1q2hk630nz734cln2wwngjidlb7xyk6ly8qqlpsj259n9n2iab6v";
+    };
+
+    buildInputs = [ python3Packages.setuptools_scm ];
+    propagatedBuildInputs = with python3Packages; [ sphinx wavedrom cairosvg xcffib ];
+
+    meta = with stdenv.lib; {
+      description = "A Sphinx extension that allows including WaveDrom diagrams";
+      homepage    = "https://pypi.org/project/sphinxcontrib-wavedrom/";
+      license     = licenses.mit;
+    };
+  };
 }
