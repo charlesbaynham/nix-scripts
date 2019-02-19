@@ -48,7 +48,7 @@ in pkgs.python3Packages.buildPythonPackage rec {
   phases = [ "buildPhase" "installPhase" ];
   buildPhase = 
     ''
-    ${buildenv}/bin/artiq-dev -c "CARGO_HOME=${cargoVendored} ${buildCommand}"
+    ${buildenv}/bin/artiq-dev -c "export CARGO_HOME=${cargoVendored}; ${buildCommand}"
     '';
   installPhase =
     ''
