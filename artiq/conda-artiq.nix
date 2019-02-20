@@ -44,8 +44,6 @@ let
         - binutils-or1k-linux >=2.27
         - pythonparser >=1.1
         - openocd 0.10.0 6
-        - lit
-        - outputcheck
         - scipy
         - numpy
         - prettytable
