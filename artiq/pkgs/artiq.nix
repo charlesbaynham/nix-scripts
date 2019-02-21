@@ -8,9 +8,9 @@ in
     version = import ./artiq-version.nix;
     src = import ./artiq-src.nix { inherit fetchgit; };
     preBuild = "export VERSIONEER_OVERRIDE=${version}";
-    propagatedBuildInputs = [ binutils-or1k llvm-or1k llvmlite-artiq ]
+    propagatedBuildInputs = [ binutils-or1k llvm-or1k llvmlite-artiq qt5Full ]
       ++ (with pythonDeps; [ levenshtein pyqtgraph-qt5 quamash pythonparser asyncserial ])
-      ++ (with python3Packages; [ aiohttp pygit2 numpy dateutil scipy prettytable pyserial h5py cython regex qt5Full pyqt5 ]);
+      ++ (with python3Packages; [ aiohttp pygit2 numpy dateutil scipy prettytable pyserial h5py pyqt5 ]);
     checkPhase = "python -m unittest discover -v artiq.test";
     meta = with stdenv.lib; {
       description = "A leading-edge control system for quantum information experiments";
