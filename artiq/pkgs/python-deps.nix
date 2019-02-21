@@ -1,4 +1,4 @@
-{ pkgs, stdenv, fetchFromGitHub, python, python3Packages }:
+{ pkgs, stdenv, fetchFromGitHub, python, python2Packages, python3Packages }:
 
 rec {
   # User dependencies
@@ -147,6 +147,25 @@ rec {
       homepage    = "https://m-labs.hk/migen";
       license     = licenses.bsd2;
       platforms   = platforms.unix;
+    };
+  };
+
+  outputcheck = python2Packages.buildPythonApplication rec {
+    pname = "outputcheck";
+    version = "0.4.2";
+
+    src = fetchFromGitHub {
+      owner = "stp";
+      repo = "OutputCheck";
+      rev = "e0f533d3c5af2949349856c711bf4bca50022b48";
+      sha256 = "1y27vz6jq6sywas07kz3v01sqjd0sga9yv9w2cksqac3v7wmf2a0";
+    };
+    prePatch = "echo ${version} > RELEASE-VERSION";
+
+    meta = with stdenv.lib; {
+      description = "A tool for checking tool output inspired by LLVM's FileCheck";
+      homepage    = "https://github.com/stp/OutputCheck";
+      license     = licenses.bsd3;
     };
   };
 
