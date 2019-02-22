@@ -15,6 +15,7 @@ let
       target = "kasli";
       variants = ["berkeley" "ist" "mitll2" "mitll" "nudt" "sysu" "tsinghua2" "tsinghua" "ubirmingham" "unsw" "ustc" "wipm"];
 
+      artiq = import <m-labs> { inherit pkgs; };
       artiq-board = import <m-labs/artiq-board.nix> { inherit pkgs; };
       conda-artiq-board = import <m-labs/conda-artiq-board.nix> { inherit pkgs; };
       src = pkgs.fetchgit {
@@ -36,7 +37,18 @@ let
             "conda-artiq-board-\''${target}-\''${variant}" = conda-artiq-board {
               boardBinaries = boardBinaries;
               inherit target variant;
-          };
+            };
+            "device-db-\''${target}-\''${variant}" = pkgs.stdenv.mkDerivation {
+              name = "device-db-\''${target}-\''${variant}";
+              buildInputs = [ artiq.artiq ];
+              phases = [ "buildPhase" ];
+              buildPhase = "
+                mkdir \$out
+                artiq_ddb_template \''${json} -o \$out/device_db.py
+                mkdir \$out/nix-support
+                echo file device_db_template \$out/device_db.py >> \$out/nix-support/hydra-build-products
+                ";
+            };
          }) {} variants;
     in
       generic-kasli // {
