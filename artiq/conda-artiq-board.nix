@@ -37,9 +37,9 @@ let
     cat << EOF > $out/fake-conda/build.sh
     #!/bin/bash
     set -e
-    SOC_PREFIX=\$PREFIX/site-packages/artiq/binaries/${target}-${variant}
+    SOC_PREFIX=\$PREFIX/site-packages/artiq/board-support/${target}-${variant}
     mkdir -p \$SOC_PREFIX
-    cp ${boardBinaries}/${pkgs.python3Packages.python.sitePackages}/artiq/binaries/${target}-${variant}/* \$SOC_PREFIX
+    cp ${boardBinaries}/${pkgs.python3Packages.python.sitePackages}/artiq/board-support/${target}-${variant}/* \$SOC_PREFIX
     EOF
     chmod 755 $out/fake-conda/build.sh
     '';

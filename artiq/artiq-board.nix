@@ -55,7 +55,7 @@ in pkgs.python3Packages.buildPythonPackage rec {
     '';
   installPhase =
     ''
-    TARGET_DIR=$out/${pkgs.python3Packages.python.sitePackages}/artiq/binaries/${target}-${variant}
+    TARGET_DIR=$out/${pkgs.python3Packages.python.sitePackages}/artiq/board-support/${target}-${variant}
     mkdir -p $TARGET_DIR
     cp artiq_${target}/${variant}/gateware/top.bit $TARGET_DIR
     cp artiq_${target}/${variant}/software/bootloader/bootloader.bin $TARGET_DIR
