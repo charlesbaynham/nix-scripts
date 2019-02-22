@@ -1,4 +1,4 @@
-{ pkgs, stdenv, fetchFromGitHub, python, python2Packages, python3Packages }:
+{ pkgs, stdenv, fetchFromGitHub, python, python3Packages }:
 
 rec {
   # User dependencies
@@ -150,7 +150,27 @@ rec {
     };
   };
 
-  outputcheck = python2Packages.buildPythonApplication rec {
+  # not using the nixpkgs version because it is Python 2 and an "application"
+  lit = python3Packages.buildPythonPackage rec {
+    pname = "lit";
+    version = "0.7.1";
+
+    src = python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "ecef2833aef7f411cb923dac109c7c9dcc7dbe7cafce0650c1e8d19c243d955f";
+    };
+
+    # Non-standard test suite. Needs custom checkPhase.
+    doCheck = false;
+
+    meta = with stdenv.lib; {
+      description = "Portable tool for executing LLVM and Clang style test suites";
+      homepage = http://llvm.org/docs/CommandGuide/lit.html;
+      license = licenses.ncsa;
+    };
+  };
+
+  outputcheck = python3Packages.buildPythonApplication rec {
     pname = "outputcheck";
     version = "0.4.2";
 

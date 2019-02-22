@@ -32,7 +32,7 @@ let
 in
   rec {
     inherit (rust) rustc;
-    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b outputcheck sphinx-argparse wavedrom sphinxcontrib-wavedrom;
+    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck sphinx-argparse wavedrom sphinxcontrib-wavedrom;
     binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix { inherit llvm-src; };
     llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
