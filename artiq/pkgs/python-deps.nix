@@ -70,7 +70,7 @@ rec {
       owner = "m-labs";
       repo = "misoc";
       rev = "2e2981f41a03ee389dd68fdd7b2cf3bc3a99d6da";
-      sha256 = "0dv18iqbps3i9zgix88d6b9azjygmylcdkya30j1352a9pvqd56h";
+      sha256 = "14abqn5qkj1a04qnwwjj73ymjjxcwxwm4lqjzbi1mgdrl0rp77i6";
       fetchSubmodules = true;
     };
 
@@ -94,7 +94,7 @@ rec {
       owner = "m-labs";
       repo = "migen";
       rev = "9a25f908b2188b8d71aec4341dcb33aafc8c2a11";
-      sha256 = "02829avl21spxxy1zv928pkhi1sz4fhwhihg4zqxm9q8ab83j1fh";
+      sha256 = "0zl3bb90cg32jmzagm0j2skd6k09s3lqkjxp7km8yl1ldj2j782a";
     };
 
     # TODO: fix migen platform issues and re-enable tests
