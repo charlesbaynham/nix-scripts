@@ -53,8 +53,6 @@ let
 
   # TODO: starting with NixOS 19.XX, drop sphinxcontrib-wavedrom-1_3_1
   # and simplify `targets`:
-  targets = [
-    "html" "singlehtml"
-  ] ++ (lib.optional (builtins.compareVersions sphinxcontrib-wavedrom.version "2.0.0" != -1) "latexpdf");
+  targets = [ "html" ] ++ (lib.optional (builtins.compareVersions sphinxcontrib-wavedrom.version "2.0.0" != -1) "latexpdf");
 in
   builtins.listToAttrs (map (target: { name = target; value = artiq-manual target; }) targets)
