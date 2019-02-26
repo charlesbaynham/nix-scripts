@@ -55,4 +55,4 @@ let
   # and simplify `targets`:
   targets = [ "html" ] ++ (lib.optional (builtins.compareVersions sphinxcontrib-wavedrom.version "2.0.0" != -1) "latexpdf");
 in
-  builtins.listToAttrs (map (target: { name = target; value = artiq-manual target; }) targets)
+  builtins.listToAttrs (map (target: { name = "artiq-manual-${target}"; value = artiq-manual target; }) targets)
