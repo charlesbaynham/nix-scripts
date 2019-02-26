@@ -192,7 +192,7 @@ rec {
 
 
   # Documentation building dependencies
-  # sphinx-argparse will be included in nixpkgs 19.03
+  # TODO: sphinx-argparse will be available from nixos-19.XX
   sphinx-argparse = python3Packages.buildPythonPackage rec {
     pname = "sphinx-argparse";
     version = "0.2.5";
@@ -203,6 +203,7 @@ rec {
     };
 
     checkInputs = [ python3Packages.pytest ];
+
     checkPhase = "py.test";
 
     propagatedBuildInputs = [ python3Packages.sphinx ];
@@ -226,7 +227,6 @@ rec {
 
     buildInputs = [ python3Packages.setuptools_scm ];
     propagatedBuildInputs = with python3Packages; [ svgwrite attrdict ];
-
     doCheck = false;
 
     meta = with stdenv.lib; {
@@ -236,7 +236,7 @@ rec {
     };
   };
 
-  sphinxcontrib-wavedrom = python3Packages.buildPythonPackage rec {
+  sphinxcontrib-wavedrom-1_3_1 = python3Packages.buildPythonPackage rec {
     pname = "sphinxcontrib-wavedrom";
     version = "1.3.1";
 
@@ -246,7 +246,8 @@ rec {
     };
 
     buildInputs = [ python3Packages.setuptools_scm ];
-    propagatedBuildInputs = [ wavedrom ] ++ (with python3Packages; [ sphinx cairosvg xcffib ]);
+    propagatedBuildInputs = [ python3Packages.sphinx ];
+    doCheck = false;
 
     meta = with stdenv.lib; {
       description = "A Sphinx extension that allows including WaveDrom diagrams";
@@ -254,4 +255,29 @@ rec {
       license     = licenses.mit;
     };
   };
+
+  sphinxcontrib-wavedrom-2_0_0 = python3Packages.buildPythonPackage rec {
+    pname = "sphinxcontrib-wavedrom";
+    version = "2.0.0";
+
+    src = python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "0nk36zqq5ipxqx9izz2iazb3iraasanv3nm05bjr21gw42zgkz22";
+    };
+
+    buildInputs = [ python3Packages.setuptools_scm ];
+    propagatedBuildInputs = [ wavedrom ] ++ (with python3Packages; [ sphinx xcffib cairosvg ]);
+    doCheck = false;
+
+    meta = with stdenv.lib; {
+      description = "A Sphinx extension that allows including WaveDrom diagrams";
+      homepage    = "https://pypi.org/project/sphinxcontrib-wavedrom/";
+      license     = licenses.mit;
+    };
+  };
+
+  sphinxcontrib-wavedrom =
+    if builtins.compareVersions python3Packages.sphinx.version "1.8" == -1
+    then sphinxcontrib-wavedrom-1_3_1
+    else sphinxcontrib-wavedrom-2_0_0;
 }
