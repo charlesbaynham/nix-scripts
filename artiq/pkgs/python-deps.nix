@@ -1,4 +1,4 @@
-{ pkgs, stdenv, fetchFromGitHub, python, python3Packages }:
+{ stdenv, fetchFromGitHub, python, python3Packages }:
 
 rec {
   # User dependencies
@@ -98,10 +98,7 @@ rec {
       sha256 = "0zl3bb90cg32jmzagm0j2skd6k09s3lqkjxp7km8yl1ldj2j782a";
     };
 
-    # TODO: fix migen platform issues and re-enable tests
-    doCheck = false;
-
-    propagatedBuildInputs = with python3Packages; [ colorama sphinx sphinx_rtd_theme ] ++ (with pkgs; [ verilator ]);
+    propagatedBuildInputs = with python3Packages; [ colorama sphinx sphinx_rtd_theme ];
 
     meta = with stdenv.lib; {
       description = "A Python toolbox for building complex digital hardware";
