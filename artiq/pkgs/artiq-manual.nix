@@ -1,7 +1,6 @@
 { stdenv, lib,
   git, fetchFromGitHub, fetchgit,
-  python3Packages, texlive, texinfo,
-  artiq
+  python3Packages, texlive, texinfo
 }:
 
 with python3Packages;
@@ -106,7 +105,6 @@ let
     buildInputs = [
       sphinx sphinx_rtd_theme
       sphinx-argparse sphinxcontrib-wavedrom
-      artiq
     ] ++
       lib.optional (isLatexPdfTarget target) latex ++
       lib.optional (target == "texinfo") texinfo;
