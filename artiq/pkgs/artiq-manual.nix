@@ -13,7 +13,7 @@ let
   };
 
   artiq-manual = target: stdenv.mkDerivation rec {
-    name = "artiq-manual-${target}";
+    name = "artiq-manual-${target}-${version}"";
     version = artiqVersion;
 
     src = import ./artiq-src.nix { inherit fetchgit; };
