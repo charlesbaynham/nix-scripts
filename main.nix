@@ -28,18 +28,6 @@ in
       src = generatedNix;
       constituents = builtins.attrValues jobs;
     };
-    docs = pkgs.runCommand "docs"
-      {
-        buildInputs = [
-          (pkgs.python3.withPackages(ps: [ artiqpkgs.sphinx-argparse artiqpkgs.sphinxcontrib-wavedrom ps.sphinx_rtd_theme ps.sphinx ]))
-        ];
-      }
-      ''
-      mkdir $out
-      VERSIONEER_OVERRIDE=${artiqVersion} sphinx-build ${artiqSrc}/doc/manual $out/html
-      mkdir $out/nix-support
-      echo doc manual $out/html >> $out/nix-support/hydra-build-products
-      '';
     extended-tests = pkgs.runCommand "extended-tests" {
       propagatedBuildInputs = [
           (pkgs.python3.withPackages(ps: [ artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock ]))

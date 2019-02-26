@@ -37,6 +37,7 @@ in
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix { inherit llvm-src; };
     llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
     artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k; inherit llvm-or1k; inherit llvmlite-artiq; };
+    artiq-manual = callPackage ./pkgs/artiq-manual.nix { inherit artiq; };
     openocd = callPackage ./pkgs/openocd.nix {};
     conda-artiq = import ./conda-artiq.nix { inherit pkgs; };
   } //  boardPackages
