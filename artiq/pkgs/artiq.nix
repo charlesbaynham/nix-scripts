@@ -18,6 +18,5 @@ in
       homepage = https://m-labs/artiq;
       license = licenses.lgpl3;
       #maintainers = [ maintainers.sb0 ];
-      platforms = [ "x86_64-linux" ];
     };
   }
