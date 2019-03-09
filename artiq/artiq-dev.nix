@@ -18,7 +18,7 @@ in
         xorg.libXext
         xorg.libXtst
         xorg.libXi
-        (python3.withPackages(ps: with ps; [ jinja2 numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq ]))
+        (python3.withPackages(ps: with ps; [ jinja2 numpy paramiko artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq ]))
         git
         cargo
       ] ++
