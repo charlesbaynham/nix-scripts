@@ -13,7 +13,7 @@ let
 
     let
       target = "kasli";
-      variants = ["berkeley" "ist" "mitll2" "mitll" "nrc" "nudt" "sysu" "tsinghua2" "tsinghua" "ubirmingham" "unsw" "ustc" "wipm"];
+      variants = ["berkeley" "ist" "mitll2" "mitll" "nrc" "nudt" "sysu" "tsinghua2" "tsinghua" "ubirmingham" "unsw" "ustc" "wipm" "wipm2"];
 
       artiq = import <m-labs> { inherit pkgs; };
       artiq-board = import <m-labs/artiq-board.nix> { inherit pkgs; };
