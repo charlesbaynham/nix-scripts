@@ -52,7 +52,6 @@ in
         artiqpkgs.openocd
         pkgs.iputils
       ];
-      phases = [ "buildPhase" ];
       buildPhase =
       ''
       whoami
