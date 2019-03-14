@@ -35,7 +35,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim git file lm_sensors acpi psmisc xc3sprog telnet whois zip unzip yosys symbiyosys yices z3 boolector cvc4
-    irssi tmux adoptopenjdk-openj9-bin-11 tightvnc icewm xterm xorg.xsetroot usbutils
+    irssi tmux adoptopenjdk-openj9-bin-11 tightvnc icewm xterm xorg.xsetroot usbutils virtmanager
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -149,6 +149,8 @@ ACTION=="add", SUBSYSTEM=="tty", \
   '';
   nix.sandboxPaths = ["/opt"];
   nix.maxJobs = 4;
+
+  virtualisation.libvirtd.enable = true;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
