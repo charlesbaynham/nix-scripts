@@ -52,7 +52,7 @@ in
         artiqpkgs.openocd
         pkgs.iputils
       ];
-      sshKey = /var/lib/hydra/queue-runner/.ssh/id_rsa
+      sshKey = /var/lib/hydra/queue-runner/.ssh/id_rsa;
       phases = [ "buildPhase" ];
       buildPhase =
       ''
