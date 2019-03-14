@@ -56,7 +56,10 @@ in
       buildPhase =
       ''
       # set HOME to make SSH private key accessible
-      HOME=/home/hydra-queue-runner artiq_flash -t kc705 -H rpi
+      export HOME=/home/hydra-queue-runner
+      echo XXX listing
+      ls ~/.ssh
+      artiq_flash -t kc705 -H rpi
       sleep 15
       # ping: socket: Operation not permitted
       #ping kc705-1 -c10 -w30
