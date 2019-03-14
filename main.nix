@@ -20,7 +20,7 @@ let
   generateTestOkHash = pkgs.runCommand "generate-test-ok-hash" { buildInputs = [ pkgs.nix ]; }
     ''
     TMPDIR=`mktemp -d`
-    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed9
+    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed
     HASH=`nix-hash --type sha256 --base32 $TMPDIR`
     echo \"$HASH\" > $out
     '';
@@ -41,7 +41,7 @@ in
     # One major downside of this hack is the tests are only run when generateTestOkHash
     # changes, i.e. when the ARTIQ version changes (and not the dependencies).
     # Impure derivations, when they land in Nix/Hydra, should improve the situation.
-    kc705-tests = pkgs.stdenv.mkDerivation rec {
+    kc705-tests = pkgs.stdenv.mkDerivation {
       name = "kc705-tests";
 
       outputHashAlgo = "sha256";
@@ -73,7 +73,7 @@ in
       export ARTIQ_LOW_LATENCY=1
       python -m unittest discover -v artiq.test.coredevice
       mkdir $out
-      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed9
+      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed
       '';
     };
   }
