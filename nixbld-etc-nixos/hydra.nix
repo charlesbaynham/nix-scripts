@@ -81,10 +81,10 @@ in releaseTools.nixBuild rec {
   inherit stdenv;
 
   src = fetchFromGitHub {
-    owner = "NixOS";
+    owner = "m-labs";
     repo = "hydra";
-    rev = "152f82f348522039936abf3d18a412c9106814a8";
-    sha256 = "1nngsznnzw9y6ir2ygys43wki1ypxj584k51773v65zi6lzz9qlq";
+    rev = "cbdd0167ac1dbd1bfb96a7d7cdeefe01af8599cd";
+    sha256 = "10lwhm1066i0y8a5l0fqzfr5ln9zadpxwg21ifbpjas07ncyq4ad";
   };
 
   buildInputs =
