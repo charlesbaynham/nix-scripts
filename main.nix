@@ -55,7 +55,8 @@ in
       phases = [ "buildPhase" ];
       buildPhase =
       ''
-      artiq_flash -t kc705 -H rpi
+      # set HOME to make SSH private key accessible
+      HOME=/home/hydra-queue-runner artiq_flash -t kc705 -H rpi
       sleep 15
       # ping: socket: Operation not permitted
       #ping kc705-1 -c10 -w30
