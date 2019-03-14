@@ -47,8 +47,9 @@ in
       outputHashMode = "recursive";
       outputHash = import generateTestOkHash;
       buildInputs = [
-        (pkgs.python3.withPackages(ps: [ artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock ]))
+        (pkgs.python3.withPackages(ps: [ ps.paramiko artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock ]))
         artiqpkgs.binutils-or1k
+        artiqpkgs.openocd
         pkgs.iputils
       ];
       phases = [ "buildPhase" ];
