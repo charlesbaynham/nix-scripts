@@ -66,7 +66,7 @@ in
       sleep 15
       # ping: socket: Operation not permitted
       #ping kc705-1 -c10 -w30
-      export ARTIQ_ROOT=`python -c "import artiq; print(artiq.__path__[0])"`/examples/kc705_nist_clock",
+      export ARTIQ_ROOT=`python -c "import artiq; print(artiq.__path__[0])"`/examples/kc705_nist_clock
       export ARTIQ_LOW_LATENCY=1
       python -m unittest discover -v artiq.test.coredevice
       mkdir $out
