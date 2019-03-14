@@ -41,7 +41,7 @@ in
     # One major downside of this hack is the tests are only run when generateTestOkHash
     # changes, i.e. when the ARTIQ version changes (and not the dependencies).
     # Impure derivations, when they land in Nix/Hydra, should improve the situation.
-    kc705-tests = pkgs.stdenv.mkDerivation {
+    kc705-tests = pkgs.stdenv.mkDerivation rec {
       name = "kc705-tests";
       outputHashAlgo = "sha256";
       outputHashMode = "recursive";
@@ -52,13 +52,13 @@ in
         artiqpkgs.openocd
         pkgs.iputils
       ];
+      sshKey = /var/lib/hydra/queue-runner/.ssh/id_rsa
       phases = [ "buildPhase" ];
       buildPhase =
       ''
-      # set HOME to make SSH private key accessible
-      export HOME=/var/lib/hydra/queue-runner
-      echo XXX listing
-      ls ~/.ssh
+      export HOME=`mktemp -d`
+      mkdir $HOME/.ssh
+      cp ${sshKey} $HOME/.ssh/id_rsa
       artiq_flash -t kc705 -H rpi
       sleep 15
       # ping: socket: Operation not permitted
