@@ -43,9 +43,12 @@ in
     # Impure derivations, when they land in Nix/Hydra, should improve the situation.
     kc705-tests = pkgs.stdenv.mkDerivation rec {
       name = "kc705-tests";
+
       outputHashAlgo = "sha256";
       outputHashMode = "recursive";
       outputHash = import generateTestOkHash;
+      __hydraRetry = false;
+
       buildInputs = [
         (pkgs.python3.withPackages(ps: [ ps.paramiko artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock ]))
         artiqpkgs.binutils-or1k
