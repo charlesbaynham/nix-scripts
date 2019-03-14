@@ -52,13 +52,12 @@ in
         artiqpkgs.openocd
         pkgs.iputils
       ];
-      sshKey = /var/lib/hydra/queue-runner/.ssh/id_rsa;
       phases = [ "buildPhase" ];
       buildPhase =
       ''
       export HOME=`mktemp -d`
       mkdir $HOME/.ssh
-      cp ${sshKey} $HOME/.ssh/id_rsa
+      cp /opt/hydra_id_rsa $HOME/.ssh/id_rsa
       artiq_flash -t kc705 -H rpi
       sleep 15
       # ping: socket: Operation not permitted
