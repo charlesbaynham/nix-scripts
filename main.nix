@@ -52,8 +52,8 @@ in
         artiqpkgs.openocd
         pkgs.iputils
       ];
-      phases = [ "buildPhase" ];
-      buildPhase =
+      phases = [ "installPhase" ];
+      installPhase =
       ''
       whoami
       export HOME=`mktemp -d`
