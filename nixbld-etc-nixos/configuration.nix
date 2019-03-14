@@ -136,10 +136,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
       ''
       binary_cache_secret_key_file = /etc/nixos/secret/nixbld.m-labs.hk-1
       max_output_size = 5500000000
-      <runcommand>
-      job = artiq:main:extended-tests
-      command = nix-shell `jq -r .drvPath $HYDRA_JSON` --run "python `jq -r .outputs[0].path $HYDRA_JSON` $HYDRA_JSON"
-      </runcommand>
       '';
   };
   users.users.hydra-queue-runner.extraGroups = [ "plugdev" "dialout" ];
