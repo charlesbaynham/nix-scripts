@@ -42,7 +42,7 @@ in
     # changes, i.e. when the ARTIQ version changes (and not the dependencies).
     # Impure derivations, when they land in Nix/Hydra, should improve the situation.
     kc705-tests = pkgs.stdenv.mkDerivation {
-      name = "extended-tests";
+      name = "kc705-tests";
       outputHashAlgo = "sha256";
       outputHashMode = "recursive";
       outputHash = import generateTestOkHash;
