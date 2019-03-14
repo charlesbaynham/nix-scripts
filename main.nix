@@ -56,7 +56,7 @@ in
       buildPhase =
       ''
       # set HOME to make SSH private key accessible
-      export HOME=/home/hydra-queue-runner
+      export HOME=/var/lib/hydra/queue-runner
       echo XXX listing
       ls ~/.ssh
       artiq_flash -t kc705 -H rpi
