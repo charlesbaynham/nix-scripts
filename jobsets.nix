@@ -53,7 +53,7 @@
             "inputs": {
                 "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-18.09", "emailresponsible": false },
                 "adc2tcp": { "type": "git", "value": "git://github.com/m-labs/adc2tcp.git", "emailresponsible": false },
-                "mozillaOverlay": { "type": "path", "value": "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz", "emailresponsible": false }
+                "mozillaOverlay": { "type": "git", "value": "git://github.com/mozilla/nixpkgs-mozilla.git", "emailresponsible": false }
             }
         }
     }
