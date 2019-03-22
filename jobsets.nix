@@ -44,7 +44,7 @@
             "hidden": false,
             "description": "STM32 demo",
             "nixexprinput": "adc2tcp",
-            "nixexprpath": "release.nix",
+            "nixexprpath": "default.nix",
             "checkinterval": 300,
             "schedulingshares": 10,
             "enableemail": false,
