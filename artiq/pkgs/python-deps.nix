@@ -70,8 +70,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "misoc";
-      rev = "e3b79fd3f3c7a5f3a55d4bd39eb46055936368c3";
-      sha256 = "0ynh5hnhw3yc2h1a44jar8h8yv0bas60hdf5dm5f13bwlcr25p8v";
+      rev = "7ab1001f28f4d864cc6d7e012c9f9aa3d2dd9f35";
+      sha256 = "0kr0sdwsvgj97cfk6csdrmbh8awmkdfy2czqgj2kg3xvmhdfdi6v";
       fetchSubmodules = true;
     };
 
@@ -94,8 +94,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "5a843a14e72a098e2007690629adc5caa6c301f5";
-      sha256 = "1xczvnzxbc5l0zq1yc8mk8fjynawp1mbyd4sq0mg12b01v3c4v3h";
+      rev = "edcadbca08c50497e4c06f88dd002a5eeeaca93c";
+      sha256 = "1ryizm6dd8g9y32sd35kx80p9vr5bvr5xc9vm38dxkmg1khngknb";
     };
 
     propagatedBuildInputs = with python3Packages; [ colorama sphinx sphinx_rtd_theme ];
