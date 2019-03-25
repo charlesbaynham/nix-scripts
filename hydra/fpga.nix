@@ -9,7 +9,7 @@
             "hidden": false,
             "description": "HeavyX SoC toolkit experiment",
             "nixexprinput": "heavyx",
-            "nixexprpath": "default.nix",
+            "nixexprpath": "release.nix",
             "checkinterval": 300,
             "schedulingshares": 10,
             "enableemail": false,
