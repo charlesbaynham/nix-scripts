@@ -3,7 +3,7 @@
     "hidden": true,
     "description": "js",
     "nixexprinput": "nixScripts",
-    "nixexprpath": "jobsets.nix",
+    "nixexprpath": "hydra/artiq.nix",
     "checkinterval": 300,
     "schedulingshares": 10,
     "enableemail": false,

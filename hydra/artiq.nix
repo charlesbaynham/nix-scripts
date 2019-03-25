@@ -38,39 +38,6 @@
                 "sinaraSystemsSrc": { "type": "git", "value": "git://github.com/m-labs/sinara-systems.git master 1", "emailresponsible": false },
                 "m-labs": { "type": "sysbuild", "value": "artiq:main:generated-nix", "emailresponsible": false }
             }
-        },
-        "adc2tcp": {
-            "enabled": 1,
-            "hidden": false,
-            "description": "STM32 demo",
-            "nixexprinput": "adc2tcp",
-            "nixexprpath": "release.nix",
-            "checkinterval": 300,
-            "schedulingshares": 10,
-            "enableemail": false,
-            "emailoverride": "",
-            "keepnr": 10,
-            "inputs": {
-                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-18.09", "emailresponsible": false },
-                "adc2tcp": { "type": "git", "value": "git://github.com/m-labs/adc2tcp.git", "emailresponsible": false },
-                "mozillaOverlay": { "type": "git", "value": "git://github.com/mozilla/nixpkgs-mozilla.git", "emailresponsible": false }
-            }
-        },
-        "heavyx": {
-            "enabled": 1,
-            "hidden": false,
-            "description": "HeavyX SoC toolkit experiment",
-            "nixexprinput": "heavyx",
-            "nixexprpath": "default.nix",
-            "checkinterval": 300,
-            "schedulingshares": 10,
-            "enableemail": false,
-            "emailoverride": "",
-            "keepnr": 10,
-            "inputs": {
-                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.03", "emailresponsible": false },
-                "heavyx": { "type": "git", "value": "git://github.com/m-labs/heavyx.git", "emailresponsible": false }
-            }
         }
     }
     EOF
