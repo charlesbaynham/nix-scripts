@@ -17,10 +17,6 @@
   networking.hostName = "nixbld"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Select internationalisation properties.
   i18n = {
     consoleFont = "Lat2-Terminus16";
@@ -65,22 +61,6 @@
   services.printing.defaultShared = true;
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ pkgs.hplipWithPlugin ];
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable touchpad support.
-  # services.xserver.libinput.enable = true;
-
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
 
   users.extraGroups.plugdev = { };
   users.extraUsers.sb = {
@@ -175,5 +155,4 @@ ACTION=="add", SUBSYSTEM=="tty", \
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "18.09"; # Did you read the comment?
-
 }
