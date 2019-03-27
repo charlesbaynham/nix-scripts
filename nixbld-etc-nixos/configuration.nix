@@ -124,7 +124,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
       max_output_size = 5500000000
       '';
   };
-  users.users.hydra-queue-runner.extraGroups = [ "plugdev" "dialout" ];
 
   nix.extraOptions = ''
     secret-key-files = /etc/nixos/secret/nixbld.m-labs.hk-1
