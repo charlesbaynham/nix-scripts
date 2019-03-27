@@ -49,7 +49,7 @@
   services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 631 3000 5801 5901 6001 80 ];
+  networking.firewall.allowedTCPPorts = [ 631 5901 80 443 ];
   networking.firewall.allowedUDPPorts = [ 631 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -135,6 +135,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
   services.gitlab = {
     enable = true;
+    host = "gitlab.m-labs.hk";
+    port = 443;
+    https = true;
     databasePassword = pkgs.lib.fileContents /etc/nixos/secret/gitlab-db-password;
     secrets = import /etc/nixos/secret/gitlab.nix;
     initialRootPassword = pkgs.lib.fileContents /etc/nixos/secret/gitlab-default-root;
@@ -144,7 +147,24 @@ ACTION=="add", SUBSYSTEM=="tty", \
     enable = true;
     recommendedProxySettings = true;
     virtualHosts = {
-      "nixbld.lab.m-labs.hk" = {
+      "buildbot.m-labs.hk" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/".proxyPass = "http://192.168.1.100";
+      };
+      "lab.m-labs.hk" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/".proxyPass = "http://192.168.1.100";
+      };
+      "nixbld.m-labs.hk" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/".proxyPass = "http://127.0.0.1:3000";
+      };
+      "gitlab.m-labs.hk" = {
+        forceSSL = true;
+        enableACME = true;
         locations."/".proxyPass = "http://unix:/run/gitlab/gitlab-workhorse.socket";
       };
     };
