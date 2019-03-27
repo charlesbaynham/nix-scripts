@@ -109,20 +109,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
   nixpkgs.config.allowUnfree = true;
 
-  services.postgresql = {
-    enable = true;
-    enableTCPIP = true;
-    authentication = pkgs.lib.mkOverride 10 ''
-      local all all trust
-      host all all ::1/128 trust
-    '';
-    initialScript = pkgs.writeText "backend-initScript" ''
-      CREATE ROLE hydra WITH LOGIN PASSWORD 'hydra' CREATEDB;
-      CREATE DATABASE hydra;
-      GRANT ALL PRIVILEGES ON DATABASE hydra TO hydra;
-    '';
-  };
-
   services.hydra = {
     enable = true;
     package = pkgs.callPackage ./hydra.nix {};
