@@ -49,7 +49,7 @@
   services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 631 3000 5801 5901 6001 ];
+  networking.firewall.allowedTCPPorts = [ 631 3000 5801 5901 6001 80 ];
   networking.firewall.allowedUDPPorts = [ 631 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -133,6 +133,23 @@ ACTION=="add", SUBSYSTEM=="tty", \
   nix.maxJobs = 4;
 
   virtualisation.libvirtd.enable = true;
+
+  services.gitlab = {
+    enable = true;
+    databasePassword = pkgs.lib.fileContents /etc/nixos/secret/gitlab-db-password;
+    secrets = import /etc/nixos/secret/gitlab.nix;
+    initialRootPassword = pkgs.lib.fileContents /etc/nixos/secret/gitlab-default-root;
+  };
+
+  services.nginx = {
+    enable = true;
+    recommendedProxySettings = true;
+    virtualHosts = {
+      "nixbld.lab.m-labs.hk" = {
+        locations."/".proxyPass = "http://unix:/run/gitlab/gitlab-workhorse.socket";
+      };
+    };
+  };
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
