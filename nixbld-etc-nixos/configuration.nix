@@ -119,6 +119,11 @@ ACTION=="add", SUBSYSTEM=="tty", \
     rootUrl = "https://git.m-labs.hk/";
   };
 
+  services.mattermost = {
+    enable = true;
+    siteUrl = "https://chat.m-labs.hk/";
+  };
+
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
@@ -142,6 +147,11 @@ ACTION=="add", SUBSYSTEM=="tty", \
         forceSSL = true;
         enableACME = true;
         locations."/".proxyPass = "http://127.0.0.1:3001";
+      };
+      "chat.m-labs.hk" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/".proxyPass = "http://127.0.0.1:8065";
       };
     };
   };
