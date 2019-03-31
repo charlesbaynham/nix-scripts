@@ -5,14 +5,18 @@ let
     ''
     cp --no-preserve=mode,ownership -R ${./artiq} $out
     REV=`git --git-dir ${artiqSrc}/.git rev-parse HEAD`
-    HASH=`nix-hash --type sha256 --base32 ${artiqSrc}`
+    ARTIQ_SRC_CLEAN=`mktemp -d`
+    cp -a ${artiqSrc}/. $ARTIQ_SRC_CLEAN
+    chmod -R 755 $ARTIQ_SRC_CLEAN/.git
+    chmod 755 $ARTIQ_SRC_CLEAN
+    rm -rf $ARTIQ_SRC_CLEAN/.git
+    HASH=`nix-hash --type sha256 --base32 $ARTIQ_SRC_CLEAN`
     cat > $out/pkgs/artiq-src.nix << EOF
     { fetchgit }:
     fetchgit {
       url = "git://github.com/m-labs/artiq.git";
       rev = "$REV";
       sha256 = "$HASH";
-      leaveDotGit = true;
     }
     EOF
     echo \"5e.`cut -c1-8 <<< $REV`\" > $out/pkgs/artiq-version.nix
