@@ -41,6 +41,7 @@ in
     binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix { inherit llvm-src; };
     llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
+    libartiq-support = callPackage ./pkgs/libartiq-support.nix { inherit rustc; };
     artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k; inherit llvm-or1k; inherit llvmlite-artiq; };
     artiq-env = (pkgs.python3.withPackages(ps: [ artiq ])).overrideAttrs (oldAttrs: { name = "${pkgs.python3.name}-artiq-env-${artiq.version}"; });
     openocd = callPackage ./pkgs/openocd.nix {};
