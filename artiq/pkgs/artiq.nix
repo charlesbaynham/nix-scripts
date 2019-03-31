@@ -16,9 +16,9 @@ in
     ''
     python -m unittest discover -v artiq.test
 
-    testdir=`mktemp -d`
-    cp --no-preserve=mode,ownership -R ${src}/artiq/test/lit $testdir
-    LIBARTIQ_SUPPORT=${libartiq-support}/libartiq_support.so ${lit}/bin/lit -v $testdir/lit
+    TESTDIR=`mktemp -d`
+    cp --no-preserve=mode,ownership -R ${src}/artiq/test/lit $TESTDIR
+    LIBARTIQ_SUPPORT=${libartiq-support}/libartiq_support.so ${lit}/bin/lit -v $TESTDIR/lit
     '';
     meta = with stdenv.lib; {
       description = "A leading-edge control system for quantum information experiments";
