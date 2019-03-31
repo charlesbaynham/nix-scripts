@@ -113,14 +113,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
   virtualisation.libvirtd.enable = true;
 
-  services.gitlab = {
+  services.gitea = {
     enable = true;
-    host = "gitlab.m-labs.hk";
-    port = 443;
-    https = true;
-    databasePassword = pkgs.lib.fileContents /etc/nixos/secret/gitlab-db-password;
-    secrets = import /etc/nixos/secret/gitlab.nix;
-    initialRootPassword = pkgs.lib.fileContents /etc/nixos/secret/gitlab-default-root;
+    httpPort = 3001;
+    rootUrl = "https://git.m-labs.hk/";
   };
 
   services.nginx = {
@@ -142,10 +138,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
         enableACME = true;
         locations."/".proxyPass = "http://127.0.0.1:3000";
       };
-      "gitlab.m-labs.hk" = {
+      "git.m-labs.hk" = {
         forceSSL = true;
         enableACME = true;
-        locations."/".proxyPass = "http://unix:/run/gitlab/gitlab-workhorse.socket";
+        locations."/".proxyPass = "http://127.0.0.1:3001";
       };
     };
   };
