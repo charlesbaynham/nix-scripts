@@ -1,4 +1,4 @@
-{ stdenv, callPackage, fetchgit, python3Packages, qt5Full, binutils-or1k, llvm-or1k, llvmlite-artiq }:
+{ stdenv, callPackage, fetchgit, python3Packages, qt5Full, binutils-or1k, llvm-or1k, llvmlite-artiq, libartiq-support, lit, outputcheck }:
 
 let
   pythonDeps = callPackage ./python-deps.nix {};
@@ -11,7 +11,15 @@ in
     propagatedBuildInputs = [ binutils-or1k llvm-or1k llvmlite-artiq qt5Full ]
       ++ (with pythonDeps; [ levenshtein pyqtgraph-qt5 quamash pythonparser asyncserial ])
       ++ (with python3Packages; [ aiohttp pygit2 numpy dateutil scipy prettytable pyserial h5py pyqt5 ]);
-    checkPhase = "python -m unittest discover -v artiq.test";
+    buildInputs = [ outputcheck ];
+    checkPhase =
+    ''
+    python -m unittest discover -v artiq.test
+
+    testdir=`mktemp -d`
+    cp --no-preserve=mode,ownership -R ${src}/artiq/test/lit $testdir
+    LIBARTIQ_SUPPORT=${libartiq-support}/libartiq_support.so ${lit}/bin/lit -v $testdir/lit
+    '';
     meta = with stdenv.lib; {
       description = "A leading-edge control system for quantum information experiments";
       homepage = https://m-labs/artiq;
