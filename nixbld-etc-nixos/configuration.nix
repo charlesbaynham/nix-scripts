@@ -125,6 +125,12 @@ ACTION=="add", SUBSYSTEM=="tty", \
   services.mattermost = {
     enable = true;
     siteUrl = "https://chat.m-labs.hk/";
+    mutableConfig = true;
+  };
+
+  services.matterbridge = {
+    enable = true;
+    configPath = "/etc/nixos/secret/matterbridge.toml";
   };
 
   security.acme.certs = {
