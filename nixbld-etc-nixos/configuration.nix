@@ -166,6 +166,8 @@ ACTION=="add", SUBSYSTEM=="tty", \
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://127.0.0.1:8065";
+        locations."~ /api/v[0-9]+/(users/)?websocket$".proxyPass = "http://127.0.0.1:8065";
+        locations."~ /api/v[0-9]+/(users/)?websocket$".proxyWebsockets = true;
       };
     };
   };
