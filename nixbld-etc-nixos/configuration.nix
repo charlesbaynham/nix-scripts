@@ -119,12 +119,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
     rootUrl = "https://git.m-labs.hk/";
     appName = "M-Labs Git";
     cookieSecure = true;
-    extraConfig =
-    ''
-    [service]
-    DISABLE_REGISTRATION = true 
-    '';
-    #disableRegistration = true;
+    disableRegistration = true;
   };
 
   services.mattermost = {
