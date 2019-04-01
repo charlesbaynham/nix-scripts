@@ -132,33 +132,44 @@ ACTION=="add", SUBSYSTEM=="tty", \
     siteUrl = "https://chat.m-labs.hk/";
   };
 
+  security.acme.certs = {
+    "nixbld.m-labs.hk" = {
+      webroot = "/var/lib/acme/acme-challenge";
+      extraDomains = {
+        "buildbot.m-labs.hk" = null;
+        "lab.m-labs.hk" = null;
+        "git.m-labs.hk" = null;
+        "chat.m-labs.hk" = null;
+      };
+    };
+  };
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
     virtualHosts = {
       "buildbot.m-labs.hk" = {
         addSSL = true;
-        enableACME = true;
+        useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://192.168.1.100";
       };
       "lab.m-labs.hk" = {
         addSSL = true;
-        enableACME = true;
+        useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://192.168.1.100";
       };
       "nixbld.m-labs.hk" = {
         forceSSL = true;
-        enableACME = true;
+        useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://127.0.0.1:3000";
       };
       "git.m-labs.hk" = {
         forceSSL = true;
-        enableACME = true;
+        useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://127.0.0.1:3001";
       };
       "chat.m-labs.hk" = {
         forceSSL = true;
-        enableACME = true;
+        useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://127.0.0.1:8065";
       };
     };
