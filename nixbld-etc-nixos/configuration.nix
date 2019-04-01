@@ -117,6 +117,14 @@ ACTION=="add", SUBSYSTEM=="tty", \
     enable = true;
     httpPort = 3001;
     rootUrl = "https://git.m-labs.hk/";
+    appName = "M-Labs Git";
+    cookieSecure = true;
+    extraConfig =
+    ''
+    [service]
+    DISABLE_REGISTRATION = true 
+    '';
+    #disableRegistration = true;
   };
 
   services.mattermost = {
