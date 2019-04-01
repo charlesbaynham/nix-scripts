@@ -4,7 +4,6 @@
 , guile, perl, postgresql, nukeReferences, git, boehmgc, nlohmann_json
 , docbook_xsl, openssh, gnused, coreutils, findutils, gzip, lzma, gnutar
 , rpm, dpkg, cdrkit, pixz, lib, fetchpatch, boost, autoreconfHook
-, jq, bash
 }:
 
 with stdenv;
@@ -76,15 +75,15 @@ let
   };
 in releaseTools.nixBuild rec {
   name = "hydra-${version}";
-  version = "2019-02-01-mlabs";
+  version = "2019-04-01mlabs";
 
   inherit stdenv;
 
   src = fetchFromGitHub {
     owner = "m-labs";
     repo = "hydra";
-    rev = "cbdd0167ac1dbd1bfb96a7d7cdeefe01af8599cd";
-    sha256 = "10lwhm1066i0y8a5l0fqzfr5ln9zadpxwg21ifbpjas07ncyq4ad";
+    rev = "dbe142aba7606ea6e4b9edddbecd21e42cec95cd";
+    sha256 = "1jc0rfp580zkxmjhd73xz47sv18d967j7fy5fkr57dr8r4x49r7g";
   };
 
   buildInputs =
@@ -99,7 +98,6 @@ in releaseTools.nixBuild rec {
   hydraPath = lib.makeBinPath (
     [ sqlite subversion openssh nix coreutils findutils pixz
       gzip bzip2 lzma gnutar unzip git gitAndTools.topGit mercurial darcs gnused bazaar
-      jq bash
     ] ++ lib.optionals stdenv.isLinux [ rpm dpkg cdrkit ] );
 
   nativeBuildInputs = [ autoreconfHook pkgconfig ];
