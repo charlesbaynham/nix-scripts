@@ -17,7 +17,7 @@
             "keepnr": 10,
             "inputs": {
                 "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.03", "emailresponsible": false },
-                "heavyx": { "type": "git", "value": "git://github.com/m-labs/heavyx.git", "emailresponsible": false }
+                "heavyx": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/HeavyX.git", "emailresponsible": false }
             }
         }
     }
