@@ -30,7 +30,11 @@ let
     '';
   artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
   artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix";
-  jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs;
+  jobs = (builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs) // {
+    # This is in the example in the ARTIQ manual - precompile it to speed up
+    # installation for users.
+    matplotlib-qt = (pkgs.python3Packages.matplotlib.override { enableQt = true; });
+  };
 in
   jobs // {
     generated-nix = pkgs.lib.hydraJob generatedNix;  # used by sinara-systems
