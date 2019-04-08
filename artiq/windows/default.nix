@@ -1,6 +1,7 @@
 { pkgs ? import <nixpkgs> {},
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",
+  testTimeout ? 120,
   artiqPkg ? (pkgs.fetchurl {
     url = "https://nixbld.m-labs.hk/build/2316/download/1/artiq-5e.b8e2b82a-0.tar.bz2";
     sha256 = "0gisv3a17rnwavsifpz4cfnqvlssv37pysi2qx41k67rmcpqcs98";
@@ -63,8 +64,13 @@ stdenv.mkDerivation {
     sleep 10
     ${ssh "ver"}
     ${installCondaPkgs [artiqPkg]}
+    # Allow tests to run for 2 minutes
+    ${ssh "shutdown -s -t $ {toString testTimeout}"}
     ${ssh "miniconda\\scripts\\activate && miniconda\\python -m unittest discover -v artiq.test"}
-    ${ssh "shutdown /p /f"}
+    # Abort timeouted shutdown
+    ${ssh "shutdown -a"}
+    # Power off immediately
+    ${ssh "shutdown -p -f"}
   '';
   installPhase = ''
     echo Done
