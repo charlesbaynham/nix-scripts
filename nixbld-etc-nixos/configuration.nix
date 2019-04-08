@@ -89,6 +89,14 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
   nixpkgs.config.allowUnfree = true;
 
+  nix.buildMachines = [
+    {
+       hostName = "localhost";
+       maxJobs = 4;
+       system = "x86_64-linux";
+       supportedFeatures = ["big-parallel"];
+    }
+  ];
   services.hydra = {
     enable = true;
     package = pkgs.callPackage ./hydra.nix {};
@@ -97,7 +105,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
     notificationSender = "hydra@m-labs.hk";
     minimumDiskFree = 10;  # in GB
     minimumDiskFreeEvaluator = 1;
-    buildMachinesFiles = [];
     extraConfig =
       ''
       binary_cache_secret_key_file = /etc/nixos/secret/nixbld.m-labs.hk-1
@@ -109,7 +116,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
     secret-key-files = /etc/nixos/secret/nixbld.m-labs.hk-1
   '';
   nix.sandboxPaths = ["/opt"];
-  nix.maxJobs = 4;
 
   virtualisation.libvirtd.enable = true;
 
