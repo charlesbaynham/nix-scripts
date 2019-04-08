@@ -1,5 +1,5 @@
-{ pkgs ? import <nixpkgs> {}}:
 let
+  pkgs = import <nixpkgs> {};
   artiqSrc = <artiqSrc>;
   generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
     ''
@@ -34,6 +34,8 @@ let
     # This is in the example in the ARTIQ manual - precompile it to speed up
     # installation for users.
     matplotlib-qt = pkgs.lib.hydraJob (pkgs.python3Packages.matplotlib.override { enableQt = true; });
+    # For Raspberry Pi JTAG servers
+    openocd-aarch64 = pkgs.lib.hydraJob ((import <nixpkgs> { system = "aarch64-linux"; }).callPackage ./artiq/pkgs/openocd.nix {});
   };
 in
   jobs // {

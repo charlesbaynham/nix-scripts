@@ -27,12 +27,16 @@ in
   time.timeZone = "Asia/Hong_Kong";
 
   users.extraGroups.plugdev = { };
+  security.sudo.wheelNeedsPassword = false;
   users.extraUsers.sb = {
     isNormalUser = true;
     extraGroups = ["wheel" "plugdev" "dialout"];
     uid = 1000;
   };
-  security.sudo.wheelNeedsPassword = false;
+  users.extraUsers.nix = {
+    isNormalUser = true;
+    uid = 1001;
+  };
   services.udev.packages = [ m-labs.openocd ];
 
   environment.systemPackages = with pkgs; [
@@ -41,4 +45,5 @@ in
 
   nix.binaryCachePublicKeys = ["nixbld.m-labs.hk-1:5aSRVA5b320xbNvu30tqxVPXpld73bhtOeH6uAjRyHc="];
   nix.binaryCaches = ["https://cache.nixos.org" "https://nixbld.m-labs.hk"];
+  nix.trustedUsers = ["root" "nix"];
 }

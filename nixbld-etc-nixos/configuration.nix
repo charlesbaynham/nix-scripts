@@ -68,6 +68,10 @@
     extraGroups = ["networkmanager" "wheel" "plugdev" "dialout" "lp" "scanner"];
     uid = 1000;
   };
+  users.extraUsers.nix = {
+    isNormalUser = true;
+    uid = 1001;
+  };
   security.sudo.wheelNeedsPassword = false;
   services.udev.packages = [ pkgs.openocd ];
   services.udev.extraRules = ''
@@ -89,12 +93,20 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
   nixpkgs.config.allowUnfree = true;
 
+  nix.distributedBuilds = true;
   nix.buildMachines = [
     {
        hostName = "localhost";
        maxJobs = 4;
        system = "x86_64-linux";
        supportedFeatures = ["big-parallel"];
+    }
+    {
+       hostName = "rpi-1";
+       sshUser = "nix";
+       sshKey = "/home/nix/.ssh/id_rsa";
+       maxJobs = 1;
+       system = "aarch64-linux";
     }
   ];
   services.hydra = {
