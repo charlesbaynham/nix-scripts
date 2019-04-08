@@ -51,10 +51,13 @@ stdenv.mkDerivation {
   src = ./.;
   buildInputs = [ qemu sshpass openssh ];
   buildPhase = ''
+    # +1 day from last modification of the disk image
+    CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
     ${runQemu [
       "-boot" "order=c"
       "-snapshot"
       "-drive" "file=${diskImage},index=0,media=disk,cache=unsafe"
+      "-rtc" "base=$CLOCK"
     ]} &
     echo "Wait for Windows to boot"
     sleep 10
