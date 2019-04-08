@@ -33,7 +33,7 @@ let
   jobs = (builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs) // {
     # This is in the example in the ARTIQ manual - precompile it to speed up
     # installation for users.
-    matplotlib-qt = (pkgs.python3Packages.matplotlib.override { enableQt = true; });
+    matplotlib-qt = pkgs.lib.hydraJob (pkgs.python3Packages.matplotlib.override { enableQt = true; });
   };
 in
   jobs // {
