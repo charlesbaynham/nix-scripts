@@ -30,7 +30,7 @@ let
 
   sshUser = "user";
   sshPassword = "user";
-  sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$TMPDIR/known_hosts";
+  sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=\\$TMPDIR/known_hosts";
   ssh = cmd: ''
     echo "ssh windows \"${cmd}\""
     sshpass -p${sshPassword} -- \
@@ -61,7 +61,7 @@ stdenv.mkDerivation {
     #!/usr/bin/env bash
     set -e -m
 
-    TMPDIR=$(mktemp)
+    TMPDIR=\$(mktemp -d)
 
     if [ ! -f c.img ] ; then 
       ${qemu}/bin/qemu-img create -f qcow2 c.img ${diskImageSize}
@@ -106,7 +106,7 @@ stdenv.mkDerivation {
     echo "Waiting for qemu exit"
     wait
 
-    rm -rf $TMPDIR
+    rm -rf \$TMPDIR
     EOF
     chmod a+x $out/bin/networked-installer.sh
   '';
