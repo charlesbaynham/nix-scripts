@@ -46,8 +46,13 @@ let
     stdenv.mkDerivation {
       name = "windows-test-${name}";
       src = ./.;
-      buildInputs = [ qemu sshpass openssh ];
-      buildPhase = ''
+      dontBuild = true;
+      installPhase = ''
+        mkdir $out
+      '';
+      doCheck = true;
+      checkInputs = [ qemu sshpass openssh ];
+      checkPhase = ''
         # +1 day from last modification of the disk image
         CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
         ${runQemu [
@@ -56,22 +61,23 @@ let
           "-drive" "file=${diskImage},index=0,media=disk,cache=unsafe"
           "-rtc" "base=$CLOCK"
         ]} &
+
         echo "Wait for Windows to boot"
         sleep 10
         ${ssh "ver"}
         for pkg in ${artiqPkg}/noarch/*.tar.bz2 ; do
           ${installCondaPkg "$pkg"}
         done
+
         # Allow tests to run for 2 minutes
         ${ssh "shutdown -s -t ${toString testTimeout}"}
+
         ${ssh "miniconda\\scripts\\activate && miniconda\\python -m unittest discover -v artiq.test"}
+
         # Abort timeouted shutdown
         ${ssh "shutdown -a"}
         # Power off immediately
         ${ssh "shutdown -p -f"}
-      '';
-      installPhase = ''
-        echo Done
       '';
     };
   condaPackageNames =
