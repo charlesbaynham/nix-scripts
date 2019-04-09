@@ -10,6 +10,7 @@ let
     url = "https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENT_LTSC_EVAL_x64FRE_en-us.iso";
     sha256 = "668fe1af70c2f7416328aee3a0bb066b12dc6bbd2576f40f812b95741e18bc3a";
   };
+  # Newer Miniconda contains unusable OpenSSL, preventing any package fetching
   miniconda = fetchurl {
     url = "https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Windows-x86_64.exe";
     sha256 = "1kyf03571fhxd0a9f8bcpmqfdpw7461kclfyb4yb3dsi783y4sck";

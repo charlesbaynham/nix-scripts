@@ -2,6 +2,7 @@
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",
   testTimeout ? 120,
+  # This artiqPkg should be a current build passed by the caller
   artiqPkg ? (pkgs.fetchurl {
     url = "https://nixbld.m-labs.hk/build/2316/download/1/artiq-5e.b8e2b82a-0.tar.bz2";
     sha256 = "0gisv3a17rnwavsifpz4cfnqvlssv37pysi2qx41k67rmcpqcs98";
