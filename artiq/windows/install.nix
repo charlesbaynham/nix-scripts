@@ -44,6 +44,7 @@ let
       ${openssh}/bin/scp -P 2022 ${sshOpts} \
       "${src}" "${sshUser}@localhost:${target}"
   '';
+  condaEnv = "artiq-env";
 in
 stdenv.mkDerivation {
   name = "windows-installer";
@@ -101,8 +102,8 @@ stdenv.mkDerivation {
 
     ${ssh "miniconda\\Scripts\\conda config --add channels conda-forge"}
     ${ssh "miniconda\\Scripts\\conda config --add channels m-labs"}
-    ${ssh "miniconda\\Scripts\\conda create -y -n artiq-env"}
-    ${ssh "miniconda\\Scripts\\conda install -y -n artiq-env numpy scipy python-dateutil h5py pythonparser levenshtein outputcheck llvmlite-artiq"}
+    ${ssh "miniconda\\Scripts\\conda create -y -n ${condaEnv}"}
+    ${ssh "miniconda\\Scripts\\conda install -y -n ${condaEnv} numpy scipy python-dateutil h5py pythonparser levenshtein outputcheck llvmlite-artiq asyncserial"}
     ${ssh "shutdown /p /f"}
 
     echo "Waiting for qemu exit"
