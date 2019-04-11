@@ -33,15 +33,15 @@ let
   sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=\\$TMPDIR/known_hosts";
   ssh = cmd: ''
     echo "ssh windows \"${cmd}\""
-    sshpass -p${sshPassword} -- \
-      ssh  -np 2022 ${sshOpts} \
+    ${sshpass}/bin/sshpass -p${sshPassword} -- \
+      ${openssh}/bin/ssh  -np 2022 ${sshOpts} \
       ${sshUser}@localhost \
       "${cmd}"
   '';
   scp = src: target: ''
     echo "Copy ${src} to ${target}"
-    sshpass -p${sshPassword} -- \
-      scp -P 2022 ${sshOpts} \
+    ${sshpass}/bin/sshpass -p${sshPassword} -- \
+      ${openssh}/bin/scp -P 2022 ${sshOpts} \
       "${src}" "${sshUser}@localhost:${target}"
   '';
 in
