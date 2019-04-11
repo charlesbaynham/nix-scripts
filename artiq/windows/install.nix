@@ -102,7 +102,7 @@ stdenv.mkDerivation {
     ${ssh "miniconda\\Scripts\\conda config --add channels conda-forge"}
     ${ssh "miniconda\\Scripts\\conda config --add channels m-labs"}
     ${ssh "miniconda\\Scripts\\conda create -y -n artiq-env"}
-    ${ssh "miniconda\\Scripts\\conda install -y -n artiq-env numpy scipy python-dateutil h5py pythonparser levenshtein outputcheck"}
+    ${ssh "miniconda\\Scripts\\conda install -y -n artiq-env numpy scipy python-dateutil h5py pythonparser levenshtein outputcheck llvmlite-artiq"}
     ${ssh "shutdown /p /f"}
 
     echo "Waiting for qemu exit"
