@@ -98,9 +98,11 @@ stdenv.mkDerivation {
     ${scp miniconda "Miniconda.exe"}
     ${ssh "start /wait \"\" Miniconda.exe /S /D=%cd%\\miniconda"}
     ${ssh "del Miniconda.exe"}
-    ${ssh "miniconda\\Scripts\\conda update -y python"}
-    ${ssh "miniconda\\Scripts\\conda install -y numpy h5py"}
-    ${ssh "miniconda\\Scripts\\conda install -y -c m-labs pythonparser"}
+
+    ${ssh "miniconda\\Scripts\\conda config --add channels conda-forge"}
+    ${ssh "miniconda\\Scripts\\conda config --add channels m-labs"}
+    ${ssh "miniconda\\Scripts\\conda create -y -n artiq-env"}
+    ${ssh "miniconda\\Scripts\\conda install -y -n artiq-env numpy scipy python-dateutil h5py pythonparser levenshtein outputcheck"}
     ${ssh "shutdown /p /f"}
 
     echo "Waiting for qemu exit"

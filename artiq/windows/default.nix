@@ -36,10 +36,11 @@ let
       ${openssh}/bin/scp -P 2022 ${sshOpts} \
       "${src}" "${sshUser}@localhost:${target}"
   '';
+  condaEnv = "artiq-env";
   installCondaPkg = pkg: ''
     F="$(basename ${pkg})"
     ${scp pkg "$F"}
-    ${ssh "miniconda\\Scripts\\conda install $F"}
+    ${ssh "miniconda\\Scripts\\conda install -y -n ${condaEnv} $F"}
     ${ssh "del $F"}
   '';
   makeTest = name: artiqPkg:
@@ -72,7 +73,7 @@ let
         # Allow tests to run for 2 minutes
         ${ssh "shutdown -s -t ${toString testTimeout}"}
 
-        ${ssh "miniconda\\scripts\\activate && miniconda\\python -m unittest discover -v artiq.test"}
+        ${ssh "miniconda\\scripts\\activate ${condaEnv} && miniconda\\envs\\${condaEnv}\\python -m unittest discover -v artiq.test"}
 
         # Abort timeouted shutdown
         ${ssh "shutdown -a"}
