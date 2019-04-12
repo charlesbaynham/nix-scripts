@@ -9,7 +9,7 @@ let
     inherit (texlive)
       scheme-basic latexmk cmap collection-fontsrecommended fncychap
       titlesec tabulary varwidth framed fancyvrb float wrapfig parskip
-      upquote capt-of needspace;
+      upquote capt-of needspace etoolbox;
   };
 
   artiq-manual = target: stdenv.mkDerivation rec {
