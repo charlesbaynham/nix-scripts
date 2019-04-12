@@ -15,7 +15,7 @@ python3Packages.buildPythonPackage rec {
   meta = with stdenv.lib; {
       description = "A lightweight LLVM python binding for writing JIT compilers";
       homepage    = "http://llvmlite.pydata.org/";
-      #maintainers = with maintainers; [ sb0 ];
+      maintainers = with maintainers; [ sb0 ];
       license     = licenses.bsd2;
       platforms   = platforms.unix;
   };

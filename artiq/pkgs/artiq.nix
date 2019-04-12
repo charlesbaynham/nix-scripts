@@ -24,6 +24,6 @@ in
       description = "A leading-edge control system for quantum information experiments";
       homepage = https://m-labs/artiq;
       license = licenses.lgpl3;
-      #maintainers = [ maintainers.sb0 ];
+      maintainers = [ maintainers.sb0 ];
     };
   }
