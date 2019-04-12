@@ -10,7 +10,7 @@ python3Packages.buildPythonPackage rec {
 
   buildInputs = [ makeWrapper python3 ncurses zlib llvm-or1k python3Packages.setuptools ];
 
-  buildPhase = "LLVM_CONFIG=${llvm-or1k}/bin/llvm-config python3 setup.py install --prefix=$out";
+  preBuild = "export LLVM_CONFIG=${llvm-or1k}/bin/llvm-config";
 
   meta = with stdenv.lib; {
       description = "A lightweight LLVM python binding for writing JIT compilers";
