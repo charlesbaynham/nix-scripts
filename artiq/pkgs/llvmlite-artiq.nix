@@ -2,10 +2,10 @@
 python3Packages.buildPythonPackage rec {
   name = "llvmlite-artiq";
   src = fetchFromGitHub {
-    rev = "1d167be4eec5d6c32498952be8b3ac17dd30df8d";
+    rev = "158f9d3a898dbf055ca513d69505df288c681fea";
     owner = "m-labs";
     repo = "llvmlite";
-    sha256 = "0ranbjhcz2v3crmdbw1sxdwqwqbbm7dd53d8qaqb69ma9fkxy8x7";
+    sha256 = "1anniwya5jhhr2sxfdnwrsjy17yrk3x61i9hsm1rljsb8zvh68d5";
   };
 
   buildInputs = [ makeWrapper python3 ncurses zlib llvm-or1k python3Packages.setuptools ];
