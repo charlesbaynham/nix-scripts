@@ -49,6 +49,10 @@ let
     builtins.concatStringsSep " "
     (map (s: "\"${s}\"")
      (import ../conda-artiq-deps.nix));
+
+  instructions =
+    builtins.toFile "install.txt"
+    (builtins.readFile ./install.txt);
 in
 stdenv.mkDerivation {
   name = "windows-installer";
@@ -83,19 +87,7 @@ stdenv.mkDerivation {
         "-drive" "file=c.img,index=0,media=disk"
       ]} &
     fi
-    echo "Add user account with expected password [user/user]."
-    echo "Enable the OpenSSH server:"
-    echo "- \"Add or remove programs\""
-    echo "- \"Manage optional features\""
-    echo "- \"Add a feature\""
-    echo "- \"OpenSSH Server\""
-    echo "- \"Install\""
-    echo "- Open \"Services\""
-    echo "- Double-click the \"OpenSSH SSH Server\" service"
-    echo "- Set \"Startup type\" to \"Automatic\""
-    echo "- \"Start\""
-    echo "- \"Ok\""
-    echo "Then press ENTER here to proceed with automatic installation"
+    cat ${instructions}
 
     read
     ${ssh "ver"}
