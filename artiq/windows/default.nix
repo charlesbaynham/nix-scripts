@@ -8,6 +8,25 @@
 with pkgs;
 
 let
+  artiqSrc = <artiqSrc>;
+  artiqVersion =
+    pkgs.runCommand "artiq-version" {
+      buildInputs = [ pkgs.nix pkgs.git ];
+    } ''
+      REV=`git --git-dir ${artiqSrc}/.git rev-parse HEAD`
+      echo \"5e.`cut -c1-8 <<< $REV`\" > $out
+    '';
+
+  generateTestOkHash =
+    pkgs.runCommand "generate-test-ok-hash" {
+      buildInputs = [ pkgs.nix ];
+    } ''
+      TMPDIR=`mktemp -d`
+      cp ${artiqVersion} $TMPDIR/passed
+      HASH=`nix-hash --type sha256 --base32 $TMPDIR`
+      echo \"$HASH\" > $out
+    '';
+
   qemu = import ./qemu.nix {
     inherit pkgs qemuMem;
     diskImage = "c.img";
@@ -18,14 +37,15 @@ let
 in
   stdenv.mkDerivation {
     name = "windows-test-conda-artiq";
-    src = ./.;
-    dontBuild = true;
-    installPhase = ''
-      mkdir $out
-    '';
-    doCheck = true;
-    checkInputs = qemu.inputs;
-    checkPhase = ''
+
+    outputHashAlgo = "sha256";
+    outputHashMode = "recursive";
+    outputHash = import generateTestOkHash;
+    __hydraRetry = false;
+
+    phases = [ "buildPhase" ];
+    buildInputs = qemu.inputs;
+    buildPhase = ''
       # +1 day from last modification of the disk image
       CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
       ${qemu.runQemu [
@@ -52,5 +72,8 @@ in
       ${ssh "shutdown -a"}
       # Power off immediately
       ${ssh "shutdown -p -f"}
+
+      mkdir $out
+      cp ${artiqVersion} $out/passed
     '';
   }
