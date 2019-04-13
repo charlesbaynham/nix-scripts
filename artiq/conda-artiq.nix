@@ -39,23 +39,7 @@ let
 
     requirements:
       run:
-        - python >=3.5.3,<3.6
-        - llvmlite-artiq 0.23.0.dev py35_5
-        - binutils-or1k-linux >=2.27
-        - pythonparser >=1.1
-        - openocd 0.10.0 6
-        - scipy
-        - numpy
-        - prettytable
-        - asyncserial
-        - h5py 2.8
-        - python-dateutil
-        - pyqt >=5.5
-        - quamash
-        - pyqtgraph 0.10.0
-        - pygit2
-        - aiohttp >=3
-        - levenshtein
+    ${lib.concatStringsSep "\n" (map (s: "    - ${s}") (import ./conda-artiq-deps.nix))}
 
     about:
       home: https://m-labs.hk/artiq

@@ -45,28 +45,10 @@ let
       "${src}" "${sshUser}@localhost:${target}"
   '';
   condaEnv = "artiq-env";
-  condaDependencies = [
-    "python >=3.5.3,<3.6"
-    "llvmlite-artiq 0.23.0.dev py35_5"
-    "binutils-or1k-linux >=2.27"
-    "pythonparser >=1.1"
-    "openocd 0.10.0 6"
-    "scipy"
-    "numpy"
-    "prettytable"
-    "asyncserial"
-    "h5py 2.8"
-    "python-dateutil"
-    "pyqt >=5.5"
-    "quamash"
-    "pyqtgraph 0.10.0"
-    "pygit2"
-    "aiohttp >=3"
-    "levenshtein"
-  ];
-  condaPkgSpecs =
+  condaDepSpecs =
     builtins.concatStringsSep " "
-    (map (s: "\"${s}\"") condaDependencies);
+    (map (s: "\"${s}\"")
+     (import ../conda-artiq-deps.nix));
 in
 stdenv.mkDerivation {
   name = "windows-installer";
@@ -127,7 +109,7 @@ stdenv.mkDerivation {
     ${ssh "miniconda\\Scripts\\conda update -y conda"}
     ${ssh "miniconda\\Scripts\\conda update -y --all"}
     ${ssh "miniconda\\Scripts\\conda create -y -n ${condaEnv}"}
-    ${ssh "miniconda\\Scripts\\conda install -y -n ${condaEnv} ${condaPkgSpecs}"}
+    ${ssh "miniconda\\Scripts\\conda install -y -n ${condaEnv} ${condaDepSpecs}"}
     ${ssh "shutdown /p /f"}
 
     echo "Waiting for qemu exit"
