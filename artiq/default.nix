@@ -3,11 +3,6 @@ with pkgs;
 let
   pythonDeps = callPackage ./pkgs/python-deps.nix {};
 
-  # this code was copied from nipxkgs rev. ffafe9 (nixcloud team) and slightly modified
-  rust = callPackage ./pkgs/rust
-    (stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
-      stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
-    });
   llvm-src = callPackage ./fetch-llvm-clang.nix {};
 
   boards = [
@@ -36,10 +31,14 @@ let
   };
 in
   rec {
-    inherit (rust) rustc;
     inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck sphinx-argparse wavedrom sphinxcontrib-wavedrom;
     binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix { inherit llvm-src; };
+    rustc = callPackage ./pkgs/rust
+      ((stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
+         stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
+       }) //
+       { inherit llvm-or1k; });
     llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
     libartiq-support = callPackage ./pkgs/libartiq-support.nix { inherit rustc; };
     artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k llvm-or1k llvmlite-artiq libartiq-support lit outputcheck; };

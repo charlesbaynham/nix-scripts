@@ -1,4 +1,4 @@
-{ stdenv, callPackage, recurseIntoAttrs, makeRustPlatform, llvm, fetchurl
+{ stdenv, callPackage, recurseIntoAttrs, makeRustPlatform, llvm-or1k, fetchurl
 , targets ? []
 , targetToolchains ? []
 , targetPatches ? []
@@ -15,8 +15,32 @@ let
     rev = "f305fb024318e96997fbe6e4a105b0cc1052aad4"; #  artiq-1.28.0 branch
     fetchSubmodules = true;
   };
-in rec {
-  # nixcloud team code
+  rustc_internal = callPackage ./rustc.nix {
+    inherit stdenv llvm-or1k targets targetPatches targetToolchains rustPlatform version src;
+
+    patches = [
+      ./patches/net-tcp-disable-tests.patch
+
+      # Re-evaluate if this we need to disable this one
+      #./patches/stdsimd-disable-doctest.patch
+
+      # Fails on hydra - not locally; the exact reason is unknown.
+      # Comments in the test suggest that some non-reproducible environment
+      # variables such $RANDOM can make it fail.
+      ./patches/disable-test-inherit-env.patch
+    ];
+
+    #configureFlags = [ "--release-channel=stable" ];
+
+    # 1. Upstream is not running tests on aarch64:
+    # see https://github.com/rust-lang/rust/issues/49807#issuecomment-380860567
+    # So we do the same.
+    # 2. Tests run out of memory for i686
+    #doCheck = !stdenv.isAarch64 && !stdenv.isi686;
+
+    # Disabled for now; see https://github.com/NixOS/nixpkgs/pull/42348#issuecomment-402115598.
+    doCheck = false;
+  };
   or1k-crates = stdenv.mkDerivation {
     name = "or1k-crates";
     inherit src;
@@ -36,9 +60,8 @@ in rec {
       ''${rustc} -Cpanic=unwind --crate-name panic_unwind src/libpanic_unwind/lib.rs --cfg llvm_libunwind
     '';
   };
-  # nixcloud team code
-  # this is basically a wrapper, which uses rustc_internal and inserts or1k-crates into it
-  rustc = stdenv.mkDerivation {
+in
+ stdenv.mkDerivation {
     name = "rustc";
     src = ./.;
     installPhase = ''
@@ -54,35 +77,4 @@ in rec {
       license = [ licenses.mit licenses.asl20 ];
       platforms = platforms.linux ++ platforms.darwin;
     };
-  };
-  # nixcloud team code
-  # originally rustc but now renamed to rustc_internal
-  rustc_internal = callPackage ./rustc.nix {
-    inherit stdenv llvm targets targetPatches targetToolchains rustPlatform version src;
-
-    patches = [
-      ./patches/net-tcp-disable-tests.patch
-
-      # Re-evaluate if this we need to disable this one
-      #./patches/stdsimd-disable-doctest.patch
-
-      # Fails on hydra - not locally; the exact reason is unknown.
-      # Comments in the test suggest that some non-reproducible environment
-      # variables such $RANDOM can make it fail.
-      ./patches/disable-test-inherit-env.patch
-    ];
-
-    forceBundledLLVM = true;
-
-    #configureFlags = [ "--release-channel=stable" ];
-
-    # 1. Upstream is not running tests on aarch64:
-    # see https://github.com/rust-lang/rust/issues/49807#issuecomment-380860567
-    # So we do the same.
-    # 2. Tests run out of memory for i686
-    #doCheck = !stdenv.isAarch64 && !stdenv.isi686;
-
-    # Disabled for now; see https://github.com/NixOS/nixpkgs/pull/42348#issuecomment-402115598.
-    doCheck = false;
-  };
-}
+  }

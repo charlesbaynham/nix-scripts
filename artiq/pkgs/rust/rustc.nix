@@ -1,9 +1,8 @@
 { stdenv, targetPackages
 , fetchurl, fetchgit, fetchzip, file, python2, tzdata, ps
-, llvm, jemalloc, ncurses, darwin, rustPlatform, git, cmake, curl
+, llvm-or1k, ncurses, zlib, darwin, rustPlatform, git, cmake, curl
 , which, libffi, gdb
 , version
-, forceBundledLLVM ? false
 , src
 , configureFlags ? []
 , patches
@@ -12,15 +11,11 @@
 , targetToolchains
 , doCheck ? true
 , broken ? false
-, pkgs
 }:
 
 let
   inherit (stdenv.lib) optional optionalString;
   inherit (darwin.apple_sdk.frameworks) Security;
-
-  llvmShared = llvm.override { enableSharedLibraries = true; };
-  llvmOR1k = (import ../../default.nix {}).llvm-or1k;
 
   target = builtins.replaceStrings [" "] [","] (builtins.toString targets);
   src_rustc = fetchurl {
@@ -47,7 +42,7 @@ stdenv.mkDerivation {
   # See https://github.com/NixOS/nixpkgs/pull/34227
   stripDebugList = if stdenv.isDarwin then [ "bin" ] else null;
 
-  NIX_LDFLAGS = optionalString stdenv.isDarwin "-rpath ${llvmShared}/lib";
+  NIX_LDFLAGS = optionalString stdenv.isDarwin "-rpath ${llvm-or1k}/lib";
 
   # Enable nightly features in stable compiles (used for
   # bootstrapping, see https://github.com/rust-lang/rust/pull/37265).
@@ -63,12 +58,10 @@ stdenv.mkDerivation {
   configureFlags = configureFlags
                 ++ [ "--enable-local-rust" "--local-rust-root=${rustPlatform.rust.rustc}" "--enable-rpath" ]
                 ++ [ "--enable-vendor" ]
-                # ++ [ "--jemalloc-root=${jemalloc}/lib"
                 ++ [ "--default-linker=${targetPackages.stdenv.cc}/bin/cc" ]
-                ++ optional (!forceBundledLLVM) [ "--enable-llvm-link-shared" ]
+                ++ [ "--enable-llvm-link-shared" ]
                 ++ optional (targets != []) "--target=${target}"
-                #++ optional (!forceBundledLLVM) "--llvm-root=${llvmShared}"
-                ++ [ "--llvm-root=${llvmOR1k}" ] ;
+                ++ [ "--llvm-root=${llvm-or1k}" ] ;
 
   # The bootstrap.py will generated a Makefile that then executes the build.
   # The BOOTSTRAP_ARGS used by this Makefile must include all flags to pass
@@ -83,7 +76,6 @@ stdenv.mkDerivation {
     # HACK: we add the vendor folder from rustc 1.28 to make the compiling work
     tar xf ${src_rustc}
     mv rustc-1.28.0-src/src/vendor/ src/vendor
-    cp -R ${llvmOR1k} src/llvm
   '';
 
   patches = patches ++ targetPatches;
@@ -96,17 +88,9 @@ stdenv.mkDerivation {
   postPatch = ''
     patchShebangs src/etc
 
-    # Fix dynamic linking against llvm
-    #${optionalString (!forceBundledLLVM) ''sed -i 's/, kind = \\"static\\"//g' src/etc/mklldeps.py''}
-
     # Fix the configure script to not require curl as we won't use it
     sed -i configure \
       -e '/probe_need CFG_CURL curl/d'
-
-    # Fix the use of jemalloc prefixes which our jemalloc doesn't have
-    # TODO: reenable if we can figure out how to get our jemalloc to work
-    #[ -f src/liballoc_jemalloc/lib.rs ] && sed -i 's,je_,,g' src/liballoc_jemalloc/lib.rs
-    #[ -f src/liballoc/heap.rs ] && sed -i 's,je_,,g' src/liballoc/heap.rs # Remove for 1.4.0+
 
     # Disable fragile tests.
     rm -vr src/test/run-make/linker-output-non-utf8 || true
@@ -159,9 +143,8 @@ stdenv.mkDerivation {
     # Only needed for the debuginfo tests
     ++ optional (!stdenv.isDarwin) gdb;
 
-  buildInputs = [ ncurses pkgs.zlib ] ++ targetToolchains
-    ++ optional stdenv.isDarwin Security
-    ++ optional (!forceBundledLLVM) llvmShared;
+  buildInputs = [ ncurses zlib llvm-or1k ] ++ targetToolchains
+    ++ optional stdenv.isDarwin Security;
 
   outputs = [ "out" "man" "doc" ];
   setOutputFlags = false;
