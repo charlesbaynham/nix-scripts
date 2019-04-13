@@ -40,13 +40,13 @@ in
       ${ssh "ver"}
       for pkg in ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
         ${scp "\$pkg" "artiq.tar.bz2"}
-        ${ssh "miniconda\\scripts\\activate ${condaEnv} && conda install artiq.tar.bz2"}
+        ${ssh "anaconda\\scripts\\activate ${condaEnv} && conda install artiq.tar.bz2"}
       done
 
       # Allow tests to run for 2 minutes
       ${ssh "shutdown -s -t ${toString testTimeout}"}
 
-      ${ssh "miniconda\\scripts\\activate ${condaEnv} && python -m unittest discover -v artiq.test"}
+      ${ssh "anaconda\\scripts\\activate ${condaEnv} && python -m unittest discover -v artiq.test"}
 
       # Abort timeouted shutdown
       ${ssh "shutdown -a"}

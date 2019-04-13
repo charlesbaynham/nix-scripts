@@ -10,10 +10,9 @@ let
     url = "https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENT_LTSC_EVAL_x64FRE_en-us.iso";
     sha256 = "668fe1af70c2f7416328aee3a0bb066b12dc6bbd2576f40f812b95741e18bc3a";
   };
-  # Newer Miniconda contains unusable OpenSSL, preventing any package fetching
-  miniconda = fetchurl {
-    url = "https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Windows-x86_64.exe";
-    sha256 = "1kyf03571fhxd0a9f8bcpmqfdpw7461kclfyb4yb3dsi783y4sck";
+  anaconda = fetchurl {
+    url = "https://repo.anaconda.com/archive/Anaconda3-2019.03-Windows-x86_64.exe";
+    sha256 = "1f9icm5rwab6l1f23a70dw0qixzrl62wbglimip82h4zhxlh3jfj";
   };
 
   qemu = import ./qemu.nix {
@@ -24,6 +23,7 @@ let
   ssh = cmd: qemu.ssh (qemu.escape cmd);
   scp = qemu.scp;
 
+  sshCondaEnv = cmd: ssh "anaconda\\scripts\\activate && ${cmd}";
   condaEnv = "artiq-env";
   condaDepSpecs =
     builtins.concatStringsSep " "
@@ -68,18 +68,18 @@ stdenv.mkDerivation {
     cat ${instructions}
 
     read
+
     ${ssh "ver"}
 
-    ${scp miniconda "Miniconda.exe"}
-    ${ssh "start /wait \"\" Miniconda.exe /S /D=%cd%\\miniconda"}
-    ${ssh "del Miniconda.exe"}
+    ${scp anaconda "Anaconda.exe"}
+    ${ssh "start /wait \"\" Anaconda.exe /S /D=%cd%\\anaconda"}
 
-    ${ssh "miniconda\\Scripts\\conda config --add channels conda-forge"}
-    ${ssh "miniconda\\Scripts\\conda config --add channels m-labs"}
-    ${ssh "miniconda\\Scripts\\conda update -y conda"}
-    ${ssh "miniconda\\Scripts\\conda update -y --all"}
-    ${ssh "miniconda\\Scripts\\conda create -y -n ${condaEnv}"}
-    ${ssh "miniconda\\Scripts\\conda install -y -n ${condaEnv} ${condaDepSpecs}"}
+    ${sshCondaEnv "conda config --add channels conda-forge"}
+    ${sshCondaEnv "conda config --add channels m-labs"}
+    ( ${sshCondaEnv "conda update -y conda"} ) || true
+    ${sshCondaEnv "conda update -y --all"}
+    ${sshCondaEnv "conda create -y -n ${condaEnv}"}
+    ${sshCondaEnv "conda install -y -n ${condaEnv} ${condaDepSpecs}"}
     ${ssh "shutdown /p /f"}
 
     echo "Waiting for qemu exit"
