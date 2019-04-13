@@ -3,8 +3,6 @@ with pkgs;
 let
   pythonDeps = callPackage ./pkgs/python-deps.nix {};
 
-  llvm-src = callPackage ./fetch-llvm-clang.nix {};
-
   boards = [
     { target = "kasli"; variant = "tester"; }
     { target = "kc705"; variant = "nist_clock"; }
@@ -33,7 +31,7 @@ in
   rec {
     inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck sphinx-argparse wavedrom sphinxcontrib-wavedrom;
     binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
-    llvm-or1k = callPackage ./pkgs/llvm-or1k.nix { inherit llvm-src; };
+    llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};
     rustc = callPackage ./pkgs/rust
       ((stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
          stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
