@@ -16,34 +16,14 @@ let
     sha256 = "1kyf03571fhxd0a9f8bcpmqfdpw7461kclfyb4yb3dsi783y4sck";
   };
 
-  qemu = qemu_kvm;
-  runQemu = extraArgs:
-    let
-      args = [
-        "-enable-kvm"
-        "-m" qemuMem
-        "-bios" "${OVMF.fd}/FV/OVMF.fd"
-        "-netdev" "user,id=n1,hostfwd=tcp::2022-:22" "-device" "e1000,netdev=n1"
-      ];
-      argStr = lib.escapeShellArgs (args ++ extraArgs);
-    in "${qemu}/bin/qemu-system-x86_64 ${argStr}";
+  qemu = import ./qemu.nix {
+    inherit pkgs qemuMem;
+    diskImage = "c.img";
+  };
+  # Double-escape because we produce a script from a shell heredoc
+  ssh = cmd: qemu.ssh (qemu.escape cmd);
+  scp = qemu.scp;
 
-  sshUser = "user";
-  sshPassword = "user";
-  sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=\\$TMPDIR/known_hosts";
-  ssh = cmd: ''
-    echo "ssh windows \"${cmd}\""
-    ${sshpass}/bin/sshpass -p${sshPassword} -- \
-      ${openssh}/bin/ssh  -np 2022 ${sshOpts} \
-      ${sshUser}@localhost \
-      "${cmd}"
-  '';
-  scp = src: target: ''
-    echo "Copy ${src} to ${target}"
-    ${sshpass}/bin/sshpass -p${sshPassword} -- \
-      ${openssh}/bin/scp -P 2022 ${sshOpts} \
-      "${src}" "${sshUser}@localhost:${target}"
-  '';
   condaEnv = "artiq-env";
   condaDepSpecs =
     builtins.concatStringsSep " "
@@ -61,7 +41,7 @@ stdenv.mkDerivation {
   unpackCmd = ''
     ln -s $curSrc windows.iso
   '';
-  buildInputs = [ qemu openssh sshpass ];
+  buildInputs = qemu.inputs;
   dontBuild = true;
   installPhase = ''
     mkdir -p $out/bin $out/data
@@ -70,11 +50,9 @@ stdenv.mkDerivation {
     #!/usr/bin/env bash
     set -e -m
 
-    TMPDIR=\$(mktemp -d)
-
     if [ ! -f c.img ] ; then 
-      ${qemu}/bin/qemu-img create -f qcow2 c.img ${diskImageSize}
-      ${runQemu [
+      ${qemu.qemu-img} create -f qcow2 c.img ${diskImageSize}
+      ${qemu.runQemu [
         "-boot" "order=d"
         "-drive" "file=c.img,index=0,media=disk,cache=unsafe"
         "-drive" "file=$out/data/windows.iso,index=1,media=cdrom,cache=unsafe"
@@ -82,7 +60,7 @@ stdenv.mkDerivation {
       echo "Please perform a Windows installation."
     else
       echo "Please finalize your Windows installation (or delete c.img and restart)"
-      ${runQemu [
+      ${qemu.runQemu [
         "-boot" "order=c"
         "-drive" "file=c.img,index=0,media=disk"
       ]} &
@@ -106,8 +84,6 @@ stdenv.mkDerivation {
 
     echo "Waiting for qemu exit"
     wait
-
-    rm -rf \$TMPDIR
     EOF
     chmod a+x $out/bin/networked-installer.sh
   '';

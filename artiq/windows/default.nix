@@ -8,34 +8,12 @@
 with pkgs;
 
 let
-  qemu = qemu_kvm;
-  runQemu = extraArgs:
-    let
-      args = [
-        "-enable-kvm"
-        "-m" qemuMem
-        "-display" "none"
-        "-bios" "${OVMF.fd}/FV/OVMF.fd"
-        "-netdev" "user,id=n1,restrict=on,hostfwd=tcp::2022-:22" "-device" "e1000,netdev=n1"
-      ];
-      argStr = builtins.concatStringsSep " " (args ++ extraArgs);
-    in "qemu-system-x86_64 ${argStr}";
-  sshUser = "user";
-  sshPassword = "user";
-  sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$TMPDIR/known_hosts";
-  ssh = cmd: ''
-    echo "ssh windows \"${cmd}\""
-    ${sshpass}/bin/sshpass -p${sshPassword} -- \
-      ${openssh}/bin/ssh  -np 2022 ${sshOpts} \
-      ${sshUser}@localhost \
-      "${cmd}"
-  '';
-  scp = src: target: ''
-    echo "Copy ${src} to ${target}"
-    ${sshpass}/bin/sshpass -p${sshPassword} -- \
-      ${openssh}/bin/scp -P 2022 ${sshOpts} \
-      "${src}" "${sshUser}@localhost:${target}"
-  '';
+  qemu = import ./qemu.nix {
+    inherit pkgs qemuMem;
+    diskImage = "c.img";
+  };
+  ssh = qemu.ssh;
+  scp = qemu.scp;
   condaEnv = "artiq-env";
 in
   stdenv.mkDerivation {
@@ -46,11 +24,11 @@ in
       mkdir $out
     '';
     doCheck = true;
-    checkInputs = [ qemu sshpass openssh ];
+    checkInputs = qemu.inputs;
     checkPhase = ''
       # +1 day from last modification of the disk image
       CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
-      ${runQemu [
+      ${qemu.runQemu [
         "-boot" "order=c"
         "-snapshot"
         "-drive" "file=${diskImage},index=0,media=disk,cache=unsafe"
