@@ -15,7 +15,6 @@ let
       args = [
         "-enable-kvm"
         "-m" qemuMem
-        "-display" "none"
         "-bios" "${OVMF.fd}/FV/OVMF.fd"
         "-netdev" "user,id=n1,restrict=on,hostfwd=tcp::2022-:22" "-device" "e1000,netdev=n1"
       ];
