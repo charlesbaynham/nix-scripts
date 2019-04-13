@@ -2,7 +2,7 @@
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",
   testTimeout ? 120,
-  artiq ? import ./.. { inherit pkgs; },
+  artiqPkg ? import ../conda-artiq.nix { inherit pkgs; },
 }:
 
 with pkgs;
@@ -43,50 +43,41 @@ let
     ${ssh "miniconda\\Scripts\\conda install -y -n ${condaEnv} $F"}
     ${ssh "del $F"}
   '';
-  makeTest = name: artiqPkg:
-    stdenv.mkDerivation {
-      name = "windows-test-${name}";
-      src = ./.;
-      dontBuild = true;
-      installPhase = ''
-        mkdir $out
-      '';
-      doCheck = true;
-      checkInputs = [ qemu sshpass openssh ];
-      checkPhase = ''
-        # +1 day from last modification of the disk image
-        CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
-        ${runQemu [
-          "-boot" "order=c"
-          "-snapshot"
-          "-drive" "file=${diskImage},index=0,media=disk,cache=unsafe"
-          "-rtc" "base=$CLOCK"
-        ]} &
-
-        echo "Wait for Windows to boot"
-        sleep 10
-        ${ssh "ver"}
-        for pkg in ${artiqPkg}/noarch/*.tar.bz2 ; do
-          ${installCondaPkg "$pkg"}
-        done
-
-        # Allow tests to run for 2 minutes
-        ${ssh "shutdown -s -t ${toString testTimeout}"}
-
-        ${ssh "miniconda\\scripts\\activate ${condaEnv} && miniconda\\envs\\${condaEnv}\\python -m unittest discover -v artiq.test"}
-
-        # Abort timeouted shutdown
-        ${ssh "shutdown -a"}
-        # Power off immediately
-        ${ssh "shutdown -p -f"}
-      '';
-    };
-  condaPackageNames =
-    builtins.filter (name: builtins.match "conda-.+" name != null)
-    (builtins.attrNames artiq);
 in
-  builtins.listToAttrs
-  (map (pkgName: {
-    name = pkgName;
-    value = makeTest pkgName artiq.${pkgName};
-  }) condaPackageNames)
+  stdenv.mkDerivation {
+    name = "windows-test-conda-artiq";
+    src = ./.;
+    dontBuild = true;
+    installPhase = ''
+      mkdir $out
+    '';
+    doCheck = true;
+    checkInputs = [ qemu sshpass openssh ];
+    checkPhase = ''
+      # +1 day from last modification of the disk image
+      CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
+      ${runQemu [
+        "-boot" "order=c"
+        "-snapshot"
+        "-drive" "file=${diskImage},index=0,media=disk,cache=unsafe"
+        "-rtc" "base=$CLOCK"
+      ]} &
+
+      echo "Wait for Windows to boot"
+      sleep 10
+      ${ssh "ver"}
+      for pkg in ${artiqPkg}/noarch/*.tar.bz2 ; do
+        ${installCondaPkg "$pkg"}
+      done
+
+      # Allow tests to run for 2 minutes
+      ${ssh "shutdown -s -t ${toString testTimeout}"}
+
+      ${ssh "miniconda\\scripts\\activate ${condaEnv} && miniconda\\envs\\${condaEnv}\\python -m unittest discover -v artiq.test"}
+
+      # Abort timeouted shutdown
+      ${ssh "shutdown -a"}
+      # Power off immediately
+      ${ssh "shutdown -p -f"}
+    '';
+  }
