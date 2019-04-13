@@ -1,5 +1,5 @@
 { stdenv, targetPackages
-, fetchurl, fetchgit, fetchzip, file, python2, tzdata, ps
+, fetchurl, file, python2, tzdata, ps
 , llvm-or1k, ncurses, zlib, darwin, rustPlatform, git, cmake, curl
 , which, libffi, gdb
 , version
