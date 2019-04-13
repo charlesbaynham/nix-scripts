@@ -37,12 +37,6 @@ let
       "${src}" "${sshUser}@localhost:${target}"
   '';
   condaEnv = "artiq-env";
-  installCondaPkg = pkg: ''
-    F="$(basename ${pkg})"
-    ${scp pkg "$F"}
-    ${ssh "miniconda\\Scripts\\conda install -y -n ${condaEnv} $F"}
-    ${ssh "del $F"}
-  '';
 in
   stdenv.mkDerivation {
     name = "windows-test-conda-artiq";
@@ -66,14 +60,15 @@ in
       echo "Wait for Windows to boot"
       sleep 10
       ${ssh "ver"}
-      for pkg in ${artiqPkg}/noarch/*.tar.bz2 ; do
-        ${installCondaPkg "$pkg"}
+      for pkg in ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
+        ${scp "\$pkg" "artiq.tar.bz2"}
+        ${ssh "miniconda\\scripts\\activate ${condaEnv} && conda install artiq.tar.bz2"}
       done
 
       # Allow tests to run for 2 minutes
       ${ssh "shutdown -s -t ${toString testTimeout}"}
 
-      ${ssh "miniconda\\scripts\\activate ${condaEnv} && miniconda\\envs\\${condaEnv}\\python -m unittest discover -v artiq.test"}
+      ${ssh "miniconda\\scripts\\activate ${condaEnv} && python -m unittest discover -v artiq.test"}
 
       # Abort timeouted shutdown
       ${ssh "shutdown -a"}
