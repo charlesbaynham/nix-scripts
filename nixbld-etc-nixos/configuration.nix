@@ -105,7 +105,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
     {
        hostName = "rpi-1";
        sshUser = "nix";
-       sshKey = "/home/nix/.ssh/id_rsa";
+       sshKey = "/etc/nixos/secret/nix_id_rsa";
        maxJobs = 1;
        system = "aarch64-linux";
     }
