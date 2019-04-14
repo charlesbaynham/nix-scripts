@@ -39,6 +39,7 @@ in
   };
   services.udev.packages = [ m-labs.openocd ];
 
+  documentation.enable = false;
   environment.systemPackages = with pkgs; [
     wget vim git usbutils mosh tmux xc3sprog m-labs.openocd
   ];
