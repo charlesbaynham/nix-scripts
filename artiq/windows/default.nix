@@ -33,7 +33,7 @@ let
   };
   ssh = qemu.ssh;
   scp = qemu.scp;
-  condaEnv = "artiq-env";
+  condaEnv = "artiq";
 
   makeTest = name: testCommand:
     stdenv.mkDerivation {
