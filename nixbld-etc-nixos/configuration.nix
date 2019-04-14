@@ -111,7 +111,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
   ];
   services.hydra = {
     enable = true;
-    package = pkgs.callPackage ./hydra.nix {};
+    package = pkgs.hydra.overrideAttrs(oa: { patches = oa.patches ++ [ ./hydra-conda.patch ./hydra-retry.patch ]; } );
     useSubstitutes = true;
     hydraURL = "https://nixbld.m-labs.hk";
     notificationSender = "hydra@m-labs.hk";
