@@ -1,5 +1,5 @@
 { pkgs ? import <nixpkgs> {},
-  diskImageSize ? "20G",
+  diskImageSize ? "22G",
   qemuMem ? "4G",
 }:
 

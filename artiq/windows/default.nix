@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {},
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",
-  testTimeout ? 120,
+  testTimeout ? 180,
   artiqPkg ? import ../conda-artiq.nix { inherit pkgs; },
 }:
 
