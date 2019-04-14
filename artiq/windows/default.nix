@@ -49,7 +49,7 @@ let
       buildPhase = ''
         # +1 day from last modification of the disk image
         CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
-        ${qemu.runQemu [
+        ${qemu.runQemu true [
           "-boot" "order=c"
           "-snapshot"
           "-drive" "file=${diskImage},index=0,media=disk,cache=unsafe"

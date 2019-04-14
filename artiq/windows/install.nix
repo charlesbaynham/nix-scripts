@@ -52,7 +52,7 @@ stdenv.mkDerivation {
 
     if [ ! -f c.img ] ; then 
       ${qemu.qemu-img} create -f qcow2 c.img ${diskImageSize}
-      ${qemu.runQemu [
+      ${qemu.runQemu false [
         "-boot" "order=d"
         "-drive" "file=c.img,index=0,media=disk,cache=unsafe"
         "-drive" "file=$out/data/windows.iso,index=1,media=cdrom,cache=unsafe"
@@ -60,7 +60,7 @@ stdenv.mkDerivation {
       echo "Please perform a Windows installation."
     else
       echo "Please finalize your Windows installation (or delete c.img and restart)"
-      ${qemu.runQemu [
+      ${qemu.runQemu false [
         "-boot" "order=c"
         "-drive" "file=c.img,index=0,media=disk"
       ]} &

@@ -10,13 +10,18 @@ with pkgs;
 let
   qemu = qemu_kvm;
   qemu-img = "${qemu}/bin/qemu-img";
-  runQemu = extraArgs:
+  runQemu = isolateNetwork: extraArgs:
     let
+      restrict =
+        if isolateNetwork
+        then "on"
+        else "off";
       args = [
         "-enable-kvm"
         "-m" qemuMem
         "-bios" "${OVMF.fd}/FV/OVMF.fd"
-        "-netdev" "user,id=n1,restrict=on,hostfwd=tcp::2022-:22" "-device" "e1000,netdev=n1"
+        "-netdev" "user,id=n1,restrict=${restrict},hostfwd=tcp::2022-:22"
+        "-device" "e1000,netdev=n1"
       ];
       argStr = builtins.concatStringsSep " " (args ++ extraArgs);
     in "qemu-system-x86_64 ${argStr}";
