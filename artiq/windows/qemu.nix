@@ -26,14 +26,13 @@ let
       argStr = builtins.concatStringsSep " " (args ++ extraArgs);
     in "qemu-system-x86_64 ${argStr}";
 
-  escape = builtins.replaceStrings [ "\\" ] [ "\\\\" ];
   sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/known_hosts";
   ssh = cmd: ''
-    echo ssh windows '${escape cmd}'
+    echo ssh windows '${cmd}'
     ${sshpass}/bin/sshpass -p${sshPassword} -- \
       ${openssh}/bin/ssh  -np 2022 ${sshOpts} \
       ${sshUser}@localhost \
-      '${escape cmd}'
+      '${cmd}'
   '';
   scp = src: target: ''
     echo "Copy ${src} to ${target}"
@@ -44,6 +43,6 @@ let
   
 in
 {
-  inherit qemu-img runQemu escape ssh scp;
+  inherit qemu-img runQemu ssh scp;
   inputs = [ qemu openssh sshpass ];
 }

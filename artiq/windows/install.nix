@@ -15,12 +15,13 @@ let
     sha256 = "1f9icm5rwab6l1f23a70dw0qixzrl62wbglimip82h4zhxlh3jfj";
   };
 
+  escape = builtins.replaceStrings [ "\\" ] [ "\\\\" ];
   qemu = import ./qemu.nix {
     inherit pkgs qemuMem;
     diskImage = "c.img";
   };
   # Double-escape because we produce a script from a shell heredoc
-  ssh = cmd: qemu.ssh (qemu.escape cmd);
+  ssh = cmd: qemu.ssh (escape cmd);
   scp = qemu.scp;
 
   sshCondaEnv = cmd: ssh "anaconda\\scripts\\activate && ${cmd}";

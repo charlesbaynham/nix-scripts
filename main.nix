@@ -30,6 +30,11 @@ let
     '';
   artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
   artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix";
+  windowsRunner = overrides:
+    import "${generatedNix}/windows" ({
+      inherit pkgs;
+      artiqPkg = artiqpkgs.conda-artiq;
+    } // overrides);
   jobs = (builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs) // {
     # This is in the example in the ARTIQ manual - precompile it to speed up
     # installation for users.
@@ -46,13 +51,26 @@ in
       constituents = builtins.attrValues jobs;
     };
 
+    windows-no-hardware-tests = pkgs.stdenv.mkDerivation {
+      name = "windows-no-hardware-tests";
+      src = ./.;
+      buildInputs = [ artiqpkgs.conda-artiq ];
+      phases = [ "buildPhase" ];
+      buildPhase = ''
+        ${windowsRunner {}}/bin/run.sh
+
+        mkdir $out
+        touch $out/passed
+      '';
+    };
+
     # HACK: Abuse fixed-output derivations to escape the sandbox and run the hardware
     # unit tests, all integrated in the Hydra interface.
     # One major downside of this hack is the tests are only run when generateTestOkHash
     # changes, i.e. when the ARTIQ version changes (and not the dependencies).
     # Impure derivations, when they land in Nix/Hydra, should improve the situation.
-    kc705-tests = pkgs.stdenv.mkDerivation {
-      name = "kc705-tests";
+    extended-tests = pkgs.stdenv.mkDerivation {
+      name = "extended-tests";
 
       outputHashAlgo = "sha256";
       outputHashMode = "recursive";
@@ -79,9 +97,13 @@ in
       sleep 15
       # ping: socket: Operation not permitted
       #ping kc705-1 -c10 -w30
+
       export ARTIQ_ROOT=`python -c "import artiq; print(artiq.__path__[0])"`/examples/kc705_nist_clock
       export ARTIQ_LOW_LATENCY=1
       python -m unittest discover -v artiq.test.coredevice
+
+      ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&set ARTIQ_LOW_LATENCY=1&&python -m unittest discover -v artiq.test.coredevice"; }}/bin/run.sh
+
       mkdir $out
       cp ${generatedNix}/pkgs/artiq-version.nix $out/passed
       '';
