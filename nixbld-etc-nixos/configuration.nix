@@ -67,8 +67,13 @@
   users.extraGroups.plugdev = { };
   users.extraUsers.sb = {
     isNormalUser = true;
-    extraGroups = ["networkmanager" "wheel" "plugdev" "dialout" "lp" "scanner"];
+    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner"];
     uid = 1000;
+  };
+  users.extraUsers.rj = {
+    isNormalUser = true;
+    extraGroups = ["wheel" "plugdev" "dialout"];
+    uid = 1002;
   };
   users.extraUsers.nix = {
     isNormalUser = true;
