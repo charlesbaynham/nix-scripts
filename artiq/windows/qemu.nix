@@ -8,8 +8,7 @@
 with pkgs;
 
 let
-  qemu = qemu_kvm;
-  qemu-img = "${qemu}/bin/qemu-img";
+  qemu-img = "${qemu_kvm}/bin/qemu-img";
   runQemu = isolateNetwork: extraArgs:
     let
       restrict =
@@ -44,5 +43,5 @@ let
 in
 {
   inherit qemu-img runQemu ssh scp;
-  inputs = [ qemu openssh sshpass ];
+  inputs = [ qemu_kvm openssh sshpass ];
 }
