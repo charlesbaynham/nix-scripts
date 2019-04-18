@@ -23,9 +23,6 @@ let
         noarch: python
         files:
           - site-packages
-        requirements:
-          run:
-            - artiq
         ignore_prefix_files: True
 
     about:
