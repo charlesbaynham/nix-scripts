@@ -31,7 +31,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim git file lm_sensors acpi pciutils psmisc xc3sprog telnet whois zip unzip yosys symbiyosys yices z3 boolector cvc4
-    irssi tmux adoptopenjdk-openj9-bin-11 tightvnc icewm xterm xorg.xsetroot usbutils virtmanager imagemagick jq
+    irssi tmux adoptopenjdk-openj9-bin-11 tigervnc xorg.xauth icewm xterm xorg.xsetroot usbutils virtmanager imagemagick jq
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
