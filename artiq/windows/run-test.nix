@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {},
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",
-  testTimeout ? 180,
+  testTimeout ? 600,
   artiqPkg ? import ../conda-artiq.nix { inherit pkgs; },
   testCommand ? "python -m unittest discover -v artiq.test",
 }:
