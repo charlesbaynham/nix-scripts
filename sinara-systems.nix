@@ -7,7 +7,12 @@ let
     ''
     mkdir $out
     REV=`git --git-dir ${sinaraSystemsSrc}/.git rev-parse HEAD`
-    HASH=`nix-hash --type sha256 --base32 ${sinaraSystemsSrc}`
+    SINARA_SRC_CLEAN=`mktemp -d`
+    cp -a ${sinaraSystemsSrc}/. $SINARA_SRC_CLEAN
+    chmod -R 755 $SINARA_SRC_CLEAN/.git
+    chmod 755 $SINARA_SRC_CLEAN
+    rm -rf $SINARA_SRC_CLEAN/.git
+    HASH=`nix-hash --type sha256 --base32 $SINARA_SRC_CLEAN`
     cat > $out/default.nix << EOF
     { pkgs ? import <nixpkgs> {}}:
 
@@ -22,7 +27,6 @@ let
         url = "git://github.com/m-labs/sinara-systems.git";
         rev = "$REV";
         sha256 = "$HASH";
-        leaveDotGit = true;
       };
       generic-kasli = pkgs.lib.lists.foldr (variant: start:
         let
