@@ -48,6 +48,7 @@ stdenv.mkDerivation {
 
     echo "Wait for Windows to boot"
     sleep 10
+    export HOME=`mktemp -d`
     ${ssh "ver"}
     for pkg in ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
       ${scp "\\$pkg" "artiq.tar.bz2"}
