@@ -36,6 +36,8 @@ stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin
     cat > $out/bin/run.sh << EOF
+    set -e -m
+
     # +1 day from last modification of the disk image
     CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
     ${qemu.runQemu true forwardedPorts [
@@ -64,6 +66,8 @@ stdenv.mkDerivation {
     ${ssh "shutdown -a"}
     # Power off immediately
     ${ssh "shutdown -p -f"}
+    wait
+
     EOF
     chmod a+x $out/bin/run.sh
   '';
