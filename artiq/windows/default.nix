@@ -17,7 +17,7 @@ let
   # Double-escape because we produce a script from a shell heredoc
   ssh = cmd: qemu.ssh (escape cmd);
   scp = qemu.scp;
-  condaEnv = "artiq";
+  condaEnv = "artiq-env";
 in
 
 stdenv.mkDerivation {
@@ -35,7 +35,7 @@ stdenv.mkDerivation {
       "-boot" "order=c"
       "-snapshot"
       "-drive" "file=${diskImage},index=0,media=disk,cache=unsafe"
-      "-rtc" "base=$CLOCK"
+      "-rtc" "base=\\$CLOCK"
       "-display" "none"
     ]} &
 
@@ -43,7 +43,7 @@ stdenv.mkDerivation {
     sleep 10
     ${ssh "ver"}
     for pkg in ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
-      ${scp "\$pkg" "artiq.tar.bz2"}
+      ${scp "\\$pkg" "artiq.tar.bz2"}
       ${ssh "anaconda\\scripts\\activate ${condaEnv} && conda install artiq.tar.bz2"}
     done
 
