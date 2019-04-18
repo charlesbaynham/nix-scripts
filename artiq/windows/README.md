@@ -12,8 +12,8 @@ Then press **return** to automatically complete the installation via SSH. The vi
 Move the image `c.img` to one of Nix' `extra-sandbox-paths` (`nix.sandboxPaths` on NixOS).
 
 
-# Running the tests
+# Running the tests manually
 
 ```shell
-nix-build --arg diskImage "\"…/c.img\""
+nix-build --pure --arg diskImage "\"…/c.img\"" -I artiqSrc=…/artiq
 ```

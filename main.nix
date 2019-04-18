@@ -31,7 +31,7 @@ let
   artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
   artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix";
   windowsRunner = overrides:
-    import "${generatedNix}/windows" ({
+    import "${generatedNix}/windows/run-test.nix" ({
       inherit pkgs;
       artiqPkg = artiqpkgs.conda-artiq;
     } // overrides);
