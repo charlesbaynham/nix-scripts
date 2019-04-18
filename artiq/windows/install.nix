@@ -47,29 +47,29 @@ stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin $out/data
     ln -s $(readlink windows.iso) $out/data/windows.iso
-    cat > $out/bin/networked-installer.sh << EOF
+    cat > $out/bin/windows-installer.sh << EOF
     #!/usr/bin/env bash
     set -e -m
 
-    if [ ! -f c.img ] ; then 
-      ${qemu.qemu-img} create -f qcow2 c.img ${diskImageSize}
-      ${qemu.runQemu false [
-        "-boot" "order=d"
-        "-drive" "file=c.img,index=0,media=disk,cache=unsafe"
-        "-drive" "file=$out/data/windows.iso,index=1,media=cdrom,cache=unsafe"
-      ]} &
-      echo "Please perform a Windows installation."
-    else
-      echo "Please finalize your Windows installation (or delete c.img and restart)"
-      ${qemu.runQemu false [
-        "-boot" "order=c"
-        "-drive" "file=c.img,index=0,media=disk"
-      ]} &
-    fi
+    ${qemu.qemu-img} create -f qcow2 c.img ${diskImageSize}
+    ${qemu.runQemu false [
+      "-boot" "order=d"
+      "-drive" "file=c.img,index=0,media=disk,cache=unsafe"
+      "-drive" "file=$out/data/windows.iso,index=1,media=cdrom,cache=unsafe"
+    ]} &
     cat ${instructions}
+    wait
+    EOF
 
-    read
+    cat > $out/bin/anaconda-installer.sh << EOF
+    #!/usr/bin/env bash
+    set -e -m
 
+    ${qemu.runQemu false [
+      "-boot" "order=c"
+      "-drive" "file=c.img,index=0,media=disk"
+    ]} &
+    sleep 10
     ${ssh "ver"}
 
     ${scp anaconda "Anaconda.exe"}
@@ -86,6 +86,6 @@ stdenv.mkDerivation {
     echo "Waiting for qemu exit"
     wait
     EOF
-    chmod a+x $out/bin/networked-installer.sh
+    chmod a+x $out/bin/*.sh
   '';
 }

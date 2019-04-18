@@ -1,13 +1,20 @@
-# Preparing a Windows image
+# Preparation steps
+
+## Install a Windows image
 
 ```shell
 nix-build install.nix
-result/bin/networked-installer.sh
+result/bin/windows-installer.sh
 ```
 
 Follow the instructions.
 
-Then press **return** to automatically complete the installation via SSH. The virtual machine will be shut down when the process is complete.
+## Install Anaconda to the image
+
+```shell
+nix-build install.nix
+result/bin/anaconda-installer.sh
+```
 
 Move the image `c.img` to one of Nix' `extra-sandbox-paths` (`nix.sandboxPaths` on NixOS).
 
