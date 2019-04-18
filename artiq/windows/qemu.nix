@@ -23,7 +23,7 @@ let
         "-device" "e1000,netdev=n1"
       ];
       argStr = builtins.concatStringsSep " " (args ++ extraArgs);
-    in "qemu-system-x86_64 ${argStr}";
+    in "${qemu_kvm}/bin/qemu-system-x86_64 ${argStr}";
 
   sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/known_hosts";
   ssh = cmd: ''
