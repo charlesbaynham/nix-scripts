@@ -44,6 +44,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
+  programs.mosh.enable = true;
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 631 5901 80 443 ];
