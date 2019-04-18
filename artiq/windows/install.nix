@@ -42,7 +42,7 @@ stdenv.mkDerivation {
   unpackCmd = ''
     ln -s $curSrc windows.iso
   '';
-  buildInputs = qemu.inputs;
+  propagatedBuildInputs = qemu.inputs;
   dontBuild = true;
   installPhase = ''
     mkdir -p $out/bin $out/data

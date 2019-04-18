@@ -24,7 +24,7 @@ stdenv.mkDerivation {
   name = "windows-test-runner";
   src = ./.;
 
-  buildInputs = qemu.inputs;
+  propagatedBuildInputs = qemu.inputs;
   dontBuild = true;
   installPhase = ''
     mkdir -p $out/bin
