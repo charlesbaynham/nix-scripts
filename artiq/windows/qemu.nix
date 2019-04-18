@@ -32,7 +32,7 @@ let
       argStr = builtins.concatStringsSep " " (args ++ extraArgs);
     in "${qemu_kvm}/bin/qemu-system-x86_64 ${argStr}";
 
-  sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/tmp/known_hosts";
+  sshOpts = "-o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/dev/null";
   ssh = cmd: ''
     echo ssh windows '${cmd}'
     ${sshpass}/bin/sshpass -p${sshPassword} -- \
