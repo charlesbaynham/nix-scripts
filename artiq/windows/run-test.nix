@@ -18,6 +18,13 @@ let
   ssh = cmd: qemu.ssh (escape cmd);
   scp = qemu.scp;
   condaEnv = "artiq-env";
+  tcpPorts = [ 1380 1381 1382 1383 ];
+  forwardedPorts =
+    map (port: {
+      listenAddr = "192.168.1.50";
+      targetAddr = "192.168.1.50";
+      inherit port;
+    }) tcpPorts;
 in
 
 stdenv.mkDerivation {
@@ -31,7 +38,7 @@ stdenv.mkDerivation {
     cat > $out/bin/run.sh << EOF
     # +1 day from last modification of the disk image
     CLOCK=$(date -Is -d @$(expr $(stat -c %Y ${diskImage}) + 86400))
-    ${qemu.runQemu true [
+    ${qemu.runQemu true forwardedPorts [
       "-boot" "order=c"
       "-snapshot"
       "-drive" "file=${diskImage},index=0,media=disk,cache=unsafe"

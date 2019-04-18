@@ -52,7 +52,7 @@ stdenv.mkDerivation {
     set -e -m
 
     ${qemu.qemu-img} create -f qcow2 c.img ${diskImageSize}
-    ${qemu.runQemu false [
+    ${qemu.runQemu false [] [
       "-boot" "order=d"
       "-drive" "file=c.img,index=0,media=disk,cache=unsafe"
       "-drive" "file=$out/data/windows.iso,index=1,media=cdrom,cache=unsafe"
@@ -65,7 +65,7 @@ stdenv.mkDerivation {
     #!/usr/bin/env bash
     set -e -m
 
-    ${qemu.runQemu false [
+    ${qemu.runQemu false [] [
       "-boot" "order=c"
       "-drive" "file=c.img,index=0,media=disk"
     ]} &

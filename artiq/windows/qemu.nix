@@ -9,17 +9,24 @@ with pkgs;
 
 let
   qemu-img = "${qemu_kvm}/bin/qemu-img";
-  runQemu = isolateNetwork: extraArgs:
+  runQemu = isolateNetwork: forwardedPorts: extraArgs:
     let
       restrict =
         if isolateNetwork
         then "on"
         else "off";
+      nc = "${netcat}/bin/nc";
+      # use netcat instead of `tcp:…` to allow multiple connections
+      guestfwds =
+        builtins.concatStringsSep ""
+        (map ({ listenAddr, targetAddr, port }:
+          ",guestfwd=tcp:${listenAddr}:${toString port}-cmd:${nc}\\ ${targetAddr}\\ ${toString port}"
+        ) forwardedPorts);
       args = [
         "-enable-kvm"
         "-m" qemuMem
         "-bios" "${OVMF.fd}/FV/OVMF.fd"
-        "-netdev" "user,id=n1,restrict=${restrict},hostfwd=tcp::2022-:22"
+        "-netdev" "user,id=n1,net=192.168.1.0/24,restrict=${restrict},hostfwd=tcp::2022-:22${guestfwds}"
         "-device" "e1000,netdev=n1"
       ];
       argStr = builtins.concatStringsSep " " (args ++ extraArgs);
