@@ -51,19 +51,6 @@ in
       constituents = builtins.attrValues jobs;
     };
 
-    windows-no-hardware-tests = pkgs.stdenv.mkDerivation {
-      name = "windows-no-hardware-tests";
-      src = ./.;
-      buildInputs = [ artiqpkgs.conda-artiq ];
-      phases = [ "buildPhase" ];
-      buildPhase = ''
-        ${windowsRunner {}}/bin/run.sh
-
-        mkdir $out
-        touch $out/passed
-      '';
-    };
-
     # HACK: Abuse fixed-output derivations to escape the sandbox and run the hardware
     # unit tests, all integrated in the Hydra interface.
     # One major downside of this hack is the tests are only run when generateTestOkHash
@@ -102,7 +89,7 @@ in
       export ARTIQ_LOW_LATENCY=1
       python -m unittest discover -v artiq.test.coredevice
 
-      ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&set ARTIQ_LOW_LATENCY=1&&python -m unittest discover -v artiq.test.coredevice"; }}/bin/run.sh
+      ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&set ARTIQ_LOW_LATENCY=1&&python -m unittest discover -v artiq.test"; }}/bin/run.sh
 
       mkdir $out
       cp ${generatedNix}/pkgs/artiq-version.nix $out/passed
