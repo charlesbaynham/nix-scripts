@@ -2,7 +2,7 @@
 # recipe must be a string pointing to a path within the source.
 
 { pkgs }:
-{ name, src, recipe }:
+{ name, src, recipe ? "fake-conda"}:
 
 with pkgs;
 

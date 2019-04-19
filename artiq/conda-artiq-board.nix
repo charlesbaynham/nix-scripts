@@ -43,7 +43,6 @@ let
   conda-artiq-board = import ./conda-build.nix { inherit pkgs; } {
     name = "conda-artiq-board-${target}-${variant}";
     src = fakeCondaSource;
-    recipe = "fake-conda";
   };
 in
   conda-artiq-board

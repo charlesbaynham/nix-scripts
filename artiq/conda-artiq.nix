@@ -64,7 +64,6 @@ let
   conda-artiq = import ./conda-build.nix { inherit pkgs; } {
     name = "conda-artiq";
     src = fakeCondaSource;
-    recipe = "fake-conda";
   };
 in
   conda-artiq
