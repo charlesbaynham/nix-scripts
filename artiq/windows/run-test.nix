@@ -61,7 +61,7 @@ stdenv.mkDerivation {
     ${ssh "shutdown -s -t ${toString testTimeout}"}
 
     FAIL=n
-    ${ssh "anaconda\\scripts\\activate ${condaEnv} && ${testCommand}"} || FAIL=y
+    ( ${ssh "anaconda\\scripts\\activate ${condaEnv} && ${testCommand}"} ) || FAIL=y
 
     # Abort timeouted shutdown
     ${ssh "shutdown -a"}
