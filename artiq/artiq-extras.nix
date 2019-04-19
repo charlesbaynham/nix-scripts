@@ -1,7 +1,7 @@
 { pkgs, asyncserial, artiq }:
 let
   dualPackage = (
-    { name, version, src, pythonOptions, condaOptions }:
+    { name, version, src, pythonOptions ? {}, condaOptions ? {}}:
       {
         "${name}" = pkgs.python3Packages.buildPythonPackage ({
           inherit version;
@@ -39,4 +39,14 @@ in
     };
     pythonOptions = { buildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
+  }) // (dualPackage {
+    name = "newfocus8742";
+    version = "0.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "quartiq";
+      repo = "newfocus8742";
+      rev = "8224f69fe16e407a1e0e74d2923eca4ab707a60c";
+      sha256 = "0hahk2hfc9xxrxkqz8ghkh9b35hppdxdlkb55fz9z9s686caki02";
+    };
+    pythonOptions = { buildInputs = [ artiq ]; };
   })

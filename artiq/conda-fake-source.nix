@@ -1,5 +1,5 @@
 { pkgs }:
-{ name, version, src, dependencies }:
+{ name, version, src, dependencies ? []}:
 pkgs.runCommand "conda-fake-source-${name}" { }
     ''
     mkdir -p $out/fake-conda;
