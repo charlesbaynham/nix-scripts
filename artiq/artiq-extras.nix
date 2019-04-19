@@ -32,8 +32,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "korad_ka3005p";
-      rev = "e0adec6c577d7d1b832a2b1bf20e89ac393ca27e";
-      sha256 = "18092zgjh63qrg6lg9mzsbr2yri7k7wb97mip5xq3zrcabmmpbk3";
+      rev = "51df56fcb5270b4f41bb37dc5338dd66eef21565";
+      sha256 = "17dsf1bfaiy26wvn97lpxpypnx3crg45r2n6764mc7234gk2k0j4";
     };
     pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
@@ -43,8 +43,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "novatech409b";
-      rev = "c95c52ea3fdcc8459d84bd72bb54c3dc77883968";
-      sha256 = "1lkdf1wwngwpmm4byaz1jbjpc9gnq3q8ig6hq305dn73cja99zn9";
+      rev = "ad1dbfd5287d3910bc61bcd4db4df045c3ca53ab";
+      sha256 = "16292n8kswk91gdxvf450hkh38lk31v8rgmfrl2mnfdladahg1ax";
     };
     pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
