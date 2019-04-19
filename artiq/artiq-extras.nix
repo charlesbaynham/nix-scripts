@@ -67,6 +67,17 @@ in
       '';
     };
   }) // (dualPackage {
+    name = "thorlabs_tcube";
+    version = "1.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "m-labs";
+      repo = "thorlabs_tcube";
+      rev = "350aa142c0843647800b5052a9de7ef66b812898";
+      sha256 = "1js9h02pay62vxdpkzsjphnf1p0yzdjky1x8csz7lh5kbyahl9vr";
+    };
+    pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
+    condaOptions = { dependencies = [ "asyncserial" ]; };
+  }) // (dualPackage {
     name = "newfocus8742";
     version = "0.1";
     src = pkgs.fetchFromGitHub {
