@@ -26,7 +26,7 @@ in
       rev = "e0adec6c577d7d1b832a2b1bf20e89ac393ca27e";
       sha256 = "18092zgjh63qrg6lg9mzsbr2yri7k7wb97mip5xq3zrcabmmpbk3";
     };
-    pythonOptions = { buildInputs = [ asyncserial artiq ]; };
+    pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
   }) // (dualPackage {
     name = "novatech409b";
@@ -37,7 +37,7 @@ in
       rev = "c95c52ea3fdcc8459d84bd72bb54c3dc77883968";
       sha256 = "1lkdf1wwngwpmm4byaz1jbjpc9gnq3q8ig6hq305dn73cja99zn9";
     };
-    pythonOptions = { buildInputs = [ asyncserial artiq ]; };
+    pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
   }) // (dualPackage {
     name = "newfocus8742";
