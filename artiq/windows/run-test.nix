@@ -60,13 +60,16 @@ stdenv.mkDerivation {
     # Allow tests to run for 2 minutes
     ${ssh "shutdown -s -t ${toString testTimeout}"}
 
-    ${ssh "anaconda\\scripts\\activate ${condaEnv} && ${testCommand}"}
+    FAIL=n
+    ${ssh "anaconda\\scripts\\activate ${condaEnv} && ${testCommand}"} || FAIL=y
 
     # Abort timeouted shutdown
     ${ssh "shutdown -a"}
     # Power off immediately
     ${ssh "shutdown -p -f"}
     wait
+
+    [ "\\$FAIL" = "y" ] && exit 1
 
     EOF
     chmod a+x $out/bin/run.sh
