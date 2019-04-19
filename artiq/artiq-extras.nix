@@ -16,6 +16,15 @@ let
         };
       }
     );
+  # https://github.com/m-labs/artiq/issues/23
+  hidapi = pkgs.hidapi.overrideAttrs (oa: {
+      src = pkgs.fetchFromGitHub {
+        owner = "signal11";
+        repo = "hidapi";
+        rev = "a6a622ffb680c55da0de787ff93b80280498330f";
+        sha256 = "17n7c4v3jjrnzqwxpflggxjn6vkzscb32k4kmxqjbfvjqnx7qp7j";
+      };
+    });
 in
   (dualPackage {
     name = "korad_ka3005p";
@@ -39,6 +48,24 @@ in
     };
     pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
+  }) // (dualPackage {
+    name = "lda";
+    version = "1.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "m-labs";
+      repo = "lda";
+      rev = "c7a011f9b235c86f9c98a8aeb335acb00d525d7d";
+      sha256 = "1dg37911v3pg97d14yhk648xrz5g0yv176csqbcv0iv3v1nvsyhd";
+    };
+    pythonOptions = {
+      propagatedBuildInputs = [ artiq ];
+      postPatch = ''
+        ls
+        substituteInPlace lda/hidapi.py \
+        --replace "hidapi_lib_path = None"\
+                  "hidapi_lib_path = '${hidapi}/lib/libhidapi-libusb.so.0'"
+      '';
+    };
   }) // (dualPackage {
     name = "newfocus8742";
     version = "0.1";
