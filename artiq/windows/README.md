@@ -3,7 +3,7 @@
 ## Install a Windows image
 
 ```shell
-nix-build install.nix
+nix-build install.nix -I artiqSrc=…/artiq
 result/bin/windows-installer.sh
 ```
 
@@ -12,7 +12,6 @@ Follow the instructions.
 ## Install Anaconda to the image
 
 ```shell
-nix-build install.nix
 result/bin/anaconda-installer.sh
 ```
 
