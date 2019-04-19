@@ -45,8 +45,12 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "quartiq";
       repo = "newfocus8742";
-      rev = "8224f69fe16e407a1e0e74d2923eca4ab707a60c";
-      sha256 = "0hahk2hfc9xxrxkqz8ghkh9b35hppdxdlkb55fz9z9s686caki02";
+      rev = "2d97eb741f43bd5cb9eec92635101b70ad9c129c";
+      sha256 = "0xzx1p6qn24ckbc8pyxzq8wxn64pvrbwm2l94mblij6dblksdgmv";
     };
-    pythonOptions = { buildInputs = [ artiq ]; };
+    pythonOptions = {
+      propagatedBuildInputs = [ artiq ];
+      # no unit tests so do a simple smoke test
+      checkPhase = "python -m newfocus8742.aqctl_newfocus8742 --version";
+    };
   })
