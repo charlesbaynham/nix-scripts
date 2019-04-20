@@ -7,7 +7,6 @@
   "scipy"
   "numpy"
   "prettytable"
-  "asyncserial"
   "h5py 2.8"
   "python-dateutil"
   "pyqt >=5.5"
