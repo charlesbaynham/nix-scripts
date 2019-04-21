@@ -1,3 +1,5 @@
+# This runs `run-test.nix` with `nix-build`
+
 { pkgs ? import <nixpkgs> {},
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",

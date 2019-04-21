@@ -57,7 +57,7 @@ stdenv.mkDerivation {
       ${ssh "anaconda\\scripts\\activate ${condaEnv} && conda install artiq.tar.bz2"}
     done
 
-    # Allow tests to run for 2 minutes
+    # Schedule a timed shutdown against hanging test runs
     ${ssh "shutdown -s -t ${toString testTimeout}"}
 
     FAIL=n
