@@ -38,6 +38,7 @@
   # started in user sessions.
   # programs.mtr.enable = true;
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
+  programs.wireshark.enable = true;
 
   # List services that you want to enable:
 
@@ -67,12 +68,12 @@
   users.extraGroups.plugdev = { };
   users.extraUsers.sb = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner"];
+    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner" "wireshark"];
     uid = 1000;
   };
   users.extraUsers.rj = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout"];
+    extraGroups = ["wheel" "plugdev" "dialout" "wireshark"];
     uid = 1002;
   };
   users.extraUsers.nix = {
