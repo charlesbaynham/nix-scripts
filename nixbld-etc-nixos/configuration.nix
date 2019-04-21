@@ -162,6 +162,8 @@ ACTION=="add", SUBSYSTEM=="tty", \
     "nixbld.m-labs.hk" = {
       webroot = "/var/lib/acme/acme-challenge";
       extraDomains = {
+        "m-labs.hk" = null;
+        "www.m-labs.hk" = null;
         "buildbot.m-labs.hk" = null;
         "lab.m-labs.hk" = null;
         "git.m-labs.hk" = null;
@@ -173,6 +175,16 @@ ACTION=="add", SUBSYSTEM=="tty", \
     enable = true;
     recommendedProxySettings = true;
     virtualHosts = {
+      "m-labs.hk" = {
+        addSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        root = "/var/www/m-labs.hk";
+      };
+      "www.m-labs.hk" = {
+        addSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        root = "/var/www/m-labs.hk";
+      };
       "buildbot.m-labs.hk" = {
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
