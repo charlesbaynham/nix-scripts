@@ -76,6 +76,11 @@
     extraGroups = ["wheel" "plugdev" "dialout" "wireshark"];
     uid = 1002;
   };
+  users.extraUsers.astro = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout" "wireshark"];
+    uid = 1003;
+  };
   users.extraUsers.nix = {
     isNormalUser = true;
     uid = 1001;
