@@ -51,6 +51,18 @@ in
       constituents = builtins.attrValues jobs;
     };
 
+    windows-no-hardware-tests = pkgs.stdenv.mkDerivation {
+      name = "windows-no-hardware-tests";
+      # dummy src
+      src = generatedNix;
+      buildInputs = [ (windowsRunner {}) ];
+      phases = [ "buildPhase" ];
+      buildPhase = ''
+        ${windowsRunner {}}/bin/run.sh
+        touch $out
+      '';
+    };
+
     # HACK: Abuse fixed-output derivations to escape the sandbox and run the hardware
     # unit tests, all integrated in the Hydra interface.
     # One major downside of this hack is the tests are only run when generateTestOkHash
