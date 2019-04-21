@@ -69,7 +69,7 @@ stdenv.mkDerivation {
     ${ssh "shutdown -p -f"}
     wait
 
-    [ "\\$FAIL" = "y" ] && exit 1
+    [ "\\\$FAIL" = "y" ] && exit 1
 
     EOF
     chmod a+x $out/bin/run.sh
