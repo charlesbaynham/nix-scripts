@@ -101,7 +101,7 @@ in
       export ARTIQ_LOW_LATENCY=1
       python -m unittest discover -v artiq.test.coredevice
 
-      ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&set ARTIQ_LOW_LATENCY=1&&python -m unittest discover -v artiq.test"; }}/bin/run.sh
+      ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&set ARTIQ_LOW_LATENCY=1&&python -m unittest discover -v artiq.test.coredevice"; }}/bin/run.sh
 
       mkdir $out
       cp ${generatedNix}/pkgs/artiq-version.nix $out/passed
