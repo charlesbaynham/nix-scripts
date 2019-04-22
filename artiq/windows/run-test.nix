@@ -36,6 +36,7 @@ stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin
     cat > $out/bin/run.sh << EOF
+    #!/usr/bin/env bash
     set -e -m
 
     # +1 day from last modification of the disk image
