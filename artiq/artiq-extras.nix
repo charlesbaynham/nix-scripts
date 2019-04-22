@@ -87,7 +87,7 @@ in
       sha256 = "1dww0y83d4i6nma1q5hnaagih94c32bxlla5p6a5a8zkc4x2pky9";
     };
     pythonOptions = {
-      propagatedBuildInputs = [ artiq ];
+      propagatedBuildInputs = [ pkgs.python3Packages.pyusb artiq ];
       # no unit tests so do a simple smoke test
       checkPhase = "python -m newfocus8742.aqctl_newfocus8742 --version";
     };
