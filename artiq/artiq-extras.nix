@@ -83,8 +83,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "quartiq";
       repo = "newfocus8742";
-      rev = "2d97eb741f43bd5cb9eec92635101b70ad9c129c";
-      sha256 = "0xzx1p6qn24ckbc8pyxzq8wxn64pvrbwm2l94mblij6dblksdgmv";
+      rev = "31a92595d1cb77d9256b891ec17eed0fbeceb1bc";
+      sha256 = "1dww0y83d4i6nma1q5hnaagih94c32bxlla5p6a5a8zkc4x2pky9";
     };
     pythonOptions = {
       propagatedBuildInputs = [ artiq ];
