@@ -104,7 +104,7 @@ in
       # no unit tests without hardware so do a simple smoke test
       checkPhase = "python -m hut2.aqctl_hut2 --version";
     };
-  }) // {
+  }) // rec {
     toptica-lasersdk = pkgs.python3Packages.buildPythonPackage rec {
       version = "2.0.0";
       name = "toptica-lasersdk-${version}";
@@ -114,5 +114,24 @@ in
         sha256 = "1k5d9ah8qzp75hh63nh9l5dk808v9ybpmzlhrdc3sxmas3ajv8s7";
       };
       propagatedBuildInputs = [ pkgs.python3Packages.pyserial ];
+    };
+    toptica-lasersdk-artiq = pkgs.python3Packages.buildPythonPackage rec {
+      version = "2.0.0";
+      name = "toptica-lasersdk-artiq-${version}";
+      src = pkgs.fetchFromGitHub {
+        owner = "quartiq";
+        repo = "lasersdk-artiq";
+        rev = "d38bb985e7ddffc9ac9d94fe136cac10947bfd72";
+        sha256 = "03a09lc81l2l787yjm0xjpnjvs5x77ndmks3xxh25yyxdhsdf1fl";
+      };
+      postPatch = ''
+        substituteInPlace lasersdk_artiq/aqctl_laser.py \
+          --replace "toptica.lasersdk.async.client" \
+                    "toptica.lasersdk.asyncio.client"
+        substituteInPlace lasersdk_artiq/test.py \
+          --replace "toptica.lasersdk.async.client" \
+                    "toptica.lasersdk.asyncio.client"
+      '';
+      propagatedBuildInputs = [ toptica-lasersdk artiq ];
     };
   }
