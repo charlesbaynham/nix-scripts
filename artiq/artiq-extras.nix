@@ -116,7 +116,7 @@ in
       propagatedBuildInputs = [ pkgs.python3Packages.pyserial ];
     };
     toptica-lasersdk-artiq = pkgs.python3Packages.buildPythonPackage rec {
-      version = "2.0.0";
+      version = "0.1";
       name = "toptica-lasersdk-artiq-${version}";
       src = pkgs.fetchFromGitHub {
         owner = "quartiq";
