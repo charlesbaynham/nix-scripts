@@ -105,4 +105,15 @@ in
       # no unit tests without hardware so do a simple smoke test
       checkPhase = "python -m hut2.aqctl_hut2 --version";
     };
-  })
+  }) // {
+    toptica-lasersdk = pkgs.python3Packages.buildPythonPackage rec {
+      version = "2.0.0";
+      name = "toptica-lasersdk-${version}";
+      format = "wheel";
+      src = pkgs.fetchurl {
+        url = "https://files.pythonhosted.org/packages/6b/e2/5c98407215884c2570453a78bc0d6f0bbe619f06593847ccd6a2f1d3fe59/toptica_lasersdk-2.0.0-py3-none-any.whl";
+        sha256 = "1k5d9ah8qzp75hh63nh9l5dk808v9ybpmzlhrdc3sxmas3ajv8s7";
+      };
+      propagatedBuildInputs = [ pkgs.python3Packages.pyserial ];
+    };
+  }
