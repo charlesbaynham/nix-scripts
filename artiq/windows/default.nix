@@ -10,9 +10,9 @@ with pkgs;
 
 let
   windowsRunner = overrides:
-    import ./run-test.nix {
+    import ./run-test.nix ({
       inherit pkgs diskImage qemuMem testTimeout;
-    };
+    } // overrides);
 in
 
 stdenv.mkDerivation {
