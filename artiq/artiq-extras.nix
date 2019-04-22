@@ -91,4 +91,18 @@ in
       # no unit tests so do a simple smoke test
       checkPhase = "python -m newfocus8742.aqctl_newfocus8742 --version";
     };
+  }) // (dualPackage {
+    name = "hut2";
+    version = "0.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "quartiq";
+      repo = "hut2";
+      rev = "acfd62dcd60d37250e2d1b691344c6e65b6e83eb";
+      sha256 = "0dpx3c5aclj7gki6iaybjbx9rqrxnwccpxcvjwp594ccbcswvclr";
+    };
+    pythonOptions = {
+      propagatedBuildInputs = [ artiq ];
+      # no unit tests without hardware so do a simple smoke test
+      checkPhase = "python -m hut2.aqctl_hut2 --version";
+    };
   })
