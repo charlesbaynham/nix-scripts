@@ -134,4 +134,18 @@ in
       '';
       propagatedBuildInputs = [ toptica-lasersdk artiq ];
     };
-  }
+  } // (dualPackage {
+    name = "highfinesse-net";
+    version = "0.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "quartiq";
+      repo = "highfinesse-net";
+      rev = "6864ae5da5cbc67953b968010115db951e52a272";
+      sha256 = "1k8xacgam5xghxvljvdzpsdhhq86fra13hkvdy7y301s9nyp30s4";
+    };
+    pythonOptions = {
+      propagatedBuildInputs = [ artiq ];
+      # no unit tests without hardware so do a simple smoke test
+      checkPhase = "python -m highfinesse_net.aqctl_highfinesse_net --version";
+    };
+  })
