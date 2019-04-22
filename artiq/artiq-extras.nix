@@ -60,7 +60,6 @@ in
     pythonOptions = {
       propagatedBuildInputs = [ artiq ];
       postPatch = ''
-        ls
         substituteInPlace lda/hidapi.py \
         --replace "hidapi_lib_path = None"\
                   "hidapi_lib_path = '${hidapi}/lib/libhidapi-libusb.so.0'"
