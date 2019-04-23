@@ -26,7 +26,7 @@ let
 
     preBuild = ''
         export VERSIONEER_OVERRIDE=${artiqVersion}
-        export SOURCE_DATE_EPOCH=${import ./artiq-timestamp.nix {}}
+        export SOURCE_DATE_EPOCH=${import ./artiq-timestamp.nix}
         cd doc/manual
       '';
     makeFlags = [ target ];

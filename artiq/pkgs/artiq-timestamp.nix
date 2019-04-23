@@ -1,4 +1,5 @@
-{ pkgs ? import <nixpkgs> {} }:
+let pkgs = import <nixpkgs> {};
+in
 with pkgs;
 let
   artiq-timestamp = stdenv.mkDerivation {
