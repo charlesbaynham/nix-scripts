@@ -24,10 +24,10 @@ let
       }) {} boards;
   manualPackages = import ./pkgs/artiq-manual.nix {
     inherit stdenv lib fetchgit python3Packages texlive texinfo;
-    inherit (pythonDeps) sphinx-argparse sphinxcontrib-wavedrom;
+    inherit (pythonDeps) sphinxcontrib-wavedrom;
   };
   mainPackages = rec {
-    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck sphinx-argparse wavedrom sphinxcontrib-wavedrom;
+    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck wavedrom sphinxcontrib-wavedrom;
     binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};
     rustc = callPackage ./pkgs/rust

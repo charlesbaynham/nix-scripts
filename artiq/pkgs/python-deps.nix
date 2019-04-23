@@ -189,30 +189,6 @@ rec {
 
 
   # Documentation building dependencies
-  # TODO: sphinx-argparse will be available from nixos-19.XX
-  sphinx-argparse = python3Packages.buildPythonPackage rec {
-    pname = "sphinx-argparse";
-    version = "0.2.5";
-
-    src = python3Packages.fetchPypi {
-      inherit pname version;
-      sha256 = "05wc8f5hb3jsg2vh2jf7jsyan8d4i09ifrz2c8fp6f7x1zw9iav0";
-    };
-
-    checkInputs = [ python3Packages.pytest ];
-
-    checkPhase = "py.test";
-
-    propagatedBuildInputs = [ python3Packages.sphinx ];
-
-    meta = with stdenv.lib; {
-      description = "A sphinx extension that automatically documents argparse commands and options";
-      homepage = https://github.com/ribozz/sphinx-argparse;
-      license = licenses.mit;
-      #maintainers = with maintainers; [ clacke ];
-    };
-  };
-
   wavedrom = python3Packages.buildPythonPackage rec {
     pname = "wavedrom";
     version = "0.1";

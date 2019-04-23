@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchgit, python3Packages, texlive, texinfo, sphinx-argparse, sphinxcontrib-wavedrom }:
+{ stdenv, lib, fetchgit, python3Packages, texlive, texinfo, sphinxcontrib-wavedrom }:
 
 let
   artiqVersion = import ./artiq-version.nix;
@@ -19,7 +19,7 @@ let
     src = import ./artiq-src.nix { inherit fetchgit; };
     buildInputs = [
       python3Packages.sphinx python3Packages.sphinx_rtd_theme
-      sphinx-argparse sphinxcontrib-wavedrom
+      python3Packages.sphinx-argparse sphinxcontrib-wavedrom
     ] ++
       lib.optional (isLatexPdfTarget target) latex ++
       lib.optional (target == "texinfo") texinfo;
@@ -51,8 +51,6 @@ let
           '';
   };
 
-  # TODO: starting with NixOS 19.XX, drop sphinxcontrib-wavedrom-1_3_1
-  # and simplify `targets`:
-  targets = [ "html" ] ++ (lib.optional (builtins.compareVersions sphinxcontrib-wavedrom.version "2.0.0" != -1) "latexpdf");
+  targets = [ "html" "latexpdf" ];
 in
   builtins.listToAttrs (map (target: { name = "artiq-manual-${target}"; value = artiq-manual target; }) targets)
