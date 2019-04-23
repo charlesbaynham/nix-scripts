@@ -15,12 +15,11 @@ let
         if isolateNetwork
         then "on"
         else "off";
-      nc = "${netcat}/bin/nc";
-      # use netcat instead of `tcp:…` to allow multiple connections
+      # use socat instead of `tcp:…` to allow multiple connections
       guestfwds =
         builtins.concatStringsSep ""
         (map ({ listenAddr, targetAddr, port }:
-          ",guestfwd=tcp:${listenAddr}:${toString port}-cmd:${nc}\\ ${targetAddr}\\ ${toString port}"
+          ",guestfwd=tcp:${listenAddr}:${toString port}-cmd:${socat}/bin/socat\\ -\\ tcp:${targetAddr}:${toString port}"
         ) forwardedPorts);
       args = [
         "-enable-kvm"
