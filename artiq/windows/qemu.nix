@@ -32,7 +32,7 @@ let
     in "${qemu_kvm}/bin/qemu-system-x86_64 ${argStr}";
 
   # Pass empty config file to prevent ssh from failing to create ~/.ssh
-  sshOpts = "-F /dev/null -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/dev/null";
+  sshOpts = "-F /dev/null -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=\$TMP/known_hosts";
   ssh = cmd: ''
     echo ssh windows '${cmd}'
     ${sshpass}/bin/sshpass -p${sshPassword} -- \
