@@ -209,27 +209,7 @@ rec {
     };
   };
 
-  sphinxcontrib-wavedrom-1_3_1 = python3Packages.buildPythonPackage rec {
-    pname = "sphinxcontrib-wavedrom";
-    version = "1.3.1";
-
-    src = python3Packages.fetchPypi {
-      inherit pname version;
-      sha256 = "1q2hk630nz734cln2wwngjidlb7xyk6ly8qqlpsj259n9n2iab6v";
-    };
-
-    buildInputs = [ python3Packages.setuptools_scm ];
-    propagatedBuildInputs = [ python3Packages.sphinx ];
-    doCheck = false;
-
-    meta = with stdenv.lib; {
-      description = "A Sphinx extension that allows including WaveDrom diagrams";
-      homepage    = "https://pypi.org/project/sphinxcontrib-wavedrom/";
-      license     = licenses.mit;
-    };
-  };
-
-  sphinxcontrib-wavedrom-2_0_0 = python3Packages.buildPythonPackage rec {
+  sphinxcontrib-wavedrom = python3Packages.buildPythonPackage rec {
     pname = "sphinxcontrib-wavedrom";
     version = "2.0.0";
 
@@ -248,9 +228,4 @@ rec {
       license     = licenses.mit;
     };
   };
-
-  sphinxcontrib-wavedrom =
-    if builtins.compareVersions python3Packages.sphinx.version "1.8" == -1
-    then sphinxcontrib-wavedrom-1_3_1
-    else sphinxcontrib-wavedrom-2_0_0;
 }
