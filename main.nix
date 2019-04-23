@@ -5,7 +5,7 @@ let
     ''
     cp --no-preserve=mode,ownership -R ${./artiq} $out
     REV=`git --git-dir ${artiqSrc}/.git rev-parse HEAD`
-    TIMESTAMP=`git log -1 --format=%ct`
+    TIMESTAMP=`git --git-dir ${artiqSrc}/.git log -1 --format=%ct`
     ARTIQ_SRC_CLEAN=`mktemp -d`
     cp -a ${artiqSrc}/. $ARTIQ_SRC_CLEAN
     chmod -R 755 $ARTIQ_SRC_CLEAN/.git
