@@ -8,6 +8,24 @@ let
           name = "${name}-${version}";
           inherit src;
         } // pythonOptions);
+        "${name}-manual-html" = pkgs.stdenv.mkDerivation {
+          name = "${name}-manual-html-${version}";
+          inherit version src;
+          buildInputs = (with pkgs.python3Packages; [ sphinx sphinx_rtd_theme sphinx-argparse ]) ++ [ artiq ];
+          preBuild = "cd doc";
+          makeFlags = [ "html" ];
+          installPhase =
+            let
+              dest = "$out/share/doc/${name}-manual";
+            in
+              ''
+              mkdir -p ${dest}
+              cp -r _build/html ${dest}/
+
+              mkdir -p $out/nix-support/
+              echo doc manual ${dest}/html index.html >> $out/nix-support/hydra-build-products
+              '';
+        };
         "conda-${name}" = import ./conda-build.nix { inherit pkgs; } {
           name = "conda-${name}";
           src = import ./conda-fake-source.nix { inherit pkgs; } ({
@@ -32,8 +50,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "korad_ka3005p";
-      rev = "51df56fcb5270b4f41bb37dc5338dd66eef21565";
-      sha256 = "17dsf1bfaiy26wvn97lpxpypnx3crg45r2n6764mc7234gk2k0j4";
+      rev = "e8c02ade175b842972f76a27919a4aaf8190de90";
+      sha256 = "1svgnx52amvy9xl0b2wkz0ii4ycjvjv96ac0g07zkxabdqm5ff65";
     };
     pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
@@ -43,8 +61,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "novatech409b";
-      rev = "ad1dbfd5287d3910bc61bcd4db4df045c3ca53ab";
-      sha256 = "16292n8kswk91gdxvf450hkh38lk31v8rgmfrl2mnfdladahg1ax";
+      rev = "442e82e2234c0bf951da2084a77861f8977755c8";
+      sha256 = "032qgg48dy2k31vj0q8bfni0iy2kcyscd32bq60h701wvass6jv7";
     };
     pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
@@ -54,8 +72,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "lda";
-      rev = "c7a011f9b235c86f9c98a8aeb335acb00d525d7d";
-      sha256 = "1dg37911v3pg97d14yhk648xrz5g0yv176csqbcv0iv3v1nvsyhd";
+      rev = "4329da1497f496839ce20beebce0d79ed453941f";
+      sha256 = "00c15a03xy9vbca0j2zfy89l3ghbdmmv5wqfksm6pdwy4z036cwa";
     };
     pythonOptions = {
       propagatedBuildInputs = [ artiq ];
@@ -71,8 +89,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "thorlabs_tcube";
-      rev = "350aa142c0843647800b5052a9de7ef66b812898";
-      sha256 = "1js9h02pay62vxdpkzsjphnf1p0yzdjky1x8csz7lh5kbyahl9vr";
+      rev = "b72e7ba7de8355bd93dd20d53b6f15386dff229d";
+      sha256 = "1lqwqflwbfdykmhf6g0pwgiq7i2vf67ybj4l8n3jn16vny21b41s";
     };
     pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
     condaOptions = { dependencies = [ "asyncserial" ]; };
