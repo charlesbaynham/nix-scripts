@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchgit, python3Packages, texlive, texinfo, sphinxcontrib-wavedrom }:
+{ stdenv, lib, fetchgit, git, python3Packages, texlive, texinfo, sphinxcontrib-wavedrom }:
 
 let
   artiqVersion = import ./artiq-version.nix;
@@ -18,6 +18,7 @@ let
 
     src = import ./artiq-src.nix { inherit fetchgit; };
     buildInputs = [
+      git
       python3Packages.sphinx python3Packages.sphinx_rtd_theme
       python3Packages.sphinx-argparse sphinxcontrib-wavedrom
     ] ++
@@ -26,6 +27,7 @@ let
 
     preBuild = ''
         export VERSIONEER_OVERRIDE=${artiqVersion}
+        export SOURCE_DATE_EPOCH=`${git}/bin/git log -1 --format=%ct`
         cd doc/manual
       '';
     makeFlags = [ target ];
