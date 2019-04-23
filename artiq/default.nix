@@ -23,7 +23,7 @@ let
         };
       }) {} boards;
   manualPackages = import ./pkgs/artiq-manual.nix {
-    inherit stdenv lib fetchgit git python3Packages texlive texinfo;
+    inherit stdenv lib fetchgit python3Packages texlive texinfo;
     inherit (pythonDeps) sphinxcontrib-wavedrom;
   };
   mainPackages = rec {
