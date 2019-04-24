@@ -4,7 +4,7 @@
 with pkgs;
 
 let
-  version = import ./pkgs/artiq-version.nix;
+  version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
   fakeCondaSource = runCommand "fake-condasrc-artiq-board-${target}-${variant}" { }
     ''
     mkdir -p $out/fake-conda;

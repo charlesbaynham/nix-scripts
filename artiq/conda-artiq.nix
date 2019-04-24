@@ -1,7 +1,7 @@
 { pkgs }:
 
 let
-  version = import ./pkgs/artiq-version.nix;
+  version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
   fakeCondaSource = import ./conda-fake-source.nix { inherit pkgs; } {
     name = "artiq";
     inherit version;

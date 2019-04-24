@@ -31,7 +31,7 @@ let
     echo \"$HASH\" > $out
     '';
   artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
-  artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix";
+  artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix" (with pkgs; { inherit stdenv fetchgit git; });
   windowsRunner = overrides:
     import "${generatedNix}/windows/run-test.nix" ({
       inherit pkgs;

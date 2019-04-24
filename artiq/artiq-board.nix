@@ -46,7 +46,7 @@ let
 
 in pkgs.python3Packages.buildPythonPackage rec {
   name = "artiq-board-${target}-${variant}-${version}";
-  version = import ./pkgs/artiq-version.nix;
+  version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
   phases = [ "buildPhase" "installPhase" ];
   buildPhase = 
     ''
