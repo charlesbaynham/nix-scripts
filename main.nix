@@ -26,7 +26,7 @@ let
   generateTestOkHash = pkgs.runCommand "generate-test-ok-hash" { buildInputs = [ pkgs.nix ]; }
     ''
     TMPDIR=`mktemp -d`
-    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed3
+    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed
     HASH=`nix-hash --type sha256 --base32 $TMPDIR`
     echo \"$HASH\" > $out
     '';
@@ -103,7 +103,7 @@ in
       ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&python -m unittest discover -v artiq.test.coredevice"; }}/bin/run.sh
 
       mkdir $out
-      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed3
+      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed
       '';
     };
   }
