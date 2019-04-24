@@ -85,7 +85,6 @@ in
       phases = [ "buildPhase" ];
       buildPhase =
       ''
-      whoami
       export HOME=`mktemp -d`
       mkdir $HOME/.ssh
       cp /opt/hydra_id_rsa $HOME/.ssh/id_rsa
