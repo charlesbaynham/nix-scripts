@@ -23,6 +23,6 @@ stdenv.mkDerivation {
   installPhase = "touch $out";
   doCheck = true;
   checkPhase = ''
-    ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&set ARTIQ_LOW_LATENCY=1&&python -m unittest discover -v artiq.test"; }}/bin/run.sh
+    ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&python -m unittest discover -v artiq.test"; }}/bin/run.sh
   '';
 }
