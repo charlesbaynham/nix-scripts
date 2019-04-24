@@ -17,7 +17,6 @@ in
 
 stdenv.mkDerivation {
   name = "windows-test";
-  src = null;
 
   phases = [ "installPhase" "checkPhase" ];
   installPhase = "touch $out";

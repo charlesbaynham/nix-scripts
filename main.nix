@@ -55,7 +55,6 @@ in
 
     windows-no-hardware-tests = pkgs.stdenv.mkDerivation {
       name = "windows-no-hardware-tests";
-      src = null;
       buildInputs = [ (windowsRunner {}) ];
       phases = [ "buildPhase" ];
       buildPhase = ''
