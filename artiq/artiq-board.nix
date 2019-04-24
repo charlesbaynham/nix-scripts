@@ -1,7 +1,7 @@
 # Install Vivado in /opt and add to /etc/nixos/configuration.nix:
 #  nix.sandboxPaths = ["/opt"];
 
-{ pkgs ? import <nixpkgs> {}}:
+{ pkgs }:
 { target
 , variant
 , buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}"

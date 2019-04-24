@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {},
+{ pkgs,
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",
   testTimeout ? 600,
