@@ -20,8 +20,8 @@ let
       sha256 = "$HASH";
     }
     EOF
-    echo \"5e.`cut -c1-8 <<< $REV`\" > $out/pkgs/artiq-version.nix
-    echo \"$TIMESTAMP\" > $out/pkgs/artiq-timestamp.nix
+    echo "{ stdenv, git, fetchgit }: \"5e.`cut -c1-8 <<< $REV`\"" > $out/pkgs/artiq-version.nix
+    echo "{ stdenv, git, fetchgit }: \"$TIMESTAMP\"" > $out/pkgs/artiq-timestamp.nix
     '';
   generateTestOkHash = pkgs.runCommand "generate-test-ok-hash" { buildInputs = [ pkgs.nix ]; }
     ''

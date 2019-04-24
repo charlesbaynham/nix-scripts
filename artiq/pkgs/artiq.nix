@@ -1,11 +1,11 @@
-{ stdenv, callPackage, fetchgit, python3Packages, qt5Full, binutils-or1k, llvm-or1k, llvmlite-artiq, libartiq-support, lit, outputcheck }:
+{ stdenv, callPackage, fetchgit, git, python3Packages, qt5Full, binutils-or1k, llvm-or1k, llvmlite-artiq, libartiq-support, lit, outputcheck }:
 
 let
   pythonDeps = callPackage ./python-deps.nix {};
 in
   python3Packages.buildPythonPackage rec {
     name = "artiq-${version}";
-    version = import ./artiq-version.nix;
+    version = import ./artiq-version.nix { inherit stdenv fetchgit git; };
     src = import ./artiq-src.nix { inherit fetchgit; };
     preBuild = "export VERSIONEER_OVERRIDE=${version}";
     propagatedBuildInputs = [ binutils-or1k llvm-or1k llvmlite-artiq qt5Full ]

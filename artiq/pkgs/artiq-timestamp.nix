@@ -1,16 +1,13 @@
-let pkgs = import <nixpkgs> {};
-in
-with pkgs;
+{ stdenv, git, fetchgit }:
 let
   artiq-timestamp = stdenv.mkDerivation {
     name = "artiq-timestamp";
     src = import ./artiq-src.nix { inherit fetchgit; };
-    buildInputs = [ git ];
     buildPhase = ''
       TIMESTAMP=`${git}/bin/git log -1 --format=%ct`
     '';
     installPhase = ''
-      echo \"$TIMESTAMP\" > $out
+      echo -n $TIMESTAMP > $out
     '';
   };
 in

@@ -1,7 +1,7 @@
-{ stdenv, lib, fetchgit, python3Packages, texlive, texinfo, sphinxcontrib-wavedrom }:
+{ stdenv, lib, fetchgit, git, python3Packages, texlive, texinfo, sphinxcontrib-wavedrom }:
 
 let
-  artiqVersion = import ./artiq-version.nix;
+  artiqVersion = import ./artiq-version.nix { inherit stdenv fetchgit git; };
 
   isLatexPdfTarget = target: builtins.match "latexpdf.*" target != null;
 
@@ -26,7 +26,7 @@ let
 
     preBuild = ''
         export VERSIONEER_OVERRIDE=${artiqVersion}
-        export SOURCE_DATE_EPOCH=${import ./artiq-timestamp.nix}
+        export SOURCE_DATE_EPOCH=${import ./artiq-timestamp.nix { inherit stdenv fetchgit git; }}
         cd doc/manual
       '';
     makeFlags = [ target ];
