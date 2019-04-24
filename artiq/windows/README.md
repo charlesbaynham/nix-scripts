@@ -21,5 +21,5 @@ Move the image `c.img` to one of Nix' `extra-sandbox-paths` (`nix.sandboxPaths` 
 # Running the tests manually
 
 ```shell
-nix-build --pure --arg diskImage "\"…/c.img\"" -I artiqSrc=…/artiq
+nix-build --pure --arg diskImage "\"…/c.img\"" -I artiqSrc=…/artiq manual-test-run.nix
 ```
