@@ -1,5 +1,4 @@
-{ pkgs ? import <nixpkgs> {}}:
-with pkgs;
+{ fetchFromGitHub, python3Packages }:
 with python3Packages;
 
 let
@@ -37,7 +36,7 @@ let
   '';
 in
 
-buildPythonPackage rec {
+buildPythonApplication rec {
   pname = "mattermost-github-integration";
   version = "0.0.0-unstable";
   src = fetchFromGitHub {
