@@ -218,6 +218,24 @@ ACTION=="add", SUBSYSTEM=="tty", \
         locations."~ /api/v[0-9]+/(users/)?websocket$".proxyPass = "http://127.0.0.1:8065";
         locations."~ /api/v[0-9]+/(users/)?websocket$".proxyWebsockets = true;
       };
+      "hooks.m-labs.hk" = {
+        extraConfig = ''
+          location / {
+            include ${pkgs.nginx}/conf/uwsgi_params;
+            uwsgi_pass unix:${config.services.uwsgi.runDir}/uwsgi.sock;
+          }
+        '';
+      };
+    };
+  };
+  services.uwsgi = {
+    enable = true;
+    plugins = [ "python3" ];
+    instance = {
+      type = "emperor";
+      vassals = {
+        mattermostgithub = import ./mattermost-github-integration/uwsgi-config.nix { inherit config pkgs; };
+      };
     };
   };
 
