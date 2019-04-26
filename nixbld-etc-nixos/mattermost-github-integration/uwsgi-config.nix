@@ -7,7 +7,7 @@ in {
   pythonPackages = self: [ pkg ];
   module = "mattermostgithub:app";
   env = [
-    "MGI_CONFIG_FILE=${./config.py}"
+    "MGI_CONFIG_FILE=${./../secret/mattermost-github-integration.py}"
   ];
   socket = "${config.services.uwsgi.runDir}/uwsgi.sock";
   # allow access from nginx
