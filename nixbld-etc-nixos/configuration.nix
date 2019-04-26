@@ -163,6 +163,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
     enable = true;
     configPath = "/etc/nixos/secret/matterbridge.toml";
   };
+ 
+  nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
+    matterbridge = super.matterbridge.overrideAttrs(oa: { patches = [ ./matterbridge-disable-github.patch ]; });
+  };
 
   security.acme.certs = {
     "nixbld.m-labs.hk" = {
