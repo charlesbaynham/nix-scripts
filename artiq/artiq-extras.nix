@@ -12,7 +12,10 @@ let
           name = "${name}-manual-html-${version}";
           inherit version src;
           buildInputs = (with pkgs.python3Packages; [ sphinx sphinx_rtd_theme sphinx-argparse ]) ++ [ artiq ];
-          preBuild = "cd doc";
+          preBuild = ''
+            export SOURCE_DATE_EPOCH=${with pkgs; import ./pkgs/artiq-timestamp.nix { inherit stdenv fetchgit git; }}
+            cd doc
+          '';
           makeFlags = [ "html" ];
           installPhase =
             let
