@@ -35,7 +35,7 @@ let
       ))
   );
 
-  dbFile = homuConfig.db.file;
+  dbDir = dirOf homuConfig.db.file;
 in
 
 {
@@ -45,14 +45,6 @@ in
       default = false;
       description = "Enable the bot";
     };
-    user = mkOption {
-      type = types.str;
-      default = "nobody";
-    };
-    group = mkOption {
-      type = types.str;
-      default = "nogroup";
-    };
     config = mkOption {
       description = "Structured data for config.toml";
       type = with types; attrsOf unspecified;
@@ -60,20 +52,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.homu-dbdir = {
-      description = "Homu bot database directory";
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = [
-          "${pkgs.coreutils}/bin/mkdir -p ${dirOf dbFile}"
-              "${pkgs.coreutils}/bin/chown -R ${cfg.user}:${cfg.group} ${dirOf dbFile}"
-              ];
-      };
+    users.users.homu = {
+      group = "homu";
+      home = dbDir;
+      createHome = true;
     };
+    users.groups.homu = {};
+
     systemd.services.homu = {
       description = "Homu bot";
       wantedBy = [ "multi-user.target" ];
-      requires = [ "homu-dbdir.service" ];
       after    = [ "network.target" ];
       serviceConfig = {
         Type = "simple";
@@ -82,8 +70,8 @@ in
         Restart = "always";
         RestartSec = "5sec";
 
-        User = cfg.user;
-        Group = cfg.group;
+        User = "homu";
+        Group = "homu";
       };
     };
   };
