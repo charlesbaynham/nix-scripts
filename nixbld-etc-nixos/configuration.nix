@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./homu/nixos-module.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -242,6 +243,17 @@ ACTION=="add", SUBSYSTEM=="tty", \
       };
     };
   };
+
+  # services.homu = {
+  #   enable = true;
+  #   # See https://github.com/servo/homu/blob/master/cfg.sample.toml
+  #   config = {
+  #     max_priority = 9001;
+  #     github = {
+  #       access_token = "...";
+  #     };
+  #   };
+  # };
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database

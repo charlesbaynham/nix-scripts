@@ -27,6 +27,6 @@ in
       rev = "2ea53e76ebac3e5fa11bc39054b3cd4c42eff607";
       sha256 = "1ih7s8zfbpq0qb9vqbxzr0r4s9ff52l4ipr916kwbck3ygliq3r9";
     };
-    buildInputs = [ github3_py_0_9_6 ] ++ (with python3Packages; [ toml jinja2 requests bottle waitress retrying ]);
+    propagatedBuildInputs = [ github3_py_0_9_6 ] ++ (with python3Packages; [ toml jinja2 requests bottle waitress retrying ]);
     checkPhase = "python -m unittest discover tests -v";
   }
