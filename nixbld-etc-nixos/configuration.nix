@@ -177,7 +177,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
       extraDomains = {
         "m-labs.hk" = null;
         "www.m-labs.hk" = null;
-        "buildbot.m-labs.hk" = null;
         "lab.m-labs.hk" = null;
         "git.m-labs.hk" = null;
         "chat.m-labs.hk" = null;
@@ -197,11 +196,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         root = "/var/www/m-labs.hk";
-      };
-      "buildbot.m-labs.hk" = {
-        addSSL = true;
-        useACMEHost = "nixbld.m-labs.hk";
-        locations."/".proxyPass = "http://192.168.1.100";
       };
       "lab.m-labs.hk" = {
         addSSL = true;
