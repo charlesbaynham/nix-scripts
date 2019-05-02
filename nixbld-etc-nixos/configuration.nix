@@ -205,7 +205,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
       "lab.m-labs.hk" = {
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
-        locations."/".proxyPass = "http://192.168.1.100";
+        locations."/homu/".proxyPass = "http://127.0.0.1:54856/";
       };
       "nixbld.m-labs.hk" = {
         forceSSL = true;
@@ -245,16 +245,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
     };
   };
 
-  # services.homu = {
-  #   enable = true;
-  #   # See https://github.com/servo/homu/blob/master/cfg.sample.toml
-  #   config = {
-  #     max_priority = 9001;
-  #     github = {
-  #       access_token = "...";
-  #     };
-  #   };
-  # };
+  services.homu = {
+    enable = true;
+    config = "/etc/nixos/secret/homu.toml";
+  };
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
