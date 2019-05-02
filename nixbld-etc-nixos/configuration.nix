@@ -82,6 +82,11 @@
     extraGroups = ["plugdev" "dialout" "wireshark"];
     uid = 1003;
   };
+  users.extraUsers.whitequark = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    uid = 1004;
+  };
   users.extraUsers.nix = {
     isNormalUser = true;
     uid = 1001;
