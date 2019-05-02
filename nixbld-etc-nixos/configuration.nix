@@ -87,6 +87,8 @@
     uid = 1001;
   };
   security.sudo.wheelNeedsPassword = false;
+  security.hideProcessInformation = true;
+  boot.kernel.sysctl."kernel.dmesg_restrict" = true;
   services.udev.packages = [ pkgs.openocd ];
   services.udev.extraRules = ''
 ACTION=="add", SUBSYSTEM=="tty", \
