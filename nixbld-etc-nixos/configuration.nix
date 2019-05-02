@@ -70,26 +70,26 @@
   users.extraUsers.sb = {
     isNormalUser = true;
     extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner" "wireshark"];
-    uid = 1000;
+    uid = 2000;
   };
   users.extraUsers.rj = {
     isNormalUser = true;
     extraGroups = ["wheel" "plugdev" "dialout" "wireshark"];
-    uid = 1002;
+    uid = 2002;
   };
   users.extraUsers.astro = {
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout" "wireshark"];
-    uid = 1003;
+    uid = 2003;
   };
   users.extraUsers.whitequark = {
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
-    uid = 1004;
+    uid = 2004;
   };
   users.extraUsers.nix = {
     isNormalUser = true;
-    uid = 1001;
+    uid = 2001;
   };
   security.sudo.wheelNeedsPassword = false;
   security.hideProcessInformation = true;
