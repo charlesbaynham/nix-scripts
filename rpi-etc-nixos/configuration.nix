@@ -31,11 +31,9 @@ in
   users.extraUsers.sb = {
     isNormalUser = true;
     extraGroups = ["wheel" "plugdev" "dialout"];
-    uid = 1000;
   };
   users.extraUsers.nix = {
     isNormalUser = true;
-    uid = 1001;
   };
   services.udev.packages = [ m-labs.openocd ];
 
