@@ -1,4 +1,4 @@
-{ python3Packages, fetchFromGitHub }:
+{ python3Packages, python3, fetchFromGitHub, git, openssh }:
 
 let
   uritemplate_0_2_0 = python3Packages.github3_py.overrideAttrs(oa: rec {
@@ -27,6 +27,8 @@ in
       rev = "2ea53e76ebac3e5fa11bc39054b3cd4c42eff607";
       sha256 = "1ih7s8zfbpq0qb9vqbxzr0r4s9ff52l4ipr916kwbck3ygliq3r9";
     };
-    propagatedBuildInputs = [ github3_py_0_9_6 ] ++ (with python3Packages; [ toml jinja2 requests bottle waitress retrying ]);
+    patches = [ ./patch-cache-directory.patch ./disable-ssh-host-keycheck.patch ];
+    postInstall = "chmod 755 $out/${python3.sitePackages}/homu/git_helper.py";
+    propagatedBuildInputs = [ github3_py_0_9_6 git openssh ] ++ (with python3Packages; [ toml jinja2 requests bottle waitress retrying ]);
     checkPhase = "python -m unittest discover tests -v";
   }
