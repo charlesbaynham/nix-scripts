@@ -8,7 +8,7 @@ let
       COMMITCOUNT=`${git}/bin/git rev-list --count HEAD`
     '';
     installPhase = ''
-      echo -n 5.$COMMITCOUNT.`cut -c1-8 <<< $REV`-beta > $out
+      echo -n 5.$COMMITCOUNT.`cut -c1-8 <<< $REV`.beta > $out
     '';
   };
 in
