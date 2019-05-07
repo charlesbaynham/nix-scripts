@@ -24,7 +24,7 @@ let
       artiq-board = import <m-labs/artiq-board.nix> { inherit pkgs; };
       conda-artiq-board = import <m-labs/conda-artiq-board.nix> { inherit pkgs; };
       src = pkgs.fetchgit {
-        url = "git://github.com/m-labs/sinara-systems.git";
+        url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
         rev = "$REV";
         sha256 = "$HASH";
       };
