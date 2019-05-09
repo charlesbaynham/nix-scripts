@@ -1,17 +1,8 @@
-{ pkgs ? import <nixpkgs> {} }:
-with pkgs;
-
-#{ python2Packages, python2, fetchFromGitHub, fetchurl }:
+{ python2Packages, python2, fetchFromGitHub, fetchurl }:
 
 let
   Flask-Gravatar = python2Packages.buildPythonPackage {
     name = "Flask-Gravatar";
-    # src = fetchFromGitHub {
-    #   owner = "zzzsochi";
-    #   repo = "Flask-Gravatar";
-    #   rev = "317053bdd03e6d7bc339f5b2ba9b7cf722660d07";
-    #   sha256 = "0ckzfsgahl7iiizsn8ybvgmznwrkxf1x5iay1n302js8aii4zrhm";
-    # };
     src = python2Packages.fetchPypi {
       pname = "Flask-Gravatar";
       version = "0.5.0";
@@ -33,20 +24,6 @@ let
       pygments
     ];
   };
-  # sniffer = python2Packages.buildPythonPackage {
-  #   name = "sniffer";
-  #   src = fetchFromGitHub {
-  #     owner = "jeffh";
-  #     repo = "sniffer";
-  #     rev = "v0.4.0";
-  #     sha256 = "19k5b585c7dwc5ml8g4aknd3za8bv8yh72p2p35a1jgdn09cl6dp";
-  #   };
-  #   propagatedBuildInputs = with python2Packages; [
-  #     colorama
-  #     termstyle
-  #     nose
-  #   ];
-  # };
   utopia = python2Packages.buildPythonPackage {
     name = "utopia";
     src = fetchFromGitHub {
@@ -60,10 +37,6 @@ let
       blinker
     ];
     doCheck = false;
-    checkInputs = with python2Packages; [
-      # sniffer
-      nose
-    ];
   };
   Flask-WTF = python2Packages.flask_wtf.overrideAttrs(oa: rec {
   	version = "0.8.4";
