@@ -18,7 +18,7 @@ let
 
     let
       target = "kasli";
-      variants = ["berkeley" "duke2" "hub" "hustmaster" "hustsatellite" ist" "luh" "mitll2" "mitll" "mpik" "nrc" "nudt" "ptb" "ptb2" "ptb3" "sysu" "tsinghua2" "tsinghua" "ubirmingham" "ucr" "unsw" "ustc" "vlbaimaster" "vlbaisatellite" "wipm" "wipm2" "wipm3"];
+      variants = ["berkeley" "duke2" "hub" "hustmaster" "hustsatellite" "ist" "luh" "mitll2" "mitll" "mpik" "nrc" "nudt" "ptb" "ptb2" "ptb3" "sysu" "tsinghua2" "tsinghua" "ubirmingham" "ucr" "unsw" "ustc" "vlbaimaster" "vlbaisatellite" "wipm" "wipm2" "wipm3"];
 
       artiq = import <m-labs> { inherit pkgs; };
       artiq-board = import <m-labs/artiq-board.nix> { inherit pkgs; };
@@ -42,8 +42,7 @@ let
               boardBinaries = boardBinaries;
               inherit target variant;
             };
-          } // (pkgs.lib.optionalAttrs ((builtins.fromJSON (builtins.readFile json)).base == "standalone")
-          {
+          } // (pkgs.lib.optionalAttrs ((builtins.fromJSON (builtins.readFile json)).base == "standalone") {
             "device-db-\''${target}-\''${variant}" = pkgs.stdenv.mkDerivation {
               name = "device-db-\''${target}-\''${variant}";
               buildInputs = [ artiq.artiq ];
