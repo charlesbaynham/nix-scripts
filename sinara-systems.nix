@@ -42,6 +42,8 @@ let
               boardBinaries = boardBinaries;
               inherit target variant;
             };
+          } // (pkgs.lib.optionalAttrs ((builtins.fromJSON (builtins.readFile json)).base == "standalone")
+          {
             "device-db-\''${target}-\''${variant}" = pkgs.stdenv.mkDerivation {
               name = "device-db-\''${target}-\''${variant}";
               buildInputs = [ artiq.artiq ];
@@ -53,7 +55,7 @@ let
                 echo file device_db_template \$out/device_db.py >> \$out/nix-support/hydra-build-products
                 ";
             };
-         }) {} variants;
+          })) {} variants;
     in
       generic-kasli // {
         artiq-board-sayma-satellite = artiq-board {
