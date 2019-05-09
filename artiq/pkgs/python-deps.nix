@@ -62,6 +62,18 @@ rec {
     propagatedBuildInputs = with python3Packages; [ scipy numpy pyqt5 pyopengl ];
   };
 
+  pyftdi = python3Packages.buildPythonPackage rec {
+    name = "pyftdi";
+    src = fetchFromGitHub {
+      owner = "eblot";
+      repo = "pyftdi";
+      rev = "8e6f0bab6cff3eb60d2dbe578d0c5a2d1a9e135c";
+      sha256 = "0mw79fjnvswa0j3bzr0y906rz1vjbr8lwy0albgvsfr0ngwbajqy";
+    };
+    propagatedBuildInputs = with python3Packages; [ pyusb pyserial ];
+    #doCheck = true;
+  };
+
 
   # Development/firmware dependencies
   misoc = python3Packages.buildPythonPackage rec {
