@@ -62,6 +62,8 @@ rec {
     propagatedBuildInputs = with python3Packages; [ scipy numpy pyqt5 pyopengl ];
   };
 
+  # TODO: use python3Packages.pyftdi starting with NixOS 19.09 or later
+  # Upstream PR: https://github.com/NixOS/nixpkgs/pull/61256
   pyftdi = python3Packages.buildPythonPackage rec {
     name = "pyftdi";
     src = fetchFromGitHub {
@@ -71,7 +73,6 @@ rec {
       sha256 = "0mw79fjnvswa0j3bzr0y906rz1vjbr8lwy0albgvsfr0ngwbajqy";
     };
     propagatedBuildInputs = with python3Packages; [ pyusb pyserial ];
-    #doCheck = true;
   };
 
 
