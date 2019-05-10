@@ -32,6 +32,10 @@ in
     isNormalUser = true;
     extraGroups = ["wheel" "plugdev" "dialout"];
   };
+  users.extraUsers.astro = {
+    isNormalUser = true;
+    extraGroups = ["wheel" "plugdev" "dialout"];
+  };
   users.extraUsers.nix = {
     isNormalUser = true;
   };
