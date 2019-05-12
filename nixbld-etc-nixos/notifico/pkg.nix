@@ -97,8 +97,10 @@ in
       mkdir $out/bin
       cat << EOF > $out/bin/notifico
       #!${python2}/bin/python
+      import sys
+      from notifico.__main__ import main
 
-      import notifico
+      sys.exit(main(sys.argv))
       EOF
       chmod +x $out/bin/notifico
     '';
