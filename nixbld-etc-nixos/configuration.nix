@@ -221,17 +221,17 @@ ACTION=="add", SUBSYSTEM=="tty", \
         locations."~ /api/v[0-9]+/(users/)?websocket$".proxyWebsockets = true;
       };
       "hooks.m-labs.hk" = {
-        extraConfig = ''
-          location / {
-            include ${pkgs.nginx}/conf/uwsgi_params;
-            uwsgi_pass unix:${config.services.uwsgi.runDir}/uwsgi.sock;
-          }
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".extraConfig = ''
+          include ${pkgs.nginx}/conf/uwsgi_params;
+          uwsgi_pass unix:${config.services.uwsgi.runDir}/uwsgi.sock;
         '';
+      };
       "notifico.m-labs.hk" = {
         forceSSL = true;
         useACMEHost = "notifico.m-labs.hk";
         locations."/".proxyPass = "http://127.0.0.1:5000";
-      };
       };
     };
   };
