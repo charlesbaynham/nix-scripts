@@ -192,11 +192,17 @@ ACTION=="add", SUBSYSTEM=="tty", \
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         root = "/var/www/m-labs.hk";
+        locations."/gateware.html".extraConfig = ''
+          return 301 /migen/;
+        '';
       };
       "www.m-labs.hk" = {
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         root = "/var/www/m-labs.hk";
+        locations."/gateware.html".extraConfig = ''
+          return 301 /migen/;
+        '';
       };
       "lab.m-labs.hk" = {
         addSSL = true;
