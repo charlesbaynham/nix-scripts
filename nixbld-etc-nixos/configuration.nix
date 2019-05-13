@@ -255,11 +255,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
     enable = true;
     config = "/etc/nixos/secret/notifico.py";
   };
-  # Required by notifico
-  services.redis = {
-    enable = true;
-    bind = "127.0.0.1";
-  };
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database

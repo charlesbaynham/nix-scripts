@@ -22,6 +22,11 @@ in
       default = false;
       description = "Enable the commit notification service";
     };
+    enableLocalRedis = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enable a local Redis server";
+    };
     dbDir = mkOption {
       type = types.str;
       default = "/var/db/notifico";
@@ -40,6 +45,11 @@ in
       createHome = true;
     };
     users.groups.notifico = {};
+
+    services.redis = mkIf cfg.enableLocalRedis {
+      enable = true;
+      bind = "127.0.0.1";
+    };
 
     systemd.services =
       let
