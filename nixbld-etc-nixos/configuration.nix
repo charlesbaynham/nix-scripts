@@ -138,6 +138,15 @@ ACTION=="add", SUBSYSTEM=="tty", \
       ''
       binary_cache_secret_key_file = /etc/nixos/secret/nixbld.m-labs.hk-1
       max_output_size = 5500000000
+
+      <runcommand>
+        job = artiq:main:artiq-manual-html
+        command = echo Build $(jq -r .build $HYDRA_JSON) \($(jq -r .project $HYDRA_JSON):$(jq -r .jobset $HYDRA_JSON):$(jq -r .job $HYDRA_JSON)\) finished: $HYDRA_JSON
+      </runcommand>
+      <runcommand>
+        job = artiq:main:artiq-manual-latexpdf
+        command = echo Build $(jq -r .build $HYDRA_JSON) \($(jq -r .project $HYDRA_JSON):$(jq -r .jobset $HYDRA_JSON):$(jq -r .job $HYDRA_JSON)\) finished: $HYDRA_JSON
+      </runcommand>
       '';
   };
 
