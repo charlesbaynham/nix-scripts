@@ -127,11 +127,11 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "microscope";
-      rev = "02cffc360ec5a234c589de6cb9616b057ed22253";
-      sha256 = "09yvgk16xfv5r5cf55vcg0f14wam42w53r4snlalcyw5gkm0rlhq";
+      rev = "bcbc5346c71ad8f7a1a0b7771a9d126b18fdf558";
+      sha256 = "1hslm2nn2z1bl84ya4fsab3pvcdmbziwn7zkai0cm3bv525fjxxd";
     };
 
-    propagatedBuildInputs = with python3Packages; [ pyserial prettytable msgpack-python migen ];
+    propagatedBuildInputs = with python3Packages; [ pyserial prettytable msgpack migen ];
 
     meta = with stdenv.lib; {
       description = "Finding the bacteria in rotting FPGA designs";
