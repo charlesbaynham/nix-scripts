@@ -63,6 +63,11 @@ let
           buildCommand = "python -m artiq.gateware.targets.sayma_rtm && python -m artiq.gateware.targets.sayma_amc -V satellite";
           extraInstallCommands = "cp artiq_sayma/rtm_gateware/rtm.bit \$TARGET_DIR";
         };
+        artiq-board-metlino-master = artiq-board {
+          target = "metlino";
+          variant = "master";
+          buildCommand = "python -m artiq.gateware.targets.metlino";
+        };
       }
     EOF
     '';
