@@ -164,6 +164,11 @@ ACTION=="add", SUBSYSTEM=="tty", \
     appName = "M-Labs Git";
     cookieSecure = true;
     disableRegistration = true;
+    extraConfig =
+    ''
+    [attachment]
+    ALLOWED_TYPES = */*
+    '';
   };
 
   services.mattermost = {
