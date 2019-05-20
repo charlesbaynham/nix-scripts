@@ -127,7 +127,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
   ];
   services.hydra = {
     enable = true;
-    package = pkgs.hydra.overrideAttrs(oa: { patches = oa.patches ++ [ ./hydra-conda.patch ./hydra-retry.patch ]; } );
+    package = pkgs.hydra.overrideAttrs(oa: {
+      patches = oa.patches ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
+      hydraPath = oa.hydraPath + ":" + pkgs.lib.makeBinPath [ pkgs.jq ];
+    });
     useSubstitutes = true;
     hydraURL = "https://nixbld.m-labs.hk";
     notificationSender = "hydra@m-labs.hk";
