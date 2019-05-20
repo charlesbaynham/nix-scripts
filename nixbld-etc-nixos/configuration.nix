@@ -4,6 +4,9 @@
 
 { config, pkgs, ... }:
 
+let
+  hydraWwwOutputs = "/var/www/hydra-outputs";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -143,14 +146,25 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
       <runcommand>
         job = artiq:main:artiq-manual-html
-        command = echo Build $(jq -r .build $HYDRA_JSON) \($(jq -r .project $HYDRA_JSON):$(jq -r .jobset $HYDRA_JSON):$(jq -r .job $HYDRA_JSON)\) finished: $(jq -r .products[0].path $HYDRA_JSON) 
+        command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html-beta
       </runcommand>
       <runcommand>
         job = artiq:main:artiq-manual-latexpdf
-        command = echo Build $(jq -r .build $HYDRA_JSON) \($(jq -r .project $HYDRA_JSON):$(jq -r .jobset $HYDRA_JSON):$(jq -r .job $HYDRA_JSON)\) finished: $(jq -r .products[0].path $HYDRA_JSON) 
+        command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
       </runcommand>
       '';
   };
+  systemd.services.hydra-www-outputs-init = {
+    description = "Set up a hydra-owned directory for build outputs";
+    wantedBy = [ "multi-user.target" ];
+    requiredBy = [ "hydra-queue-runner.service" ];
+    before = [ "hydra-queue-runner.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = [ "${pkgs.coreutils}/bin/mkdir -p ${hydraWwwOutputs}" "${pkgs.coreutils}/bin/chown hydra-queue-runner:hydra ${hydraWwwOutputs}" ];
+    };
+  };
+
 
   nix.extraOptions = ''
     secret-key-files = /etc/nixos/secret/nixbld.m-labs.hk-1
@@ -213,6 +227,8 @@ ACTION=="add", SUBSYSTEM=="tty", \
         locations."/gateware.html".extraConfig = ''
           return 301 /migen/;
         '';
+        locations."/artiq/manual-beta".alias = "${hydraWwwOutputs}/artiq-manual-html-beta/share/doc/artiq-manual/html";
+        locations."/artiq/manual-beta.pdf".alias = "${hydraWwwOutputs}/artiq-manual-latexpdf-beta/share/doc/artiq-manual/ARTIQ.pdf";
       };
       "www.m-labs.hk" = {
         addSSL = true;
