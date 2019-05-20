@@ -69,11 +69,11 @@
   users.extraGroups.plugdev = { };
   users.extraUsers.sb = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner" "wireshark"];
+    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner" "wireshark" "docker"];
   };
   users.extraUsers.rj = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout" "wireshark"];
+    extraGroups = ["wheel" "plugdev" "dialout" "wireshark" "docker"];
   };
   users.extraUsers.astro = {
     isNormalUser = true;
@@ -155,6 +155,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
   nix.sandboxPaths = ["/opt"];
 
   virtualisation.libvirtd.enable = true;
+  virtualisation.docker.enable = true;
 
   services.gitea = {
     enable = true;
