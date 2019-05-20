@@ -194,6 +194,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
         "lab.m-labs.hk" = null;
         "git.m-labs.hk" = null;
         "chat.m-labs.hk" = null;
+        "hooks.m-labs.hk" = null;
       };
     };
   };
