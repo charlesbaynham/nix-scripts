@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./homu/nixos-module.nix
-      ./notifico/nixos-module.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -248,11 +247,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
           uwsgi_pass unix:${config.services.uwsgi.runDir}/uwsgi.sock;
         '';
       };
-      "notifico.m-labs.hk" = {
-        forceSSL = true;
-        useACMEHost = "notifico.m-labs.hk";
-        locations."/".proxyPass = "http://127.0.0.1:5000";
-      };
     };
   };
   services.uwsgi = {
@@ -269,11 +263,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
   services.homu = {
     enable = true;
     config = "/etc/nixos/secret/homu.toml";
-  };
-
-  services.notifico = {
-    enable = true;
-    config = "/etc/nixos/secret/notifico.py";
   };
 
   # This value determines the NixOS release with which your system is to be
