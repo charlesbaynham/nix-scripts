@@ -143,11 +143,11 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
       <runcommand>
         job = artiq:main:artiq-manual-html
-        command = echo Build $(jq -r .build $HYDRA_JSON) \($(jq -r .project $HYDRA_JSON):$(jq -r .jobset $HYDRA_JSON):$(jq -r .job $HYDRA_JSON)\) finished: $HYDRA_JSON
+        command = echo Build $(jq -r .build $HYDRA_JSON) \($(jq -r .project $HYDRA_JSON):$(jq -r .jobset $HYDRA_JSON):$(jq -r .job $HYDRA_JSON)\) finished: $(jq -r .products[0].path $HYDRA_JSON) 
       </runcommand>
       <runcommand>
         job = artiq:main:artiq-manual-latexpdf
-        command = echo Build $(jq -r .build $HYDRA_JSON) \($(jq -r .project $HYDRA_JSON):$(jq -r .jobset $HYDRA_JSON):$(jq -r .job $HYDRA_JSON)\) finished: $HYDRA_JSON
+        command = echo Build $(jq -r .build $HYDRA_JSON) \($(jq -r .project $HYDRA_JSON):$(jq -r .jobset $HYDRA_JSON):$(jq -r .job $HYDRA_JSON)\) finished: $(jq -r .products[0].path $HYDRA_JSON) 
       </runcommand>
       '';
   };
