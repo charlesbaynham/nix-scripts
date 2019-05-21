@@ -213,6 +213,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
         "git.m-labs.hk" = null;
         "chat.m-labs.hk" = null;
         "hooks.m-labs.hk" = null;
+        "forum.m-labs.hk" = null;
       };
     };
   };
@@ -268,6 +269,19 @@ ACTION=="add", SUBSYSTEM=="tty", \
           uwsgi_pass unix:${config.services.uwsgi.runDir}/uwsgi.sock;
         '';
       };
+      "forum.m-labs.hk" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+         root = "/var/www/flarum/public";
+         locations."~ \.php$".extraConfig = ''
+           fastcgi_pass 127.0.0.1:9000;
+           fastcgi_index index.php;
+         '';
+         extraConfig = ''
+           index index.php;
+           include /var/www/flarum/.nginx.conf;
+         '';
+      };
     };
   };
   services.uwsgi = {
@@ -280,6 +294,20 @@ ACTION=="add", SUBSYSTEM=="tty", \
       };
     };
   };
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
+  };
+  services.phpfpm.poolConfigs.mypool = ''
+    listen = 127.0.0.1:9000
+    user = nobody
+    pm = dynamic
+    pm.max_children = 5
+    pm.start_servers = 2
+    pm.min_spare_servers = 1
+    pm.max_spare_servers = 3
+    pm.max_requests = 500
+  '';
 
   services.homu = {
     enable = true;
