@@ -57,7 +57,7 @@ in
     description = "Set up a hydra-owned directory for build outputs";
     wantedBy = [ "multi-user.target" ];
     requiredBy = [ "hydra-queue-runner.service" ];
-    before = [ "hydra-queue-runner.service" ];
+    before = [ "hydra-queue-runner.service" "nginx.service" ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = [
