@@ -130,10 +130,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
   ];
   services.hydra = {
     enable = true;
-    package = pkgs.hydra.overrideAttrs(oa: {
-      patches = oa.patches ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
-      hydraPath = oa.hydraPath + ":" + pkgs.lib.makeBinPath [ pkgs.jq ];
-    });
     useSubstitutes = true;
     hydraURL = "https://nixbld.m-labs.hk";
     notificationSender = "hydra@m-labs.hk";
@@ -200,7 +196,13 @@ ACTION=="add", SUBSYSTEM=="tty", \
   };
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
-    matterbridge = super.matterbridge.overrideAttrs(oa: { patches = [ ./matterbridge-disable-github.patch ]; });
+    hydra = super.hydra.overrideAttrs(oa: {
+      patches = oa.patches ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
+      hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
+    });
+    matterbridge = super.matterbridge.overrideAttrs(oa: {
+      patches = [ ./matterbridge-disable-github.patch ];
+    });
   };
 
   security.acme.certs = {
