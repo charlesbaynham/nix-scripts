@@ -216,6 +216,12 @@ ACTION=="add", SUBSYSTEM=="tty", \
         "chat.m-labs.hk" = null;
         "hooks.m-labs.hk" = null;
         "forum.m-labs.hk" = null;
+
+        "fractalide.org" = null;
+        "www.fractalide.org" = null;
+        "hydra.fractalide.org" = null;
+        "git.fractalide.org" = null;
+        "luceo.fractalide.org" = null;
       };
     };
   };
@@ -297,6 +303,30 @@ ACTION=="add", SUBSYSTEM=="tty", \
            index index.php;
            include /var/www/flarum/.nginx.conf;
          '';
+      };
+
+      "fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+      };
+      "www.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+      };
+      "hydra.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3000";
+      };
+      "git.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3002";
+      };
+      "luceo.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3001";
       };
     };
   };
