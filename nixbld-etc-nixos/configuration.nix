@@ -4,12 +4,14 @@
 
 { config, pkgs, ... }:
 
+let
+  hydraWwwOutputs = "/var/www/hydra-outputs";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./homu/nixos-module.nix
-      ./hydra-www-outputs.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -137,20 +139,25 @@ ACTION=="add", SUBSYSTEM=="tty", \
       ''
       binary_cache_secret_key_file = /etc/nixos/secret/nixbld.m-labs.hk-1
       max_output_size = 5500000000
+
+      <runcommand>
+        job = artiq:main:artiq-manual-html
+        command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html-beta
+      </runcommand>
+      <runcommand>
+        job = artiq:main:artiq-manual-latexpdf
+        command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
+      </runcommand>
       '';
   };
-  services.hydraWwwOutputs = {
-    "m-labs.hk" = {
-      "artiq-manual-beta-html" = {
-        job = "artiq:main:artiq-manual-html";
-        httpPath = "/artiq/manual-beta";
-        outputPath = "share/doc/artiq-manual/html";
-      };
-      "artiq-manual-beta-latexpdf" = {
-        job = "artiq:main:artiq-manual-latexpdf";
-        httpPath = "/artiq/manual-beta.pdf";
-        outputPath = "share/doc/artiq-manual/ARTIQ.pdf";
-      };
+  systemd.services.hydra-www-outputs-init = {
+    description = "Set up a hydra-owned directory for build outputs";
+    wantedBy = [ "multi-user.target" ];
+    requiredBy = [ "hydra-queue-runner.service" ];
+    before = [ "hydra-queue-runner.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = [ "${pkgs.coreutils}/bin/mkdir -p ${hydraWwwOutputs}" "${pkgs.coreutils}/bin/chown hydra-queue-runner:hydra ${hydraWwwOutputs}" ];
     };
   };
 
@@ -223,6 +230,8 @@ ACTION=="add", SUBSYSTEM=="tty", \
         locations."/gateware.html".extraConfig = ''
           return 301 /migen/;
         '';
+        locations."/artiq/manual-beta".alias = "${hydraWwwOutputs}/artiq-manual-html-beta/share/doc/artiq-manual/html";
+        locations."/artiq/manual-beta.pdf".alias = "${hydraWwwOutputs}/artiq-manual-latexpdf-beta/share/doc/artiq-manual/ARTIQ.pdf";
       };
       "www.m-labs.hk" = {
         addSSL = true;
