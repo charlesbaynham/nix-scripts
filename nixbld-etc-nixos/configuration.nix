@@ -230,8 +230,22 @@ ACTION=="add", SUBSYSTEM=="tty", \
         locations."/gateware.html".extraConfig = ''
           return 301 /migen/;
         '';
-        locations."/artiq/manual-beta".alias = "${hydraWwwOutputs}/artiq-manual-html-beta/share/doc/artiq-manual/html";
-        locations."/artiq/manual-beta.pdf".alias = "${hydraWwwOutputs}/artiq-manual-latexpdf-beta/share/doc/artiq-manual/ARTIQ.pdf";
+        locations."/artiq/manual-beta" = {
+          alias = "${hydraWwwOutputs}/artiq-manual-html-beta/share/doc/artiq-manual/html";
+          extraConfig = ''
+            etag off;
+            if_modified_since off;
+            add_header last-modified  "";
+          '';
+        };
+        locations."/artiq/manual-beta.pdf" = {
+          alias = "${hydraWwwOutputs}/artiq-manual-latexpdf-beta/share/doc/artiq-manual/ARTIQ.pdf";
+          extraConfig = ''
+            etag off;
+            if_modified_since off;
+            add_header last-modified  "";
+          '';
+        };
       };
       "www.m-labs.hk" = {
         addSSL = true;
