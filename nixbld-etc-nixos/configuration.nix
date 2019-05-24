@@ -170,6 +170,15 @@ ACTION=="add", SUBSYSTEM=="tty", \
   virtualisation.libvirtd.enable = true;
   virtualisation.docker.enable = true;
 
+  services.munin-node.enable = true;
+  services.munin-cron = {
+    enable = true;
+     hosts = ''
+       [${config.networking.hostName}]
+       address localhost
+     '';
+  };
+
   services.gitea = {
     enable = true;
     httpPort = 3001;
@@ -264,6 +273,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
       "lab.m-labs.hk" = {
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
+        locations."/munin".alias = "/var/www/munin";
         locations."/homu/".proxyPass = "http://127.0.0.1:54856/";
       };
       "nixbld.m-labs.hk" = {
