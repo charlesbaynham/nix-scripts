@@ -12,6 +12,7 @@ in
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./homu/nixos-module.nix
+      ./backup-module.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -178,6 +179,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
        address localhost
      '';
   };
+  services.mlabs-backup.enable = true;
 
   services.gitea = {
     enable = true;
