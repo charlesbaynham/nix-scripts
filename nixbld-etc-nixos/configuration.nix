@@ -320,10 +320,12 @@ ACTION=="add", SUBSYSTEM=="tty", \
       "fractalide.org" = {
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3003";
       };
       "www.fractalide.org" = {
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3003";
       };
       "hydra.fractalide.org" = {
         forceSSL = true;
