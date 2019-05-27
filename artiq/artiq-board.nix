@@ -55,8 +55,7 @@ in pkgs.python3Packages.buildPythonPackage rec {
   preCheck = ''
     # Search for PCREs in the Vivado output to check for errors
     function check_log() {
-      grep -Pe "$1" artiq_${target}/${variant}/gateware/vivado.log
-      if [ $? -ne 1 ]; then
+      if [ $(grep -Pe "$1" artiq_${target}/${variant}/gateware/vivado.log) != 1 ]; then
         exit 1
       fi
     }
