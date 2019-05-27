@@ -47,10 +47,21 @@ let
 in pkgs.python3Packages.buildPythonPackage rec {
   name = "artiq-board-${target}-${variant}-${version}";
   version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
-  phases = [ "buildPhase" "installPhase" ];
+  phases = [ "buildPhase" "installCheckPhase" "installPhase" ];
   buildPhase = 
     ''
     ${buildenv}/bin/artiq-dev -c "export CARGO_HOME=${cargoVendored}; ${buildCommand}"
+    '';
+  preCheck = ''
+    # Search for PCREs in the Vivado output to check for errors
+    function check_log() {
+      grep -Pe "$1" artiq_${target}/${variant}/gateware/vivado.log
+      if [ $? -ne 1 ]; then
+        exit 1
+      fi
+    }
+    check_log "\d+ constraint not met\."
+    check_log "Timing constraints are not met\."
     '';
   installPhase =
     ''
