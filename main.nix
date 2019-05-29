@@ -82,6 +82,7 @@ in
         artiqpkgs.binutils-or1k
         artiqpkgs.openocd
         pkgs.iputils
+        pkgs.openssh
       ];
       phases = [ "buildPhase" ];
       buildPhase =
