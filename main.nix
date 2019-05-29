@@ -92,16 +92,26 @@ in
       cp /opt/hydra_id_rsa.pub $HOME/.ssh/id_rsa.pub
       echo "rpi-1,192.168.1.188 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMc7waNkP2HjL5Eo94evoxJhC8CbYj4i2n1THe5TPIR3" > $HOME/.ssh/known_hosts
       chmod 600 $HOME/.ssh/id_rsa
-      artiq_flash -t kc705 -H rpi-1
-      sleep 15
-      # ping: socket: Operation not permitted
-      #ping kc705-1 -c10 -w30
+      mkfifo /tmp/lockctl
 
-      export ARTIQ_ROOT=`python -c "import artiq; print(artiq.__path__[0])"`/examples/kc705_nist_clock
-      export ARTIQ_LOW_LATENCY=1
-      python -m unittest discover -v artiq.test.coredevice
+      ( cat /tmp/lockctl ) | ssh rpi-1 'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' | (
+        # Read "Ok" line when remote successfully locked
+        read LOCK_OK
 
-      ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&python -m unittest discover -v artiq.test.coredevice"; }}/bin/run.sh
+        artiq_flash -t kc705 -H rpi-1
+        sleep 15
+        # ping: socket: Operation not permitted
+        #ping kc705-1 -c10 -w30
+
+        export ARTIQ_ROOT=`python -c "import artiq; print(artiq.__path__[0])"`/examples/kc705_nist_clock
+        export ARTIQ_LOW_LATENCY=1
+        python -m unittest discover -v artiq.test.coredevice
+
+        ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&python -m unittest discover -v artiq.test.coredevice"; }}/bin/run.sh
+
+        # End remote flock via FIFO
+        echo > /tmp/lockctl
+      )
 
       mkdir $out
       cp ${generatedNix}/pkgs/artiq-version.nix $out/passed
