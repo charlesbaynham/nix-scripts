@@ -95,7 +95,13 @@ in
       chmod 600 $HOME/.ssh/id_rsa
       mkfifo /tmp/lockctl
 
-      ( cat /tmp/lockctl ) | ssh rpi-1 'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' | (
+      cat /tmp/lockctl | ssh rpi-1 'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' | (
+        # End remote flock via FIFO
+        atexit_unlock() {
+          echo > /tmp/lockctl
+        }
+        trap atexit_unlock EXIT
+
         # Read "Ok" line when remote successfully locked
         read LOCK_OK
 
@@ -109,9 +115,6 @@ in
         python -m unittest discover -v artiq.test.coredevice
 
         ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&python -m unittest discover -v artiq.test.coredevice"; }}/bin/run.sh
-
-        # End remote flock via FIFO
-        echo > /tmp/lockctl
       )
 
       mkdir $out
