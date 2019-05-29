@@ -134,7 +134,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
     useSubstitutes = true;
     hydraURL = "https://nixbld.m-labs.hk";
     notificationSender = "hydra@m-labs.hk";
-    minimumDiskFree = 10;  # in GB
+    minimumDiskFree = 15;  # in GB
     minimumDiskFreeEvaluator = 1;
     extraConfig =
       ''
