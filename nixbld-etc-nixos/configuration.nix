@@ -139,7 +139,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
     extraConfig =
       ''
       binary_cache_secret_key_file = /etc/nixos/secret/nixbld.m-labs.hk-1
-      max_output_size = 5500000000
+      max_output_size = 10000000000
 
       <runcommand>
         job = artiq:main:artiq-manual-html
