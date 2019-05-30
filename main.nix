@@ -92,13 +92,14 @@ in
       cp /opt/hydra_id_rsa $HOME/.ssh/id_rsa
       cp /opt/hydra_id_rsa.pub $HOME/.ssh/id_rsa.pub
       echo "rpi-1,192.168.1.188 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMc7waNkP2HjL5Eo94evoxJhC8CbYj4i2n1THe5TPIR3" > $HOME/.ssh/known_hosts
-      chmod 600 $HOME/.ssh/id_rsa
-      mkfifo /tmp/lockctl
+      chmod 600 $HOME/.ssh/id_rs
+      LOCKCTL=$(mktemp -d)
+      mkfifo $LOCKCTL/lockctl
 
-      cat /tmp/lockctl | ssh rpi-1 'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' | (
+      cat $LOCKCTL/lockctl | ssh rpi-1 'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' | (
         # End remote flock via FIFO
         atexit_unlock() {
-          echo > /tmp/lockctl
+          echo > $LOCKCTL/lockctl
         }
         trap atexit_unlock EXIT
 
