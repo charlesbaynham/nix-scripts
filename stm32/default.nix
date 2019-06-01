@@ -8,43 +8,25 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  fetchcargo = import ./fetchcargo.nix {
-    inherit (pkgs) stdenv cacert git cargo-vendor;
-    inherit (rustPlatform.rust) cargo;
-  };
   buildStm32Firmware = { name, src, cargoSha256 }:
-    let
-      firmwareDeps = fetchcargo { inherit name src; sha256 = cargoSha256; };
-    in
-      rustPlatform.buildRustPackage rec {
-        inherit name;
-        version = "0.0.0";
+    rustPlatform.buildRustPackage rec {
+      inherit name;
+      version = "0.0.0";
 
-        inherit src cargoSha256;
+      inherit src cargoSha256;
 
-        buildInputs = [ firmwareDeps ];
-        patchPhase = ''
-          cat >> .cargo/config <<EOF
-          [source.crates-io]
-          replace-with = "vendored-sources"
+      buildPhase = ''
+        export CARGO_HOME=$(mktemp -d cargo-home.XXX)
+        cargo build --release
+      '';
 
-          [source.vendored-sources]
-          directory = "${firmwareDeps}"
-          EOF
-        '';
-
-        buildPhase = ''
-          export CARGO_HOME=$(mktemp -d cargo-home.XXX)
-          cargo build --release
-        '';
-
-        doCheck = false;
-        installPhase = ''
-          mkdir -p $out $out/nix-support
-          cp target/thumbv7em-none-eabihf/release/${name} $out/${name}.elf
-          echo file binary-dist ${name}.elf >> $out/nix-support/hydra-build-products
-        '';
-      };
+      doCheck = false;
+      installPhase = ''
+        mkdir -p $out $out/nix-support
+        cp target/thumbv7em-none-eabihf/release/${name} $out/${name}.elf
+        echo file binary-dist ${name}.elf >> $out/nix-support/hydra-build-products
+      '';
+    };
 in
   {
     stabilizer = buildStm32Firmware {
