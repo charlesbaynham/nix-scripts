@@ -23,7 +23,7 @@ let
 
     echo Backup done
   '';
-  cfg = config.services.homu;
+  cfg = config.services.mlabs-backup;
 in
 {
   options.services.mlabs-backup = {
