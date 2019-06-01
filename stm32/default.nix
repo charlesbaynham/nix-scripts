@@ -24,7 +24,7 @@ let
       installPhase = ''
         mkdir -p $out $out/nix-support
         cp target/thumbv7em-none-eabihf/release/${name} $out/${name}.elf
-        echo file binary-dist ${name}.elf >> $out/nix-support/hydra-build-products
+        echo file binary-dist $out/${name}.elf >> $out/nix-support/hydra-build-products
       '';
     };
 in
