@@ -31,12 +31,12 @@ in
   {
     stabilizer = buildStm32Firmware {
       name = "stabilizer";
-      src = /home/sb/stabilizer;
-      cargoSha256 = "1m4cxf6c4lh28xv4iagp20ni97cya1f12yg58q0m733qahk8gncb";
+      src = <stabilizerSrc>;
+      cargoSha256 = "184pr64z71h5wi0n9k2ddjyzklbg1cw5vly4ppgck2q6zlb3qbm4";
     };
     thermostat = buildStm32Firmware {
       name = "thermostat";
-      src = /home/sb/thermostat;
+      src = <thermostatSrc>;
       cargoSha256 = "1i9p5d5n01ajbp8lmavyway6vr1mmy107qnccff9glvr91rqx352";
     };
   }
