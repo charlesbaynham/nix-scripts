@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {}, rustManifest ? ./channel-rust-nightly.toml }:
+{ pkgs ? import <nixpkgs> {}, rustManifest ? ./stm32/channel-rust-nightly.toml }:
 
 let
   jobs = pkgs.callPackage ./stm32/default.nix {
