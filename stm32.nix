@@ -1,10 +1,7 @@
-# For running on Hydra
-{ pkgs ? import <nixpkgs> {},
-  rustManifest ? ./channel-rust-nightly.toml
-}:
+{ pkgs ? import <nixpkgs> {}, rustManifest ? ./channel-rust-nightly.toml }:
 
 let
-  jobs = callPackage ./default.nix {
+  jobs = pkgs.callPackage ./default.nix {
     inherit rustManifest;
     mozillaOverlay = import <mozillaOverlay>;
   };
