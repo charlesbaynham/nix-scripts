@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {}, rustManifest ? ./channel-rust-nightly.toml }:
 
 let
-  jobs = pkgs.callPackage ./default.nix {
+  jobs = pkgs.callPackage ./stm32/default.nix {
     inherit rustManifest;
     mozillaOverlay = import <mozillaOverlay>;
   };
