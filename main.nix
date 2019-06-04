@@ -92,7 +92,7 @@ in
       cp /opt/hydra_id_rsa $HOME/.ssh/id_rsa
       cp /opt/hydra_id_rsa.pub $HOME/.ssh/id_rsa.pub
       echo "rpi-1,192.168.1.188 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMc7waNkP2HjL5Eo94evoxJhC8CbYj4i2n1THe5TPIR3" > $HOME/.ssh/known_hosts
-      chmod 600 $HOME/.ssh/id_rs
+      chmod 600 $HOME/.ssh/id_rsa
       LOCKCTL=$(mktemp -d)
       mkfifo $LOCKCTL/lockctl
 
