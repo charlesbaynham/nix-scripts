@@ -96,7 +96,11 @@ in
       LOCKCTL=$(mktemp -d)
       mkfifo $LOCKCTL/lockctl
 
-      cat $LOCKCTL/lockctl | ${pkgs.openssh}/bin/ssh rpi-1 'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' | (
+      cat $LOCKCTL/lockctl | ${pkgs.openssh}/bin/ssh \
+        -o UserKnownHostsFile=$HOME/.ssh/known_hosts \
+        rpi-1 \
+        'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' \
+      | (
         # End remote flock via FIFO
         atexit_unlock() {
           echo > $LOCKCTL/lockctl
