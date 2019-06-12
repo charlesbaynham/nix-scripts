@@ -98,7 +98,7 @@ in
 
       cat $LOCKCTL/lockctl | ${pkgs.openssh}/bin/ssh \
         -o UserKnownHostsFile=$HOME/.ssh/known_hosts \
-        rpi-1 \
+        sb@rpi-1 \
         'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' \
       | (
         # End remote flock via FIFO
