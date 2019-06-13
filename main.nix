@@ -27,7 +27,7 @@ let
   generateTestOkHash = pkgs.runCommand "generate-test-ok-hash" { buildInputs = [ pkgs.nix ]; }
     ''
     TMPDIR=`mktemp -d`
-    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed11
+    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed
     HASH=`nix-hash --type sha256 --base32 $TMPDIR`
     echo \"$HASH\" > $out
     '';
@@ -124,7 +124,7 @@ in
       )
 
       mkdir $out
-      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed11
+      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed
       '';
     };
   }
