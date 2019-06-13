@@ -27,7 +27,7 @@ let
   generateTestOkHash = pkgs.runCommand "generate-test-ok-hash" { buildInputs = [ pkgs.nix ]; }
     ''
     TMPDIR=`mktemp -d`
-    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed10
+    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed11
     HASH=`nix-hash --type sha256 --base32 $TMPDIR`
     echo \"$HASH\" > $out
     '';
@@ -97,6 +97,7 @@ in
       mkfifo $LOCKCTL/lockctl
 
       cat $LOCKCTL/lockctl | ${pkgs.openssh}/bin/ssh \
+        -i $HOME/.ssh/id_rsa \
         -o UserKnownHostsFile=$HOME/.ssh/known_hosts \
         sb@rpi-1 \
         'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' \
@@ -123,7 +124,7 @@ in
       )
 
       mkdir $out
-      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed10
+      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed11
       '';
     };
   }
