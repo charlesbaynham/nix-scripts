@@ -5,7 +5,8 @@ let
     ''
     cp --no-preserve=mode,ownership -R ${./artiq} $out
     REV=`git --git-dir ${artiqSrc}/.git rev-parse HEAD`
-    COMMITCOUNT=`git --git-dir ${artiqSrc}/.git rev-list --count HEAD`
+    MAJOR_VERSION=`cat ${artiqSrc}/MAJOR_VERSION`
+    COMMIT_COUNT=`git --git-dir ${artiqSrc}/.git rev-list --count HEAD`
     TIMESTAMP=`git --git-dir ${artiqSrc}/.git log -1 --format=%ct`
     ARTIQ_SRC_CLEAN=`mktemp -d`
     cp -a ${artiqSrc}/. $ARTIQ_SRC_CLEAN
@@ -21,7 +22,7 @@ let
       sha256 = "$HASH";
     }
     EOF
-    echo "{ stdenv, git, fetchgit }: \"5.$COMMITCOUNT.`cut -c1-8 <<< $REV`.beta\"" > $out/pkgs/artiq-version.nix
+    echo "{ stdenv, git, fetchgit }: \"$MAJOR_VERSION.$COMMIT_COUNT.`cut -c1-8 <<< $REV`.beta\"" > $out/pkgs/artiq-version.nix
     echo "{ stdenv, git, fetchgit }: \"$TIMESTAMP\"" > $out/pkgs/artiq-timestamp.nix
     '';
   generateTestOkHash = pkgs.runCommand "generate-test-ok-hash" { buildInputs = [ pkgs.nix ]; }
