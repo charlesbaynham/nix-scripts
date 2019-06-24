@@ -276,6 +276,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         locations."/munin".alias = "/var/www/munin";
+        locations."/munin".extraConfig = ''
+          auth_basic "Munin";
+          auth_basic_user_file /etc/nixos/secret/muninpasswd;
+        '';
         locations."/homu/".proxyPass = "http://127.0.0.1:54856/";
       };
       "nixbld.m-labs.hk" = {
