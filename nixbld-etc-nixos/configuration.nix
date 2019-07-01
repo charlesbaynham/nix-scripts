@@ -232,7 +232,11 @@ ACTION=="add", SUBSYSTEM=="tty", \
         "www.fractalide.org" = null;
         "hydra.fractalide.org" = null;
         "git.fractalide.org" = null;
-        "luceo.fractalide.org" = null;
+        "vpn.fractalide.org" = null;
+        "luceo-mainnet-rest.fractalide.org" = null;
+        "luceo-mainnet-grpc.fractalide.org" = null;
+        "luceo-testnet-rest.fractalide.org" = null;
+        "luceo-testnet-grpc.fractalide.org" = null;
       };
     };
   };
@@ -321,16 +325,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
          '';
       };
 
-      "fractalide.org" = {
-        forceSSL = true;
-        useACMEHost = "nixbld.m-labs.hk";
-        locations."/".proxyPass = "http://192.168.1.204:3003";
-      };
-      "www.fractalide.org" = {
-        forceSSL = true;
-        useACMEHost = "nixbld.m-labs.hk";
-        locations."/".proxyPass = "http://192.168.1.204:3003";
-      };
       "hydra.fractalide.org" = {
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
@@ -339,13 +333,44 @@ ACTION=="add", SUBSYSTEM=="tty", \
       "git.fractalide.org" = {
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
-        locations."/".proxyPass = "http://192.168.1.204:3002";
-      };
-      "luceo.fractalide.org" = {
-        forceSSL = true;
-        useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://192.168.1.204:3001";
       };
+      "fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3002";
+      };
+      "www.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3002";
+      };
+      "vpn.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3003";
+      };
+      "luceo-mainnet-rest.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3004";
+      };
+      "luceo-mainnet-grpc.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3005";
+      };
+      "luceo-testnet-rest.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3006";
+      };
+      "luceo-testnet-grpc.fractalide.org" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://192.168.1.204:3007";
+      };
+
     };
   };
   services.uwsgi = {
