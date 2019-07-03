@@ -45,7 +45,9 @@ let
   vivado = import ./vivado.nix { inherit pkgs; };
   artiqpkgs = import ./default.nix { inherit pkgs; };
 
-in pkgs.stdenv.mkDerivation rec {
+# Board packages are Python modules so that they get added to the ARTIQ Python
+# environment, and artiq_flash finds them.
+in pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
   name = "artiq-board-${target}-${variant}-${version}";
   version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
   phases = [ "buildPhase" "installCheckPhase" "installPhase" ];
@@ -90,4 +92,4 @@ in pkgs.stdenv.mkDerivation rec {
     fi
     ${extraInstallCommands}
     '';
-}
+})
