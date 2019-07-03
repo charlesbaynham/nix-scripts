@@ -38,6 +38,23 @@
                 "sinaraSystemsSrc": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/sinara-systems.git master 1", "emailresponsible": false },
                 "m-labs": { "type": "sysbuild", "value": "artiq:main:generated-nix", "emailresponsible": false }
             }
+        },
+        "urukul": {
+            "enabled": 1,
+            "hidden": false,
+            "description": "Urukul CPLD gateware",
+            "nixexprinput": "nixScripts",
+            "nixexprpath": "urukul.nix",
+            "checkinterval": 172800,
+            "schedulingshares": 1,
+            "enableemail": false,
+            "emailoverride": "",
+            "keepnr": 10,
+            "inputs": {
+                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.03", "emailresponsible": false },
+                "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
+                "urukulSrc": { "type": "git", "value": "git://github.com/quartiq/urukul", "emailresponsible": false }
+            }
         }
     }
     EOF
