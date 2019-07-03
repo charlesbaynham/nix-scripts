@@ -104,13 +104,12 @@ rec {
   migen = python3Packages.buildPythonPackage rec {
     name = "migen";
 
-    #src = fetchFromGitHub {
-    #  owner = "m-labs";
-    #  repo = "migen";
-    #  rev = "caab41469f5a0cb4014bc00a03898a0b76b00dd1";
-    #  sha256 = "06zbbbjzlbyq2nlp13hyk8diw06zrffc37n4b6cxzk1i2aq8g83m";
-    #};
-    src = /home/sb/migen;
+    src = fetchFromGitHub {
+      owner = "m-labs";
+      repo = "migen";
+      rev = "b0d9a18e15b3fbcf44619cc9a1aba9d654d85b70";
+      sha256 = "0razm0bdywlql8xv8vfc4fpg5wvbr7z6isi1i383m4v1jgps99fw";
+    };
 
     propagatedBuildInputs = with python3Packages; [ colorama sphinx sphinx_rtd_theme ];
 
