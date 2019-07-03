@@ -8,10 +8,10 @@
 , extraInstallCommands ? ""}:
 
 let
+  artiqSrc = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
   fetchcargo = import ./fetchcargo.nix {
     inherit (pkgs) stdenv cacert git cargo cargo-vendor;
   };
-  artiqSrc = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
   cargoDeps = fetchcargo rec {
     name = "artiq-firmware-cargo-deps";
     src = "${artiqSrc}/artiq/firmware";
@@ -42,15 +42,27 @@ let
       '';
   };
 
-  buildenv = import ./artiq-dev.nix { inherit pkgs; };
+  vivado = import ./vivado.nix { inherit pkgs; };
+  artiqpkgs = import ./default.nix { inherit pkgs; };
 
-in pkgs.python3Packages.buildPythonPackage rec {
+in pkgs.stdenv.mkDerivation rec {
   name = "artiq-board-${target}-${variant}-${version}";
   version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
   phases = [ "buildPhase" "installCheckPhase" "installPhase" ];
+  buildInputs = [
+    vivado
+    pkgs.gnumake
+    (pkgs.python3.withPackages(ps: with ps; [ jinja2 numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq ]))
+    pkgs.cargo
+    artiqpkgs.rustc
+    artiqpkgs.binutils-or1k
+    artiqpkgs.llvm-or1k
+  ];
   buildPhase = 
     ''
-    ${buildenv}/bin/artiq-dev -c "export CARGO_HOME=${cargoVendored}; ${buildCommand}"
+    export CARGO_HOME=${cargoVendored}
+    export TARGET_AR=or1k-linux-ar
+    ${buildCommand}
     '';
   checkPhase = ''
     # Search for PCREs in the Vivado output to check for errors
