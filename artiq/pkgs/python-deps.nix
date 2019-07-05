@@ -107,8 +107,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "b0d9a18e15b3fbcf44619cc9a1aba9d654d85b70";
-      sha256 = "0razm0bdywlql8xv8vfc4fpg5wvbr7z6isi1i383m4v1jgps99fw";
+      rev = "558591288dd08302cb8830310ba6975757b58c72";
+      sha256 = "11hnm8pw896bbcsyiair7627h7by2yg30ybqshxcap0dqw8k266n";
     };
 
     propagatedBuildInputs = with python3Packages; [ colorama sphinx sphinx_rtd_theme ];
