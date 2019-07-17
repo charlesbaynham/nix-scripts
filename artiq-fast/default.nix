@@ -23,7 +23,7 @@ let
         };
       }) {} boards;
   mainPackages = rec {
-    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck wavedrom sphinxcontrib-wavedrom;
+    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck;
     binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};
     rustc = callPackage ./pkgs/rust
