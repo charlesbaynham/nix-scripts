@@ -23,6 +23,7 @@ let
         "berkeley2"
         "duke"
         "duke2"
+        "duke3"
         "hub"
         "hustmaster"
         "hustsatellite"
