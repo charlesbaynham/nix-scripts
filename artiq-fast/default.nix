@@ -16,11 +16,6 @@ let
     in
       start // {
         "artiq-board-${board.target}-${board.variant}" = boardBinaries;
-        "conda-artiq-board-${board.target}-${board.variant}" = import ./conda-artiq-board.nix { inherit pkgs; } {
-          target = board.target;
-          variant = board.variant;
-          boardBinaries = boardBinaries;
-        };
       }) {} boards;
   mainPackages = rec {
     inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck;

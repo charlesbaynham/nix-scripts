@@ -8,6 +8,7 @@ let
     mkdir $out
 
     cp -a ${<artiq-fast>} $out/fast
+    cp ${./artiq-full/conda-artiq-board.nix} $out/conda-artiq-board.nix
     cp ${./artiq-full/extras.nix} $out/extras.nix
 
     REV=`git --git-dir ${sinaraSystemsSrc}/.git rev-parse HEAD`
@@ -59,7 +60,7 @@ let
 
       artiq-fast = import ./fast { inherit pkgs; };
       artiq-board = import ./fast/artiq-board.nix { inherit pkgs; };
-      conda-artiq-board = import ./fast/conda-artiq-board.nix { inherit pkgs; };
+      conda-artiq-board = import ./conda-artiq-board.nix { inherit pkgs; };
       src = pkgs.fetchgit {
         url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
         rev = "$REV";
@@ -105,6 +106,11 @@ let
           target = "metlino";
           variant = "master";
           buildCommand = "python -m artiq.gateware.targets.metlino";
+        };
+        conda-artiq-board-kc705-nist_clock = conda-artiq-board {
+          target = "kc705";
+          variant = "nist_clock";
+          boardBinaries = artiq-fast.artiq-board-kc705-nist_clock;
         };
       }
     EOF

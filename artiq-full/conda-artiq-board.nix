@@ -4,7 +4,7 @@
 with pkgs;
 
 let
-  version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
+  version = import ./fast/pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
   fakeCondaSource = runCommand "fake-condasrc-artiq-board-${target}-${variant}" { }
     ''
     mkdir -p $out/fake-conda;
@@ -40,7 +40,7 @@ let
     EOF
     chmod 755 $out/fake-conda/build.sh
     '';
-  conda-artiq-board = import ./conda-build.nix { inherit pkgs; } {
+  conda-artiq-board = import ./fast/conda-build.nix { inherit pkgs; } {
     name = "conda-artiq-board-${target}-${variant}";
     src = fakeCondaSource;
   };
