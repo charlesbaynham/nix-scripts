@@ -142,11 +142,11 @@ ACTION=="add", SUBSYSTEM=="tty", \
       max_output_size = 10000000000
 
       <runcommand>
-        job = artiq:main:artiq-manual-html
+        job = artiq:full:artiq-manual-html
         command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html-beta
       </runcommand>
       <runcommand>
-        job = artiq:main:artiq-manual-latexpdf
+        job = artiq:full:artiq-manual-latexpdf
         command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
       </runcommand>
       '';
