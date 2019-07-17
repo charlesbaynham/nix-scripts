@@ -6,6 +6,9 @@ let
   generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
     ''
     mkdir $out
+
+    cp -a ${<artiq-fast>} $out/fast
+
     REV=`git --git-dir ${sinaraSystemsSrc}/.git rev-parse HEAD`
     SINARA_SRC_CLEAN=`mktemp -d`
     cp -a ${sinaraSystemsSrc}/. $SINARA_SRC_CLEAN
@@ -53,9 +56,9 @@ let
         "wipm3"
       ];
 
-      artiq-fast = import <artiq-fast> { inherit pkgs; };
-      artiq-board = import <artiq-fast/artiq-board.nix> { inherit pkgs; };
-      conda-artiq-board = import <artiq-fast/conda-artiq-board.nix> { inherit pkgs; };
+      artiq-fast = import ./fast { inherit pkgs; };
+      artiq-board = import ./fast/artiq-board.nix { inherit pkgs; };
+      conda-artiq-board = import ./fast/conda-artiq-board.nix { inherit pkgs; };
       src = pkgs.fetchgit {
         url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
         rev = "$REV";
@@ -89,7 +92,7 @@ let
             };
           })) {} variants;
     in
-      generic-kasli // {
+      artiq-fast // generic-kasli // {
         artiq-board-sayma-satellite = artiq-board {
           target = "sayma";
           variant = "satellite";
