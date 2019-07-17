@@ -149,6 +149,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
         job = artiq:full:artiq-manual-latexpdf
         command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
       </runcommand>
+      <runcommand>
+        job = artiq:full:conda-channel
+        command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/conda-channel
+      </runcommand>
       '';
   };
   systemd.services.hydra-www-outputs-init = {
@@ -256,7 +260,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
           extraConfig = ''
             etag off;
             if_modified_since off;
-            add_header last-modified  "";
+            add_header last-modified "";
           '';
         };
         locations."/artiq/manual-beta.pdf" = {
@@ -264,7 +268,16 @@ ACTION=="add", SUBSYSTEM=="tty", \
           extraConfig = ''
             etag off;
             if_modified_since off;
-            add_header last-modified  "";
+            add_header last-modified "";
+          '';
+        };
+        locations."/artiq/conda" = {
+          alias = "${hydraWwwOutputs}/conda-channel";
+          extraConfig = ''
+            etag off;
+            if_modified_since off;
+            add_header last-modified "";
+            autoindex on;
           '';
         };
       };
