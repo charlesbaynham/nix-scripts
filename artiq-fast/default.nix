@@ -37,7 +37,6 @@ let
     artiq-env = (pkgs.python3.withPackages(ps: [ artiq ])).overrideAttrs (oldAttrs: { name = "${pkgs.python3.name}-artiq-env-${artiq.version}"; });
     openocd = callPackage ./pkgs/openocd.nix {};
     conda-artiq = import ./conda-artiq.nix { inherit pkgs; };
-  } // boardPackages;
-  extraPackages = import ./artiq-extras.nix { inherit pkgs; inherit (mainPackages) asyncserial artiq; };
+  };
 in
-  mainPackages // extraPackages
+  mainPackages // boardPackages
