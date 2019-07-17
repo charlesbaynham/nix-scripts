@@ -278,6 +278,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
             if_modified_since off;
             add_header last-modified "";
             autoindex on;
+            index bogus_index_file;
           '';
         };
       };
