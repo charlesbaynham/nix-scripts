@@ -22,10 +22,6 @@ let
           boardBinaries = boardBinaries;
         };
       }) {} boards;
-  manualPackages = import ./pkgs/artiq-manual.nix {
-    inherit stdenv lib fetchgit git python3Packages texlive texinfo;
-    inherit (pythonDeps) sphinxcontrib-wavedrom;
-  };
   mainPackages = rec {
     inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck wavedrom sphinxcontrib-wavedrom;
     binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
@@ -41,7 +37,7 @@ let
     artiq-env = (pkgs.python3.withPackages(ps: [ artiq ])).overrideAttrs (oldAttrs: { name = "${pkgs.python3.name}-artiq-env-${artiq.version}"; });
     openocd = callPackage ./pkgs/openocd.nix {};
     conda-artiq = import ./conda-artiq.nix { inherit pkgs; };
-  } // boardPackages // manualPackages;
+  } // boardPackages;
   extraPackages = import ./artiq-extras.nix { inherit pkgs; inherit (mainPackages) asyncserial artiq; };
 in
   mainPackages // extraPackages

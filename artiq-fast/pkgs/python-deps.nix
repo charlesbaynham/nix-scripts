@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, python, python3Packages }:
+{ stdenv, fetchFromGitHub, python3Packages }:
 
 rec {
   # User dependencies
@@ -197,48 +197,6 @@ rec {
       description = "A tool for checking tool output inspired by LLVM's FileCheck";
       homepage    = "https://github.com/stp/OutputCheck";
       license     = licenses.bsd3;
-    };
-  };
-
-
-  # Documentation building dependencies
-  wavedrom = python3Packages.buildPythonPackage rec {
-    pname = "wavedrom";
-    version = "0.1";
-
-    src = python3Packages.fetchPypi {
-      inherit pname version;
-      sha256 = "006w683zlmmwcw5xz1n5dwg34ims5jg3gl2700ql4wr0myjz6710";
-    };
-
-    buildInputs = [ python3Packages.setuptools_scm ];
-    propagatedBuildInputs = with python3Packages; [ svgwrite attrdict ];
-    doCheck = false;
-
-    meta = with stdenv.lib; {
-      description = "WaveDrom compatible Python module and command line";
-      homepage    = "https://pypi.org/project/wavedrom/";
-      license     = licenses.mit;
-    };
-  };
-
-  sphinxcontrib-wavedrom = python3Packages.buildPythonPackage rec {
-    pname = "sphinxcontrib-wavedrom";
-    version = "2.0.0";
-
-    src = python3Packages.fetchPypi {
-      inherit pname version;
-      sha256 = "0nk36zqq5ipxqx9izz2iazb3iraasanv3nm05bjr21gw42zgkz22";
-    };
-
-    buildInputs = [ python3Packages.setuptools_scm ];
-    propagatedBuildInputs = [ wavedrom ] ++ (with python3Packages; [ sphinx xcffib cairosvg ]);
-    doCheck = false;
-
-    meta = with stdenv.lib; {
-      description = "A Sphinx extension that allows including WaveDrom diagrams";
-      homepage    = "https://pypi.org/project/sphinxcontrib-wavedrom/";
-      license     = licenses.mit;
     };
   };
 }

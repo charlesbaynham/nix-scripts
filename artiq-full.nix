@@ -107,6 +107,11 @@ let
       }
     EOF
     '';
+  pythonDeps = import ./artiq-full/pythonDeps.nix { inherit pkgs; };
+  manualPackages = import ./artiq-full/manual.nix {
+    inherit (pkgs) stdenv lib fetchgit git python3Packages texlive texinfo;
+    inherit (pythonDeps) sphinxcontrib-wavedrom;
+  };
   jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) (import generatedNix { inherit pkgs; }) // {
     # This is in the example in the ARTIQ manual - precompile it to speed up
     # installation for users.
