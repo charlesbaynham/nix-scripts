@@ -134,4 +134,5 @@ in
       src = generatedNix;
       constituents = builtins.attrValues jobs;
     };
+    conda-channel = import ./artiq-full/conda-channel.nix { inherit pkgs; } { inherit jobs; };
   }
