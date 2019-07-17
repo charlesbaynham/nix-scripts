@@ -13,7 +13,7 @@ let
           inherit version src;
           buildInputs = (with pkgs.python3Packages; [ sphinx sphinx_rtd_theme sphinx-argparse ]) ++ [ artiq ];
           preBuild = ''
-            export SOURCE_DATE_EPOCH=${with pkgs; import ./pkgs/artiq-timestamp.nix { inherit stdenv fetchgit git; }}
+            export SOURCE_DATE_EPOCH=${import ./fast/pkgs/artiq-timestamp.nix { inherit (pkgs) stdenv fetchgit git; }}
             cd doc
           '';
           makeFlags = [ "html" ];
@@ -29,9 +29,9 @@ let
               echo doc manual ${dest}/html index.html >> $out/nix-support/hydra-build-products
               '';
         };
-        "conda-${name}" = import ./conda-build.nix { inherit pkgs; } {
+        "conda-${name}" = import ./fast/conda-build.nix { inherit pkgs; } {
           name = "conda-${name}";
-          src = import ./conda-fake-source.nix { inherit pkgs; } ({
+          src = import ./fast/conda-fake-source.nix { inherit pkgs; } ({
             inherit name version src;
           } // condaOptions);
         };

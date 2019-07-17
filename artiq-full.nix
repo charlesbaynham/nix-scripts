@@ -8,6 +8,7 @@ let
     mkdir $out
 
     cp -a ${<artiq-fast>} $out/fast
+    cp ${./artiq-full/extras.nix} $out/extras.nix
 
     REV=`git --git-dir ${sinaraSystemsSrc}/.git rev-parse HEAD`
     SINARA_SRC_CLEAN=`mktemp -d`
@@ -91,8 +92,9 @@ let
                 ";
             };
           })) {} variants;
+      extras = import ./extras.nix { inherit pkgs; inherit (artiq-fast) asyncserial artiq; };
     in
-      artiq-fast // generic-kasli // {
+      artiq-fast // extras // generic-kasli // {
         artiq-board-sayma-satellite = artiq-board {
           target = "sayma";
           variant = "satellite";
