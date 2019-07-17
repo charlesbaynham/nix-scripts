@@ -43,8 +43,8 @@ let
 in
   jobs // {
     generated-nix = pkgs.lib.hydraJob generatedNix;  # used by artiq-full
-    channel = pkgs.releaseTools.channel rec {
-      name = "main";
+    artiq-fast = pkgs.releaseTools.channel {
+      name = "artiq-fast";
       src = generatedNix;
       constituents = builtins.attrValues jobs;
     };

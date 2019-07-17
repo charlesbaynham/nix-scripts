@@ -121,8 +121,8 @@ let
   };
 in
   jobs // {
-    channel = pkgs.releaseTools.channel {
-      name = "sinara-systems";
+    artiq-full = pkgs.releaseTools.channel {
+      name = "artiq-full";
       src = generatedNix;
       constituents = builtins.attrValues jobs;
     };
