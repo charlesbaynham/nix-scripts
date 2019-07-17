@@ -4,7 +4,7 @@
 let 
   condaBuilderEnv = import <artiq-fast/conda-builder-env.nix> { inherit pkgs; };
 in
-  pkgs.runCommand "blah" { } 
+  pkgs.runCommand "conda-channel" { }
     ''
     mkdir -p $out/noarch
     for storepath in ${pkgs.lib.concatMapStringsSep " " builtins.toString (builtins.attrValues jobs)}; do
