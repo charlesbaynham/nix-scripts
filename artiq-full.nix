@@ -120,7 +120,7 @@ let
     inherit (pkgs) stdenv lib fetchgit git python3Packages texlive texinfo;
     inherit (pythonDeps) sphinxcontrib-wavedrom;
   };
-  jobs = builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) (import generatedNix { inherit pkgs; }) // {
+  jobs = (import generatedNix { inherit pkgs; }) // manualPackages // {
     # This is in the example in the ARTIQ manual - precompile it to speed up
     # installation for users.
     matplotlib-qt = pkgs.lib.hydraJob (pkgs.python3Packages.matplotlib.override { enableQt = true; });
@@ -128,7 +128,7 @@ let
     openocd-aarch64 = pkgs.lib.hydraJob ((import <nixpkgs> { system = "aarch64-linux"; }).callPackage ./artiq-fast/pkgs/openocd.nix {});
   };
 in
-  jobs // {
+  builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) jobs // {
     artiq-full = pkgs.releaseTools.channel {
       name = "artiq-full";
       src = generatedNix;
