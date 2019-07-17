@@ -115,7 +115,7 @@ let
       }
     EOF
     '';
-  pythonDeps = import ./artiq-full/pythonDeps.nix { inherit pkgs; };
+  pythonDeps = import ./artiq-full/python-deps.nix { inherit pkgs; };
   manualPackages = import ./artiq-full/manual.nix {
     inherit (pkgs) stdenv lib fetchgit git python3Packages texlive texinfo;
     inherit (pythonDeps) sphinxcontrib-wavedrom;
