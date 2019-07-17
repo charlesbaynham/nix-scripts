@@ -6,7 +6,7 @@
 
 let
   condaBuilderEnv = import ./conda-builder-env { inherit pkgs; };
-in stdenv.mkDerivation {
+in pkgs.stdenv.mkDerivation {
   inherit name src;
   buildCommand =
     ''
