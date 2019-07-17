@@ -3,7 +3,7 @@ let
   artiqSrc = <artiqSrc>;
   generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
     ''
-    cp --no-preserve=mode,ownership -R ${./artiq} $out
+    cp --no-preserve=mode,ownership -R ${./artiq-fast} $out
     REV=`git --git-dir ${artiqSrc}/.git rev-parse HEAD`
     MAJOR_VERSION=`cat ${artiqSrc}/MAJOR_VERSION`
     COMMIT_COUNT=`git --git-dir ${artiqSrc}/.git rev-list --count HEAD`
@@ -44,11 +44,11 @@ let
     # installation for users.
     matplotlib-qt = pkgs.lib.hydraJob (pkgs.python3Packages.matplotlib.override { enableQt = true; });
     # For Raspberry Pi JTAG servers
-    openocd-aarch64 = pkgs.lib.hydraJob ((import <nixpkgs> { system = "aarch64-linux"; }).callPackage ./artiq/pkgs/openocd.nix {});
+    openocd-aarch64 = pkgs.lib.hydraJob ((import <nixpkgs> { system = "aarch64-linux"; }).callPackage ./artiq-fast/pkgs/openocd.nix {});
   };
 in
   jobs // {
-    generated-nix = pkgs.lib.hydraJob generatedNix;  # used by sinara-systems
+    generated-nix = pkgs.lib.hydraJob generatedNix;  # used by artiq-full
     channel = pkgs.releaseTools.channel rec {
       name = "main";
       src = generatedNix;

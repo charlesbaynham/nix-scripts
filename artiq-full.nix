@@ -53,9 +53,9 @@ let
         "wipm3"
       ];
 
-      artiq = import <m-labs> { inherit pkgs; };
-      artiq-board = import <m-labs/artiq-board.nix> { inherit pkgs; };
-      conda-artiq-board = import <m-labs/conda-artiq-board.nix> { inherit pkgs; };
+      artiq-fast = import <artiq-fast> { inherit pkgs; };
+      artiq-board = import <artiq-fast/artiq-board.nix> { inherit pkgs; };
+      conda-artiq-board = import <artiq-fast/conda-artiq-board.nix> { inherit pkgs; };
       src = pkgs.fetchgit {
         url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
         rev = "$REV";
@@ -78,7 +78,7 @@ let
           } // (pkgs.lib.optionalAttrs ((builtins.fromJSON (builtins.readFile json)).base == "standalone") {
             "device-db-\''${target}-\''${variant}" = pkgs.stdenv.mkDerivation {
               name = "device-db-\''${target}-\''${variant}";
-              buildInputs = [ artiq.artiq ];
+              buildInputs = [ artiq-fast.artiq ];
               phases = [ "buildPhase" ];
               buildPhase = "
                 mkdir \$out

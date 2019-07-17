@@ -4,12 +4,12 @@
     ''
     cat > $out << EOF
     {
-        "main": {
+        "fast": {
             "enabled": 1,
             "hidden": false,
-            "description": "Main ARTIQ packages and board support packages for HITL CI",
+            "description": "Core ARTIQ packages to build fast for CI purposes",
             "nixexprinput": "nixScripts",
-            "nixexprpath": "main.nix",
+            "nixexprpath": "artiq-fast.nix",
             "checkinterval": 300,
             "schedulingshares": 10,
             "enableemail": false,
@@ -21,12 +21,12 @@
                 "artiqSrc": { "type": "git", "value": "git://github.com/m-labs/artiq.git master 1", "emailresponsible": false }
             }
         },
-        "sinara-systems": {
+        "full": {
             "enabled": 1,
             "hidden": false,
-            "description": "Board support packages for other Sinara systems",
+            "description": "Full set of ARTIQ packages",
             "nixexprinput": "nixScripts",
-            "nixexprpath": "sinara-systems.nix",
+            "nixexprpath": "artiq-full.nix",
             "checkinterval": 86400,
             "schedulingshares": 1,
             "enableemail": false,
@@ -36,7 +36,7 @@
                 "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.03", "emailresponsible": false },
                 "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
                 "sinaraSystemsSrc": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/sinara-systems.git master 1", "emailresponsible": false },
-                "m-labs": { "type": "sysbuild", "value": "artiq:main:generated-nix", "emailresponsible": false }
+                "artiq-fast": { "type": "sysbuild", "value": "artiq:artiq-fast:generated-nix", "emailresponsible": false }
             }
         },
         "urukul": {
