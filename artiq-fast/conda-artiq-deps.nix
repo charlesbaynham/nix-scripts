@@ -14,5 +14,5 @@
   "pyqtgraph 0.10.0"
   "pygit2"
   "aiohttp >=3"
-  "levenshtein"
+  "python-levenshtein"
 ]
