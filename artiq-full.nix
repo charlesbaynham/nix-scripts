@@ -95,7 +95,7 @@ let
           })) {} variants;
       extras = import ./extras.nix { inherit pkgs; inherit (artiq-fast) asyncserial artiq; };
     in
-      artiq-fast // extras // generic-kasli // {
+      artiq-fast // extras // generic-kasli // rec {
         artiq-board-sayma-satellite = artiq-board {
           target = "sayma";
           variant = "satellite";
@@ -107,10 +107,19 @@ let
           variant = "master";
           buildCommand = "python -m artiq.gateware.targets.metlino";
         };
+        artiq-board-kc705-nist_qc2 = artiq-board {
+          target = "kc705";
+          variant = "nist_qc2";
+        };
         conda-artiq-board-kc705-nist_clock = conda-artiq-board {
           target = "kc705";
           variant = "nist_clock";
           boardBinaries = artiq-fast.artiq-board-kc705-nist_clock;
+        };
+        conda-artiq-board-kc705-nist_qc2 = conda-artiq-board {
+          target = "kc705";
+          variant = "nist_qc2";
+          boardBinaries = artiq-board-kc705-nist_qc2;
         };
       }
     EOF
