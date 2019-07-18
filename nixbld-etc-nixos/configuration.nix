@@ -253,7 +253,13 @@ ACTION=="add", SUBSYSTEM=="tty", \
         useACMEHost = "nixbld.m-labs.hk";
         root = "/var/www/m-labs.hk";
         locations."/gateware.html".extraConfig = ''
-          return 301 /migen/;
+          return 301 /gateware/migen/;
+        '';
+        locations."/migen".extraConfig = ''
+          return 301 /gateware/migen/;
+        '';
+        locations."/artiq".extraConfig = ''
+          return 301 /experiment-control/artiq/;
         '';
         locations."/artiq/manual-beta" = {
           alias = "${hydraWwwOutputs}/artiq-manual-html-beta/share/doc/artiq-manual/html";
@@ -287,7 +293,13 @@ ACTION=="add", SUBSYSTEM=="tty", \
         useACMEHost = "nixbld.m-labs.hk";
         root = "/var/www/m-labs.hk";
         locations."/gateware.html".extraConfig = ''
-          return 301 /migen/;
+          return 301 /gateware/migen/;
+        '';
+        locations."/migen".extraConfig = ''
+          return 301 /gateware/migen/;
+        '';
+        locations."/artiq".extraConfig = ''
+          return 301 /experiment-control/artiq/;
         '';
       };
       "lab.m-labs.hk" = {
