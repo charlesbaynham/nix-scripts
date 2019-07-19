@@ -142,16 +142,20 @@ ACTION=="add", SUBSYSTEM=="tty", \
       max_output_size = 10000000000
 
       <runcommand>
+        job = web:web:web
+        command = ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/web
+      </runcommand>
+      <runcommand>
         job = artiq:full:artiq-manual-html
-        command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html-beta
+        command = ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html-beta
       </runcommand>
       <runcommand>
         job = artiq:full:artiq-manual-latexpdf
-        command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
+        command = ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
       </runcommand>
       <runcommand>
         job = artiq:full:conda-channel
-        command = ln -sf $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/conda-channel
+        command = ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/conda-channel
       </runcommand>
       '';
   };
@@ -211,6 +215,18 @@ ACTION=="add", SUBSYSTEM=="tty", \
   };
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
+    # nginx etag patch merged in Nixpkgs 19.09, remove after upgrading
+    # https://github.com/NixOS/nixpkgs/pull/60578
+    nginx = super.nginx.overrideAttrs(oa: {
+      patches = oa.patches ++ [
+        (super.substituteAll {
+          src = ./nix-etag-1.15.4.patch;
+          preInstall = ''
+            export nixStoreDir="$NIX_STORE" nixStoreDirLen="''${#NIX_STORE}"
+          '';
+        })
+      ];
+    });
     hydra = super.hydra.overrideAttrs(oa: {
       patches = oa.patches ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
       hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
@@ -247,8 +263,8 @@ ACTION=="add", SUBSYSTEM=="tty", \
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
-    virtualHosts = {
-      "m-labs.hk" = {
+    virtualHosts = let
+      mainWebsite = {
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         root = "/var/www/m-labs.hk";
@@ -263,45 +279,21 @@ ACTION=="add", SUBSYSTEM=="tty", \
         '';
         locations."/artiq/manual-beta" = {
           alias = "${hydraWwwOutputs}/artiq-manual-html-beta/share/doc/artiq-manual/html";
-          extraConfig = ''
-            etag off;
-            if_modified_since off;
-            add_header last-modified "";
-          '';
         };
         locations."/artiq/manual-beta.pdf" = {
           alias = "${hydraWwwOutputs}/artiq-manual-latexpdf-beta/share/doc/artiq-manual/ARTIQ.pdf";
-          extraConfig = ''
-            etag off;
-            if_modified_since off;
-            add_header last-modified "";
-          '';
         };
         locations."/artiq/conda" = {
           alias = "${hydraWwwOutputs}/conda-channel";
           extraConfig = ''
-            etag off;
-            if_modified_since off;
-            add_header last-modified "";
             autoindex on;
             index bogus_index_file;
           '';
         };
       };
-      "www.m-labs.hk" = {
-        addSSL = true;
-        useACMEHost = "nixbld.m-labs.hk";
-        root = "/var/www/m-labs.hk";
-        locations."/gateware.html".extraConfig = ''
-          return 301 /gateware/migen/;
-        '';
-        locations."/migen".extraConfig = ''
-          return 301 /gateware/migen/;
-        '';
-        locations."/artiq".extraConfig = ''
-          return 301 /experiment-control/artiq/;
-        '';
-      };
+    in {
+      "m-labs.hk" = mainWebsite;
+      "www.m-labs.hk" = mainWebsite;
       "lab.m-labs.hk" = {
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
@@ -396,7 +388,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
         useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://192.168.1.204:3007";
       };
-
     };
   };
   services.uwsgi = {
