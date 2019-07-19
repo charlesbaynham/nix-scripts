@@ -255,7 +255,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
       mainWebsite = {
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
-        root = "/var/www/m-labs.hk";
+        root = "${hydraWwwOutputs}/web";
+        locations."/MathJax" = {
+          alias = "/var/www/MathJax";
+        };
         locations."/gateware.html".extraConfig = ''
           return 301 /gateware/migen/;
         '';
