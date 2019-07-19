@@ -241,7 +241,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
         "www.fractalide.org" = null;
         "hydra.fractalide.org" = null;
         "git.fractalide.org" = null;
-        "vpn.fractalide.org" = null;
+        "puff.fractalide.org" = null;
         "luceo-mainnet-rest.fractalide.org" = null;
         "luceo-mainnet-grpc.fractalide.org" = null;
         "luceo-testnet-rest.fractalide.org" = null;
@@ -374,10 +374,10 @@ ACTION=="add", SUBSYSTEM=="tty", \
         useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://192.168.1.204:3002";
       };
-      "vpn.fractalide.org" = {
+      "puff.fractalide.org" = {
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
-        locations."/".proxyPass = "http://192.168.1.204:3003";
+        locations."/".proxyPass = "http://192.168.1.204:3008";
       };
       "luceo-mainnet-rest.fractalide.org" = {
         forceSSL = true;
