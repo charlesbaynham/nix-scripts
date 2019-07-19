@@ -215,18 +215,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
   };
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
-    # nginx etag patch merged in Nixpkgs 19.09, remove after upgrading
-    # https://github.com/NixOS/nixpkgs/pull/60578
-    nginx = super.nginx.overrideAttrs(oa: {
-      patches = oa.patches ++ [
-        (super.substituteAll {
-          src = ./nix-etag-1.15.4.patch;
-          preInstall = ''
-            export nixStoreDir="$NIX_STORE" nixStoreDirLen="''${#NIX_STORE}"
-          '';
-        })
-      ];
-    });
     hydra = super.hydra.overrideAttrs(oa: {
       patches = oa.patches ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
       hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
@@ -390,6 +378,19 @@ ACTION=="add", SUBSYSTEM=="tty", \
       };
     };
   };
+  # not needed after 19.09 - https://github.com/NixOS/nixpkgs/pull/60578
+  services.nginx.package = pkgs.nginx.overrideAttrs (drv: {
+    patches = (drv.patches or []) ++ pkgs.lib.singleton (pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/"
+          + "pkgs/servers/http/nginx/nix-etag-1.15.4.patch";
+      sha256 = "0i2lfz66204kcm1qdqws07cbq5nh1grxcz1ycp6qhmypl3da8hq4";
+      postFetch = ''
+        substituteInPlace "$out" \
+          --subst-var-by nixStoreDir "$NIX_STORE" \
+          --subst-var-by nixStoreDirLen "''${#NIX_STORE}"
+      '';
+    });
+  });
   services.uwsgi = {
     enable = true;
     plugins = [ "python3" ];
