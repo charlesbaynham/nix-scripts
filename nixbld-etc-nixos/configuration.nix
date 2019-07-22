@@ -327,6 +327,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         locations."/".proxyPass = "http://127.0.0.1:3001";
+        extraConfig = ''
+          client_max_body_size 300M;
+        '';
       };
       "chat.m-labs.hk" = {
         forceSSL = true;
