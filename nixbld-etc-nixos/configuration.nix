@@ -284,6 +284,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
         locations."/artiq/manual" = {
           alias = "/var/www/m-labs.hk.old/artiq/manual-release-4";
         };
+        locations."/artiq/manual-release-4" = {
+          alias = "/var/www/m-labs.hk.old/artiq/manual-release-4";
+        };
         locations."/artiq/manual-release-3" = {
           alias = "/var/www/m-labs.hk.old/artiq/manual-release-3";
         };
