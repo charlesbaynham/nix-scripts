@@ -257,6 +257,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         root = "${hydraWwwOutputs}/web";
+        extraConfig = ''
+          error_page 404 /404.html;
+        '';
         locations."/MathJax" = {
           alias = "/var/www/MathJax";
         };
