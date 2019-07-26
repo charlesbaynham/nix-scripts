@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> {} }:
 let
-  migen = (pkgs.callPackage ../artiq/pkgs/python-deps.nix {}).migen;
+  migen = (pkgs.callPackage ../artiq-fast/pkgs/python-deps.nix {}).migen;
   ise = import ./ise.nix { inherit pkgs; };
 in
   {
