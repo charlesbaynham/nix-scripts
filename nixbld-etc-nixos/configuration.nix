@@ -252,6 +252,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
+    recommendedGzipSettings = true;
     virtualHosts = let
       mainWebsite = {
         addSSL = true;
@@ -260,8 +261,17 @@ ACTION=="add", SUBSYSTEM=="tty", \
         extraConfig = ''
           error_page 404 /404.html;
         '';
+        locations."^~ /fonts/".extraConfig = ''
+          expires 60d;
+        '';
+        locations."^~ /js/".extraConfig = ''
+          expires 60d;
+        '';
         locations."/MathJax" = {
           alias = "/var/www/MathJax";
+          extraConfig = ''
+            expires 60d;
+          '';
         };
 
         # legacy URLs, redirect to avoid breaking people's bookmarks
