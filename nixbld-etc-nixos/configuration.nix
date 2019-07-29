@@ -294,6 +294,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
         };
 
         # legacy content
+        locations."/migen/manual" = {
+          alias = "/var/www/m-labs.hk.old/migen/manual";
+        };
         locations."/artiq/manual" = {
           alias = "/var/www/m-labs.hk.old/artiq/manual-release-4";
         };
