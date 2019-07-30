@@ -42,6 +42,7 @@ let
         "ptb"
         "ptb2"
         "ptb3"
+        "ptbin"
         "su"
         "sysu"
         "tsinghua"
