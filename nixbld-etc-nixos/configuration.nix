@@ -52,6 +52,8 @@ in
   services.openssh.forwardX11 = true;
   programs.mosh.enable = true;
 
+  programs.fish.enable = true;
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 631 5901 80 443 ];
   networking.firewall.allowedUDPPorts = [ 631 ];
@@ -74,6 +76,7 @@ in
   users.extraUsers.sb = {
     isNormalUser = true;
     extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner" "wireshark" "docker"];
+    shell = pkgs.fish;
   };
   users.extraUsers.rj = {
     isNormalUser = true;
