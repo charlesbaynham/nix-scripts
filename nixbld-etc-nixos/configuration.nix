@@ -75,12 +75,12 @@ in
   users.extraGroups.plugdev = { };
   users.extraUsers.sb = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner" "wireshark" "docker"];
+    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner" "wireshark"];
     shell = pkgs.fish;
   };
   users.extraUsers.rj = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout" "wireshark" "docker"];
+    extraGroups = ["wheel" "plugdev" "dialout" "wireshark"];
   };
   users.extraUsers.astro = {
     isNormalUser = true;
@@ -180,7 +180,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
   nix.sandboxPaths = ["/opt"];
 
   virtualisation.libvirtd.enable = true;
-  virtualisation.docker.enable = true;
 
   services.munin-node.enable = true;
   services.munin-cron = {
