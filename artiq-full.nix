@@ -39,6 +39,8 @@ let
         "mpik"
         "nrc"
         "nudt"
+        "npl1"
+        "npl2"
         "ptb"
         "ptb2"
         "ptb3"
