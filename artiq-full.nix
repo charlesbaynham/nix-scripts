@@ -32,6 +32,7 @@ let
         "hub"
         "hustmaster"
         "hustsatellite"
+        "innsbruck"
         "ist"
         "luh"
         "mitll"
