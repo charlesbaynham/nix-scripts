@@ -37,6 +37,6 @@ in
     thermostat = buildStm32Firmware {
       name = "thermostat";
       src = <thermostatSrc>;
-      cargoSha256 = "1i9p5d5n01ajbp8lmavyway6vr1mmy107qnccff9glvr91rqx352";
+      cargoSha256 = "08kk6ja9g4j4apa02n02gxpjm62s27aabx33lg0dmzxgr1v5xlr1";
     };
   }
