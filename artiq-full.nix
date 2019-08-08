@@ -42,6 +42,7 @@ let
         "nudt"
         "npl1"
         "npl2"
+        "opticlock"
         "ptb"
         "ptb2"
         "ptb3"
