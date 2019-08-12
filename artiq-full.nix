@@ -64,6 +64,7 @@ let
         "wipm"
         "wipm2"
         "wipm3"
+        "wipm4"
       ];
 
       artiq-fast = import ./fast { inherit pkgs; };
