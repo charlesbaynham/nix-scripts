@@ -146,19 +146,19 @@ ACTION=="add", SUBSYSTEM=="tty", \
 
       <runcommand>
         job = web:web:web
-        command = ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/web
+        command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/web
       </runcommand>
       <runcommand>
         job = artiq:full:artiq-manual-html
-        command = ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html-beta
+        command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html-beta
       </runcommand>
       <runcommand>
         job = artiq:full:artiq-manual-latexpdf
-        command = ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
+        command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
       </runcommand>
       <runcommand>
         job = artiq:full:conda-channel
-        command = ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-conda-channel-beta
+        command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-conda-channel-beta
       </runcommand>
       '';
   };
