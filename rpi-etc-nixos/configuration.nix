@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  m-labs = import (fetchTarball https://nixbld.m-labs.hk/channel/custom/artiq/main/channel/nixexprs.tar.xz) {};
+  m-labs = import (fetchTarball https://nixbld.m-labs.hk/channel/custom/artiq/full/artiq-full/nixexprs.tar.xz) {};
 in
 {
   boot.loader.grub.enable = false;
