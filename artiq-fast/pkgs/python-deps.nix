@@ -216,8 +216,18 @@ rec {
       sha256 = "19gycn7s32j7zzy064qj2yv9g9jk9kn9z3q0fap2dg308g6d1pjs";
     };
 
-    nativeBuildInputs = [ python3Packages.pbr python3Packages.pytest ];
+    postPatch = ''
+      substituteInPlace src/migen_axi/integration/soc_core.py \
+        --replace "identifier_mem" "identifier"
+      substituteInPlace tests/test_integration.py \
+        --replace "zedboard.Platform(name=\"soc\", toolchain=\"vivado\")" "zedboard.Platform()"
+    '';
+
+    nativeBuildInputs = [ python3Packages.pbr ];
     propagatedBuildInputs = [ python3Packages.click python3Packages.numpy python3Packages.toolz ramda migen misoc ];
+
+    checkInputs = [ python3Packages.pytest python3Packages.pytest-flake8 ];
+    checkPhase = "pytest";
 
     preBuild = ''
       export PBR_VERSION=0.0.1
