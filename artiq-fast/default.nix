@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {}}:
 with pkgs;
 let
-  pythonDeps = callPackage ./pkgs/python-deps.nix {};
+  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; };
 
   boards = [
     { target = "kasli"; variant = "tester"; }
@@ -18,7 +18,7 @@ let
         "artiq-board-${board.target}-${board.variant}" = boardBinaries;
       }) {} boards;
   mainPackages = rec {
-    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b lit outputcheck;
+    inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b migen-axi lit outputcheck;
     binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};
     rustc = callPackage ./pkgs/rust

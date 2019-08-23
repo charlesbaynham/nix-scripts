@@ -161,6 +161,73 @@ rec {
     };
   };
 
+  fastnumbers = python3Packages.buildPythonPackage rec {
+    pname = "fastnumbers";
+    version = "2.2.1";
+
+    src = python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "0j15i54p7nri6hkzn1wal9pxri4pgql01wgjccig6ar0v5jjbvsy";
+    };
+
+    meta = with stdenv.lib; {
+      description = "Super-fast and clean conversions to numbers";
+      homepage    = "https://github.com/SethMMorton/fastnumbers";
+      license     = licenses.mit;
+      platforms   = platforms.unix;
+    };
+  };
+
+  ramda = python3Packages.buildPythonPackage {
+    name = "ramda";
+
+    src = fetchFromGitHub {
+      owner = "peteut";
+      repo = "ramda.py";
+      rev = "bd58f8e69d0e9a713d9c1f286a1ac5e5603956b1";
+      sha256 = "0qzd5yp9lbaham8p1wiymdjapzbqsli7lvngv24c3z4ybd9jlq9g";
+    };
+
+    nativeBuildInputs = [ python3Packages.pbr python3Packages.pytest ];
+    propagatedBuildInputs = [ fastnumbers ];
+
+    preBuild = ''
+      export PBR_VERSION=0.0.1
+    '';
+
+    meta = with stdenv.lib; {
+      description = "Ramda, ported to Python";
+      homepage    = "https://github.com/peteut/ramda.py";
+      license     = licenses.mit;
+      platforms   = platforms.unix;
+    };
+  };
+
+  migen-axi = python3Packages.buildPythonPackage {
+    name = "migen-axi";
+
+    src = fetchFromGitHub {
+      owner = "peteut";
+      repo = "migen-axi";
+      rev = "8526eca769c01e18cc0a6024aacc515ceb8b9bd5";
+      sha256 = "19gycn7s32j7zzy064qj2yv9g9jk9kn9z3q0fap2dg308g6d1pjs";
+    };
+
+    nativeBuildInputs = [ python3Packages.pbr python3Packages.pytest ];
+    propagatedBuildInputs = [ python3Packages.click python3Packages.numpy python3Packages.toolz ramda migen misoc ];
+
+    preBuild = ''
+      export PBR_VERSION=0.0.1
+    '';
+
+    meta = with stdenv.lib; {
+      description = "AXI support for Migen/MiSoC";
+      homepage    = "https://github.com/peteut/migen-axi";
+      license     = licenses.mit;
+      platforms   = platforms.unix;
+    };
+  };
+
   # not using the nixpkgs version because it is Python 2 and an "application"
   lit = python3Packages.buildPythonPackage rec {
     pname = "lit";
