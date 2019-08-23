@@ -188,8 +188,11 @@ rec {
       sha256 = "0qzd5yp9lbaham8p1wiymdjapzbqsli7lvngv24c3z4ybd9jlq9g";
     };
 
-    nativeBuildInputs = [ python3Packages.pbr python3Packages.pytest ];
+    nativeBuildInputs = [ python3Packages.pbr ];
     propagatedBuildInputs = [ fastnumbers ];
+
+    checkInputs = [ python3Packages.pytest python3Packages.pytest-flake8 ];
+    checkPhase = "pytest";
 
     preBuild = ''
       export PBR_VERSION=0.0.1
