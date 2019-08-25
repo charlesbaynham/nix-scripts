@@ -12,6 +12,7 @@ in
       pkgs.cargo
       artiqpkgs.rustc
       artiqpkgs.binutils-or1k
+      artiqpkgs.binutils-arm
       artiqpkgs.llvm-or1k
       artiqpkgs.openocd
     ];

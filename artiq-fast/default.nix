@@ -19,7 +19,8 @@ let
       }) {} boards;
   mainPackages = rec {
     inherit (pythonDeps) asyncserial levenshtein pythonparser quamash pyqtgraph-qt5 misoc migen microscope jesd204b migen-axi lit outputcheck;
-    binutils-or1k = callPackage ./pkgs/binutils-or1k.nix {};
+    binutils-or1k = callPackage ./pkgs/binutils.nix { platform = "or1k"; target = "or1k-linux"; };
+    binutils-arm = callPackage ./pkgs/binutils.nix { platform = "arm"; target = "arm-linux-gnueabihf"; };
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};
     rustc = callPackage ./pkgs/rust
       ((stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {

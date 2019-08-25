@@ -1,10 +1,11 @@
 { stdenv, buildPackages
 , fetchurl, zlib
+, platform, target
 }:
 
 stdenv.mkDerivation rec {
   basename = "binutils";
-  platform = "or1k";
+  inherit platform;
   version = "2.30";
   name = "${basename}_${platform}-${version}";
   src = fetchurl {
@@ -12,7 +13,7 @@ stdenv.mkDerivation rec {
     sha256 = "028cklfqaab24glva1ks2aqa1zxa6w6xmc8q34zs1sb7h22dxspg";
   };
   configureFlags =
-    [ "--enable-shared" "--enable-deterministic-archives" "--target=or1k-linux"];
+    [ "--enable-shared" "--enable-deterministic-archives" "--target=${target}"];
   outputs = [ "out" "info" "man" ];
   depsBuildBuild = [ buildPackages.stdenv.cc ];
   buildInputs = [ zlib ];
