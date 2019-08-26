@@ -61,10 +61,31 @@ let
       ''${rustc} -Cpanic=unwind --crate-name panic_unwind src/libpanic_unwind/lib.rs --cfg llvm_libunwind
     '';
   };
+  arm-crates = stdenv.mkDerivation {
+    name = "arm-crates";
+    inherit src;
+    phases = [ "unpackPhase" "buildPhase" ];
+    buildPhase = ''
+      destdir=$out
+      rustc="${rustc_internal}/bin/rustc --out-dir ''${destdir} -L ''${destdir} --target armv7-unknown-linux-gnueabihf -g -C target-feature=+dsp,+fp16,+neon,+vfp3 -C opt-level=s --crate-type rlib"
+
+      mkdir -p ''${destdir}
+      ''${rustc} --crate-name core src/libcore/lib.rs
+      ''${rustc} --crate-name compiler_builtins src/libcompiler_builtins/src/lib.rs --cfg 'feature="compiler-builtins"' --cfg 'feature="mem"'
+      ''${rustc} --crate-name std_unicode src/libstd_unicode/lib.rs
+      ''${rustc} --crate-name alloc src/liballoc/lib.rs
+      ''${rustc} --crate-name libc src/liblibc_mini/lib.rs
+      ''${rustc} --crate-name unwind src/libunwind/lib.rs
+      ''${rustc} -Cpanic=abort --crate-name panic_abort src/libpanic_abort/lib.rs
+      ''${rustc} -Cpanic=unwind --crate-name panic_unwind src/libpanic_unwind/lib.rs --cfg llvm_libunwind
+    '';
+  };
 in
  runCommand "rustc" {}
     ''
     mkdir -p $out/lib/rustlib/or1k-unknown-none/lib/
     cp -r ${or1k-crates}/* $out/lib/rustlib/or1k-unknown-none/lib/
+    mkdir -p $out/lib/rustlib/armv7-unknown-linux-gnueabihf/lib/
+    cp -r ${arm-crates}/* $out/lib/rustlib/armv7-unknown-linux-gnueabihf/lib/
     cp -r ${rustc_internal}/* $out
     ''
