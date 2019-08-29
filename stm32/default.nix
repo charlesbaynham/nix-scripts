@@ -32,7 +32,7 @@ in
     stabilizer = buildStm32Firmware {
       name = "stabilizer";
       src = <stabilizerSrc>;
-      cargoSha256 = "0150anhy1x1vnsjvr8vl5z4q5hd36zzs86qxdpigaqjp9izwkh45";
+      cargoSha256 = "08dmflm42m47055zvw18pn83905pxh49z90kc65wmawi2d1sjw1q";
     };
     thermostat = buildStm32Firmware {
       name = "thermostat";
