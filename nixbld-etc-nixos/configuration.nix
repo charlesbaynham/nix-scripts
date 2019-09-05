@@ -66,7 +66,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget vim git file lm_sensors acpi pciutils psmisc xc3sprog telnet whois zip unzip yosys symbiyosys yices z3 boolector cvc4
+    wget vim git file lm_sensors acpi pciutils psmisc xc3sprog openocd telnet whois zip unzip
     irssi tmux adoptopenjdk-openj9-bin-11 tigervnc xorg.xauth icewm xterm xorg.xsetroot usbutils virtmanager imagemagick jq
   ];
 
@@ -74,7 +74,6 @@ in
   # started in user sessions.
   # programs.mtr.enable = true;
   # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-  programs.wireshark.enable = true;
 
   # List services that you want to enable:
 
@@ -100,16 +99,16 @@ in
   users.extraGroups.plugdev = { };
   users.extraUsers.sb = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner" "wireshark"];
+    extraGroups = ["wheel" "plugdev" "dialout" "lp" "scanner"];
     shell = pkgs.fish;
   };
   users.extraUsers.rj = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout" "wireshark"];
+    extraGroups = ["wheel" "plugdev" "dialout"];
   };
   users.extraUsers.astro = {
     isNormalUser = true;
-    extraGroups = ["plugdev" "dialout" "wireshark"];
+    extraGroups = ["plugdev" "dialout"];
   };
   users.extraUsers.whitequark = {
     isNormalUser = true;
