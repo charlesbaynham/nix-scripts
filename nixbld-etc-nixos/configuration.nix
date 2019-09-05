@@ -19,8 +19,39 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixbld"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking = {
+    hostName = "nixbld";
+    firewall = {
+      allowedTCPPorts = [ 80 443 631 5901 ];
+      allowedUDPPorts = [ 53 67 631 ];
+    };
+    networkmanager.unmanaged = [ "interface-name:wlp3s0" ];
+    interfaces."wlp3s0".ipv4.addresses = [{
+      address = "192.168.12.1";
+      prefixLength = 24;
+    }];
+    nat = {
+      enable = true;
+      externalInterface = "enp0s31f6";
+      internalInterfaces = ["wlp3s0"];
+    };
+  };
+
+  services.hostapd = {
+    enable        = true;
+    interface     = "wlp3s0";
+    hwMode        = "g";
+    ssid          = "M-Labs";
+    wpaPassphrase = (import /etc/nixos/secret/wifi_password.nix);
+  };
+  services.dnsmasq = {
+    enable = true;
+    extraConfig = ''
+      interface=wlp3s0
+      bind-interfaces
+      dhcp-range=192.168.12.10,192.168.12.254,24h
+    '';
+  };
 
   # Select internationalisation properties.
   i18n = {
@@ -53,12 +84,6 @@ in
   programs.mosh.enable = true;
 
   programs.fish.enable = true;
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 631 5901 80 443 ];
-  networking.firewall.allowedUDPPorts = [ 631 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Enable CUPS to print documents.
   services.avahi.enable = true;
