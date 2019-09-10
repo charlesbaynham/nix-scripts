@@ -49,6 +49,7 @@ let
         "ptb3"
         "ptb4"
         "ptb5"
+        "ptb6"
         "ptbin"
         "siegen"
         "su"
