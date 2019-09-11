@@ -44,6 +44,7 @@ let
         "npl1"
         "npl2"
         "opticlock"
+        "oregon"
         "ptb"
         "ptb2"
         "ptb3"
