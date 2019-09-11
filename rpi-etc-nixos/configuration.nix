@@ -6,8 +6,6 @@ in
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
  
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  
   boot.kernelParams = ["cma=32M console=ttyS1,115200n8"];
     
   fileSystems = {
