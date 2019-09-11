@@ -77,6 +77,14 @@ in
 
   # List services that you want to enable:
 
+  services.apcupsd.enable = true;
+  services.apcupsd.configText = ''
+    UPSTYPE usb
+    NISIP 127.0.0.1
+    BATTERYLEVEL 10
+    MINUTES 5
+  '';
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
