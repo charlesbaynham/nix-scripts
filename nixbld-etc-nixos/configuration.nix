@@ -9,10 +9,14 @@ let
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       ./hardware-configuration.nix
       ./homu/nixos-module.nix
       ./backup-module.nix
+      (builtins.fetchTarball {
+        url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/v2.2.1/nixos-mailserver-v2.2.1.tar.gz";
+        sha256 = "03d49v8qnid9g9rha0wg2z6vic06mhp0b049s3whccn1axvs2zzx";
+      })
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -498,6 +502,24 @@ ACTION=="add", SUBSYSTEM=="tty", \
   services.homu = {
     enable = true;
     config = "/etc/nixos/secret/homu.toml";
+  };
+
+  mailserver = {
+    enable = true;
+    localDnsResolver = false;  # conflicts with dnsmasq
+    # Some mail servers do reverse DNS lookups to filter spam.
+    # Getting a proper reverse DNS record from ISP is difficult, so use whatever already exists.
+    fqdn = "42-200-147-171.static.imsbiz.com";
+    domains = [ "nmigen.org" ];
+    loginAccounts = {
+     "test@nmigen.org" = {
+        hashedPassword = "$6$P7VlskhRXIBUr$sjqBUw2Lp/7XuwaqZuZGwFToVzjJzWR/wBOMP4l6en4wsuooUyVBjpQLMNSgVSxiKsG4oatFZJQWykJVoRDM./";
+      };
+    };
+    certificateScheme = 3;
+  };
+  security.acme.certs."${config.mailserver.fqdn}".extraDomains = {
+    "mail.nmigen.org" = null;
   };
 
   # This value determines the NixOS release with which your system is to be
