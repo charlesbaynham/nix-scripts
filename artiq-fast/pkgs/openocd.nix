@@ -38,6 +38,7 @@ stdenv.mkDerivation rec {
     "-Wno-implicit-fallthrough"
     "-Wno-format-truncation"
     "-Wno-format-overflow"
+    "-Wno-error=tautological-compare"
   ];
 
   postInstall = ''
