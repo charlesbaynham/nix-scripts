@@ -407,7 +407,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
         useACMEHost = "nixbld.m-labs.hk";
          root = "/var/www/flarum/public";
          locations."~ \.php$".extraConfig = ''
-           fastcgi_pass 127.0.0.1:9000;
+           fastcgi_pass unix:${config.services.phpfpm.pools.flarum.socket};
            fastcgi_index index.php;
          '';
          extraConfig = ''
@@ -463,19 +463,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
       };
     };
   };
-  # not needed after 19.09 - https://github.com/NixOS/nixpkgs/pull/60578
-  services.nginx.package = pkgs.nginx.overrideAttrs (drv: {
-    patches = (drv.patches or []) ++ pkgs.lib.singleton (pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/NixOS/nixpkgs/master/"
-          + "pkgs/servers/http/nginx/nix-etag-1.15.4.patch";
-      sha256 = "0i2lfz66204kcm1qdqws07cbq5nh1grxcz1ycp6qhmypl3da8hq4";
-      postFetch = ''
-        substituteInPlace "$out" \
-          --subst-var-by nixStoreDir "$NIX_STORE" \
-          --subst-var-by nixStoreDirLen "''${#NIX_STORE}"
-      '';
-    });
-  });
   services.uwsgi = {
     enable = true;
     plugins = [ "python3" ];
@@ -490,16 +477,17 @@ ACTION=="add", SUBSYSTEM=="tty", \
     enable = true;
     package = pkgs.mariadb;
   };
-  services.phpfpm.poolConfigs.mypool = ''
-    listen = 127.0.0.1:9000
-    user = nobody
-    pm = dynamic
-    pm.max_children = 5
-    pm.start_servers = 2
-    pm.min_spare_servers = 1
-    pm.max_spare_servers = 3
-    pm.max_requests = 500
-  '';
+  services.phpfpm.pools.flarum = {
+    user = "nobody";
+    settings = {
+      "pm" = "dynamic";
+      "pm.max_children" = 5;
+      "pm.start_servers" = 2;
+      "pm.min_spare_servers" = 1;
+      "pm.max_spare_servers" = 3;
+      "pm.max_requests" = 500;
+    };
+  };
 
   services.homu = {
     enable = true;
