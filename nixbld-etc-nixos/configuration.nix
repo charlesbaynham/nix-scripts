@@ -32,7 +32,7 @@ in
   networking = {
     hostName = "nixbld";
     firewall = {
-      allowedTCPPorts = [ 80 443 631 5901 ];
+      allowedTCPPorts = [ 80 443 631 ];
       allowedUDPPorts = [ 53 67 631 ];
     };
     networkmanager.unmanaged = [ "interface-name:${netifLan}" "interface-name:${netifWifi}" ];
@@ -123,6 +123,7 @@ in
   services.avahi.interfaces = [ netifLan ];
   services.avahi.publish.enable = true;
   services.avahi.publish.userServices = true;
+  nixpkgs.config.allowUnfree = true;
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.hplipWithPlugin ];
   services.printing.browsing = true;
@@ -155,7 +156,7 @@ in
   security.sudo.wheelNeedsPassword = false;
   security.hideProcessInformation = true;
   boot.kernel.sysctl."kernel.dmesg_restrict" = true;
-  services.udev.packages = [ pkgs.openocd ];
+  services.udev.packages = [ pkgs.openocd pkgs.sane-backends ];
   services.udev.extraRules = ''
 ACTION=="add", SUBSYSTEM=="tty", \
   ENV{ID_SERIAL}=="FTDI_Quad_RS232-HS", \
@@ -172,8 +173,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
   SYMLINK+="ttyUSB_kasli-n1"
 
   '';
-
-  nixpkgs.config.allowUnfree = true;
 
   nix.distributedBuilds = true;
   nix.buildMachines = [
