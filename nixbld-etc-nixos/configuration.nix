@@ -256,11 +256,11 @@ ACTION=="add", SUBSYSTEM=="tty", \
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
     hydra = super.hydra.overrideAttrs(oa: {
-      patches = oa.patches ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
+      patches = oa.patches or [] ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
       hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
     });
     matterbridge = super.matterbridge.overrideAttrs(oa: {
-      patches = [ ./matterbridge-disable-github.patch ];
+      patches = oa.patches or [] ++ [ ./matterbridge-disable-github.patch ];
     });
   };
 
