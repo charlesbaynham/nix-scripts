@@ -8,6 +8,7 @@ let
   netifWan = "enp0s31f6";
   netifLan = "enp3s0";
   netifWifi = "wlp4s0";
+  netifSit = "henet0";
   hydraWwwOutputs = "/var/www/hydra-outputs";
 in
 {
@@ -47,6 +48,16 @@ in
       enable = true;
       externalInterface = netifWan;
       internalInterfaces = [ netifLan netifWifi ];
+    };
+    sits."${netifSit}" = {
+      dev = netifWan;
+      remote = "216.218.221.6";
+      local = "42.200.147.171";
+      ttl = 255;
+    };
+    interfaces."${netifSit}".ipv6 = {
+      addresses = [{ address = "2001:470:18:629::2"; prefixLength = 64; }];
+      routes = [{ address = "::"; prefixLength = 0; }];
     };
   };
 
