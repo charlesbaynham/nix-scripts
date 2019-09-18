@@ -199,6 +199,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
     minimumDiskFreeEvaluator = 1;
     extraConfig =
       ''
+      store_uri = auto?secret-key=/etc/nixos/secret/nixbld.m-labs.hk-1
       binary_cache_secret_key_file = /etc/nixos/secret/nixbld.m-labs.hk-1
       max_output_size = 10000000000
 
