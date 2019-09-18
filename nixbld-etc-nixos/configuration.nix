@@ -501,6 +501,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
   services.phpfpm.pools.flarum = {
     user = "nobody";
     settings = {
+      "listen.owner" = "nginx";
+      "listen.group" = "nginx";
+      "listen.mode" = "0600";
       "pm" = "dynamic";
       "pm.max_children" = 5;
       "pm.start_servers" = 2;
