@@ -31,21 +31,25 @@ in
       allowedTCPPorts = [ 80 443 631 5901 ];
       allowedUDPPorts = [ 53 67 631 ];
     };
-    networkmanager.unmanaged = [ "interface-name:wlp3s0" ];
-    interfaces."wlp3s0".ipv4.addresses = [{
+    networkmanager.unmanaged = [ "interface-name:wlp4s0" "interface-name:enp3s0" ];
+    interfaces."enp3s0".ipv4.addresses = [{
+      address = "192.168.1.1";
+      prefixLength = 24;
+    }];
+    interfaces."wlp4s0".ipv4.addresses = [{
       address = "192.168.12.1";
       prefixLength = 24;
     }];
     nat = {
       enable = true;
       externalInterface = "enp0s31f6";
-      internalInterfaces = ["wlp3s0"];
+      internalInterfaces = ["enp3s0" "wlp4s0"];
     };
   };
 
   services.hostapd = {
     enable        = true;
-    interface     = "wlp3s0";
+    interface     = "wlp4s0";
     hwMode        = "g";
     ssid          = "M-Labs";
     wpaPassphrase = (import /etc/nixos/secret/wifi_password.nix);
@@ -53,9 +57,11 @@ in
   services.dnsmasq = {
     enable = true;
     extraConfig = ''
-      interface=wlp3s0
+      interface=enp3s0
+      interface=wlp4s0
       bind-interfaces
-      dhcp-range=192.168.12.10,192.168.12.254,24h
+      dhcp-range=interface:enp3s0,192.168.1.10,192.168.1.254,24h
+      dhcp-range=interface:wlp4s0,192.168.12.10,192.168.12.254,24h
     '';
   };
 
@@ -100,12 +106,13 @@ in
 
   # Enable CUPS to print documents.
   services.avahi.enable = true;
+  services.avahi.interfaces = ["enp3s0"];
   services.avahi.publish.enable = true;
   services.avahi.publish.userServices = true;
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.hplipWithPlugin ];
   services.printing.browsing = true;
-  services.printing.listenAddresses = [ "*:631" ];
+  services.printing.listenAddresses = [ "192.168.1.1:631" ];
   services.printing.defaultShared = true;
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ pkgs.hplipWithPlugin ];
