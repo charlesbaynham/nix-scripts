@@ -524,11 +524,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
     # Getting a proper reverse DNS record from ISP is difficult, so use whatever already exists.
     fqdn = "42-200-147-171.static.imsbiz.com";
     domains = [ "nmigen.org" ];
-    loginAccounts = {
-     "test@nmigen.org" = {
-        hashedPassword = "$6$P7VlskhRXIBUr$sjqBUw2Lp/7XuwaqZuZGwFToVzjJzWR/wBOMP4l6en4wsuooUyVBjpQLMNSgVSxiKsG4oatFZJQWykJVoRDM./";
-      };
-    };
+    loginAccounts = (import /etc/nixos/secret/email_accounts.nix);
     certificateScheme = 3;
   };
   security.acme.certs."${config.mailserver.fqdn}".extraDomains = {
