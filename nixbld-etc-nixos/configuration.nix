@@ -29,6 +29,12 @@ in
 
   security.apparmor.enable = true;
 
+  security.pam.yubico = {
+    enable = true;
+    id = "49094";
+    control = "required";
+  };
+
   networking = {
     hostName = "nixbld";
     firewall = {
