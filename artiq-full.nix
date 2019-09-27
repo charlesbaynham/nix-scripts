@@ -39,6 +39,7 @@ let
         "mitll"
         "mitll2"
         "mpik"
+        "mpq"
         "nrc"
         "nudt"
         "npl1"
