@@ -53,6 +53,7 @@ let
         "ptb5"
         "ptb6"
         "ptbin"
+        "saymamaster"
         "siegen"
         "su"
         "sysu"
