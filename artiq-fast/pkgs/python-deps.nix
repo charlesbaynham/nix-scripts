@@ -83,8 +83,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "misoc";
-      rev = "e7d99c238d71f273984aa904dd6c8559c6ad6ec3";
-      sha256 = "1l1zflwkjf1l8i8v91cxdsdg292s2pqr8qfnpiaqymbf3j4wipw2";
+      rev = "55221f7eb621eb4ee5ae94c7cd15e2bcaa3b5082";
+      sha256 = "19ai26zdvds7xyhifhg2n76yph3nnd7lb0yc9a1qknv293k7f4ds";
       fetchSubmodules = true;
     };
 
