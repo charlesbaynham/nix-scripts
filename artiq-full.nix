@@ -129,6 +129,22 @@ let
           target = "kc705";
           variant = "nist_qc2";
         };
+
+        conda-artiq-board-sayma-rtm = conda-artiq-board {
+          target = "sayma";
+          variant = "rtm";
+          boardBinaries = artiq-board-sayma-rtm;
+        };
+        conda-artiq-board-sayma-satellite = conda-artiq-board {
+          target = "sayma";
+          variant = "satellite";
+          boardBinaries = artiq-board-sayma-satellite;
+        };
+        conda-artiq-board-metlino-master = conda-artiq-board {
+          target = "metlino";
+          variant = "master";
+          boardBinaries = artiq-board-metlino-master;
+        };
         conda-artiq-board-kc705-nist_clock = conda-artiq-board {
           target = "kc705";
           variant = "nist_clock";
