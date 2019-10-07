@@ -110,11 +110,15 @@ let
       extras = import ./extras.nix { inherit pkgs; inherit (artiq-fast) asyncserial artiq; };
     in
       artiq-fast // extras // generic-kasli // rec {
+        artiq-board-sayma-rtm = artiq-board {
+          target = "sayma";
+          variant = "rtm";
+          buildCommand = "python -m artiq.gateware.targets.sayma_rtm";
+        };
         artiq-board-sayma-satellite = artiq-board {
           target = "sayma";
           variant = "satellite";
-          buildCommand = "python -m artiq.gateware.targets.sayma_rtm && python -m artiq.gateware.targets.sayma_amc -V satellite";
-          extraInstallCommands = "cp artiq_sayma/rtm_gateware/rtm.bit \$TARGET_DIR";
+          buildCommand = "python -m artiq.gateware.targets.sayma_amc";
         };
         artiq-board-metlino-master = artiq-board {
           target = "metlino";
