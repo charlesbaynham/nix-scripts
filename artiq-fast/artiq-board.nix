@@ -85,7 +85,9 @@ in pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
     TARGET_DIR=$out/${pkgs.python3Packages.python.sitePackages}/artiq/board-support/${target}-${variant}
     mkdir -p $TARGET_DIR
     cp artiq_${target}/${variant}/gateware/top.bit $TARGET_DIR
-    cp artiq_${target}/${variant}/software/bootloader/bootloader.bin $TARGET_DIR
+    if [ -e artiq_${target}/${variant}/software/bootloader/bootloader.bin ]
+    then cp artiq_${target}/${variant}/software/bootloader/bootloader.bin $TARGET_DIR
+    fi
     if [ -e artiq_${target}/${variant}/software/runtime ]
     then cp artiq_${target}/${variant}/software/runtime/runtime.{elf,fbi} $TARGET_DIR
     else cp artiq_${target}/${variant}/software/satman/satman.{elf,fbi} $TARGET_DIR
