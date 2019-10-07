@@ -14,7 +14,7 @@ in
           type=`echo $line | cut -f2 -d " "`
           if [ $type == "conda" ]; then
             path=`echo $line | cut -f3 -d " "`
-            cp $path $out/noarch
+            ln -s $path $out/noarch
           fi
         done < $hydra_build_products
       fi
