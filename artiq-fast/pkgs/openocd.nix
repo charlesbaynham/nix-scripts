@@ -14,8 +14,8 @@ stdenv.mkDerivation rec {
   bscan_spi_bitstreams = fetchFromGitHub {
       owner = "quartiq";
       repo = "bscan_spi_bitstreams";
-      rev = "a628956da7dc794e6e3c95b31ff9ce3af58bc763";
-      sha256 = "1cydbym3wv9jwxh6lw9im1mjzr7w8rzzx95bxkjschmzjq4h13vk";
+      rev = "01d8f819f15baf9a8cc5d96945a51e4d267ff564";
+      sha256 = "1zqv47kzgvbn4c8cr019a6wcja7gn5h1z4kvw5bhpc72fyhagal9";
   };
 
   nativeBuildInputs = [ pkgconfig ];
