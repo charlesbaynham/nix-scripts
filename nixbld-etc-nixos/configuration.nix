@@ -310,6 +310,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
         "chat.m-labs.hk" = null;
         "hooks.m-labs.hk" = null;
         "forum.m-labs.hk" = null;
+
+        "openhardware.hk" = null;
+        "git.openhardware.hk" = null;
       };
     };
   };
@@ -439,6 +442,15 @@ ACTION=="add", SUBSYSTEM=="tty", \
            include /var/www/flarum/.nginx.conf;
          '';
       };
+
+      "git.openhardware.hk" = {
+        forceSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".proxyPass = "http://127.0.0.1:3002";
+        extraConfig = ''
+          client_max_body_size 300M;
+        '';
+      };
     };
   };
   services.uwsgi = {
@@ -487,6 +499,27 @@ ACTION=="add", SUBSYSTEM=="tty", \
   };
   security.acme.certs."${config.mailserver.fqdn}".extraDomains = {
     "mail.nmigen.org" = null;
+  };
+
+  containers.openhardwarehk = {
+    autoStart = true;
+    config =
+      { config, pkgs, ... }:
+      {
+        services.gitea = {
+          enable = true;
+          httpPort = 3002;
+          rootUrl = "https://git.openhardware.hk/";
+          appName = "Open Hardware HK";
+          cookieSecure = true;
+          disableRegistration = true;
+          extraConfig =
+          ''
+          [attachment]
+          ALLOWED_TYPES = */*
+          '';
+        };
+      };
   };
 
   # This value determines the NixOS release with which your system is to be
