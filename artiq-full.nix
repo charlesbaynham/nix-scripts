@@ -24,6 +24,8 @@ let
     let
       target = "kasli";
       variants = [
+        "afmaster"
+        "afsatellite"
         "berkeley"
         "berkeley2"
         "duke"
@@ -70,6 +72,8 @@ let
         "wipm2"
         "wipm3"
         "wipm4"
+        "wipm5master"
+        "wipm5satellite"
       ];
 
       artiq-fast = import ./fast { inherit pkgs; };
