@@ -16,7 +16,7 @@
             "emailoverride": "",
             "keepnr": 10,
             "inputs": {
-                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.03", "emailresponsible": false },
+                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.09", "emailresponsible": false },
                 "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
                 "artiqSrc": { "type": "git", "value": "git://github.com/m-labs/artiq.git master 1", "emailresponsible": false }
             }
@@ -33,7 +33,7 @@
             "emailoverride": "",
             "keepnr": 10,
             "inputs": {
-                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.03", "emailresponsible": false },
+                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.09", "emailresponsible": false },
                 "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
                 "sinaraSystemsSrc": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/sinara-systems.git master 1", "emailresponsible": false },
                 "artiq-fast": { "type": "sysbuild", "value": "artiq:fast:generated-nix", "emailresponsible": false }
@@ -51,7 +51,7 @@
             "emailoverride": "",
             "keepnr": 10,
             "inputs": {
-                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.03", "emailresponsible": false },
+                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.09", "emailresponsible": false },
                 "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
                 "urukulSrc": { "type": "git", "value": "git://github.com/quartiq/urukul", "emailresponsible": false }
             }
