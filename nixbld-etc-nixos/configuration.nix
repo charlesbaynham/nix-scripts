@@ -55,6 +55,17 @@ in
       enable = true;
       externalInterface = netifWan;
       internalInterfaces = [ netifLan netifWifi ];
+      extraCommands = ''
+        iptables -w -N block-lan-from-wifi
+        iptables -w -A block-lan-from-wifi -i ${netifLan} -o ${netifWifi} -j DROP
+        iptables -w -A block-lan-from-wifi -i ${netifWifi} -o ${netifLan} -j DROP
+        iptables -w -A FORWARD -j block-lan-from-wifi
+      '';
+      extraStopCommands = ''
+        iptables -w -D FORWARD -j block-lan-from-wifi 2>/dev/null|| true
+        iptables -w -F block-lan-from-wifi 2>/dev/null|| true
+        iptables -w -X block-lan-from-wifi 2>/dev/null|| true
+      '';
     };
     sits."${netifSit}" = {
       dev = netifWan;
