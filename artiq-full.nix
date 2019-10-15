@@ -124,6 +124,12 @@ let
             "1" = "hustsatellite";
           };
         };
+        vlbai = {
+          master = "vlbaimaster";
+          satellites = {
+            "1" = "vlbaisatellite";
+          };
+        };
         wipm5 = {
           master = "wipm5master";
           satellites = {
