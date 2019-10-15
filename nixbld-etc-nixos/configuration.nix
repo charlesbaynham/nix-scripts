@@ -38,8 +38,9 @@ in
   networking = {
     hostName = "nixbld";
     firewall = {
-      allowedTCPPorts = [ 80 443 631 ];
-      allowedUDPPorts = [ 53 67 631 ];
+      allowedTCPPorts = [ 80 443 ];
+      allowedUDPPorts = [ 53 67 ];
+      trustedInterfaces = [ netifLan ];
     };
     networkmanager.unmanaged = [ "interface-name:${netifLan}" "interface-name:${netifWifi}" ];
     interfaces."${netifLan}".ipv4.addresses = [{
@@ -133,7 +134,7 @@ in
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.hplipWithPlugin ];
   services.printing.browsing = true;
-  services.printing.listenAddresses = [ "192.168.1.1:631" ];
+  services.printing.listenAddresses = [ "*:631" ];
   services.printing.defaultShared = true;
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ pkgs.hplipWithPlugin ];
