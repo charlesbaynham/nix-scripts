@@ -251,8 +251,6 @@ ACTION=="add", SUBSYSTEM=="tty", \
   '';
   nix.sandboxPaths = ["/opt"];
 
-  virtualisation.libvirtd.enable = true;
-
   services.munin-node.enable = true;
   services.munin-cron = {
     enable = true;
