@@ -111,9 +111,44 @@ let
                 ";
             };
           })) {} variants;
+      drtio-systems = {
+        af = {
+          master = "afmaster";
+          satellites = {
+            "1" = "afsatellite";
+          };
+        };
+        hust = {
+          master = "hustmaster";
+          satellites = {
+            "1" = "hustsatellite";
+          };
+        };
+        wipm5 = {
+          master = "wipm5master";
+          satellites = {
+            "1" = "wipm5satellite";
+          };
+        };
+      };
+      drtio-ddbs = pkgs.lib.attrsets.mapAttrs'
+        (system: crates: pkgs.lib.attrsets.nameValuePair ("device-db-" + system)
+        (pkgs.stdenv.mkDerivation {
+          name = "device-db-\''${system}";
+          buildInputs = [ artiq-fast.artiq ];
+          phases = [ "buildPhase" ];
+          buildPhase = "
+            mkdir \$out
+            artiq_ddb_template \
+              \''${pkgs.lib.strings.concatStringsSep " " (pkgs.lib.attrsets.mapAttrsToList (dest: desc: "-s " + dest + " " + src + "/" + desc + ".json") crates.satellites) } \
+              \''${src}/\''${crates.master}.json -o \$out/device_db.py
+            mkdir \$out/nix-support
+            echo file device_db_template \$out/device_db.py >> \$out/nix-support/hydra-build-products
+            ";
+        })) drtio-systems;
       extras = import ./extras.nix { inherit pkgs; inherit (artiq-fast) asyncserial artiq; };
     in
-      artiq-fast // extras // generic-kasli // rec {
+      artiq-fast // generic-kasli // drtio-ddbs // extras // rec {
         artiq-board-sayma-rtm = artiq-board {
           target = "sayma";
           variant = "rtm";
