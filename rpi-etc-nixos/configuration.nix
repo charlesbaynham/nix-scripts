@@ -9,10 +9,6 @@ in
   boot.kernelParams = ["cma=32M console=ttyS1,115200n8"];
     
   fileSystems = {
-    "/boot" = {
-      device = "/dev/disk/by-label/NIXOS_BOOT";
-      fsType = "vfat";
-    };
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";
