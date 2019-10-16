@@ -43,14 +43,26 @@ in
       trustedInterfaces = [ netifLan ];
     };
     networkmanager.unmanaged = [ "interface-name:${netifLan}" "interface-name:${netifWifi}" ];
-    interfaces."${netifLan}".ipv4.addresses = [{
-      address = "192.168.1.1";
-      prefixLength = 24;
-    }];
-    interfaces."${netifWifi}".ipv4.addresses = [{
-      address = "192.168.12.1";
-      prefixLength = 24;
-    }];
+    interfaces."${netifLan}" = {
+      ipv4.addresses = [{
+        address = "192.168.1.1";
+        prefixLength = 24;
+      }];
+      ipv6.addresses = [{
+        address = "2001:470:f821:1::";
+        prefixLength = 64;
+      }];
+    };
+    interfaces."${netifWifi}" = {
+      ipv4.addresses = [{
+        address = "192.168.12.1";
+        prefixLength = 24;
+      }];
+      ipv6.addresses = [{
+        address = "2001:470:f821:2::";
+        prefixLength = 64;
+      }];
+    };
     nat = {
       enable = true;
       externalInterface = netifWan;
@@ -78,6 +90,8 @@ in
       routes = [{ address = "::"; prefixLength = 0; }];
     };
   };
+  boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = "1";
+  boot.kernel.sysctl."net.ipv6.conf.default.forwarding" = "1";
 
   services.hostapd = {
     enable        = true;
@@ -94,6 +108,9 @@ in
       bind-interfaces
       dhcp-range=interface:${netifLan},192.168.1.10,192.168.1.254,24h
       dhcp-range=interface:${netifWifi},192.168.12.10,192.168.12.254,24h
+      enable-ra
+      dhcp-range=interface:${netifLan},::,constructor:${netifLan},ra-names
+      dhcp-range=interface:${netifWifi},::,constructor:${netifWifi},ra-only
     '';
   };
 
