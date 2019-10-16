@@ -106,11 +106,20 @@ in
       interface=${netifLan}
       interface=${netifWifi}
       bind-interfaces
-      dhcp-range=interface:${netifLan},192.168.1.10,192.168.1.254,24h
+      dhcp-range=interface:${netifLan},192.168.1.81,192.168.1.254,24h
       dhcp-range=interface:${netifWifi},192.168.12.10,192.168.12.254,24h
       enable-ra
       dhcp-range=interface:${netifLan},::,constructor:${netifLan},ra-names
       dhcp-range=interface:${netifWifi},::,constructor:${netifWifi},ra-only
+
+      # Default IP addresses for ARTIQ boards
+      address=/thermostat/192.168.1.26
+      address=/kc705/192.168.1.50
+      address=/zc706/192.168.1.51
+      address=/sayma/192.168.1.60
+      address=/kasli/192.168.1.70
+      # uTCA MCH from NAT
+      address=/tschernobyl/192.168.1.80
     '';
   };
 
