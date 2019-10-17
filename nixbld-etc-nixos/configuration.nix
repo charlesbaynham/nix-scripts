@@ -468,15 +468,15 @@ ACTION=="add", SUBSYSTEM=="tty", \
       "forum.m-labs.hk" = {
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
-         root = "/var/www/flarum/public";
-         locations."~ \.php$".extraConfig = ''
-           fastcgi_pass unix:${config.services.phpfpm.pools.flarum.socket};
-           fastcgi_index index.php;
-         '';
-         extraConfig = ''
-           index index.php;
-           include /var/www/flarum/.nginx.conf;
-         '';
+        root = "/var/www/flarum/public";
+        locations."~ \.php$".extraConfig = ''
+          fastcgi_pass unix:${config.services.phpfpm.pools.flarum.socket};
+          fastcgi_index index.php;
+        '';
+        extraConfig = ''
+          index index.php;
+          include /var/www/flarum/.nginx.conf;
+        '';
       };
 
       "git.openhardware.hk" = {
