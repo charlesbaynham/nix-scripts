@@ -346,6 +346,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
         "chat.m-labs.hk" = null;
         "hooks.m-labs.hk" = null;
         "forum.m-labs.hk" = null;
+        "perso.m-labs.hk" = null;
 
         "openhardware.hk" = null;
         "git.openhardware.hk" = null;
@@ -477,6 +478,11 @@ ACTION=="add", SUBSYSTEM=="tty", \
           index index.php;
           include /var/www/flarum/.nginx.conf;
         '';
+      };
+      "perso.m-labs.hk" = {
+        addSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        root = "/var/www/perso";
       };
 
       "git.openhardware.hk" = {
