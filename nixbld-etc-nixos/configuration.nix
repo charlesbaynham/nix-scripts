@@ -42,7 +42,6 @@ in
       allowedUDPPorts = [ 53 67 ];
       trustedInterfaces = [ netifLan ];
     };
-    networkmanager.unmanaged = [ "interface-name:${netifLan}" "interface-name:${netifWifi}" ];
     interfaces."${netifLan}" = {
       ipv4.addresses = [{
         address = "192.168.1.1";
