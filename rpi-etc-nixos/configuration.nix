@@ -37,7 +37,7 @@ in
 
   documentation.enable = false;
   environment.systemPackages = with pkgs; [
-    wget vim git usbutils mosh tmux xc3sprog m-labs.openocd
+    wget vim git usbutils lm_sensors file mosh tmux xc3sprog m-labs.openocd
   ];
 
   nix.binaryCachePublicKeys = ["nixbld.m-labs.hk-1:5aSRVA5b320xbNvu30tqxVPXpld73bhtOeH6uAjRyHc="];
