@@ -234,7 +234,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
        supportedFeatures = ["big-parallel"];
     }
     {
-       hostName = "rpi-1";
+       hostName = "rpi-3";
        sshUser = "nix";
        sshKey = "/etc/nixos/secret/nix_id_rsa";
        maxJobs = 1;
