@@ -193,14 +193,6 @@ in
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
   };
-  users.extraUsers.konstantin = {
-    isNormalUser = true;
-    extraGroups = ["plugdev" "dialout"];
-  };
-  users.extraUsers.steinb = {
-    isNormalUser = true;
-    extraGroups = ["plugdev" "dialout"];
-  };
   users.extraUsers.nix = {
     isNormalUser = true;
   };

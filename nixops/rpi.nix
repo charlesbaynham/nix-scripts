@@ -38,19 +38,33 @@ in
   networking.hostName = host;
   time.timeZone = "Asia/Hong_Kong";
 
+  users.extraUsers.nix = {
+    isNormalUser = true;
+  };
+
   users.extraGroups.plugdev = { };
   security.sudo.wheelNeedsPassword = false;
   users.extraUsers.sb = {
     isNormalUser = true;
     extraGroups = ["wheel" "plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZGtCJoIRtRadaSBMx+MNX53nvEGUk9q/89ZpEH/jCRS+FRnBOH73C8YGvsJaiL5xUZiLjIW7SRUr40bKgvns1FJ3PNMPqvAh6fC98h5EnWAVtzKpYVXGPVvxGOqRJwvEHr6DGMJbP1lRl78zFt3PQaeEiJ5mCxlY4KenKbkBJpUWBAUa11VrNd+o7AMfF0pbNDxZCd213brbyb8saLnEx28HwdaUn//MMWnfSPDLGlod5dy4/hzj0Yk/o+4yaeIkfk1Z0FqtZif1N+VTqD5r0dfvIi38mmVYzbImy5X/hoPtLTMRb//6KZH5POwMP3ZazIq7Bl0cmGfDEu/p6/zJd sb@sb-ThinkPad-10"];
   };
   users.extraUsers.astro = {
     isNormalUser = true;
-    extraGroups = ["wheel" "plugdev" "dialout"];
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJJTSJdpDh82486uPiMhhyhnci4tScp5uUe7156MBC8 a"];
   };
-  users.extraUsers.nix = {
+  users.extraUsers.konstantin = {
     isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCiyF/90c4286ZeEBFbhpfoRkT+xaXM5QJ+uDXhfQ/015pMfhLTxXaX8xO/PvKjBhGx9DjTL57P3tXWQDOooKoE3cFSYunlVV1wQLXIbxRI8Hq8SQv2HJS3T4QJ9Wt5BCummQpz5XO2Rv/ih0By8ttWXXCoFCBOp1CfydQ/m4R7Nr1l7nFN3t4pBNiu2VFoEcedAj5/9LW+dJccAOHh7Jvr9sF0SB32ZdRYoC+9vUfsjVDx0dbEFNYMzS/TkpYwLYMVwfbxzn7jKMHnjpaM8gS4e9qkyFY2GcQBFebJW0PZbTNb6drHNsJ84tt7RXNikpdO2+ErILWV/MfdXwMCrIebFDOzl7bSufZcwpGSeYkUPneFbyGPH06hCaTUaJcYVk/59PMT33OCZL3E7swNbGn9VLxbpA4z4K4NQdP6n8+EPzi5czz+4FyyN8mIGKZjkNdDmLS61o0oKOWoxrQKNiAe4Ooy4hTB/jc5+UiNoiske/gdFJguV2Mr9de9eDU4QntfSLx0pthmc0rgdzPvyi8bVttL+vl0R5b3RL0FbcyjugOJLw3XrMXLxomZ/CyMncuis/iPYzZRMHEPvH0Uxd8rbnuTENF42pn96RHcHvlGLQ3fPlAgf6wXDA7Ecw0LBw20tPdHwooT/AM46+0OaFZTmq4WvZtAYMRnkUpmouKR7Q== konstantin@MBP.fritz.box"];
   };
+  users.extraUsers.steinb = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAOatwhOkN9YBy8cj2AmNkhlfFd4iW1LF6ImKjBAijfV250YJgOvnzV/lqQxdHYQHNauU7f3kXx1SmrTi/AHsHaoAR0/tYIk57d+UrX9a+qVFSL6ackjzO2vi2nDCy+PBc5Tb3WfCPAICSAk6BZ07yM+SMXiSqwzsaOTMsKuJuwIi+PkmrYG/IvB39IFAi4XLffExyLqD7VxsfJeNp/alZSmw3i4nPJ2nmBX80U9sFw774VIxCRTD5s5uRcp8tDN7ywNot49m3J4wOtRyzLW0QQX7J6RuMsAEQ8bP7VOpWSrOVD+LJDRaN9GPJL6EIASmbRU5t3rKXdAjG0t6pBuR4gqOdOPtj+CUeO465P5A8BgvRE+BeBybVjjc2gFlDShhGxaWfOKWiA/fmbicVWocPWcBjabLMyvewH2JKgUPJ7wvpaAzhvrOktt+Kn2fHqtrvpGYfsPue4F67BmAijlnw2fCBdVlkbIPrFv9eOJI5GX25h6C08ESV3bwv0OqKLJoxP5cODuMrLV04dcOXpy7JLEaf+PcxLa1g65NPML3eL6TQpBVEKN794V/cXETcrwKYG7AYSLbBqqWbreYEJhCE6wntp6/xijBVEBFcf8wBdAzdQKWlAGbpttNwjJ+MYYy9kXc4SN3G33NfTctJeGm+Y7Bov8uh2G7vv6QR3L0/IQ== steinb@QF-stein-laptop"];
+  };
+
   services.udev.packages = [ m-labs.openocd ];
 
   documentation.enable = false;
