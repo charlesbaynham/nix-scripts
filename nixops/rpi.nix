@@ -1,19 +1,32 @@
-{ host }:
+{ host, rpi4 }:
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 let
-  m-labs = import (fetchTarball https://nixbld.m-labs.hk/channel/custom/artiq/full/artiq-full/nixexprs.tar.xz) {};
+  m-labs = import (fetchTarball https://nixbld.m-labs.hk/channel/custom/artiq/full/artiq-full/nixexprs.tar.xz) { inherit pkgs; };
 in
 {
   deployment.targetHost = host;
   nixpkgs.system = "aarch64-linux";
-    
-  boot.loader.grub.enable = false;
-  boot.loader.generic-extlinux-compatible.enable = true;
- 
-  boot.kernelParams = ["cma=32M console=ttyS1,115200n8"];
 
-  fileSystems = {
+  boot.loader.grub.enable = false;
+
+  boot.loader.generic-extlinux-compatible.enable = !rpi4;
+  boot.loader.raspberryPi = pkgs.lib.mkIf rpi4 {
+    enable = true;
+    version = 4;
+  };
+  boot.kernelPackages = pkgs.lib.mkIf rpi4 pkgs.linuxPackages_rpi4;
+
+  fileSystems = if rpi4 then {
+    "/boot" = {
+      device = "/dev/disk/by-label/FIRMWARE";
+      fsType = "vfat";
+    };
+    "/" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
+    };
+  } else {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";

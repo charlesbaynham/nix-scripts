@@ -331,6 +331,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
     matterbridge = super.matterbridge.overrideAttrs(oa: {
       patches = oa.patches or [] ++ [ ./matterbridge-disable-github.patch ];
     });
+    nixops = super.nixops.overrideAttrs(oa: {
+      patches = oa.patches or [] ++ [ ./nixops-665.patch ];
+    });
   };
 
   security.acme.certs = {
