@@ -54,6 +54,7 @@ let
         "ptb4"
         "ptb5"
         "ptb6"
+        "ptbal"
         "ptbin"
         "saymamaster"
         "siegen"
