@@ -54,6 +54,11 @@ in
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJJTSJdpDh82486uPiMhhyhnci4tScp5uUe7156MBC8 a"];
   };
+  users.extraUsers.harry = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfZGegJYOV2qCdTf2R54thWt0UjH/ycarugV5UWrdql7w9yqaGwqeadRIVoz9IH++AB8NFxPzxMiQzOH5TI4r5hVjconslSeucMvh9u/GPJqQk94uZayodgfqCeBL5v8RqW4kJE1CHrSbKhzLrtWsTsju2XFidLGqBg1v7HWmSB6UqzqmQWqPLxDCi7/JW2ECuKjYlOJY+uzGFz5cxOtJO/lUNSXT3ZSWF/VLscuMmLsdyocdVwZANgPS7A0/wArlbZZMNw72CHuWsh8WVxarKIRwhoaBgXv7Oj3ohi6fVRGo1DOC3ucDGCDNjaQG2gbXGHEiPtrpz43I7BcCeJqNH harry@juno"];
+  };
   users.extraUsers.konstantin = {
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
