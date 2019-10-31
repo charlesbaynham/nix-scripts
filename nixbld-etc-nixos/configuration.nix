@@ -117,6 +117,7 @@ in
       address=/zc706/192.168.1.51
       address=/sayma/192.168.1.60
       address=/kasli/192.168.1.70
+      address=/kasli-customer/192.168.1.75
       # uTCA MCH from NAT
       address=/tschernobyl/192.168.1.80
     '';
