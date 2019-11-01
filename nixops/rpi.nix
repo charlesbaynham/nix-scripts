@@ -38,6 +38,8 @@ in
   networking.hostName = host;
   time.timeZone = "Asia/Hong_Kong";
 
+  programs.wireshark.enable = true;
+
   users.extraUsers.nix = {
     isNormalUser = true;
   };
@@ -51,7 +53,7 @@ in
   };
   users.extraUsers.astro = {
     isNormalUser = true;
-    extraGroups = ["plugdev" "dialout"];
+    extraGroups = ["plugdev" "dialout" "wireshark"];
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJJTSJdpDh82486uPiMhhyhnci4tScp5uUe7156MBC8 a"];
   };
   users.extraUsers.harry = {
