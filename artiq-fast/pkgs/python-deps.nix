@@ -107,11 +107,11 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "41922fde2a8c36cd0f99d4b7ebb3ba9c37ce1489";
-      sha256 = "0srn7lr98sqjss3z2zsk9w7ydl1p6rwskr0r7alss1x720n8hhiw";
+      rev = "94db7295fd4942d0ee27de1148a6cc7be356329d";
+      sha256 = "1kq11if64zj84gv4w1q7l16fp17xjxl2wv5hc9dibr1z3m1gy67l";
     };
 
-    propagatedBuildInputs = with python3Packages; [ colorama sphinx sphinx_rtd_theme ];
+    propagatedBuildInputs = with python3Packages; [ colorama ];
 
     meta = with stdenv.lib; {
       description = "A Python toolbox for building complex digital hardware";
