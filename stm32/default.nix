@@ -8,7 +8,7 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  buildStm32Firmware = { name, src, cargoSha256 }:
+  buildStm32Firmware = { name, src, cargoSha256 ? (import "${src}/cargosha256.nix") }:
     rustPlatform.buildRustPackage rec {
       inherit name;
       version = "0.0.0";
@@ -32,11 +32,9 @@ in
     stabilizer = buildStm32Firmware {
       name = "stabilizer";
       src = <stabilizerSrc>;
-      cargoSha256 = "0mf9bcp88riaszpwv6adgpaxyngpacycwfix45fcgvr3lb7mnl22";
     };
     thermostat = buildStm32Firmware {
       name = "thermostat";
       src = <thermostatSrc>;
-      cargoSha256 = "08kk6ja9g4j4apa02n02gxpjm62s27aabx33lg0dmzxgr1v5xlr1";
     };
   }
