@@ -30,7 +30,7 @@ let
           cp target/thumbv7em-none-eabihf/release/${name} $out/${name}.elf
           echo file binary-dist $out/${name}.elf >> $out/nix-support/hydra-build-products
         '';
-    };
+      };
 in
   {
     stabilizer = buildStm32Firmware {
