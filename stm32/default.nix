@@ -8,24 +8,28 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  buildStm32Firmware = { name, src, cargoSha256 ? (import "${src}/cargosha256.nix") }:
-    rustPlatform.buildRustPackage rec {
-      inherit name;
-      version = "0.0.0";
+  buildStm32Firmware = { name, src }:
+    let
+      cargoSha256Drv = pkgs.runCommand "${name}-cargosha256" { } ''cp "${src}/cargosha256.nix" $out'';
+    in
+      rustPlatform.buildRustPackage rec {
+        inherit name;
+        version = "0.0.0";
 
-      inherit src cargoSha256;
+        inherit src;
+        cargoSha256 = (import cargoSha256Drv);
 
-      buildPhase = ''
-        export CARGO_HOME=$(mktemp -d cargo-home.XXX)
-        cargo build --release
-      '';
+        buildPhase = ''
+          export CARGO_HOME=$(mktemp -d cargo-home.XXX)
+          cargo build --release
+        '';
 
-      doCheck = false;
-      installPhase = ''
-        mkdir -p $out $out/nix-support
-        cp target/thumbv7em-none-eabihf/release/${name} $out/${name}.elf
-        echo file binary-dist $out/${name}.elf >> $out/nix-support/hydra-build-products
-      '';
+        doCheck = false;
+        installPhase = ''
+          mkdir -p $out $out/nix-support
+          cp target/thumbv7em-none-eabihf/release/${name} $out/${name}.elf
+          echo file binary-dist $out/${name}.elf >> $out/nix-support/hydra-build-products
+        '';
     };
 in
   {
