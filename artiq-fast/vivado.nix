@@ -1,7 +1,7 @@
 # Install Vivado in /opt and add to /etc/nixos/configuration.nix:
 #  nix.sandboxPaths = ["/opt"];
 
-{ pkgs, vivadoPath ? "/opt/Xilinx/Vivado/2019.1" }:
+{ pkgs, vivadoPath ? "/opt/Xilinx/Vivado/2019.2" }:
 
 pkgs.buildFHSUserEnv {
   name = "vivado";
