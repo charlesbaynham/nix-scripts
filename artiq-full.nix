@@ -153,7 +153,7 @@ let
             echo file device_db_template \$out/device_db.py >> \$out/nix-support/hydra-build-products
             ";
         })) drtio-systems;
-      extras = import ./extras.nix { inherit pkgs; inherit (artiq-fast) asyncserial artiq; };
+      extras = import ./extras.nix { inherit pkgs; inherit (artiq-fast) sipyco asyncserial artiq; };
     in
       artiq-fast // generic-kasli // drtio-ddbs // extras // rec {
         artiq-board-sayma-rtm = artiq-board {

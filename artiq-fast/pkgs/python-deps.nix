@@ -2,6 +2,18 @@
 
 rec {
   # User dependencies
+  sipyco = python3Packages.buildPythonPackage rec {
+    name = "sipyco";
+    version = "1.0";
+    src = fetchFromGitHub {
+      owner = "m-labs";
+      repo = "sipyco";
+      rev = "ec6602c086054520f7617bb1fbee2e0897409978";
+      sha256 = "0jm8b533qa9ny1p3dyvpk8aa7vb50qp59937lp0k8zs73sv32grz";
+    };
+    propagatedBuildInputs = with python3Packages; [ numpy ];
+  };
+
   asyncserial = python3Packages.buildPythonPackage rec {
     name = "asyncserial";
     src = fetchFromGitHub {

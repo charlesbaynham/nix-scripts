@@ -1,4 +1,4 @@
-{ pkgs, asyncserial, artiq }:
+{ pkgs, sipyco, asyncserial, artiq }:
 let
   dualPackage = (
     { name, version, src, pythonOptions ? {}, condaOptions ? {}}:
@@ -49,82 +49,85 @@ let
 in
   (dualPackage {
     name = "korad_ka3005p";
-    version = "1.0";
+    version = "1.1";
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "korad_ka3005p";
-      rev = "e8c02ade175b842972f76a27919a4aaf8190de90";
-      sha256 = "1svgnx52amvy9xl0b2wkz0ii4ycjvjv96ac0g07zkxabdqm5ff65";
+      rev = "a0cfaa5792a211e166d224314c4d0be4881b9b8d";
+      sha256 = "1bxzyjyvdhsbm9hj7ypf0vgkd1lvc340bb6lx3wchvh30n7bv9gv";
     };
-    pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
-    condaOptions = { dependencies = [ "asyncserial" ]; };
+    pythonOptions = { propagatedBuildInputs = [ sipyco asyncserial ]; };
+    condaOptions = { dependencies = [ "sipyco" "asyncserial" ]; };
   }) // (dualPackage {
     name = "novatech409b";
-    version = "1.0";
+    version = "1.1";
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "novatech409b";
-      rev = "442e82e2234c0bf951da2084a77861f8977755c8";
-      sha256 = "032qgg48dy2k31vj0q8bfni0iy2kcyscd32bq60h701wvass6jv7";
+      rev = "8740b3e7b254e03395135e6bc128bbaca70d4fbb";
+      sha256 = "0mwm434y83y8jb30fpz69z6z3b6sxbc8dv3nw0hq4wc7iginx89d";
     };
-    pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
-    condaOptions = { dependencies = [ "asyncserial" ]; };
+    pythonOptions = { propagatedBuildInputs = [ sipyco asyncserial ]; };
+    condaOptions = { dependencies = [ "sipyco" "asyncserial" ]; };
   }) // (dualPackage {
     name = "lda";
-    version = "1.0";
+    version = "1.1";
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "lda";
-      rev = "4329da1497f496839ce20beebce0d79ed453941f";
-      sha256 = "00c15a03xy9vbca0j2zfy89l3ghbdmmv5wqfksm6pdwy4z036cwa";
+      rev = "6138a94a1116c8f7b40b8bd8bb161f847065aab6";
+      sha256 = "1009k9pq8wx5zxrljkxr1g95g8q979i7mq3csksdkd3d0v2jvqif";
     };
     pythonOptions = {
-      propagatedBuildInputs = [ artiq ];
+      propagatedBuildInputs = [ sipyco ];
       postPatch = ''
         substituteInPlace lda/hidapi.py \
         --replace "hidapi_lib_path = None"\
                   "hidapi_lib_path = '${hidapi}/lib/libhidapi-libusb.so.0'"
       '';
     };
+    condaOptions = { dependencies = [ "sipyco" ]; };
   }) // (dualPackage {
     name = "thorlabs_tcube";
-    version = "1.0";
+    version = "1.1";
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "thorlabs_tcube";
-      rev = "b72e7ba7de8355bd93dd20d53b6f15386dff229d";
-      sha256 = "1lqwqflwbfdykmhf6g0pwgiq7i2vf67ybj4l8n3jn16vny21b41s";
+      rev = "8b85292d76a69ae72ba8da32b894c87c794574ba";
+      sha256 = "09cy9nhydcwdib21wb0qg1cinvibfbszwgphrmf2ajw5kqpr1d6a";
     };
-    pythonOptions = { propagatedBuildInputs = [ asyncserial artiq ]; };
-    condaOptions = { dependencies = [ "asyncserial" ]; };
+    pythonOptions = { propagatedBuildInputs = [ sipyco asyncserial ]; };
+    condaOptions = { dependencies = [ "sipyco" "asyncserial" ]; };
   }) // (dualPackage {
     name = "newfocus8742";
-    version = "0.1";
+    version = "0.2";
     src = pkgs.fetchFromGitHub {
       owner = "quartiq";
       repo = "newfocus8742";
-      rev = "31a92595d1cb77d9256b891ec17eed0fbeceb1bc";
-      sha256 = "1dww0y83d4i6nma1q5hnaagih94c32bxlla5p6a5a8zkc4x2pky9";
+      rev = "9f6092b724b33b934aa4d3a1d6a20c295cd1d02d";
+      sha256 = "0qf05ghylnqf3l5vjx5dc748wi84xn6p6lb6f9r8p6f1z7z67fb8";
     };
     pythonOptions = {
-      propagatedBuildInputs = [ pkgs.python3Packages.pyusb artiq ];
+      propagatedBuildInputs = [ sipyco pkgs.python3Packages.pyusb ];
       # no unit tests so do a simple smoke test
-      checkPhase = "python -m newfocus8742.aqctl_newfocus8742 --version";
+      checkPhase = "python -m newfocus8742.aqctl_newfocus8742 -h";
     };
+    condaOptions = { dependencies = [ "sipyco" ]; };
   }) // (dualPackage {
     name = "hut2";
-    version = "0.1";
+    version = "0.2";
     src = pkgs.fetchFromGitHub {
       owner = "quartiq";
       repo = "hut2";
-      rev = "acfd62dcd60d37250e2d1b691344c6e65b6e83eb";
-      sha256 = "0dpx3c5aclj7gki6iaybjbx9rqrxnwccpxcvjwp594ccbcswvclr";
+      rev = "26aaa8edd57d44dc00a41c3082536ac58dcbc9d6";
+      sha256 = "0p8iwapsx3g5k2sazian4s97cwcixkh3gnn7y44mhyydn8k7i3g0";
     };
     pythonOptions = {
-      propagatedBuildInputs = [ artiq ];
+      propagatedBuildInputs = [ sipyco ];
       # no unit tests without hardware so do a simple smoke test
-      checkPhase = "python -m hut2.aqctl_hut2 --version";
+      checkPhase = "python -m hut2.aqctl_hut2 -h";
     };
+    condaOptions = { dependencies = [ "sipyco" ]; };
   }) // rec {
     toptica-lasersdk = pkgs.python3Packages.buildPythonPackage rec {
       version = "2.0.0";
@@ -137,13 +140,13 @@ in
       propagatedBuildInputs = [ pkgs.python3Packages.pyserial ];
     };
     toptica-lasersdk-artiq = pkgs.python3Packages.buildPythonPackage rec {
-      version = "0.1";
+      version = "0.2";
       name = "toptica-lasersdk-artiq-${version}";
       src = pkgs.fetchFromGitHub {
         owner = "quartiq";
         repo = "lasersdk-artiq";
-        rev = "d38bb985e7ddffc9ac9d94fe136cac10947bfd72";
-        sha256 = "03a09lc81l2l787yjm0xjpnjvs5x77ndmks3xxh25yyxdhsdf1fl";
+        rev = "f96d0e81aa47beb468fa4d73d92dad0872d8a960";
+        sha256 = "1z6yc4h7fjw5b3f50asdk1kp65sj4hhxmdzsh1ay8g3n1c9g3hh5";
       };
       postPatch = ''
         substituteInPlace lasersdk_artiq/aqctl_laser.py \
@@ -153,20 +156,21 @@ in
           --replace "toptica.lasersdk.async.client" \
                     "toptica.lasersdk.asyncio.client"
       '';
-      propagatedBuildInputs = [ toptica-lasersdk artiq ];
+      propagatedBuildInputs = [ sipyco toptica-lasersdk ];
     };
   } // (dualPackage {
     name = "highfinesse-net";
-    version = "0.1";
+    version = "0.2";
     src = pkgs.fetchFromGitHub {
       owner = "quartiq";
       repo = "highfinesse-net";
-      rev = "6864ae5da5cbc67953b968010115db951e52a272";
-      sha256 = "1k8xacgam5xghxvljvdzpsdhhq86fra13hkvdy7y301s9nyp30s4";
+      rev = "595daeb036592cf0254989e9b2cf8fac4844b6bc";
+      sha256 = "1nq7mnirprlac453rxfarf0wpdw77jmji2m22ks4nwjlb43ahmaz";
     };
     pythonOptions = {
-      propagatedBuildInputs = [ artiq ];
+      propagatedBuildInputs = [ sipyco ];
       # no unit tests without hardware so do a simple smoke test
-      checkPhase = "python -m highfinesse_net.aqctl_highfinesse_net --version";
+      checkPhase = "python -m highfinesse_net.aqctl_highfinesse_net -h";
     };
+    condaOptions = { dependencies = [ "sipyco" ]; };
   })
