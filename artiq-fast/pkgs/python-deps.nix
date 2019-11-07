@@ -23,7 +23,6 @@ rec {
       sha256 = "0yzkka9jk3612v8gx748x6ziwykq5lr7zmr9wzkcls0v2yilqx9k";
     };
     propagatedBuildInputs = with python3Packages; [ pyserial ];
-    doCheck = false;
   };
 
   levenshtein = python3Packages.buildPythonPackage rec {
@@ -34,7 +33,6 @@ rec {
       rev = "854e61a05bb8b750e990add96df412cd5448b75e";
       sha256 = "1yf21kg1g2ivm5a4dx1jra9k0c33np54d0hk5ymnfyc4f6pg386q";
     };
-    doCheck = false;
   };
 
   pythonparser = python3Packages.buildPythonPackage rec {
