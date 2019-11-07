@@ -327,6 +327,14 @@ ACTION=="add", SUBSYSTEM=="tty", \
     nixops = super.nixops.overrideAttrs(oa: {
       patches = oa.patches or [] ++ [ ./nixops-665.patch ];
     });
+    # https://github.com/NixOS/nixpkgs/issues/70930
+    # perl 5.30 breaks plugins
+    munin = super.munin.override {
+      perlPackages = super.perl528Packages;
+      rrdtool = super.rrdtool.override {
+        perl = super.perl528Packages.perl;
+      };
+    };
   };
 
   security.acme.certs = {
