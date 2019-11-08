@@ -28,6 +28,7 @@ let
         "afsatellite"
         "berkeley"
         "berkeley2"
+        "csu"
         "duke"
         "duke2"
         "duke3"
