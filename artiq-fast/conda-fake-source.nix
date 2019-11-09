@@ -1,5 +1,5 @@
 { pkgs }:
-{ name, version, src, dependencies ? []}:
+{ name, version, src, dependencies ? [], extraYaml ? ""}:
 pkgs.runCommand "conda-fake-source-${name}" { }
     ''
     mkdir -p $out/fake-conda;
@@ -35,6 +35,8 @@ pkgs.runCommand "conda-fake-source-${name}" { }
     requirements:
       run:
     ${pkgs.lib.concatStringsSep "\n" (map (s: "    - ${s}") dependencies)}
+
+    ${extraYaml}
     EOF
 
     cat << EOF > $out/fake-conda/build.sh

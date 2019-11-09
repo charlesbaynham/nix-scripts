@@ -7,6 +7,13 @@ let
     inherit version;
     src = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
     dependencies = import ./conda-artiq-deps.nix;
+    extraYaml =
+    ''
+    about:
+      home: https://m-labs.hk/artiq
+      license: LGPL
+      summary: 'A leading-edge control system for quantum information experiments'
+    '';
   };
   conda-artiq = import ./conda-build.nix { inherit pkgs; } {
     name = "conda-artiq";
