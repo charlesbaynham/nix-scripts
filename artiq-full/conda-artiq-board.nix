@@ -28,7 +28,7 @@ let
     about:
       home: https://m-labs.hk/artiq
       license: LGPL
-      summary: 'Bitstream, BIOS and firmware for the ${target}-${variant} board variant'
+      summary: 'Bitstream, bootloader and firmware for the ${target}-${variant} board variant'
     EOF
 
     cat << EOF > $out/fake-conda/build.sh
