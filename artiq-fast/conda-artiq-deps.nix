@@ -15,4 +15,5 @@
   "pygit2"
   "aiohttp >=3"
   "python-levenshtein"
+  "sipyco"
 ]

@@ -37,6 +37,7 @@ let
   windowsRunner = overrides:
     import "${generatedNix}/windows/run-test.nix" ({
       inherit pkgs;
+      sipycoPkg = artiqpkgs.conda-sipyco;
       artiqPkg = artiqpkgs.conda-artiq;
     } // overrides);
   jobs = (builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs);

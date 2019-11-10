@@ -1,8 +1,9 @@
 { pkgs,
+  sipycoPkg,
+  artiqPkg,
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",
   testTimeout ? 600,
-  artiqPkg ? import ../conda-artiq.nix { inherit pkgs; },
   testCommand ? "python -m unittest discover -v artiq.test",
 }:
 
@@ -52,9 +53,9 @@ stdenv.mkDerivation {
     echo "Wait for Windows to boot"
     sleep 10
     ${ssh "ver"}
-    for pkg in ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
-      ${scp "\\$pkg" "artiq.tar.bz2"}
-      ${ssh "anaconda\\scripts\\activate ${condaEnv} && conda install artiq.tar.bz2"}
+    for pkg in ${sipycoPkg}/noarch/sipyco*.tar.bz2 ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
+      ${scp "\\$pkg" "to_install.tar.bz2"}
+      ${ssh "anaconda\\scripts\\activate ${condaEnv} && conda install to_install.tar.bz2"}
     done
 
     # Schedule a timed shutdown against hanging test runs
