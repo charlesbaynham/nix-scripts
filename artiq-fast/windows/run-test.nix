@@ -4,7 +4,7 @@
   diskImage ? "/opt/windows/c.img",
   qemuMem ? "2G",
   testTimeout ? 600,
-  testCommand ? "python -m unittest discover -v artiq.test",
+  testCommand ? "python -m unittest discover -v sipyco.test && python -m unittest discover -v artiq.test",
 }:
 
 with pkgs;
