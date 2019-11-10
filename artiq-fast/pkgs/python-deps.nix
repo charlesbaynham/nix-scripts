@@ -8,8 +8,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "sipyco";
-      rev = "ec6602c086054520f7617bb1fbee2e0897409978";
-      sha256 = "0jm8b533qa9ny1p3dyvpk8aa7vb50qp59937lp0k8zs73sv32grz";
+      rev = "9468933f8ca5711493831439651b2f66b0125189";
+      sha256 = "191782l0yhgsli50rkc7w4bhb87lf20gr89f4w5ibdxq1k38l8ii";
     };
     propagatedBuildInputs = with python3Packages; [ numpy ];
   };
