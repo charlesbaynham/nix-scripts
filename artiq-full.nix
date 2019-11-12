@@ -206,11 +206,15 @@ let
     EOF
     '';
   pythonDeps = import ./artiq-full/python-deps.nix { inherit pkgs; };
-  manualPackages = import ./artiq-full/manual.nix {
+  sipycoManualPackages = import ./artiq-full/sipyco-manual.nix {
+    inherit (pkgs) stdenv lib python3Packages texlive texinfo;
+    inherit (import <artiq-fast> { inherit pkgs; }) sipyco;
+  };
+  artiqManualPackages = import ./artiq-full/artiq-manual.nix {
     inherit (pkgs) stdenv lib fetchgit git python3Packages texlive texinfo;
     inherit (pythonDeps) sphinxcontrib-wavedrom;
   };
-  jobs = (import generatedNix { inherit pkgs; }) // manualPackages // {
+  jobs = (import generatedNix { inherit pkgs; }) // sipycoManualPackages // artiqManualPackages // {
     # This is in the example in the ARTIQ manual - precompile it to speed up
     # installation for users.
     matplotlib-qt = pkgs.lib.hydraJob (pkgs.python3Packages.matplotlib.override { enableQt = true; });
