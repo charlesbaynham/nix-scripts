@@ -119,8 +119,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "quartiq";
       repo = "hut2";
-      rev = "26aaa8edd57d44dc00a41c3082536ac58dcbc9d6";
-      sha256 = "0p8iwapsx3g5k2sazian4s97cwcixkh3gnn7y44mhyydn8k7i3g0";
+      rev = "68369d5d63d233827840a9a752d90454a4e03baa";
+      sha256 = "0r832c0icz8v3w27ci13024bqfslj1gx6dwhjv11ksw229xdcghd";
     };
     pythonOptions = {
       propagatedBuildInputs = [ sipyco ];
