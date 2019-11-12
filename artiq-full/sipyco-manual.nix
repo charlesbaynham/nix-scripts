@@ -25,7 +25,7 @@ let
       lib.optional (target == "texinfo") texinfo;
 
     preBuild = ''
-        export SOURCE_DATE_EPOCH=200000
+        export SOURCE_DATE_EPOCH=`cat TIMESTAMP`
         cd doc
       '';
     makeFlags = [ target ];
