@@ -17,6 +17,7 @@ let
   };
   # Double-escape because we produce a script from a shell heredoc
   ssh = cmd: qemu.ssh (escape cmd);
+  sshUnquoted = qemu.sshWithQuotes "\"";
   scp = qemu.scp;
   condaEnv = "artiq-env";
   tcpPorts = [ 1380 1381 1382 1383 ];
@@ -53,14 +54,11 @@ stdenv.mkDerivation {
     echo "Wait for Windows to boot"
     sleep 10
     ${ssh "ver"}
-    # FIXME: clean up this hack with the for loops
-    for pkg in ${sipycoPkg}/noarch/sipyco*.tar.bz2 ; do
-      ${scp "\\$pkg" "sipyco.tar.bz2"}
-      ${ssh "anaconda\\scripts\\activate ${condaEnv} && conda install sipyco.tar.bz2"}
-    done
-    for pkg in ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
-      ${scp "\\$pkg" "artiq.tar.bz2"}
-      ${ssh "anaconda\\scripts\\activate ${condaEnv} && conda install artiq.tar.bz2"}
+    i=0
+    for pkg in ${sipycoPkg}/noarch/sipyco*.tar.bz2 ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
+      ${scp "\\$pkg" "to_install\\$i.tar.bz2"}
+      ${sshUnquoted "anaconda\\scripts\\activate ${condaEnv} && conda install to_install\\$i.tar.bz2"}
+      ((i=i+1))
     done
 
     # Schedule a timed shutdown against hanging test runs

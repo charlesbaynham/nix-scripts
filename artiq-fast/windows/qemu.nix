@@ -33,13 +33,14 @@ let
 
   # Pass empty config file to prevent ssh from failing to create ~/.ssh
   sshOpts = "-F /dev/null -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=\$TMP/known_hosts";
-  ssh = cmd: ''
-    echo ssh windows '${cmd}'
+  sshWithQuotes = quotes: cmd: ''
+    echo ssh windows ${quotes}${cmd}${quotes}
     ${sshpass}/bin/sshpass -p${sshPassword} -- \
       ${openssh}/bin/ssh  -np 2022 ${sshOpts} \
       ${sshUser}@localhost \
-      '${cmd}'
+      ${quotes}${cmd}${quotes}
   '';
+  ssh = sshWithQuotes "'";
   scp = src: target: ''
     echo "Copy ${src} to ${target}"
     ${sshpass}/bin/sshpass -p${sshPassword} -- \
@@ -49,6 +50,6 @@ let
   
 in
 {
-  inherit qemu-img runQemu ssh scp;
+  inherit qemu-img runQemu ssh sshWithQuotes scp;
   inputs = [ qemu_kvm openssh sshpass ];
 }
