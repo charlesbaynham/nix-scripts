@@ -160,6 +160,14 @@ in
       '';
       propagatedBuildInputs = [ sipyco toptica-lasersdk ];
     };
+    conda-toptica-lasersdk-artiq = condaBuild {
+      name = "conda-toptica-lasersdk-artiq";
+      src = condaFakeSource {
+        name = "toptica-lasersdk-artiq";
+        inherit (toptica-lasersdk-artiq) version src;
+        dependencies = [ "sipyco" "lasersdk =1.3.1" ];
+      };
+    };
   } // (dualPackage {
     name = "highfinesse-net";
     version = "0.2";
