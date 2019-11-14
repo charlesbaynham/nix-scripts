@@ -3,6 +3,7 @@ let
   artiq-version = stdenv.mkDerivation {
     name = "artiq-version";
     src = import ./artiq-src.nix { inherit fetchgit; };
+    # keep in sync with ../../artiq-fast.nix
     buildPhase = ''
       REV=`${git}/bin/git rev-parse HEAD`
       MAJOR_VERSION=`cat MAJOR_VERSION`

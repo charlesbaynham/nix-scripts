@@ -2,10 +2,16 @@ let
   pkgs = import <nixpkgs> {};
   artiqSrc = <artiqSrc>;
   generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
+    # keep in sync with artiq-fast/pkgs/artiq-version.nix
     ''
     cp --no-preserve=mode,ownership -R ${./artiq-fast} $out
     REV=`git --git-dir ${artiqSrc}/.git rev-parse HEAD`
     MAJOR_VERSION=`cat ${artiqSrc}/MAJOR_VERSION`
+    if [ -e BETA ]; then
+      SUFFIX=".beta"
+    else
+      SUFFIX=""
+    fi
     COMMIT_COUNT=`git --git-dir ${artiqSrc}/.git rev-list --count HEAD`
     TIMESTAMP=`git --git-dir ${artiqSrc}/.git log -1 --format=%ct`
     ARTIQ_SRC_CLEAN=`mktemp -d`
