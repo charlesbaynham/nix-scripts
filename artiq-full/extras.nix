@@ -1,5 +1,7 @@
 { pkgs, sipyco, asyncserial, artiq }:
 let
+  condaBuild = import ./fast/conda-build.nix { inherit pkgs; };
+  condaFakeSource = import ./fast/conda-fake-source.nix { inherit pkgs; };
   dualPackage = (
     { name, version, src, pythonOptions ? {}, condaOptions ? {}}:
       {
@@ -29,9 +31,9 @@ let
               echo doc manual ${dest}/html index.html >> $out/nix-support/hydra-build-products
               '';
         };
-        "conda-${name}" = import ./fast/conda-build.nix { inherit pkgs; } {
+        "conda-${name}" = condaBuild {
           name = "conda-${name}";
-          src = import ./fast/conda-fake-source.nix { inherit pkgs; } ({
+          src = condaFakeSource ({
             inherit name version src;
           } // condaOptions);
         };
@@ -173,4 +175,24 @@ in
       checkPhase = "python -m highfinesse_net.aqctl_highfinesse_net -h";
     };
     condaOptions = { dependencies = [ "sipyco" ]; };
-  })
+  }) // rec {
+    artiq-comtools = pkgs.python3Packages.buildPythonPackage rec {
+      name = "artiq-comtools-${version}";
+      version = "1.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "m-labs";
+        repo = "artiq-comtools";
+        rev = "398f6becdaf89ec2e115106778467f9a766a2007";
+        sha256 = "02i2a1mmzc7jixq4nkbmi1a4c0gk6kmm8bv1dxrka7m56nb9sk9w";
+      };
+      propagatedBuildInputs = [ sipyco pkgs.python3Packages.numpy pkgs.python3Packages.aiohttp ];
+    };
+    conda-artiq-comtools = condaBuild {
+      name = "conda-artiq-comtools";
+      src = condaFakeSource {
+        name = "artiq-comtools";
+        inherit (artiq-comtools) version src;
+        dependencies = [ "sipyco" "numpy" "aiohttp >=3" ];
+      };
+    };
+  }

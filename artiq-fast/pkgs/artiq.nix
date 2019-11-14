@@ -10,7 +10,7 @@ in
     preBuild = "export VERSIONEER_OVERRIDE=${version}";
     propagatedBuildInputs = [ binutils-or1k llvm-or1k llvmlite-artiq qt5Full ]
       ++ (with pythonDeps; [ sipyco levenshtein pyqtgraph-qt5 quamash pythonparser ])
-      ++ (with python3Packages; [ aiohttp pygit2 numpy dateutil scipy prettytable pyserial h5py pyqt5 ]);
+      ++ (with python3Packages; [ pygit2 numpy dateutil scipy prettytable pyserial h5py pyqt5 ]);
     checkInputs = [ binutils-or1k outputcheck ];
     checkPhase =
     ''
