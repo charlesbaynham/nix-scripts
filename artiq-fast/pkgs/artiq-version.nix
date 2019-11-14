@@ -6,10 +6,15 @@ let
     buildPhase = ''
       REV=`${git}/bin/git rev-parse HEAD`
       MAJOR_VERSION=`cat MAJOR_VERSION`
+      if [ -e BETA ]; then
+        SUFFIX=".beta"
+      else
+        SUFFIX=""
+      fi
       COMMIT_COUNT=`${git}/bin/git rev-list --count HEAD`
     '';
     installPhase = ''
-      echo -n $MAJOR_VERSION.$COMMIT_COUNT.`cut -c1-8 <<< $REV`.beta > $out
+      echo -n $MAJOR_VERSION.$COMMIT_COUNT.`cut -c1-8 <<< $REV`$SUFFIX > $out
     '';
   };
 in
