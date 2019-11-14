@@ -250,6 +250,7 @@ ACTION=="add", SUBSYSTEM=="tty", \
         job = web:web:web
         command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/web
       </runcommand>
+
       <runcommand>
         job = artiq:full:sipyco-manual-html
         command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/sipyco-manual-html
@@ -258,17 +259,31 @@ ACTION=="add", SUBSYSTEM=="tty", \
         job = artiq:full:sipyco-manual-latexpdf
         command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/sipyco-manual-latexpdf
       </runcommand>
+
       <runcommand>
-        job = artiq:full:artiq-manual-html
+        job = artiq:full-beta:artiq-manual-html
         command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html-beta
       </runcommand>
       <runcommand>
-        job = artiq:full:artiq-manual-latexpdf
+        job = artiq:full-beta:artiq-manual-latexpdf
         command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf-beta
       </runcommand>
       <runcommand>
-        job = artiq:full:conda-channel
+        job = artiq:full-beta:conda-channel
         command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-conda-channel-beta
+      </runcommand>
+
+      <runcommand>
+        job = artiq:full:artiq-manual-html
+        command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-html
+      </runcommand>
+      <runcommand>
+        job = artiq:full:artiq-manual-latexpdf
+        command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-manual-latexpdf
+      </runcommand>
+      <runcommand>
+        job = artiq:full:conda-channel
+        command = [ $(jq '.buildStatus' < $HYDRA_JSON) = 0 ] && ln -sfn $(jq -r '.outputs[0].path' < $HYDRA_JSON) ${hydraWwwOutputs}/artiq-conda-channel
       </runcommand>
       '';
   };
@@ -416,19 +431,19 @@ ACTION=="add", SUBSYSTEM=="tty", \
         locations."=/artiq/manual-beta.pdf" = {
           alias = "${hydraWwwOutputs}/artiq-manual-latexpdf-beta/share/doc/artiq-manual/ARTIQ.pdf";
         };
+        locations."/artiq/manual/" = {
+          alias = "${hydraWwwOutputs}/artiq-manual-html/share/doc/artiq-manual/html/";
+        };
+        locations."=/artiq/manual.pdf" = {
+          alias = "${hydraWwwOutputs}/artiq-manual-latexpdf/share/doc/artiq-manual/ARTIQ.pdf";
+        };
 
         # legacy content
         locations."/migen/manual/" = {
           alias = "/var/www/m-labs.hk.old/migen/manual/";
         };
-        locations."/artiq/manual/" = {
-          alias = "/var/www/m-labs.hk.old/artiq/manual-release-4/";
-        };
         locations."/artiq/manual-release-4/" = {
           alias = "/var/www/m-labs.hk.old/artiq/manual-release-4/";
-        };
-        locations."/artiq/manual-release-3/" = {
-          alias = "/var/www/m-labs.hk.old/artiq/manual-release-3/";
         };
       };
     in {
@@ -454,6 +469,13 @@ ACTION=="add", SUBSYSTEM=="tty", \
         useACMEHost = "nixbld.m-labs.hk";
         locations."/artiq-beta/" = {
           alias = "${hydraWwwOutputs}/artiq-conda-channel-beta/";
+          extraConfig = ''
+            autoindex on;
+            index bogus_index_file;
+          '';
+        };
+        locations."/artiq/" = {
+          alias = "${hydraWwwOutputs}/artiq-conda-channel/";
           extraConfig = ''
             autoindex on;
             index bogus_index_file;
