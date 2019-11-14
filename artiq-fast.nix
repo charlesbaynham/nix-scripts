@@ -7,7 +7,7 @@ let
     cp --no-preserve=mode,ownership -R ${./artiq-fast} $out
     REV=`git --git-dir ${artiqSrc}/.git rev-parse HEAD`
     MAJOR_VERSION=`cat ${artiqSrc}/MAJOR_VERSION`
-    if [ -e BETA ]; then
+    if [ -e ${artiqSrc}/BETA ]; then
       SUFFIX=".beta"
     else
       SUFFIX=""
