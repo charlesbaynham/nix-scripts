@@ -327,6 +327,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
     ALLOWED_TYPES = */*
     '';
   };
+  systemd.tmpfiles.rules = [
+    "L+ '${config.services.gitea.stateDir}/custom/templates/home.tmpl' - - - - ${./gitea-home.tmpl}"
+  ];
 
   services.mattermost = {
     enable = true;
