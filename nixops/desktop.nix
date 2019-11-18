@@ -31,6 +31,7 @@
   ];
 
   services.openssh.enable = true;
+  services.openssh.forwardX11 = true;
 
   # Enable CUPS to print documents.
   services.printing = {
