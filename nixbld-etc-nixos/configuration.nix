@@ -451,6 +451,9 @@ ACTION=="add", SUBSYSTEM=="tty", \
         locations."/artiq/manual-release-3/" = {
           alias = "/var/www/m-labs.hk.old/artiq/manual-release-3/";
         };
+        locations."/artiq/manual-release-2/" = {
+          alias = "/var/www/m-labs.hk.old/artiq/manual-release-2/";
+        };
       };
     in {
       "m-labs.hk" = mainWebsite;
