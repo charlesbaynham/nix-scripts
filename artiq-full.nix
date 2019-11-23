@@ -39,6 +39,7 @@ let
         "innsbruck"
         "ist"
         "luh"
+        "mit"
         "mitll"
         "mitll2"
         "mpik"
