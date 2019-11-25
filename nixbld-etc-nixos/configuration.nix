@@ -333,8 +333,15 @@ ACTION=="add", SUBSYSTEM=="tty", \
     appName = "M-Labs Git";
     cookieSecure = true;
     disableRegistration = true;
+    mailerPasswordFile = "/etc/nixos/secret/mailerpassword";
     extraConfig =
     ''
+    [mailer]
+    ENABLED = true
+    HOST = ssl.serverraum.org:587
+    FROM = sysop@m-labs.hk
+    USER = sysop@m-labs.hk
+
     [attachment]
     ALLOWED_TYPES = */*
     '';
