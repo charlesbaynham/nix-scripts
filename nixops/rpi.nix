@@ -76,6 +76,11 @@ in
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDH3zGbV5zlJ2V8IsFkD2G8xpm03RsPCRKpvS5WLonogpfUO91zcgX1NVikNqB+EsyUvDtXBVu38esh31hoafXx050mqP6vtmjau4yBYOM0Z1Cp07b1oCQhMgeqkV3k2TJ69S5/fTzUYnneEv5yNhOPJucKwdDBqVdN1k/EEYx7WAlPSnpmnYB5xYlx+wB3YweNf9zFi3+4oadIYyKkdRD6+2HqqLxUVs4gVqVGilCIc4keMyrfOSmcK5MPPfhat+42WAkwZic26HJfZlQXujSPuMUnzizJ2BNUH5feDylkPCsSFJrhqoCvRESVaARAIb20IPo43qxN5YspqSzn4LV1frMjW66u/gl5X9psMEIsfNNUQ/KtKB70BzeRTJbIQY3FkKohLINPFKP76aPOvFx+T3MNvQ4MN/baqTPd8wnwggQa/srmdh/TBi2xeiOu83IRhhoy0gDRsrYipsuleVv8+xY1wEopFzVGG0iYrBueXDMuT8VSvgfh/REEqi7grp2RaG3GnkcWLWCARdsnPoaHPc5SANaKCwnxUalm79DHN1TzG/GNTwU2TXxCwCCNyD0E6oY5a5bByTC00e5mBRX0CqQTAlUacdztKb28kcGCOXb3kp//OD2O/yrca1tNqc/dF5y8LDMqEpy7EXQdK6kjiKeBnUjkAzmZ7y38PX5WHw== florent@enjoy-digital.fr"];
   };
+  users.extraUsers.jerry = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1vcq23Z221/OoiXombiXJYzQNTlgtWTXSnBI1jRDgcOfEX993jGIcC6NAa4czeqKu6kqEo+dqGMO872lPTo57KcBNmev+2J+WfvrRRu5uCkMcYWPA6peQq9VJ3+/YT8uShYN8KeDnlfuER8KrDo5RKX+SWk0NSgMXwdW5HD6bmRac1K6kydB+IGrltyUpph37vJEzF+OxPySiLQhWrwSQERYya+3fI/NsilffYa5qoDFmEfKwaSLIJ9zLbhTR7UPc0loQjyICOlGempbHwKK1YZJfidGIf5pHsW3wT3EnJzbMliQspXkw0KZyZij529TnoQkjGEsAsHI1es92/VP5 jerry@jerry-VivoBook-Flip-14-TP410UF"];
+  };
 
   services.udev.packages = [ m-labs.openocd ];
 
