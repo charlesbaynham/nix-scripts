@@ -135,6 +135,12 @@ let
             "1" = "vlbaisatellite";
           };
         };
+        bonn1 = {
+          master = "bonn1master";
+          satellites = {
+            "1" = "bonn1satellite";
+          };
+        };
         wipm5 = {
           master = "wipm5master";
           satellites = {
