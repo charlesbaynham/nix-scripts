@@ -28,6 +28,8 @@ let
         "afsatellite"
         "berkeley"
         "berkeley2"
+        "bonn1master"
+        "bonn1satellite"
         "csu"
         "duke"
         "duke2"
