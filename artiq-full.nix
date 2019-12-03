@@ -22,14 +22,14 @@ let
     { pkgs ? import <nixpkgs> {}}:
 
     let
+      artiq-fast = import ./fast { inherit pkgs; };
+
       target = "kasli";
       variants = [
         "afmaster"
         "afsatellite"
         "berkeley"
         "berkeley2"
-        "bonn1master"
-        "bonn1satellite"
         "csu"
         "duke"
         "duke2"
@@ -79,9 +79,11 @@ let
         "wipm4"
         "wipm5master"
         "wipm5satellite"
-      ];
+      ] ++ (pkgs.lib.lists.optionals ((pkgs.lib.versions.major artiq-fast.artiq.version) == "6") [
+        "bonn1master"
+        "bonn1satellite"
+      ]);
 
-      artiq-fast = import ./fast { inherit pkgs; };
       artiq-board = import ./fast/artiq-board.nix { inherit pkgs; };
       conda-artiq-board = import ./conda-artiq-board.nix { inherit pkgs; };
       src = pkgs.fetchgit {
@@ -135,19 +137,20 @@ let
             "1" = "vlbaisatellite";
           };
         };
-        bonn1 = {
-          master = "bonn1master";
-          satellites = {
-            "1" = "bonn1satellite";
-          };
-        };
         wipm5 = {
           master = "wipm5master";
           satellites = {
             "1" = "wipm5satellite";
           };
         };
-      };
+      } // (pkgs.lib.optionalAttrs ((pkgs.lib.versions.major artiq-fast.artiq.version) == "6") {
+        bonn1 = {
+          master = "bonn1master";
+          satellites = {
+            "1" = "bonn1satellite";
+          };
+        };
+      });
       drtio-ddbs = pkgs.lib.attrsets.mapAttrs'
         (system: crates: pkgs.lib.attrsets.nameValuePair ("device-db-" + system)
         (pkgs.stdenv.mkDerivation {
