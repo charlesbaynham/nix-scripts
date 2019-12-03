@@ -79,7 +79,7 @@ let
         "wipm4"
         "wipm5master"
         "wipm5satellite"
-      ] ++ (pkgs.lib.lists.optionals ((pkgs.lib.versions.major artiq-fast.artiq.version) == "6") [
+      ] ++ (pkgs.lib.lists.optionals ((pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
         "bonn1master"
         "bonn1satellite"
       ]);
@@ -143,7 +143,7 @@ let
             "1" = "wipm5satellite";
           };
         };
-      } // (pkgs.lib.optionalAttrs ((pkgs.lib.versions.major artiq-fast.artiq.version) == "6") {
+      } // (pkgs.lib.optionalAttrs ((pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") {
         bonn1 = {
           master = "bonn1master";
           satellites = {
