@@ -149,7 +149,7 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim git file lm_sensors acpi pciutils psmisc gdb telnet whois zip unzip nixops
-    irssi tmux adoptopenjdk-openj9-bin-11 tigervnc xorg.xauth icewm xterm xorg.xsetroot usbutils imagemagick jq
+    irssi tmux tigervnc xorg.xauth icewm xterm xorg.xsetroot usbutils imagemagick jq
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
