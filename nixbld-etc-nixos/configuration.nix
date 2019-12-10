@@ -148,7 +148,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget vim git file lm_sensors acpi pciutils psmisc xc3sprog openocd gdb telnet whois zip unzip nixops
+    wget vim git file lm_sensors acpi pciutils psmisc gdb telnet whois zip unzip nixops
     irssi tmux adoptopenjdk-openj9-bin-11 tigervnc xorg.xauth icewm xterm xorg.xsetroot usbutils imagemagick jq
   ];
 
@@ -208,23 +208,7 @@ in
   security.sudo.wheelNeedsPassword = false;
   security.hideProcessInformation = true;
   boot.kernel.sysctl."kernel.dmesg_restrict" = true;
-  services.udev.packages = [ pkgs.openocd pkgs.sane-backends ];
-  services.udev.extraRules = ''
-ACTION=="add", SUBSYSTEM=="tty", \
-  ENV{ID_SERIAL}=="FTDI_Quad_RS232-HS", \
-  ENV{ID_PATH}=="pci-0000:00:14.0-usb-0:5:1.1", \
-  SYMLINK+="ttyUSB_sayma-1_0"
-ACTION=="add", SUBSYSTEM=="tty", \
-  ENV{ID_SERIAL}=="FTDI_Quad_RS232-HS", \
-  ENV{ID_PATH}=="pci-0000:00:14.0-usb-0:5:1.2", \
-  SYMLINK+="ttyUSB_sayma-1_1"
-
-ACTION=="add", SUBSYSTEM=="tty", \
-  ENV{ID_SERIAL}=="FTDI_Quad_RS232-HS", \
-  ENV{ID_PATH}=="pci-0000:00:14.0-usb-0:1:1.2", \
-  SYMLINK+="ttyUSB_kasli-n1"
-
-  '';
+  services.udev.packages = [ pkgs.sane-backends ];
 
   nix.distributedBuilds = true;
   nix.buildMachines = [
