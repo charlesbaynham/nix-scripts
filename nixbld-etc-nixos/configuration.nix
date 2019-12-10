@@ -202,10 +202,6 @@ in
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
   };
-  users.extraUsers.whitequark = {
-    isNormalUser = true;
-    extraGroups = ["plugdev" "dialout"];
-  };
   users.extraUsers.nix = {
     isNormalUser = true;
   };
