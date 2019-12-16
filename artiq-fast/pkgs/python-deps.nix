@@ -117,8 +117,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "94db7295fd4942d0ee27de1148a6cc7be356329d";
-      sha256 = "1kq11if64zj84gv4w1q7l16fp17xjxl2wv5hc9dibr1z3m1gy67l";
+      rev = "46177e57a25a3067f58316bd1952e994399c6c1d";
+      sha256 = "10cs6cc7f0jzkdkwqlc95apxazr5c94dn9h56i8wlqmy192sdhnz";
     };
 
     propagatedBuildInputs = with python3Packages; [ colorama ];
