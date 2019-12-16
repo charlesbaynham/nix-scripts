@@ -52,7 +52,7 @@ stdenv.mkDerivation {
     ]} &
 
     echo "Wait for Windows to boot"
-    sleep 10
+    sleep 30
     ${ssh "ver"}
     i=0
     for pkg in ${sipycoPkg}/noarch/sipyco*.tar.bz2 ${artiqPkg}/noarch/artiq*.tar.bz2 ; do
