@@ -19,7 +19,7 @@ let
       guestfwds =
         builtins.concatStringsSep ""
         (map ({ listenAddr, targetAddr, port }:
-          ",guestfwd=tcp:${listenAddr}:${toString port}-cmd:${socat}/bin/socat\\ -dd\\ -\\ tcp:${targetAddr}:${toString port}"
+          ",guestfwd=tcp:${listenAddr}:${toString port}-cmd:${socat}/bin/socat\\ -\\ tcp:${targetAddr}:${toString port}"
         ) forwardedPorts);
       args = [
         "-enable-kvm"
