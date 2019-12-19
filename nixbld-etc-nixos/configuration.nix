@@ -104,6 +104,15 @@ in
     hwMode        = "g";
     ssid          = "M-Labs";
     wpaPassphrase = (import /etc/nixos/secret/wifi_password.nix);
+    extraConfig   = ''
+      ieee80211d=1
+      country_code=HK
+      ieee80211n=1
+      wmm_enabled=1
+      auth_algs=1
+      wpa_key_mgmt=WPA-PSK
+      rsn_pairwise=CCMP
+    '';
   };
   services.dnsmasq = {
     enable = true;
