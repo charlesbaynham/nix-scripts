@@ -15,6 +15,19 @@ let
       echo file binary-dist $out/urukul.jed >> $out/nix-support/hydra-build-products
       '';
   };
+  buildMirnyCpld = {version, src}: pkgs.stdenv.mkDerivation {
+    name = "mirny-cpld-${version}";
+    inherit src;
+    buildInputs = [(pkgs.python3.withPackages(ps: [migen]))] ++ (builtins.attrValues ise);
+    phases = ["buildPhase" "installPhase"];
+    buildPhase = "python $src/mirny_impl.py";
+    installPhase = 
+      ''
+      mkdir -p $out $out/nix-support
+      cp build/mirny.jed $out
+      echo file binary-dist $out/mirny.jed >> $out/nix-support/hydra-build-products
+      '';
+  };
 in
   {
     urukul-cpld-master = buildUrukulCpld {
@@ -28,6 +41,19 @@ in
         repo = "urukul";
         rev = "v${version}";
         sha256 = "1nvarspqbf9f7b27j34jkkh4mj6rwrlmccmfpz5nnzk3h2j6zbqc";
+      };
+    };
+    mirny-cpld-master = buildMirnyCpld {
+      version = "master";
+      src = <mirnySrc>;
+    };
+    mirny-cpld-release = buildMirnyCpld rec {
+      version = "0.2.4";
+      src = pkgs.fetchFromGitHub {
+        owner = "quartiq";
+        repo = "mirny";
+        rev = "v${version}";
+        sha256 = "0fyz0g1h1s54zdivkfqhgyhpq7gjkl9kxkcfy3104p2f889l1vgw";
       };
     };
   }
