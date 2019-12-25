@@ -27,6 +27,18 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # work around iwl driver bug in newer kernels
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_4_19.override {
+    argsOverride = rec {
+      src = pkgs.fetchurl {
+        url = "mirror://kernel/linux/kernel/v4.x/linux-${version}.tar.xz";
+        sha256 = "0d2bcg0krahia2ylgqaxdppyr9idq2pi6y1si6h8n9sg6rj3a57i";
+      };
+      version = "4.19.79";
+      modDirVersion = version;
+      };
+  });
+
   security.apparmor.enable = true;
 
   security.pam.yubico = {
