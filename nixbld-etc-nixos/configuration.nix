@@ -7,7 +7,7 @@
 let
   netifWan = "enp0s31f6";
   netifLan = "enp3s0";
-  netifWifi = "wlp0s20f0u1";
+  netifWifi = "wlp4s0";
   netifSit = "henet0";
   hydraWwwOutputs = "/var/www/hydra-outputs";
 in
@@ -26,7 +26,6 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.blacklistedKernelModules = ["iwlwifi"];
 
   security.apparmor.enable = true;
 
@@ -352,6 +351,7 @@ in
   };
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
+    hostapd = super.callPackage ./hostapd.nix {};
     hydra = super.hydra.overrideAttrs(oa: {
       patches = oa.patches or [] ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
       hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
