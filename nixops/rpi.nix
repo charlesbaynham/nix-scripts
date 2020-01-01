@@ -81,6 +81,11 @@ in
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1vcq23Z221/OoiXombiXJYzQNTlgtWTXSnBI1jRDgcOfEX993jGIcC6NAa4czeqKu6kqEo+dqGMO872lPTo57KcBNmev+2J+WfvrRRu5uCkMcYWPA6peQq9VJ3+/YT8uShYN8KeDnlfuER8KrDo5RKX+SWk0NSgMXwdW5HD6bmRac1K6kydB+IGrltyUpph37vJEzF+OxPySiLQhWrwSQERYya+3fI/NsilffYa5qoDFmEfKwaSLIJ9zLbhTR7UPc0loQjyICOlGempbHwKK1YZJfidGIf5pHsW3wT3EnJzbMliQspXkw0KZyZij529TnoQkjGEsAsHI1es92/VP5 jerry@jerry-VivoBook-Flip-14-TP410UF"];
   };
+  users.extraUsers.sjm = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqBya2nrq39Jl/eguA4LcfvT5ishB1gBE7ofkUbd/+Q sjm@fractalide.com"];
+  };
 
   services.udev.packages = [ m-labs.openocd ];
 
