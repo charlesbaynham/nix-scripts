@@ -351,7 +351,7 @@ in
   };
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
-    hostapd = super.callPackage ./hostapd.nix {};
+    firmwareLinuxNonfree = super.callPackage ./firmware-linux-nonfree.nix {};
     hydra = super.hydra.overrideAttrs(oa: {
       patches = oa.patches or [] ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
       hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
