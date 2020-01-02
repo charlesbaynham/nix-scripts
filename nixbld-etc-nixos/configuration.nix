@@ -7,7 +7,7 @@
 let
   netifWan = "enp0s31f6";
   netifLan = "enp3s0";
-  netifWifi = "wlp4s0";
+  netifWifi = "wlp1s0";
   netifSit = "henet0";
   hydraWwwOutputs = "/var/www/hydra-outputs";
 in
@@ -26,6 +26,7 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.blacklistedKernelModules = ["iwlwifi"];
 
   security.apparmor.enable = true;
 
