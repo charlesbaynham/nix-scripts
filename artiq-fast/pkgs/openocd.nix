@@ -32,6 +32,7 @@ stdenv.mkDerivation rec {
     "--enable-buspirate"
     "--enable-sysfsgpio"
     "--enable-remote-bitbang"
+    "--disable-werror"
   ];
 
   NIX_CFLAGS_COMPILE = [
