@@ -43,6 +43,7 @@ let
         "innsbruck2"
         "ist"
         "luh"
+        "luh2"
         "mit"
         "mitll"
         "mitll2"
