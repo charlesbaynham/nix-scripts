@@ -29,6 +29,7 @@
     wireshark qrencode yosys symbiyosys yices z3 boolector cvc4 pavucontrol keepassx poppler_utils
     jq ark sublime3 rink qemu_kvm konsole
   ];
+  programs.wireshark.enable = true;
 
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
@@ -81,7 +82,7 @@
   };
   users.extraUsers.harry = {
     isNormalUser = true;
-    extraGroups = ["plugdev" "dialout"];
+    extraGroups = ["plugdev" "dialout" "wireshark"];
   };
   security.sudo.wheelNeedsPassword = false;
   services.udev.packages = [ pkgs.openocd pkgs.hackrf ];

@@ -53,7 +53,7 @@ in
   };
   users.extraUsers.astro = {
     isNormalUser = true;
-    extraGroups = ["plugdev" "dialout" "wireshark"];
+    extraGroups = ["plugdev" "dialout" "wireshark" "wheel"];
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJJTSJdpDh82486uPiMhhyhnci4tScp5uUe7156MBC8 a"];
   };
   users.extraUsers.harry = {
@@ -73,7 +73,7 @@ in
   };
   users.extraUsers.sjm = {
     isNormalUser = true;
-    extraGroups = ["plugdev" "dialout"];
+    extraGroups = ["plugdev" "dialout" "wireshark" "wheel"];
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqBya2nrq39Jl/eguA4LcfvT5ishB1gBE7ofkUbd/+Q sjm@fractalide.com"];
   };
 

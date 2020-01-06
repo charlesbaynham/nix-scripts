@@ -1,4 +1,8 @@
-{ pkgs ? import <nixpkgs> {}}:
+{ pkgs ? import <nixpkgs> {
+  overlays = [ (self: super: {
+    python3 = super.python3.overrideAttrs(oa: { configureFlags = oa.configureFlags ++ ["--enable-optimizations" "--with-lto"]; });
+  }) ];
+}}:
 with pkgs;
 let
   pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; };
