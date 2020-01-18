@@ -93,8 +93,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "misoc";
-      rev = "e7f76c3ca302d9b1040bb818d7cd07a5c031c63b";
-      sha256 = "1cdqjgbhgrnds8m0mrgd9phb8gqmhlv8v3ivrz1mvs7cb1bwl0pf";
+      rev = "33495270180bb9202877599a430edc9e09da0232";
+      sha256 = "1jld8f0k453skzhp4gxrdr8avj84zq1bcmzhvy7ag04jwn1w13az";
       fetchSubmodules = true;
     };
 
@@ -117,8 +117,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "bee558c8cb04720fb695f63d3597f2aefa55e8e4";
-      sha256 = "17ncpyphvjbpma946yby3ws01v6xwp7vfcjg3a9q9xw7k26r3fpr";
+      rev = "7bc80d79d87d3e659459c5afdc5a36db10bf2115";
+      sha256 = "18nrrp9z1hyrq71gji9jl6lcivmmgr9pmf1hd4kna3mvahncscwh";
     };
 
     propagatedBuildInputs = with python3Packages; [ colorama ];
