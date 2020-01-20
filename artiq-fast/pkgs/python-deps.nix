@@ -157,8 +157,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "jesd204b";
-      rev = "2fd6391c0a9197580d60f7d8a146191dc7337b03";
-      sha256 = "1lhw8f0dp42xx4g6d7hyhqhrnd6i5ll4a1wcg265rqz3600i4009";
+      rev = "ed7dc91686f6c340dc8b14e5a119d5e4bbcf9339";
+      sha256 = "0z2scwh85s0zffdw055l04ysqy3wkvgw9vrg7bxvpi5zh3dp3x7q";
     };
 
     propagatedBuildInputs = with python3Packages; [ migen misoc ];
