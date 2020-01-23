@@ -65,6 +65,7 @@ let
         "ptb6"
         "ptbal"
         "ptbin"
+        "rice"
         "saymamaster"
         "siegen"
         "su"
