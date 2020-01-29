@@ -148,7 +148,7 @@ in
         owner = "quartiq";
         repo = "lasersdk-artiq";
         rev = "901dec13a1bf9429ce7ab49be34b03d1c49b8a9f";
-        sha256 = "1alvbmpaq8a2qi2avi8frgplk1c6wfm8vy65fg08hl73kv96cc65";
+        sha256 = "0lqxvgvpgrpw1kzhg5axnfb40ils2vdk75r43hqmk2lfz4sydwb2";
       };
       postPatch = ''
         substituteInPlace lasersdk_artiq/aqctl_laser.py \
