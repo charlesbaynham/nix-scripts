@@ -386,6 +386,8 @@ in
         "hooks.m-labs.hk" = null;
         "forum.m-labs.hk" = null;
         "perso.m-labs.hk" = null;
+        "nmigen.org" = null;
+        "www.nmigen.org" = null;
 
         "openhardware.hk" = null;
         "git.openhardware.hk" = null;
@@ -541,6 +543,20 @@ in
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         root = "/var/www/perso";
+      };
+      "nmigen.org" = {
+        addSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".extraConfig = ''
+          return 301 https://github.com/m-labs/nmigen;
+        '';
+      };
+      "www.nmigen.org" = {
+        addSSL = true;
+        useACMEHost = "nixbld.m-labs.hk";
+        locations."/".extraConfig = ''
+          return 301 https://github.com/m-labs/nmigen;
+        '';
       };
 
       "git.openhardware.hk" = {
