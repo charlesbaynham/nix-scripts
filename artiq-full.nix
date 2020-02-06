@@ -48,6 +48,8 @@ let
         "mitll"
         "mitll2"
         "mitll3"
+        "mitll4master"
+        "mitll4satellite"
         "mpik"
         "mpq"
         "nict"
@@ -136,6 +138,12 @@ let
           master = "hustmaster";
           satellites = {
             "1" = "hustsatellite";
+          };
+        };
+        mitll4 = {
+          master = "mitll4master";
+          satellites = {
+            "1" = "mitll4satellite";
           };
         };
         vlbai = {
