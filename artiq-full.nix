@@ -35,7 +35,7 @@ let
         "duke2"
         "duke3"
         "freiburg1"
-        "grif"
+        "griffith"
         "hub"
         "hustmaster"
         "hustsatellite"
