@@ -45,6 +45,7 @@ let
         "ist"
         "luh"
         "luh2"
+        "mikes"
         "mit"
         "mitll"
         "mitll2"
