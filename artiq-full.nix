@@ -83,6 +83,7 @@ let
         "tsinghua2"
         "ubirmingham"
         "ucr"
+        "unlb"
         "unsw"
         "unsw2"
         "ustc"
