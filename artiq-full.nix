@@ -41,6 +41,8 @@ let
         "hustmaster"
         "hustsatellite"
         "hw"
+        "hw2master"
+        "hw2satellite"
         "indiana"
         "innsbruck2"
         "ist"
@@ -136,6 +138,12 @@ let
           master = "afmaster";
           satellites = {
             "1" = "afsatellite";
+          };
+        };
+        hw2 = {
+          master = "hw2master";
+          satellites = {
+            "1" = "hw2satellite";
           };
         };
         hust = {
