@@ -67,8 +67,6 @@
 
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.sddm.autoLogin.enable = true;
-  services.xserver.displayManager.sddm.autoLogin.user = "harry";
   services.xserver.desktopManager.plasma5.enable = true;
 
   hardware.bluetooth.enable = true;
@@ -83,6 +81,11 @@
   users.extraUsers.harry = {
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout" "wireshark"];
+  };
+  users.extraUsers.sjm = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqBya2nrq39Jl/eguA4LcfvT5ishB1gBE7ofkUbd/+Q sjm@fractalide.com"];
   };
   security.sudo.wheelNeedsPassword = false;
   services.udev.packages = [ pkgs.openocd pkgs.hackrf ];
