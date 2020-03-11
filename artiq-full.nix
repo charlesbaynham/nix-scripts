@@ -99,6 +99,7 @@ let
       ] ++ (pkgs.lib.lists.optionals (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
         "bonn1master"
         "bonn1satellite"
+        "uamsterdam"
       ]);
 
       artiq-board = import ./fast/artiq-board.nix { inherit pkgs; };
