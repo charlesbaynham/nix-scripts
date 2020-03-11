@@ -54,8 +54,6 @@ let
         "luh2"
         "mikes"
         "mit"
-        "mitll"
-        "mitll2"
         "mitll3"
         "mitll4master"
         "mitll4satellite"
