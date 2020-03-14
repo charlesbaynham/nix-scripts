@@ -71,6 +71,11 @@ in
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1vcq23Z221/OoiXombiXJYzQNTlgtWTXSnBI1jRDgcOfEX993jGIcC6NAa4czeqKu6kqEo+dqGMO872lPTo57KcBNmev+2J+WfvrRRu5uCkMcYWPA6peQq9VJ3+/YT8uShYN8KeDnlfuER8KrDo5RKX+SWk0NSgMXwdW5HD6bmRac1K6kydB+IGrltyUpph37vJEzF+OxPySiLQhWrwSQERYya+3fI/NsilffYa5qoDFmEfKwaSLIJ9zLbhTR7UPc0loQjyICOlGempbHwKK1YZJfidGIf5pHsW3wT3EnJzbMliQspXkw0KZyZij529TnoQkjGEsAsHI1es92/VP5 jerry@jerry-VivoBook-Flip-14-TP410UF"];
   };
+  users.extraUsers.vince = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyjDbp6PUxNpYvtShXLnvqQp/le5cNBpxN2WdxCd929ejNigIbg4Y01Exnwd5hjCQ7FJeEj+cCzoJEW4ZLkE91pH/cqwHLkoClr0N5TYv7bFb91gOP0aaPItQyJIPjhiR2OwMgVWi2pA+g/voQeFv1WzIPWaSTVf71wGUZ956jnZxQwUFdZoaje2vnUtGjMbmbPSZia6Naf/mwLqJIvoGelJbhVUtgwFDEWNjq3T8pIkCBR8pYlFDb2r61IR6quGoJWzhPjyL61KLceZPmtXXQg/wfX+IEYRK+jImc3XHx6c8c2aHj4ySWlCzxv+5jHrlqgyd+vF39VcDYLqx3/1JT vince@Vince-CHENG"];
+  };
   users.extraUsers.sjm = {
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout" "wireshark" "wheel"];
