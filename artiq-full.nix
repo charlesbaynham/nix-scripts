@@ -65,6 +65,7 @@ let
         "nudt"
         "npl1"
         "npl2"
+        "olomouc"
         "opticlock"
         "oregon"
         "ptb"
