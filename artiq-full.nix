@@ -44,8 +44,6 @@ let
         "hustmaster"
         "hustsatellite"
         "hw"
-        "hw2master"
-        "hw2satellite"
         "indiana"
         "innsbruck2"
         "ist"
@@ -100,6 +98,8 @@ let
       ] ++ (pkgs.lib.lists.optionals (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
         "bonn1master"
         "bonn1satellite"
+        "hw2master"
+        "hw2satellite"
         "uamsterdam"
       ]);
 
@@ -144,12 +144,6 @@ let
             "1" = "afsatellite";
           };
         };
-        hw2 = {
-          master = "hw2master";
-          satellites = {
-            "1" = "hw2satellite";
-          };
-        };
         hust = {
           master = "hustmaster";
           satellites = {
@@ -179,6 +173,12 @@ let
           master = "bonn1master";
           satellites = {
             "1" = "bonn1satellite";
+          };
+        };
+        hw2 = {
+          master = "hw2master";
+          satellites = {
+            "1" = "hw2satellite";
           };
         };
       });
