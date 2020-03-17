@@ -8,7 +8,7 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  buildStm32Firmware = { name, src }:
+  buildStm32Firmware = { name, src, patchPhase ? "" }:
     let
       cargoSha256Drv = pkgs.runCommand "${name}-cargosha256" { } ''cp "${src}/cargosha256.nix" $out'';
     in
@@ -19,6 +19,7 @@ let
         inherit src;
         cargoSha256 = (import cargoSha256Drv);
 
+        inherit patchPhase;
         buildPhase = ''
           export CARGO_HOME=$(mktemp -d cargo-home.XXX)
           cargo build --release
@@ -36,6 +37,11 @@ in
     stabilizer = buildStm32Firmware {
       name = "stabilizer";
       src = <stabilizerSrc>;
+      patchPhase = ''
+        substituteInPlace src/main.rs \
+          --replace "let local_addr = net::wire::IpAddress::v4(10, 0, 16, 99);" \
+                    "let local_addr = net::wire::IpAddress::v4(192, 168, 1, 76);"
+      '';
     };
     thermostat = buildStm32Firmware {
       name = "thermostat";

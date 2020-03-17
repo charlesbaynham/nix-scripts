@@ -142,6 +142,7 @@ in
       address=/sayma/192.168.1.60
       address=/kasli/192.168.1.70
       address=/kasli-customer/192.168.1.75
+      address=/stabilizer-customer/192.168.1.76
       # uTCA MCH from NAT
       address=/tschernobyl/192.168.1.80
     '';
