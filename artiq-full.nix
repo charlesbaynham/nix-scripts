@@ -87,6 +87,7 @@ let
         "unsw"
         "unsw2"
         "ustc"
+        "ustc2"
         "vlbaimaster"
         "vlbaisatellite"
         "wipm"
