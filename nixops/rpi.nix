@@ -81,11 +81,6 @@ in
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyjDbp6PUxNpYvtShXLnvqQp/le5cNBpxN2WdxCd929ejNigIbg4Y01Exnwd5hjCQ7FJeEj+cCzoJEW4ZLkE91pH/cqwHLkoClr0N5TYv7bFb91gOP0aaPItQyJIPjhiR2OwMgVWi2pA+g/voQeFv1WzIPWaSTVf71wGUZ956jnZxQwUFdZoaje2vnUtGjMbmbPSZia6Naf/mwLqJIvoGelJbhVUtgwFDEWNjq3T8pIkCBR8pYlFDb2r61IR6quGoJWzhPjyL61KLceZPmtXXQg/wfX+IEYRK+jImc3XHx6c8c2aHj4ySWlCzxv+5jHrlqgyd+vF39VcDYLqx3/1JT vince@Vince-CHENG"];
   };
-  users.extraUsers.sjm = {
-    isNormalUser = true;
-    extraGroups = ["plugdev" "dialout" "wireshark" "wheel"];
-    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqBya2nrq39Jl/eguA4LcfvT5ishB1gBE7ofkUbd/+Q sjm@fractalide.com"];
-  };
 
   services.udev.packages = [ m-labs.openocd ];
 

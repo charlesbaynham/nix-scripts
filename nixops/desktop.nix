@@ -82,11 +82,6 @@
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout" "wireshark"];
   };
-  users.extraUsers.sjm = {
-    isNormalUser = true;
-    extraGroups = ["plugdev" "dialout"];
-    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqBya2nrq39Jl/eguA4LcfvT5ishB1gBE7ofkUbd/+Q sjm@fractalide.com"];
-  };
   security.sudo.wheelNeedsPassword = false;
   services.udev.packages = [ pkgs.openocd pkgs.hackrf ];
   services.udev.extraRules = ''
