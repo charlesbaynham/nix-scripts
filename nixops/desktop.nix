@@ -82,6 +82,11 @@
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout" "wireshark"];
   };
+  users.extraUsers.astro = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout" "wireshark"];
+    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJJTSJdpDh82486uPiMhhyhnci4tScp5uUe7156MBC8 a"];
+  };
   security.sudo.wheelNeedsPassword = false;
   services.udev.packages = [ pkgs.openocd pkgs.hackrf ];
   services.udev.extraRules = ''
