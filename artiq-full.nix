@@ -72,6 +72,8 @@ let
         "ptb6"
         "ptbal"
         "ptbin"
+        "purdue"
+        "qe"
         "rice"
         "saymamaster"
         "siegen"
