@@ -127,8 +127,9 @@ in
       dhcp-range=interface:${netifLan},::,constructor:${netifLan},ra-names
       dhcp-range=interface:${netifWifi},::,constructor:${netifWifi},ra-only
 
-      # Static IPv4 to make Red Pitaya less annoying
+      # Static IPv4s to make Red Pitayas less annoying
       dhcp-host=rp-f05cc9,192.168.1.190
+      dhcp-host=rp-f0612e,192.168.1.191
       # Static IPv4s to make port redirections work
       dhcp-host=rpi-1,192.168.1.201
       dhcp-host=rpi-2,192.168.1.202
