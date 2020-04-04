@@ -58,6 +58,7 @@ let
         "mpq"
         "nict"
         "nist"
+        "no"
         "nrc"
         "npl1"
         "npl2"
