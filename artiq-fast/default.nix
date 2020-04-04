@@ -22,11 +22,13 @@ let
     binutils-or1k = callPackage ./pkgs/binutils.nix { platform = "or1k"; target = "or1k-linux"; };
     binutils-arm = callPackage ./pkgs/binutils.nix { platform = "arm"; target = "armv7-unknown-linux-gnueabihf"; };
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};
-    rustc = callPackage ./pkgs/rust
+    rustc = callPackage ./pkgs/rust/rustc-with-crates.nix
       ((stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
          stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
        }) //
        { inherit llvm-or1k; });
+    cargo = callPackage ./pkgs/rust/cargo.nix { inherit rustc; };
+    cargo-vendor = callPackage ./pkgs/rust/cargo-vendor.nix {};
     llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
     libartiq-support = callPackage ./pkgs/libartiq-support.nix { inherit rustc; };
     artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k llvm-or1k llvmlite-artiq libartiq-support lit outputcheck; };

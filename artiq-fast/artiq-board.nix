@@ -9,8 +9,10 @@
 
 let
   artiqSrc = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
+  artiqpkgs = import ./default.nix { inherit pkgs; };
   fetchcargo = import ./fetchcargo.nix {
-    inherit (pkgs) stdenv cacert git cargo cargo-vendor;
+    inherit (pkgs) stdenv cacert git;
+    inherit (artiqpkgs) cargo cargo-vendor;
   };
   cargoDeps = fetchcargo rec {
     name = "artiq-firmware-cargo-deps";
@@ -43,7 +45,6 @@ let
   };
 
   vivado = import ./vivado.nix { inherit pkgs; };
-  artiqpkgs = import ./default.nix { inherit pkgs; };
 
 # Board packages are Python modules so that they get added to the ARTIQ Python
 # environment, and artiq_flash finds them.
@@ -55,7 +56,7 @@ in pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
     vivado
     pkgs.gnumake
     (pkgs.python3.withPackages(ps: with ps; [ jinja2 numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq ]))
-    pkgs.cargo
+    artiqpkgs.cargo
     artiqpkgs.rustc
     artiqpkgs.binutils-or1k
     artiqpkgs.llvm-or1k

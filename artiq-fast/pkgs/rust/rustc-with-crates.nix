@@ -81,11 +81,15 @@ let
     '';
   };
 in
- runCommand "rustc" {}
-    ''
-    mkdir -p $out/lib/rustlib/or1k-unknown-none/lib/
-    cp -r ${or1k-crates}/* $out/lib/rustlib/or1k-unknown-none/lib/
-    mkdir -p $out/lib/rustlib/armv7-unknown-linux-gnueabihf/lib/
-    cp -r ${arm-crates}/* $out/lib/rustlib/armv7-unknown-linux-gnueabihf/lib/
-    cp -r ${rustc_internal}/* $out
-    ''
+  stdenv.mkDerivation {
+    name = "rustc";
+    inherit src version;
+    buildCommand = ''
+      mkdir -p $out/lib/rustlib/or1k-unknown-none/lib/
+      cp -r ${or1k-crates}/* $out/lib/rustlib/or1k-unknown-none/lib/
+      mkdir -p $out/lib/rustlib/armv7-unknown-linux-gnueabihf/lib/
+      cp -r ${arm-crates}/* $out/lib/rustlib/armv7-unknown-linux-gnueabihf/lib/
+      cp -r ${rustc_internal}/* $out
+      '';
+    passAsFile = [ "buildCommand" ];
+  }
