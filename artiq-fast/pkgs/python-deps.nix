@@ -236,6 +236,8 @@ rec {
         --replace "future==0.18.2" "future"
       substituteInPlace requirements.txt \
         --replace "ramda==0.5.5" "ramda"
+      substituteInPlace requirements.txt \
+        --replace "colorama==0.4.3" "colorama"
     '';
 
 
