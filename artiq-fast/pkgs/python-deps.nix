@@ -117,8 +117,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "e2e6c726c9c34209cd326d0a80df63668285a378";
-      sha256 = "1dshlpnwfgi6yhbpx9w8f4a0i255jy3pgpzwr2s0akzx414agfk3";
+      rev = "3f9809b0ea62b26f6c99f1b5221b22f8255bc1f6";
+      sha256 = "1781aln69yjd2kwhpnp96dg6pnjjf0jiiqzk1vzvv6gx7598bhps";
     };
 
     propagatedBuildInputs = with python3Packages; [ colorama ];
@@ -199,7 +199,7 @@ rec {
     };
 
     nativeBuildInputs = [ python3Packages.pbr ];
-    propagatedBuildInputs = [ fastnumbers ];
+    propagatedBuildInputs = [ python3Packages.future fastnumbers ];
 
     checkInputs = [ python3Packages.pytest python3Packages.pytest-flake8 ];
     checkPhase = "pytest";
@@ -222,19 +222,22 @@ rec {
     src = fetchFromGitHub {
       owner = "peteut";
       repo = "migen-axi";
-      rev = "8526eca769c01e18cc0a6024aacc515ceb8b9bd5";
-      sha256 = "19gycn7s32j7zzy064qj2yv9g9jk9kn9z3q0fap2dg308g6d1pjs";
+      rev = "ce5579eebd2560d40a970be5c177a08a3cfc5b2e";
+      sha256 = "0zzvh95h5617qybvam1bv84lj4gi54j7lb4ic1icw6ca049f7mnb";
     };
 
+    nativeBuildInputs = [ python3Packages.pbr ];
+    propagatedBuildInputs = [ python3Packages.click python3Packages.numpy python3Packages.toolz python3Packages.jinja2 ramda migen misoc ];
+
     postPatch = ''
-      substituteInPlace src/migen_axi/integration/soc_core.py \
-        --replace "identifier_mem" "identifier"
-      substituteInPlace tests/test_integration.py \
-        --replace "zedboard.Platform(name=\"soc\", toolchain=\"vivado\")" "zedboard.Platform()"
+      substituteInPlace requirements.txt \
+        --replace "jinja2==2.10.3" "jinja2"
+      substituteInPlace requirements.txt \
+        --replace "future==0.18.2" "future"
+      substituteInPlace requirements.txt \
+        --replace "ramda==0.5.5" "ramda"
     '';
 
-    nativeBuildInputs = [ python3Packages.pbr ];
-    propagatedBuildInputs = [ python3Packages.click python3Packages.numpy python3Packages.toolz ramda migen misoc ];
 
     checkInputs = [ python3Packages.pytest python3Packages.pytest-flake8 ];
     checkPhase = "pytest";
