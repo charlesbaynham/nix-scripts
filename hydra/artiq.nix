@@ -104,7 +104,7 @@
             "emailoverride": "",
             "keepnr": 10,
             "inputs": {
-                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-19.09", "emailresponsible": false },
+                "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-20.03", "emailresponsible": false },
                 "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
                 "zc706": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/zc706.git", "emailresponsible": false },
                 "mozillaOverlay": { "type": "git", "value": "git://github.com/mozilla/nixpkgs-mozilla", "emailresponsible": false }
