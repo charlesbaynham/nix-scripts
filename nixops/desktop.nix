@@ -1,7 +1,9 @@
 { host }:
 
 { config, pkgs, ... }:
-
+let
+  m-labs = import (fetchTarball https://nixbld.m-labs.hk/channel/custom/artiq/full/artiq-full/nixexprs.tar.xz) { inherit pkgs; };
+in
 {
   deployment.targetHost = host;
 
@@ -21,13 +23,14 @@
   # $ nix search wget
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    wget vim git firefox thunderbird hexchat usbutils pciutils mplayer vlc youtube-dl file lm_sensors cryptsetup audacious acpi
+    wget vim git firefox thunderbird hexchat usbutils pciutils file lm_sensors cryptsetup audacious acpi
     gwenview okular gimp imagemagick
-    (python3.withPackages(ps: with ps; [ numpy scipy matplotlib qtconsole pypdf2 reportlab pygments regex ]))
-    texlive.combined.scheme-full mosh psmisc libreoffice-fresh
-    xc3sprog gtkwave xournal xsane telnet whois transmission-gtk unzip zip inkscape tigervnc gnupg
-    wireshark qrencode yosys symbiyosys yices z3 boolector cvc4 pavucontrol keepassx poppler_utils
+    (python3.withPackages(ps: with ps; [ numpy scipy matplotlib qtconsole regex ]))
+    mosh psmisc libreoffice-fresh
+    gtkwave telnet whois unzip zip gnupg
+    wireshark pavucontrol
     jq ark sublime3 rink qemu_kvm konsole
+    tmux xc3sprog m-labs.openocd screen gdb minicom picocom
   ];
   programs.wireshark.enable = true;
 
@@ -88,7 +91,7 @@
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJJTSJdpDh82486uPiMhhyhnci4tScp5uUe7156MBC8 a"];
   };
   security.sudo.wheelNeedsPassword = false;
-  services.udev.packages = [ pkgs.openocd pkgs.hackrf ];
+  services.udev.packages = [ m-labs.openocd pkgs.hackrf ];
   services.udev.extraRules = ''
 ATTRS{idProduct}=="0003", ATTRS{idVendor}=="1eaf", MODE="664", GROUP="plugdev" SYMLINK+="maple"
 ATTRS{idProduct}=="0004", ATTRS{idVendor}=="1eaf", MODE="664", GROUP="plugdev" SYMLINK+="maple"
