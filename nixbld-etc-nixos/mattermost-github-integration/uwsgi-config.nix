@@ -9,7 +9,7 @@ in {
   env = [
     "MGI_CONFIG_FILE=${./../secret/mattermost-github-integration.py}"
   ];
-  socket = "${config.services.uwsgi.runDir}/uwsgi.sock";
+  socket = "${config.services.uwsgi.runDir}/uwsgi-mgi.sock";
   # allow access from nginx
   chmod-socket = 666;
 }

@@ -526,9 +526,13 @@ in
       "hooks.m-labs.hk" = {
         forceSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
-        locations."/".extraConfig = ''
+        locations."/mattermost-github".extraConfig = ''
           include ${pkgs.nginx}/conf/uwsgi_params;
-          uwsgi_pass unix:${config.services.uwsgi.runDir}/uwsgi.sock;
+          uwsgi_pass unix:${config.services.uwsgi.runDir}/uwsgi-mgi.sock;
+        '';
+        locations."/rfq".extraConfig = ''
+          include ${pkgs.nginx}/conf/uwsgi_params;
+          uwsgi_pass unix:${config.services.uwsgi.runDir}/uwsgi-rfq.sock;
         '';
       };
       "forum.m-labs.hk" = {
@@ -581,6 +585,7 @@ in
       type = "emperor";
       vassals = {
         mattermostgithub = import ./mattermost-github-integration/uwsgi-config.nix { inherit config pkgs; };
+        rfq = import ./rfq/uwsgi-config.nix { inherit config pkgs; };
       };
     };
   };
