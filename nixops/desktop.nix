@@ -40,11 +40,11 @@ in
 
   # Enable CUPS to print documents.
   services.printing = {
-      enable = true;
+    enable = true;
   };
   services.avahi = {
-      enable = true;
-      nssmdns = true;
+    enable = true;
+    nssmdns = true;
   };
 
   # Enable sound.
