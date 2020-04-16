@@ -31,6 +31,7 @@ in
     wireshark pavucontrol
     jq ark sublime3 rink qemu_kvm konsole
     tmux xc3sprog m-labs.openocd screen gdb minicom picocom
+    (import ./fish-nix-shell)
   ];
   programs.wireshark.enable = true;
 
@@ -75,6 +76,9 @@ in
   hardware.bluetooth.enable = true;
 
   programs.fish.enable = true;
+  programs.fish.promptInit = ''
+    fish-nix-shell --info-right | source
+  '';
   users.defaultUserShell = pkgs.fish;
   users.extraGroups.plugdev = { };
   users.extraUsers.sb = {
