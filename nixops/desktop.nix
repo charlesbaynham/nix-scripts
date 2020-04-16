@@ -12,9 +12,6 @@ in
       (./. + "/${host}-hardware-configuration.nix")
     ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   networking.hostName = host;
 
   time.timeZone = "Asia/Hong_Kong";

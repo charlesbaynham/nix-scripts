@@ -10,4 +10,5 @@
     imports = [(import ./rpi.nix { host = "rpi-4"; rpi4 = true; })];
   };
   juno = import ./desktop.nix { host = "juno"; };
+  cnc = import ./desktop.nix { host = "cnc"; };
 }
