@@ -41,8 +41,6 @@ let
         "freiburg1"
         "griffith"
         "hub"
-        "hustmaster"
-        "hustsatellite"
         "hw"
         "indiana"
         "innsbruck2"
@@ -59,7 +57,6 @@ let
         "nict"
         "nist"
         "no"
-        "nrc"
         "npl1"
         "npl2"
         "olomouc"
@@ -79,17 +76,13 @@ let
         "saymamaster"
         "siegen"
         "su"
-        "tsinghua"
-        "tsinghua2"
         "ubirmingham"
-        "ucr"
         "unlv"
         "unsw2"
         "ustc2"
         "vlbaimaster"
         "vlbaisatellite"
         "wipm"
-        "wipm3"
         "wipm4"
         "wipm5master"
         "wipm5satellite"
@@ -140,12 +133,6 @@ let
           master = "afmaster";
           satellites = {
             "1" = "afsatellite";
-          };
-        };
-        hust = {
-          master = "hustmaster";
-          satellites = {
-            "1" = "hustsatellite";
           };
         };
         mitll4 = {
