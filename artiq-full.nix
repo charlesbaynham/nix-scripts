@@ -59,6 +59,7 @@ let
         "no"
         "npl1"
         "npl2"
+        "oklahoma"
         "olomouc"
         "opticlock"
         "oregon"
