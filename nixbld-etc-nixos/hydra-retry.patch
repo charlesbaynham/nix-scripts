@@ -13,7 +13,7 @@ index 69c430eb..bdbc808d 100644
                  case BuildResult::TransientFailure:
                      result.stepStatus = bsFailed;
 -                    result.canRetry = true;
-+                    result.canRetry = get(step->drv.env, "__hydraRetry", "1") == "1";
++                    result.canRetry = get(step->drv->env, "__hydraRetry").value_or("1") == "1";
                      result.errorMsg = "";
                      break;
                  case BuildResult::TimedOut:

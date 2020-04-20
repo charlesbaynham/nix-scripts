@@ -243,6 +243,7 @@ in
   ];
   services.hydra = {
     enable = true;
+    package = pkgs.hydra-unstable;
     useSubstitutes = true;
     hydraURL = "https://nixbld.m-labs.hk";
     notificationSender = "hydra@m-labs.hk";
@@ -358,7 +359,7 @@ in
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
     firmwareLinuxNonfree = super.callPackage ./firmware-linux-nonfree.nix {};
-    hydra-migration = super.hydra-migration.overrideAttrs(oa: {
+    hydra-unstable = super.hydra-unstable.overrideAttrs(oa: {
       patches = oa.patches or [] ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
       hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
     });
