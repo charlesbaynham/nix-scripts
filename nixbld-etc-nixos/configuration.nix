@@ -151,10 +151,10 @@ in
   };
 
   # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "de";
-    defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "de";
   };
 
   # Set your time zone.
@@ -358,15 +358,12 @@ in
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
     firmwareLinuxNonfree = super.callPackage ./firmware-linux-nonfree.nix {};
-    hydra = super.hydra.overrideAttrs(oa: {
+    hydra-migration = super.hydra-migration.overrideAttrs(oa: {
       patches = oa.patches or [] ++ [ ./hydra-conda.patch ./hydra-retry.patch ];
       hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
     });
     matterbridge = super.matterbridge.overrideAttrs(oa: {
       patches = oa.patches or [] ++ [ ./matterbridge-disable-github.patch ];
-    });
-    nixops = super.nixops.overrideAttrs(oa: {
-      patches = oa.patches or [] ++ [ ./nixops-665.patch ];
     });
     # https://github.com/NixOS/nixpkgs/issues/70930
     # perl 5.30 breaks plugins
@@ -378,6 +375,8 @@ in
     };
   };
 
+  security.acme.acceptTerms = true;
+  security.acme.email = "sb" + "@m-labs.hk";
   security.acme.certs = {
     "nixbld.m-labs.hk" = {
       webroot = "/var/lib/acme/acme-challenge";
