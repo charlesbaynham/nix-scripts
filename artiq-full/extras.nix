@@ -186,12 +186,12 @@ in
   }) // rec {
     artiq-comtools = pkgs.python3Packages.buildPythonPackage rec {
       name = "artiq-comtools-${version}";
-      version = "1.0";
+      version = "1.1";
       src = pkgs.fetchFromGitHub {
         owner = "m-labs";
         repo = "artiq-comtools";
-        rev = "398f6becdaf89ec2e115106778467f9a766a2007";
-        sha256 = "02i2a1mmzc7jixq4nkbmi1a4c0gk6kmm8bv1dxrka7m56nb9sk9w";
+        rev = "v${version}";
+        sha256 = "165j12k9nnrkf2pv0idcv6xhnp1hnsllna4rps2dssnqgjfaw1ss";
       };
       propagatedBuildInputs = [ sipyco pkgs.python3Packages.numpy pkgs.python3Packages.aiohttp ];
     };
