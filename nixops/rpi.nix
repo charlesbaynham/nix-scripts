@@ -81,6 +81,11 @@ in
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyjDbp6PUxNpYvtShXLnvqQp/le5cNBpxN2WdxCd929ejNigIbg4Y01Exnwd5hjCQ7FJeEj+cCzoJEW4ZLkE91pH/cqwHLkoClr0N5TYv7bFb91gOP0aaPItQyJIPjhiR2OwMgVWi2pA+g/voQeFv1WzIPWaSTVf71wGUZ956jnZxQwUFdZoaje2vnUtGjMbmbPSZia6Naf/mwLqJIvoGelJbhVUtgwFDEWNjq3T8pIkCBR8pYlFDb2r61IR6quGoJWzhPjyL61KLceZPmtXXQg/wfX+IEYRK+jImc3XHx6c8c2aHj4ySWlCzxv+5jHrlqgyd+vF39VcDYLqx3/1JT vince@Vince-CHENG"];
   };
+  users.extraUsers.pca006132 = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqkGZIb57sjzcnYg6tJXrK1iPKnIP6iYkcc2h/cf4rknvOT9ZkeUra7hCTjQDCiC168Lxcdx2wQciuq2SypoUMFytQoLphGHKWpgLB6yoaQgwCUW+To55kJlbs/rOywfwaRAtiyNsCtf+1FTbl0X0mKNIibjDqVyawXaUhfDLNB0TPg1yhhHdi/fqDgq+9kI/2E++8k9TZ2SUZ6vLbERU0cRkGCrVhqR7QEV+Oqa0uFBvNzc+tp/L3BKUUOCiSThNOtUHR9mSx9/Yq31tQ/I+l+oDcJyDiQlrFvDTBRbaDiMDwTFZolsQ8pFR0aJXHOrWRP11LF/EibjqbiK6WHDG/2mTnkREgGOElbOhg4yypMg5KXPY3JhjNibXV8p4GHjRb9g59N7F0s+ez44uS85fXUVVf840+mOx7W+9hGxK5ALr1I5EjUz8q2/SsF4eYuD44xCPK5rrKP0BYjnEQcDQEe5aZ2KyX+aSBF8jeiZsXti6x3Jg7ces6zlBWOoBNOPqTug4eNtkNmmPaoAzVeiItTJZBUAehLUAzyRD+8aTyB4DWAvesHPan+uQb9HvPH0rgymSEGxTi5280VWwvEpKHTGbuB0eYNFffDYVW0Y6xx3K4mZi71r6yCRdC/tsQEyM7N/dtoknvf77+iXCpb5yVSj0j5IAIVhlyszVMiW2qmw=="];
+  };
 
   services.udev.packages = [ m-labs.openocd ];
 
