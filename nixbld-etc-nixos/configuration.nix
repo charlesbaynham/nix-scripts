@@ -372,6 +372,8 @@ in
   security.acme.email = "sb" + "@m-labs.hk";
   security.acme.certs = {
     "nixbld.m-labs.hk" = {
+      group = "nginx";
+      user = "nginx";
       webroot = "/var/lib/acme/acme-challenge";
       extraDomains = {
         "m-labs.hk" = null;
