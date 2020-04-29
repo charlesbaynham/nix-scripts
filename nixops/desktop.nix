@@ -24,7 +24,7 @@ in
     gwenview okular gimp imagemagick
     (python3.withPackages(ps: with ps; [ numpy scipy matplotlib qtconsole regex ]))
     mosh psmisc libreoffice-fresh
-    gtkwave telnet whois unzip zip gnupg
+    gtkwave telnet unzip zip gnupg
     wireshark pavucontrol
     jq ark sublime3 rink qemu_kvm konsole
     tmux xc3sprog m-labs.openocd screen gdb minicom picocom
