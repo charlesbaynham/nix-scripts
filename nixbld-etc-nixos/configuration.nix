@@ -551,14 +551,14 @@ in
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         locations."/".extraConfig = ''
-          return 307 https://github.com/m-labs/nmigen;
+          return 307 https://m-labs.hk/gateware/nmigen/;
         '';
       };
       "www.nmigen.org" = {
         addSSL = true;
         useACMEHost = "nixbld.m-labs.hk";
         locations."/".extraConfig = ''
-          return 307 https://github.com/m-labs/nmigen;
+          return 307 https://m-labs.hk/gateware/nmigen/;
         '';
       };
 
