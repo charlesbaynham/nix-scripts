@@ -95,7 +95,7 @@
         "zc706": {
             "enabled": 1,
             "hidden": false,
-            "description": "Rust on ZYNQ",
+            "description": "ARTIQ on the Zynq-based ZC706 board",
             "nixexprinput": "nixScripts",
             "nixexprpath": "zc706.nix",
             "checkinterval": 300,
@@ -106,8 +106,9 @@
             "inputs": {
                 "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs-channels nixos-20.03", "emailresponsible": false },
                 "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
-                "zc706": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/zc706.git", "emailresponsible": false },
-                "mozillaOverlay": { "type": "git", "value": "git://github.com/mozilla/nixpkgs-mozilla", "emailresponsible": false }
+                "mozillaOverlay": { "type": "git", "value": "git://github.com/mozilla/nixpkgs-mozilla", "emailresponsible": false },
+                "artiq-fast": { "type": "sysbuild", "value": "artiq:fast-beta:generated-nix", "emailresponsible": false },
+                "artiq-zynq": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/artiq-zynq.git", "emailresponsible": false }
             }
         }
     }
