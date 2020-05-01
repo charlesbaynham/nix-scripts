@@ -92,12 +92,12 @@
                 "mirnySrc": { "type": "git", "value": "git://github.com/quartiq/mirny", "emailresponsible": false }
             }
         },
-        "zc706": {
+        "zynq": {
             "enabled": 1,
             "hidden": false,
             "description": "ARTIQ on the Zynq-based ZC706 board",
             "nixexprinput": "nixScripts",
-            "nixexprpath": "zc706.nix",
+            "nixexprpath": "zynq.nix",
             "checkinterval": 300,
             "schedulingshares": 1,
             "enableemail": false,
