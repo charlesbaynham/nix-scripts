@@ -1,7 +1,5 @@
 {
   pkgs ? import <nixpkgs> {},
-  artiq-zynq ? import <artiq-zynq/default.nix> { mozillaOverlay = import <mozillaOverlay>; },
+  artiq-zynq ? import <artiq-zynq> { mozillaOverlay = import <mozillaOverlay>; },
 }:
-  {
-    test = artiq-zynq.zc706-sd-zip;
-  }
+builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiq-zynq
