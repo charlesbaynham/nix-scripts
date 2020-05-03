@@ -108,6 +108,7 @@
                 "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
                 "mozillaOverlay": { "type": "git", "value": "git://github.com/mozilla/nixpkgs-mozilla", "emailresponsible": false },
                 "artiq-fast": { "type": "sysbuild", "value": "artiq:fast-beta:generated-nix", "emailresponsible": false },
+                "zc706": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/zc706.git", "emailresponsible": false },
                 "artiq-zynq": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/artiq-zynq.git", "emailresponsible": false }
             }
         }
