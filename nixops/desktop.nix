@@ -38,6 +38,16 @@ in
   # Enable CUPS to print documents.
   services.printing = {
     enable = true;
+    extraConf =
+      ''
+      Browsing Off
+      BrowseLocalProtocols none
+      '';
+    browsedConf =
+      ''
+      BrowseRemoteProtocols none
+      BrowseProtocols none
+      '';
   };
   services.avahi = {
     enable = true;
