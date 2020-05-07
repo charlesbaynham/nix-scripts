@@ -86,6 +86,11 @@ in
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC63csV1jA//Dix4hb2dYxuYdtYaTRKrN5d4BfRD/mTui1V4reWBkc9kvqhpb4SarTnJFbQUkmkPoIp/rOKpmHoOQHHdAC2lTr9RluL1iT/TLWjKMU6BA60L49i/PwR8UE26EodHKV1OI7Se3JzD0Ta/yoRIRcIV261kzjv3F0Ag3TcX+FWQ6oj6iKk6drFUodTFWufvR1/qIKkTz4d4K4J7JcykLFuTYjg4koCuMDufGobAvGLbQL3haad9kdywBaHvrxX1gEh6hgbprFtDoNufJy+rKKRUGSVgs7GBxLSjQ/9Ylqmso+YV+6zyYcpgQhpElrQr00JiDrFB1JO+9uipL3rQOHjwTWC6Rht5GEAq/WuTMKmWQUg4UIkKXadELRY7RI7NvWEe4V0h4vEIM+XQpbFofDZ4+1aQhsn/AIt0Sa54YAJtU1Vurvj76o2srNFNX1B0LVKmkU8QZ4KGlmfl/QMKA4bFXoedh9C+3B2of0XJc5tCsl4jxbbSjagLfVSMsnTyu8hZpjAmtsWrlkmnF12HLgtrU6OuLQ8OxMcUgwbYmvqJSni02DZ4EE4lS4+mlgzpdezUmsnRGGiNN5DTEpAQdSs54FdE3oEUpYEpJFUz7B9JwWsVyz6p/tpPmm4N+lbeYYEFF2L3Y53cLyKRTWfpsH1WsiH10H+P7ltFQ=="];
   };
+  users.extraUsers.occheung = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXYSxgxfvdHswDRhh30Qr3vTl6LCO9oTD0sVh/nRMjO+BgQ8HDst6jvolh/Ny6bQ710QLIthGtZxX8umFcoVebFkuAqenlXFXIpM86CYOST3zej/fRXmcvqJ2WV8EQzQGk5hLL/91bfpiYT1QQ0hg3/8x9ZVY5OkB2ehNZhFlZDBVqIPPOPYywMuaY7EXf5lHOX206kUeTygzrJFbHwX2du8/xZhcyqrgqVtN4+xy0q2OUDc3hrcSnxwdoSivbgl4LmQM5VWgOW/9fK0ji9naah9cFHNWv/lyz4uJYYttyx1C8jiqRZ7A1bhvemTK1VOvDZwVOp/o4ArjENgYIifzl" "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFljU/TppiVf8G8yORVZYpzmDtHeTV6sjnWyAl5B5//MKz7xoeg6Ear0ft35GXgFQ5mg+kUGptE+qpAuD1l5NdXuE1Qve9mIl5Gffn02HOdt4qyy8W4HX/GY7VPz1QQNWZmasYnqBiWWsFwsORhXYI8xN6LYL0UzhxS8EXGs36yC/pUn8CNS+c1f4sHJ00h+wIfn9nbypSXbxYE50IYPZlUWKfAxFaZrE7/G3/PQTIIRqI1b6+6hBmcyKfj55/URGeN8Z0Zkp1neJ2laXz/kAzct7PDteLx++ACH+U10/uT1KSQt7zhJkPdvJ2FOUBRygVYUB4w8Wo79Jr5WntH5xb"];
+  };
 
   services.udev.packages = [ m-labs.openocd ];
 
