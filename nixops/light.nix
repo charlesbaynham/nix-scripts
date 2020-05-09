@@ -1,9 +1,6 @@
 { host }:
 
 { config, pkgs, ... }:
-let
-  m-labs = import (fetchTarball https://nixbld.m-labs.hk/channel/custom/artiq/full/artiq-full/nixexprs.tar.xz) { inherit pkgs; };
-in
 {
   deployment.targetHost = host;
 
@@ -18,16 +15,16 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  documentation.enable = false;
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    wget vim git firefox thunderbird hexchat usbutils pciutils file lm_sensors audacious acpi
+    wget vim git firefox usbutils pciutils file lm_sensors acpi
     gimp imagemagick
-    (python3.withPackages(ps: with ps; [ numpy scipy matplotlib qtconsole regex ]))
-    mosh psmisc libreoffice-fresh
-    gtkwave telnet unzip zip gnupg
-    gnome3.gnome-tweaks
-    jq sublime3 rink qemu_kvm
-    tmux xc3sprog m-labs.openocd screen gdb minicom picocom tigervnc
+    (python3.withPackages(ps: with ps; [ numpy scipy ]))
+    psmisc
+    telnet unzip zip gnupg
+    sublime3 rink
+    tmux screen tigervnc
     (import ./fish-nix-shell)
   ];
   programs.wireshark.enable = true;
@@ -77,11 +74,8 @@ in
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
 
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.autoSuspend = false;
-  services.xserver.desktopManager.gnome3.enable = true;
-
-  hardware.bluetooth.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
 
   programs.fish.enable = true;
   programs.fish.promptInit = ''
@@ -90,21 +84,8 @@ in
   users.defaultUserShell = pkgs.fish;
   users.extraGroups.plugdev = { };
   users.extraUsers = (import ./common-users.nix);
+  
   security.sudo.wheelNeedsPassword = false;
-  services.udev.packages = [ m-labs.openocd ];
-  services.udev.extraRules = ''
-# leaf maple
-SUBSYSTEM=="usb", ATTRS{idVendor}=="1eaf", ATTRS{idProduct}=="0003", MODE="0660", GROUP="plugdev"
-SUBSYSTEM=="usb", ATTRS{idVendor}=="1eaf", ATTRS{idProduct}=="0004", MODE="0660", GROUP="plugdev"
-# glasgow
-SUBSYSTEM=="usb", ATTRS{idVendor}=="20b7", ATTRS{idProduct}=="9db1", MODE="0660", GROUP="plugdev"
-# hackrf
-SUBSYSTEM=="usb", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="6089", MODE="0660", GROUP="plugdev"
-# bladerf
-SUBSYSTEM=="usb", ATTRS{idVendor}=="2cf0", ATTRS{idProduct}=="5250", MODE="0660", GROUP="plugdev"
-# personal measurement device
-SUBSYSTEM=="usb", ATTRS{idVendor}=="09db", ATTRS{idProduct}=="007a", MODE="0660", GROUP="plugdev"
-  '';
 
   nix.binaryCachePublicKeys = ["nixbld.m-labs.hk-1:5aSRVA5b320xbNvu30tqxVPXpld73bhtOeH6uAjRyHc="];
   nix.binaryCaches = ["https://nixbld.m-labs.hk" "https://cache.nixos.org"];

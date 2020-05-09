@@ -4,5 +4,5 @@
   rpi-3 = import ./rpi.nix { host = "rpi-3"; rpi4 = true; };
   rpi-4 = import ./rpi.nix { host = "rpi-4"; rpi4 = true; };
   juno = import ./desktop.nix { host = "juno"; };
-  cnc = import ./desktop.nix { host = "cnc"; };
+  cnc = import ./light.nix { host = "cnc"; };
 }
