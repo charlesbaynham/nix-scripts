@@ -3,6 +3,7 @@
 { config, pkgs, ... }:
 let
   m-labs = import (fetchTarball https://nixbld.m-labs.hk/channel/custom/artiq/full/artiq-full/nixexprs.tar.xz) { inherit pkgs; };
+  pkgs-unstable = import (fetchTarball https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz) {};
 in
 {
   deployment.targetHost = host;
@@ -28,6 +29,12 @@ in
     gnome3.gnome-tweaks
     jq sublime3 rink qemu_kvm
     tmux xc3sprog m-labs.openocd screen gdb minicom picocom tigervnc
+    emacs bat ripgrep
+    (pkgs-unstable.vscode-with-extensions.override {
+      vscodeExtensions = [
+        pkgs-unstable.vscode-extensions.matklad.rust-analyzer
+      ];
+    })
     (import ./fish-nix-shell)
   ];
   programs.wireshark.enable = true;
