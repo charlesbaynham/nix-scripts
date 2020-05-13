@@ -30,6 +30,7 @@ in
     jq sublime3 rink qemu_kvm
     tmux xc3sprog m-labs.openocd screen gdb minicom picocom tigervnc
     emacs bat ripgrep
+    pkgs-unstable.rust-analyzer
     (pkgs-unstable.vscode-with-extensions.override {
       vscodeExtensions = [
         pkgs-unstable.vscode-extensions.matklad.rust-analyzer
@@ -74,7 +75,7 @@ in
     enabled = "fcitx";
     fcitx.engines = with pkgs.fcitx-engines; [ table-extra m17n ];
   };
-  fonts.fonts = [ pkgs.noto-fonts pkgs.noto-fonts-cjk pkgs.noto-fonts-emoji pkgs.noto-fonts-extra ];
+  fonts.fonts = [ pkgs.noto-fonts pkgs.noto-fonts-cjk pkgs.noto-fonts-emoji pkgs.noto-fonts-extra pkgs.emacs-all-the-icons-fonts ];
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
