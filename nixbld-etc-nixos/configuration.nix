@@ -338,6 +338,9 @@ in
     FROM = sysop@m-labs.hk
     USER = sysop@m-labs.hk
 
+    [service]
+    ENABLE_NOTIFY_MAIL = true
+
     [attachment]
     ALLOWED_TYPES = */*
     '';
