@@ -122,6 +122,8 @@ SUBSYSTEM=="usb", ATTRS{idVendor}=="09db", ATTRS{idProduct}=="007a", MODE="0660"
 SUBSYSTEM=="usb", ATTRS{idVendor}=="0925", ATTRS{idProduct}=="3881", MODE="0660", GROUP="plugdev"
 # ocean optics
 SUBSYSTEM=="usb", ATTRS{idVendor}=="2457", ATTRS{idProduct}=="1002", MODE="0660", GROUP="plugdev"
+# yubikey
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1050", ATTRS{idProduct}=="0116", MODE="0660", GROUP="plugdev"
   '';
 
   nix.binaryCachePublicKeys = ["nixbld.m-labs.hk-1:5aSRVA5b320xbNvu30tqxVPXpld73bhtOeH6uAjRyHc="];
