@@ -3,8 +3,7 @@
     isNormalUser = true;
     extraGroups = ["wheel" "plugdev" "dialout"];
     openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZGtCJoIRtRadaSBMx+MNX53nvEGUk9q/89ZpEH/jCRS+FRnBOH73C8YGvsJaiL5xUZiLjIW7SRUr40bKgvns1FJ3PNMPqvAh6fC98h5EnWAVtzKpYVXGPVvxGOqRJwvEHr6DGMJbP1lRl78zFt3PQaeEiJ5mCxlY4KenKbkBJpUWBAUa11VrNd+o7AMfF0pbNDxZCd213brbyb8saLnEx28HwdaUn//MMWnfSPDLGlod5dy4/hzj0Yk/o+4yaeIkfk1Z0FqtZif1N+VTqD5r0dfvIi38mmVYzbImy5X/hoPtLTMRb//6KZH5POwMP3ZazIq7Bl0cmGfDEu/p6/zJd sb@sb-ThinkPad-10"
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdIXscubIsVCi9sfFdaorQ3VN1Ry3Se3NEDPUKDOxOas7MqoY+W0mvrlL8QfsCwUniIF/NUJbN8LDdleRn5nO6rQdUyVXuYjaizYMOyMunY6KgQZm24+FrNS3HoVX1nQxesLB18FPtJ7A3VwOTnfuFmY2A1TyFDlUIpnCUCJ0goIW2vW9xFGdd17MI8xshwZWa3ChObbkSqX6VN8YAPWMnIqPnbBWCnetjSSjFdtKPJzhYbr7usxKD1ksMKo5OYpZXK9kiqYQOtWTk/EL5eDIrr3+wJpoWqWX/UV29VImCWtRQE2bA5A1j3sySmixR9/OQMickWk0llgK/5Nj9Hz2v sb@nixbld"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyPk5WyFoWSvF4ozehxcVBoZ+UHgrI7VW/OoQfFFwIQe0qvetUZBMZwR2FwkLPAMZV8zz1v4EfncudEkVghy4P+/YVLlDjqDq9zwZnh8Nd/ifu84wmcNWHT2UcqnhjniCdshL8a44memzABnxfLLv+sXhP2x32cJAamo5y6fukr2qLp2jbXzR+3sv3klE0ruUXis/BR1lLqNJEYP8jB6fLn2sLKinnZPfn6DwVOk10mGeQsdME/eGl3phpjhODH9JW5V2V5nJBbC0rBnq+78dyArKVqjPSmIcSy72DEIpTctnMEN1W34BGrnsDd5Xd/DKxKxHKTMCHtZRwLC2X0NWN"
     ];
   };
   rj = {

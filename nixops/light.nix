@@ -32,6 +32,12 @@
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
   services.openssh.passwordAuthentication = false;
+  hardware.u2f.enable = true;
+  services.pcscd.enable = true;
+  programs.ssh.extraConfig =
+    ''
+    PKCS11Provider "${pkgs.opensc}/lib/opensc-pkcs11.so"
+    '';
 
   # Enable CUPS to print documents.
   services.printing = {
