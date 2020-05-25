@@ -72,6 +72,7 @@ in
         { sourcePort = 2202; destination = "192.168.1.202:22"; proto = "tcp"; }
         { sourcePort = 2203; destination = "192.168.1.203:22"; proto = "tcp"; }
         { sourcePort = 2204; destination = "192.168.1.204:22"; proto = "tcp"; }
+        { sourcePort = 2205; destination = "192.168.1.205:22"; proto = "tcp"; }
       ];
       extraCommands = ''
         iptables -w -N block-lan-from-wifi
@@ -135,6 +136,7 @@ in
       dhcp-host=rpi-2,192.168.1.202
       dhcp-host=rpi-3,192.168.1.203
       dhcp-host=rpi-4,192.168.1.204
+      dhcp-host=rpi-5,192.168.1.205
 
       # Default IP addresses for ARTIQ boards
       address=/thermostat/192.168.1.26
