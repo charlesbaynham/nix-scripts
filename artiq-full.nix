@@ -223,6 +223,11 @@ let
           variant = "master";
           boardBinaries = artiq-board-metlino-master;
         };
+        conda-artiq-board-kasli-tester = conda-artiq-board {
+          target = "kasli";
+          variant = "tester";
+          boardBinaries = artiq-fast.artiq-board-kasli-tester;
+        };
         conda-artiq-board-kc705-nist_clock = conda-artiq-board {
           target = "kc705";
           variant = "nist_clock";
