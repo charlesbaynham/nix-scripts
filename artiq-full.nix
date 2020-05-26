@@ -1,4 +1,14 @@
-{ pkgs ? import <nixpkgs> {}}:
+{ pkgs ? import <nixpkgs> { overlays = [
+      (
+        self: super: {
+          python3 = super.python3.override {
+            packageOverrides = self: super: {
+              svgwrite = super.svgwrite.overrideAttrs(oa: {meta = {};});
+            };
+          };
+        }
+      )
+    ]; }}:
 
 let
   sinaraSystemsSrc = <sinaraSystemsSrc>;
