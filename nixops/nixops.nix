@@ -6,5 +6,8 @@
   rpi-5 = import ./rpi.nix { host = "rpi-5"; rpi4 = true; };
   juno = import ./desktop.nix { host = "juno"; };
   zeus = import ./desktop.nix { host = "zeus"; };
+  hera = import ./desktop.nix { host = "hera"; };
+  hestia = import ./desktop.nix { host = "hestia"; };
+  chiron = import ./desktop.nix { host = "chiron"; };
   cnc = import ./light.nix { host = "cnc"; };
 }
