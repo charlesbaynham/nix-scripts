@@ -94,6 +94,7 @@ in
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.desktopManager.gnome3.enable = true;
+  environment.gnome3.excludePackages = [ pkgs.epiphany ];
 
   hardware.bluetooth.enable = true;
 
