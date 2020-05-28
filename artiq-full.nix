@@ -47,6 +47,7 @@ let
         "liaf"
         "luh"
         "luh2"
+        "luh3"
         "mikes"
         "mit"
         "mitll3"
