@@ -44,4 +44,8 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXYSxgxfvdHswDRhh30Qr3vTl6LCO9oTD0sVh/nRMjO+BgQ8HDst6jvolh/Ny6bQ710QLIthGtZxX8umFcoVebFkuAqenlXFXIpM86CYOST3zej/fRXmcvqJ2WV8EQzQGk5hLL/91bfpiYT1QQ0hg3/8x9ZVY5OkB2ehNZhFlZDBVqIPPOPYywMuaY7EXf5lHOX206kUeTygzrJFbHwX2du8/xZhcyqrgqVtN4+xy0q2OUDc3hrcSnxwdoSivbgl4LmQM5VWgOW/9fK0ji9naah9cFHNWv/lyz4uJYYttyx1C8jiqRZ7A1bhvemTK1VOvDZwVOp/o4ArjENgYIifzl" "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFljU/TppiVf8G8yORVZYpzmDtHeTV6sjnWyAl5B5//MKz7xoeg6Ear0ft35GXgFQ5mg+kUGptE+qpAuD1l5NdXuE1Qve9mIl5Gffn02HOdt4qyy8W4HX/GY7VPz1QQNWZmasYnqBiWWsFwsORhXYI8xN6LYL0UzhxS8EXGs36yC/pUn8CNS+c1f4sHJ00h+wIfn9nbypSXbxYE50IYPZlUWKfAxFaZrE7/G3/PQTIIRqI1b6+6hBmcyKfj55/URGeN8Z0Zkp1neJ2laXz/kAzct7PDteLx++ACH+U10/uT1KSQt7zhJkPdvJ2FOUBRygVYUB4w8Wo79Jr5WntH5xb"
     ];
   };
+  dsleung = {
+    isNormalUser = true;
+    extraGroups = ["plugdev" "dialout"];
+  };
 }
