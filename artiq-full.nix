@@ -63,6 +63,7 @@ let
         "olomouc"
         "opticlock"
         "oregon"
+        "osaka"
         "ptb"
         "ptb2"
         "ptb3"
