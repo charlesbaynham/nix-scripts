@@ -144,6 +144,7 @@ in
       address=/zc706/192.168.1.51
       address=/zc706-2/192.168.1.52
       address=/sayma/192.168.1.60
+      address=/metlino/192.168.1.65
       address=/kasli/192.168.1.70
       address=/kasli-customer/192.168.1.75
       address=/stabilizer-customer/192.168.1.76
