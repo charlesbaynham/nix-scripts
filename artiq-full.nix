@@ -44,6 +44,7 @@ let
         "hw"
         "indiana"
         "innsbruck2"
+        "ist"
         "liaf"
         "luh"
         "luh2"
