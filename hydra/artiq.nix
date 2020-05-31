@@ -74,12 +74,12 @@
                 "artiq-fast": { "type": "sysbuild", "value": "artiq:fast:generated-nix", "emailresponsible": false }
             }
         },
-        "cpld": {
+        "gluelogic": {
             "enabled": 1,
             "hidden": false,
-            "description": "CPLD gateware",
+            "description": "Glue logic gateware for Sinara devices",
             "nixexprinput": "nixScripts",
-            "nixexprpath": "cpld.nix",
+            "nixexprpath": "gluelogic.nix",
             "checkinterval": 172800,
             "schedulingshares": 1,
             "enableemail": false,
