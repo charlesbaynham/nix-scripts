@@ -1,11 +1,11 @@
 { pkgs ? import <nixpkgs> {} }:
 let
-  migen = (pkgs.callPackage ../artiq-fast/pkgs/python-deps.nix {}).migen;
+  artiqpkgs = import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; };
   ise = import ./ise.nix { inherit pkgs; };
   buildUrukulCpld = {version, src}: pkgs.stdenv.mkDerivation {
     name = "urukul-cpld-${version}";
     inherit src;
-    buildInputs = [(pkgs.python3.withPackages(ps: [migen]))] ++ (builtins.attrValues ise);
+    buildInputs = [(pkgs.python3.withPackages(ps: [artiqpkgs.migen]))] ++ (builtins.attrValues ise);
     phases = ["buildPhase" "installPhase"];
     buildPhase = "python $src/urukul_impl.py";
     installPhase = 
@@ -18,7 +18,7 @@ let
   buildMirnyCpld = {version, src}: pkgs.stdenv.mkDerivation {
     name = "mirny-cpld-${version}";
     inherit src;
-    buildInputs = [(pkgs.python3.withPackages(ps: [migen]))] ++ (builtins.attrValues ise);
+    buildInputs = [(pkgs.python3.withPackages(ps: [artiqpkgs.migen]))] ++ (builtins.attrValues ise);
     phases = ["buildPhase" "installPhase"];
     buildPhase = "python $src/mirny_impl.py";
     installPhase = 
@@ -55,5 +55,18 @@ in
         rev = "v${version}";
         sha256 = "0fyz0g1h1s54zdivkfqhgyhpq7gjkl9kxkcfy3104p2f889l1vgw";
       };
+    };
+    fastino-fpga = pkgs.stdenv.mkDerivation {
+      name = "fastino-fpga";
+      src = <fastinoSrc>;
+      buildInputs = [(pkgs.python3.withPackages(ps: [artiqpkgs.migen artiqpkgs.misoc]))] ++ [pkgs.yosys pkgs.nextpnr pkgs.icestorm];
+      phases = ["buildPhase" "installPhase"];
+      buildPhase = "python $src/fastino_phy.py";
+      installPhase =
+        ''
+        mkdir -p $out $out/nix-support
+        cp build/fastino.bin $out
+        echo file binary-dist $out/fastino.bin >> $out/nix-support/hydra-build-products
+        '';
     };
   }
