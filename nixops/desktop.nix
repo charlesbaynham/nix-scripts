@@ -49,6 +49,9 @@ in
     ''
     PKCS11Provider "${pkgs.opensc}/lib/opensc-pkcs11.so"
     '';
+  programs.ssh.startAgent = true;
+  services.gnome3.gnome-keyring.enable = pkgs.lib.mkForce false;
+  programs.ssh.agentPKCS11Whitelist = "${pkgs.opensc}/lib/opensc-pkcs11.so";
 
   # Enable CUPS to print documents.
   services.printing = {
