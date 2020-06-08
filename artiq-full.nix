@@ -80,6 +80,7 @@ let
         "saymamaster"
         "siegen"
         "su"
+        "sydney"
         "uaarhus"
         "ubirmingham"
         "ugranada"
