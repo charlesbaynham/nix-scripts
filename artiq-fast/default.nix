@@ -42,6 +42,10 @@ let
         inherit (pythonDeps.sipyco) version src;
       };
     };
+    conda-bscan-spi-bitstreams = import ./conda/bscan-spi-bitstreams.nix {
+      inherit pkgs;
+      inherit (openocd) bscan_spi_bitstreams;
+    };
     conda-artiq = import ./conda/artiq.nix { inherit pkgs; };
   };
 in
