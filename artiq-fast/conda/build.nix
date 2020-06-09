@@ -12,7 +12,7 @@ in pkgs.stdenv.mkDerivation {
     ''
     HOME=`pwd`
     mkdir $out
-    ${condaBuilderEnv}/bin/conda-builder-env -c "PYTHON=python conda build --no-anaconda-upload --no-test --output-folder $out $src/${recipe}"
+    ${condaBuilderEnv}/bin/conda-builder-env -c "conda build --no-anaconda-upload --no-test --output-folder $out $src/${recipe}"
 
     mkdir -p $out/nix-support
     echo file conda $out/noarch/*.tar.bz2 >> $out/nix-support/hydra-build-products
