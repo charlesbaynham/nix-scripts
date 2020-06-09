@@ -9,8 +9,8 @@ in
     src = import ./artiq-src.nix { inherit fetchgit; };
     preBuild = "export VERSIONEER_OVERRIDE=${version}";
     propagatedBuildInputs = [ binutils-or1k llvm-or1k llvmlite-artiq qt5Full ]
-      ++ (with pythonDeps; [ sipyco levenshtein pyqtgraph-qt5 pythonparser ])
-      ++ (with python3Packages; [ pygit2 numpy dateutil quamash scipy prettytable pyserial h5py pyqt5 ]);
+      ++ (with pythonDeps; [ sipyco pyqtgraph-qt5 pythonparser ])
+      ++ (with python3Packages; [ pygit2 numpy dateutil quamash scipy prettytable pyserial python-Levenshtein h5py pyqt5 ]);
     checkInputs = [ binutils-or1k outputcheck ];
     checkPhase =
     ''

@@ -25,16 +25,6 @@ rec {
     propagatedBuildInputs = with python3Packages; [ pyserial ];
   };
 
-  levenshtein = python3Packages.buildPythonPackage rec {
-    name = "levenshtein";
-    src = fetchFromGitHub {
-      owner = "ztane";
-      repo = "python-Levenshtein";
-      rev = "854e61a05bb8b750e990add96df412cd5448b75e";
-      sha256 = "1yf21kg1g2ivm5a4dx1jra9k0c33np54d0hk5ymnfyc4f6pg386q";
-    };
-  };
-
   pythonparser = python3Packages.buildPythonPackage rec {
     name = "pythonparser";
     version = "1.3";

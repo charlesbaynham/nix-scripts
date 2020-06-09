@@ -18,7 +18,7 @@ let
         "artiq-board-${board.target}-${board.variant}" = boardBinaries;
       }) {} boards;
   mainPackages = rec {
-    inherit (pythonDeps) sipyco asyncserial levenshtein pythonparser pyqtgraph-qt5 misoc migen microscope jesd204b migen-axi lit outputcheck;
+    inherit (pythonDeps) sipyco asyncserial pythonparser pyqtgraph-qt5 misoc migen microscope jesd204b migen-axi lit outputcheck;
     binutils-or1k = callPackage ./pkgs/binutils.nix { platform = "or1k"; target = "or1k-linux"; };
     binutils-arm = callPackage ./pkgs/binutils.nix { platform = "arm"; target = "armv7-unknown-linux-gnueabihf"; };
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};
