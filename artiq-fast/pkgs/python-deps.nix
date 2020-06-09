@@ -16,6 +16,7 @@ rec {
 
   asyncserial = python3Packages.buildPythonPackage rec {
     name = "asyncserial";
+    version = "0.1";
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "asyncserial";

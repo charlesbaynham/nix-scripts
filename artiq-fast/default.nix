@@ -56,6 +56,14 @@ let
       inherit (openocd) bscan_spi_bitstreams;
     };
     conda-artiq = import ./conda/artiq.nix { inherit pkgs; };
+    conda-asyncserial = import ./conda/build.nix { inherit pkgs; } {
+      name = "conda-asyncserial";
+      src = import ./conda/fake-source.nix { inherit pkgs; } {
+        name = "asyncserial";
+        inherit (pythonDeps.asyncserial) version src;
+        dependencies = ["pyserial"];
+      };
+    };
   };
 in
   mainPackages // boardPackages
