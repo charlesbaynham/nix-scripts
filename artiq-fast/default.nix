@@ -35,6 +35,15 @@ let
     artiq-env = (pkgs.python3.withPackages(ps: [ artiq ])).overrideAttrs (oldAttrs: { name = "${pkgs.python3.name}-artiq-env-${artiq.version}"; });
     openocd = callPackage ./pkgs/openocd.nix {};
 
+    conda-pythonparser = import ./conda/build.nix { inherit pkgs; } {
+      name = "conda-pythonparser";
+      src = import ./conda/fake-source.nix { inherit pkgs; } {
+        name = "pythonparser";
+        inherit (pythonDeps.pythonparser) version src;
+        extraSrcCommands = "patch -p1 < ${./pkgs/python37hack.patch}";
+        dependencies = ["regex"];
+      };
+    };
     conda-sipyco = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-sipyco";
       src = import ./conda/fake-source.nix { inherit pkgs; } {

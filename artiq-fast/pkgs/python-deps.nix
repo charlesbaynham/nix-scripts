@@ -37,6 +37,7 @@ rec {
 
   pythonparser = python3Packages.buildPythonPackage rec {
     name = "pythonparser";
+    version = "1.3";
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "pythonparser";

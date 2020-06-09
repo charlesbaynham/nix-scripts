@@ -1,5 +1,5 @@
 { pkgs }:
-{ name, version, src, dependencies ? [], extraYaml ? ""}:
+{ name, version, src, extraSrcCommands ? "", dependencies ? [], extraYaml ? ""}:
 pkgs.runCommand "conda-fake-source-${name}" { }
     ''
     mkdir -p $out/fake-conda;
@@ -7,6 +7,7 @@ pkgs.runCommand "conda-fake-source-${name}" { }
     # work around yet more idiotic conda behavior - build breaks if write permissions aren't set on source files.
     cp --no-preserve=mode,ownership -R ${src} workaround-conda
     pushd workaround-conda
+    ${extraSrcCommands}
     tar cf $out/src.tar .
     popd
     rm -rf workaround-conda
