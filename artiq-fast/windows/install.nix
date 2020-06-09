@@ -29,7 +29,7 @@ let
   condaDepSpecs =
     builtins.concatStringsSep " "
     (map (s: "\"${s}\"")
-     (import ../conda-artiq-deps.nix));
+     (import ../conda/artiq-deps.nix));
 
   instructions =
     builtins.toFile "install.txt"

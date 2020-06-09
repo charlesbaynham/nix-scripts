@@ -5,7 +5,7 @@
 { name, src, recipe ? "fake-conda"}:
 
 let
-  condaBuilderEnv = import ./conda-builder-env.nix { inherit pkgs; };
+  condaBuilderEnv = import ./builder-env.nix { inherit pkgs; };
 in pkgs.stdenv.mkDerivation {
   inherit name src;
   buildCommand =

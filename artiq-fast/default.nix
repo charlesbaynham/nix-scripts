@@ -34,14 +34,15 @@ let
     artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k llvm-or1k llvmlite-artiq libartiq-support lit outputcheck; };
     artiq-env = (pkgs.python3.withPackages(ps: [ artiq ])).overrideAttrs (oldAttrs: { name = "${pkgs.python3.name}-artiq-env-${artiq.version}"; });
     openocd = callPackage ./pkgs/openocd.nix {};
-    conda-sipyco = import ./conda-build.nix { inherit pkgs; } {
+
+    conda-sipyco = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-sipyco";
-      src = import ./conda-fake-source.nix { inherit pkgs; } {
+      src = import ./conda/fake-source.nix { inherit pkgs; } {
         name = "sipyco";
         inherit (pythonDeps.sipyco) version src;
       };
     };
-    conda-artiq = import ./conda-artiq.nix { inherit pkgs; };
+    conda-artiq = import ./conda/artiq.nix { inherit pkgs; };
   };
 in
   mainPackages // boardPackages
