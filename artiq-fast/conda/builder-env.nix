@@ -3,7 +3,7 @@
 with pkgs;
 
 let
-  condaDeps = [ stdenv.cc xorg.libSM xorg.libICE xorg.libXrender libselinux ];
+  condaDeps = [ stdenv.cc xorg.libSM xorg.libICE xorg.libX11 xorg.libXau xorg.libXi xorg.libXrender libselinux libGL ];
   # Use the full Anaconda distribution, which already contains conda-build and its many dependencies,
   # so we don't have to manually deal with them.
   condaInstaller = fetchurl {
