@@ -1,7 +1,7 @@
 { pkgs, sipyco, asyncserial, artiq }:
 let
-  condaBuild = import ./fast/conda-build.nix { inherit pkgs; };
-  condaFakeSource = import ./fast/conda-fake-source.nix { inherit pkgs; };
+  condaBuild = import ./fast/conda/build.nix { inherit pkgs; };
+  condaFakeSource = import ./fast/conda/fake-source.nix { inherit pkgs; };
   dualPackage = (
     { name, version, src, pythonOptions ? {}, condaOptions ? {}}:
       {
