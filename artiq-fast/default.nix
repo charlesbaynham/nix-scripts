@@ -44,6 +44,16 @@ let
         dependencies = ["regex"];
       };
     };
+    conda-binutils-or1k = import ./conda/binutils.nix {
+      inherit pkgs;
+      inherit (binutils-or1k) version src;
+      target = "or1k-linux";
+    };
+    conda-binutils-arm = import ./conda/binutils.nix {
+      inherit pkgs;
+      inherit (binutils-arm) version src;
+      target = "armv7-unknown-linux-gnueabihf";
+    };
     conda-sipyco = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-sipyco";
       src = import ./conda/fake-source.nix { inherit pkgs; } {

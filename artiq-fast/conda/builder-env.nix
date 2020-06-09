@@ -16,11 +16,24 @@ let
     targetPkgs = pkgs: ([ condaSrcChmod ] ++ condaDeps);
   };
 
+  libiconv-filename = "libiconv-1.15-h516909a_1006.tar.bz2";
+  libiconv = pkgs.fetchurl {
+    url = "https://anaconda.org/conda-forge/libiconv/1.15/download/linux-64/${libiconv-filename}";
+    sha256 = "1y1g807881j95f9s6mjinf6b7mqa51vc9jf0v7cx8hn7xx4d10ik";
+  };
+
   condaInstalled = runCommand "conda-installed" { }
     ''
     ${condaInstallerEnv}/bin/conda-installer-env -c "${condaSrcChmod}/conda-installer.sh -p $out -b"
     substituteInPlace $out/lib/python3.7/site-packages/conda/gateways/disk/__init__.py \
       --replace "os.chmod(path, 0o2775)" "pass"
+
+    # The conda garbage breaks if the package filename is prefixed with the Nix store hash.
+    # Symptom is "WARNING conda.core.prefix_data:_load_single_record(167): Ignoring malformed
+    # prefix record at: /nix/store/[...].json", and the package is not registered in the conda
+    # list, even though its files are installed.
+    ln -s ${libiconv} ${libiconv-filename}
+    ${condaInstallerEnv}/bin/conda-installer-env -c "$out/bin/conda install ${libiconv-filename}"
     '';
 in
   buildFHSUserEnv {
