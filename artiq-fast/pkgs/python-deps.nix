@@ -48,18 +48,6 @@ rec {
     propagatedBuildInputs = with python3Packages; [ regex ];
   };
 
-  quamash = python3Packages.buildPythonPackage rec {
-    name = "quamash";
-    src = fetchFromGitHub {
-      owner = "harvimt";
-      repo = "quamash";
-      rev = "e513b30f137415c5e098602fa383e45debab85e7";
-      sha256 = "117rp9r4lz0kfz4dmmpa35hp6nhbh6b4xq0jmgvqm68g9hwdxmqa";
-    };
-    propagatedBuildInputs = with python3Packages; [ pyqt5 ];
-    doCheck = false;
-  };
-
   pyqtgraph-qt5 = python3Packages.buildPythonPackage rec {
     name = "pyqtgraph_qt5-${version}";
     version = "0.10.0";
