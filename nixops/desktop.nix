@@ -21,7 +21,7 @@ in
   # $ nix search wget
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    wget vim git firefox thunderbird hexchat usbutils pciutils file lm_sensors audacious acpi
+    wget vim gitAndTools.gitFull firefox thunderbird hexchat usbutils pciutils file lm_sensors audacious acpi
     gimp imagemagick
     (python3.withPackages(ps: with ps; [ numpy scipy matplotlib qtconsole regex ]))
     mosh psmisc libreoffice-fresh
