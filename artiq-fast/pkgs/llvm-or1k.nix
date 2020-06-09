@@ -26,9 +26,11 @@ let
 in
   stdenv.mkDerivation rec {
     name = "llvm-or1k";
+    passthru.llvm-src = llvm-src;
     src = llvm-clang-src;
+    version = "6.0.0";
 
-   buildInputs = [ perl groff cmake libxml2 python libffi ] ++ stdenv.lib.optional stdenv.isLinux valgrind;
+    buildInputs = [ perl groff cmake libxml2 python libffi ] ++ stdenv.lib.optional stdenv.isLinux valgrind;
 
     preBuild = ''
       NIX_BUILD_CORES=4

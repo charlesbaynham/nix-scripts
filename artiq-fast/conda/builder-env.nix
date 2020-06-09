@@ -16,6 +16,7 @@ let
     targetPkgs = pkgs: ([ condaSrcChmod ] ++ condaDeps);
   };
 
+  # for binutils
   libiconv-filename = "libiconv-1.15-h516909a_1006.tar.bz2";
   libiconv = pkgs.fetchurl {
     url = "https://anaconda.org/conda-forge/libiconv/1.15/download/linux-64/${libiconv-filename}";
@@ -38,5 +39,9 @@ let
 in
   buildFHSUserEnv {
     name = "conda-builder-env";
-    targetPkgs = pkgs: [ condaInstalled ] ++ condaDeps;
+    targetPkgs = pkgs: ([ condaInstalled ] ++ condaDeps ++ [
+        # for llvm-or1k
+        cmake
+      ]
+    );
   }

@@ -54,6 +54,11 @@ let
       inherit (binutils-arm) version src;
       target = "armv7-unknown-linux-gnueabihf";
     };
+    conda-llvm-or1k = import ./conda/llvm-or1k.nix {
+      inherit pkgs;
+      inherit (llvm-or1k) version;
+      src = llvm-or1k.llvm-src;
+    };
     conda-sipyco = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-sipyco";
       src = import ./conda/fake-source.nix { inherit pkgs; } {
