@@ -66,6 +66,13 @@ let
         inherit (pythonDeps.sipyco) version src;
       };
     };
+    conda-quamash = import ./conda/build.nix { inherit pkgs; } {
+      name = "conda-quamash";
+      src = import ./conda/fake-source.nix { inherit pkgs; } {
+        name = "quamash";
+        inherit (pkgs.python3Packages.quamash) version src;
+      };
+    };
     conda-bscan-spi-bitstreams = import ./conda/bscan-spi-bitstreams.nix {
       inherit pkgs;
       inherit (openocd) bscan_spi_bitstreams;
