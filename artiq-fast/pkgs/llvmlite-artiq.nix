@@ -1,6 +1,7 @@
 { stdenv, fetchFromGitHub, llvm-or1k, makeWrapper, python3, ncurses, zlib, python3Packages }:
 python3Packages.buildPythonPackage rec {
   name = "llvmlite-artiq";
+  version = "0.23.0.dev";
   src = fetchFromGitHub {
     rev = "158f9d3a898dbf055ca513d69505df288c681fea";
     owner = "m-labs";

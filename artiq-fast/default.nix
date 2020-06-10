@@ -59,6 +59,10 @@ let
       inherit (llvm-or1k) version;
       src = llvm-or1k.llvm-src;
     };
+    conda-llvmlite-artiq = import ./conda/llvmlite-artiq.nix {
+      inherit pkgs conda-llvm-or1k;
+      inherit (llvmlite-artiq) version src;
+    };
     conda-sipyco = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-sipyco";
       src = import ./conda/fake-source.nix { inherit pkgs; } {
