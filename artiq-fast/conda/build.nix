@@ -15,6 +15,6 @@ in pkgs.stdenv.mkDerivation {
     ${condaBuilderEnv}/bin/conda-builder-env -c "conda build --no-anaconda-upload --no-test --output-folder $out $src/${recipe}"
 
     mkdir -p $out/nix-support
-    echo file conda $out/noarch/*.tar.bz2 >> $out/nix-support/hydra-build-products
+    echo file conda $out/*/*.tar.bz2 >> $out/nix-support/hydra-build-products
     '';
 }
