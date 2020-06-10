@@ -45,6 +45,7 @@ pkgs.runCommand "conda-fake-source-${name}" { }
     set -e
 
     export VERSIONEER_OVERRIDE=${version}
+    export LD_LIBRARY_PATH=/lib
     python setup.py install \
       --prefix=\$PREFIX \
       --single-version-externally-managed \
