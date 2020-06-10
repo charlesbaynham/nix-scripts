@@ -7,7 +7,6 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ rustc ];
   phases = [ "buildPhase" ];
-  # keep in sync with artiq/test/lit/lit.cfg or remove build from the latter once we don't use buildbot/conda anymore
   buildPhase =
   ''
   mkdir $out
