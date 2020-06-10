@@ -6,7 +6,7 @@ let
 in
   pkgs.runCommand "conda-channel" { }
     ''
-    mkdir -p $out/noarch
+    mkdir -p $out/noarch $out/linux-64
     for storepath in ${pkgs.lib.concatMapStringsSep " " builtins.toString (builtins.attrValues jobs)}; do
       hydra_build_products=$storepath/nix-support/hydra-build-products
       if [ -f $hydra_build_products ]; then
@@ -14,7 +14,8 @@ in
           type=`echo $line | cut -f2 -d " "`
           if [ $type == "conda" ]; then
             path=`echo $line | cut -f3 -d " "`
-            ln -s $path $out/noarch
+            arch=`echo $path | cut -f5 -d "/"`
+            ln -s $path $out/$arch
           fi
         done < $hydra_build_products
       fi
