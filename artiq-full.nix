@@ -28,7 +28,6 @@ let
       variants = [
         "afmaster"
         "afsatellite"
-        "berkeley"
         "berkeley2"
         "berkeley3"
         "csu"
