@@ -86,11 +86,6 @@ rec {
       rev = "b1b2b298b85a795239daad84c75be073ddc4f8bd";
       sha256 = "1qy2ydk8xqqv92i992j1g71fbi185zd6s3kigzsf3169874dyh81";
     };
-    patches = [
-      # Vivado synthesis processes consume over 1 GB of RSS each. Limit them to
-      # 1 thread because they can become overwhelming during parallel builds.
-      ./migen-limit-vivado-threads-to-1.patch
-    ];
 
     propagatedBuildInputs = with python3Packages; [ colorama ];
 
