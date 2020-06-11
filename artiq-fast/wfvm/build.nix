@@ -54,7 +54,7 @@ win.makeWindowsImage {
           sha256 = "1f9icm5rwab6l1f23a70dw0qixzrl62wbglimip82h4zhxlh3jfj";
         };
       in ''
-        cp ${Anaconda3} ./Anaconda3.exe
+        ln -s ${Anaconda3} ./Anaconda3.exe
         win put Anaconda3.exe 'C:\Users\artiq'
         win exec 'start /wait "" .\Anaconda3.exe /S /D=%UserProfile%\Anaconda3'
       '';
