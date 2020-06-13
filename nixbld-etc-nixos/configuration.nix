@@ -376,7 +376,6 @@ in
   };
  
   nixpkgs.config.packageOverrides = super: let self = super.pkgs; in {
-    firmwareLinuxNonfree = super.callPackage ./firmware-linux-nonfree.nix {};
     hydra-unstable = super.hydra-unstable.overrideAttrs(oa: {
       patches = oa.patches or [] ++ [ ./hydra-conda.patch ./hydra-retry.patch ./hydra-unbreak-sysbuild.patch ];
       hydraPath = oa.hydraPath + ":" + super.lib.makeBinPath [ super.jq ];
