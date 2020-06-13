@@ -1,0 +1,25 @@
+diff --git a/src/lib/Hydra/Schema/Builds.pm b/src/lib/Hydra/Schema/Builds.pm
+index d4334300..014d07ce 100644
+--- a/src/lib/Hydra/Schema/Builds.pm
++++ b/src/lib/Hydra/Schema/Builds.pm
+@@ -608,6 +608,7 @@ makeQueries('', "");
+ makeQueries('ForProject', "and project = ?");
+ makeQueries('ForJobset', "and jobset_id = ?");
+ makeQueries('ForJob', "and jobset_id = ? and job = ?");
++makeQueries('ForJobName', "and jobset_id = (select id from jobsets j where j.name = ?) and job = ?");
+ 
+ 
+ my %hint = (
+diff --git a/src/script/hydra-eval-jobset b/src/script/hydra-eval-jobset
+index ea336bfc..2f208418 100755
+--- a/src/script/hydra-eval-jobset
++++ b/src/script/hydra-eval-jobset
+@@ -142,7 +142,7 @@ sub fetchInputSystemBuild {
+     $projectName ||= $project->name;
+     $jobsetName ||= $jobset->name;
+ 
+-    my @latestBuilds = $db->resultset('LatestSucceededForJob')
++    my @latestBuilds = $db->resultset('LatestSucceededForJobName')
+         ->search({}, {bind => [$jobsetName, $jobName]});
+ 
+     my @validBuilds = ();
