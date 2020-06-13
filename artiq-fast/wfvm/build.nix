@@ -61,6 +61,30 @@ win.makeWindowsImage {
         echo Anaconda installer finished
       '';
     }
+    {
+      name = "MSYS2";
+      buildInputs = [ pkgs.expect ];
+      script = let
+          msys2 = pkgs.fetchurl {
+          name = "msys2.exe";
+          url = "https://github.com/msys2/msys2-installer/releases/download/2020-06-02/msys2-x86_64-20200602.exe";
+          sha256 = "1mswlfybvk42vdr4r85dypgkwhrp5ff47gcbxgjqwq86ym44xzd4";
+        };
+        msys2-auto-install = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/msys2/msys2-installer/master/auto-install.js";
+          sha256 = "0ww48xch2q427c58arg5llakfkfzh3kb32kahwplp0s7jc8224g7";
+        };
+      in ''
+        ln -s ${msys2} ./msys2.exe
+        ln -s ${msys2-auto-install} ./auto-install.js
+        win-put msys2.exe 'C:\Users\artiq'
+        win-put auto-install.js 'C:\Users\artiq'
+        echo Running MSYS2 installer...
+        # work around MSYS2 installer bug that prevents it from closing at the end of unattended install
+        expect -c 'set timeout 600; spawn win-exec ".\\msys2.exe --script auto-install.js -v InstallPrefix=C:\\msys64"; expect FinishedPageCallback { close }'
+        echo MSYS2 installer finished
+      '';
+    }
 
   ];
 
