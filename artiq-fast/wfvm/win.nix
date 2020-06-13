@@ -205,7 +205,7 @@ let
     buildInputs = [
       paramikoClient
       qemu
-    ];
+    ] ++ (v.buildInputs or []);
   } (let
     script = pkgs.writeScript "${v.name}-script" v.script;
     qemuParams = mkQemuFlags [
