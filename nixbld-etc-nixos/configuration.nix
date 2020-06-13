@@ -100,6 +100,15 @@ in
   boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = "1";
   boot.kernel.sysctl."net.ipv6.conf.default.forwarding" = "1";
 
+  services.unbound = {
+    enable = true;
+    extraConfig =
+    ''
+    server:
+      port: 5353
+    '';
+  };
+
   services.hostapd = {
     enable        = true;
     interface     = netifWifi;
@@ -118,6 +127,7 @@ in
   };
   services.dnsmasq = {
     enable = true;
+    servers = ["::1#5353"];
     extraConfig = ''
       interface=${netifLan}
       interface=${netifWifi}
@@ -127,6 +137,8 @@ in
       enable-ra
       dhcp-range=interface:${netifLan},::,constructor:${netifLan},ra-names
       dhcp-range=interface:${netifWifi},::,constructor:${netifWifi},ra-only
+
+      no-resolv
 
       # Static IPv4s to make Red Pitayas less annoying
       dhcp-host=rp-f05cc9,192.168.1.190
