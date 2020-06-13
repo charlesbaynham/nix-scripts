@@ -1,9 +1,4 @@
-{ pkgs
-, qemuMem
-, sshUser ? "user"
-, sshPassword ? "user"
-,
-}:
+{ pkgs, qemuMem }:
 
 with pkgs;
 
@@ -39,25 +34,8 @@ let
     in
       "${qemu_kvm}/bin/qemu-system-x86_64 ${argStr}";
 
-  # Pass empty config file to prevent ssh from failing to create ~/.ssh
-  sshOpts = "-F /dev/null -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=\$TMP/known_hosts";
-  sshWithQuotes = quotes: cmd: ''
-    echo ssh windows ${quotes}${cmd}${quotes}
-    ${sshpass}/bin/sshpass -p${sshPassword} -- \
-      ${openssh}/bin/ssh  -np 2022 ${sshOpts} \
-      ${sshUser}@localhost \
-      ${quotes}${cmd}${quotes}
-  '';
-  ssh = sshWithQuotes "'";
-  scp = src: target: ''
-    echo "Copy ${src} to ${target}"
-    ${sshpass}/bin/sshpass -p${sshPassword} -- \
-      ${openssh}/bin/scp -P 2022 ${sshOpts} \
-      "${src}" "${sshUser}@localhost:${target}"
-  '';
-
 in
 {
-  inherit qemu-img runQemu ssh sshWithQuotes scp;
-  inputs = [ qemu_kvm openssh sshpass ];
+  inherit qemu-img runQemu;
+  inputs = [ qemu_kvm ];
 }
