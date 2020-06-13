@@ -55,8 +55,10 @@ win.makeWindowsImage {
         };
       in ''
         ln -s ${Anaconda3} ./Anaconda3.exe
-        win put Anaconda3.exe 'C:\Users\artiq'
-        win exec 'start /wait "" .\Anaconda3.exe /S /D=%UserProfile%\Anaconda3'
+        win-put Anaconda3.exe 'C:\Users\artiq'
+        echo Running Anaconda installer...
+        win-exec 'start /wait "" .\Anaconda3.exe /S /D=%UserProfile%\Anaconda3'
+        echo Anaconda installer finished
       '';
     }
 

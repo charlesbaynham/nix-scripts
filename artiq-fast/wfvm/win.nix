@@ -151,59 +151,25 @@ let
     mv c.img $out
   '';
 
-  # Use Paramiko instead of OpenSSH
-  #
-  # OpenSSH goes out of it's way to make password logins hard
-  # and Windows goes out of it's way to make key authentication hard
-  # so we're in a pretty tough spot
-  #
-  # Luckily the usage patterns are quite simple and easy to reimplement with paramiko
-  paramikoClient = pkgs.writeScriptBin "win" ''
-    #!${pkgs.python3.withPackages(ps: [ ps.paramiko ])}/bin/python
-    import paramiko
-    import os.path
-    import sys
-
-
-    def w_join(*args):
-        # Like os.path.join but for windows paths
-        return "\\".join(args)
-
-
-    if __name__ == '__main__':
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy)
-
-
-        cmd = sys.argv[1]
-
-        try:
-            client.connect(hostname="127.0.0.1", port=2022, username="artiq", password="${users.artiq.password}", timeout=1)
-
-            if cmd == "put":
-                sftp = client.open_sftp()
-                src = sys.argv[2]
-                dst = sys.argv[3]
-                sftp.put(src, w_join(dst, os.path.basename(src)))
-
-            elif cmd == "exec":
-                _, stdout, stderr = client.exec_command(sys.argv[2])
-
-                sys.stdout.write(stdout.read().strip().decode())
-                sys.stdout.flush()
-
-                sys.stderr.write(stderr.read().strip().decode())
-                sys.stderr.flush()
-
-            else:
-                raise ValueError(f"Unhandled command: {cmd}")
-        except (EOFError, paramiko.ssh_exception.SSHException):
-            exit(1)
+  # Pass empty config file to prevent ssh from failing to create ~/.ssh
+  sshOpts = "-F /dev/null -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=\$TMP/known_hosts -o ConnectTimeout=1";
+  win-exec = pkgs.writeShellScriptBin "win-exec" ''
+    ${pkgs.sshpass}/bin/sshpass -p${users.artiq.password} -- \
+      ${pkgs.openssh}/bin/ssh  -np 2022 ${sshOpts} \
+      artiq@localhost \
+      $1
+  '';
+  win-put = pkgs.writeShellScriptBin "win-put" ''
+    echo scp windows $1 -\> $2
+    ${pkgs.sshpass}/bin/sshpass -p${users.artiq.password} -- \
+      ${pkgs.openssh}/bin/scp -P 2022 ${sshOpts} \
+      $1 artiq@localhost:$2
   '';
 
   finalImage = builtins.foldl' (acc: v: pkgs.runCommandNoCC "${v.name}.img" {
     buildInputs = [
-      paramikoClient
+      win-exec
+      win-put
       qemu
     ] ++ (v.buildInputs or []);
   } (let
@@ -234,7 +200,7 @@ let
         exit 1
       fi
 
-      output=$(win exec 'echo Ran command' || echo "")
+      output=$(win-exec 'echo|set /p="Ran command"' || echo "")
       if test "$output" = "Ran command"; then
         break
       fi
@@ -253,7 +219,7 @@ let
     # Allow install to "settle"
     sleep 20
 
-    win exec 'shutdown /s'
+    win-exec 'shutdown /s'
 
     mv c.img $out
   '')) baseImage installCommands;
