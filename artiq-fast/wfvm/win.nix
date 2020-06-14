@@ -1,10 +1,8 @@
 { pkgs
 , diskImageSize ? "22G"
-, qemuMem ? "4G"
 , windowsImage ? null
 , autoUnattendParams ? {}
 , impureMode ? false
-, baseRtc ? "2020-04-20T14:21:42"
 , installCommands ? []
 , users ? {}
 , ...
@@ -12,8 +10,7 @@
 
 let
   lib = pkgs.lib;
-  # qemu_test is a smaller closure only building for a single system arch
-  qemu = pkgs.qemu_test;
+  utils = import ./utils.nix { inherit pkgs; };
   libguestfs = pkgs.libguestfs-with-appliance;
 
   # p7zip on >20.03 has known vulns but we have no better option
@@ -24,7 +21,7 @@ let
   });
 
   runQemuCommand = name: command: (
-    pkgs.runCommandNoCC name { buildInputs = [ p7zip qemu libguestfs ]; }
+    pkgs.runCommandNoCC name { buildInputs = [ p7zip utils.qemu libguestfs ]; }
       (
         ''
           if ! test -f; then
@@ -45,6 +42,15 @@ let
   autounattend = import ./autounattend.nix (
     attrs // {
       inherit pkgs;
+      users = users // {
+        wfvm = {
+          password = "1234";
+          description = "WFVM Administrator";
+          groups = [
+            "Administrators"
+          ];
+        };
+      };
     }
   );
 
@@ -66,27 +72,9 @@ let
       virt-make-fs --partition --type=fat pkgs/ $out
     '';
 
-  mkQemuFlags = extraFlags: [
-    "-enable-kvm"
-    "-cpu"
-    "host"
-    "-smp"
-    "$NIX_BUILD_CORES"
-    "-m"
-    "${qemuMem}"
-    "-bios"
-    "${pkgs.OVMF.fd}/FV/OVMF.fd"
-    "-vga"
-    "virtio"
-    "-device"
-    "piix3-usb-uhci" # USB root hub
-    "-rtc base=${baseRtc}"
-    "-device e1000,netdev=n1"
-  ] ++ lib.optional (!impureMode) "-nographic" ++ extraFlags;
-
   installScript = pkgs.writeScript "windows-install-script" (
     let
-      qemuParams = mkQemuFlags [
+      qemuParams = utils.mkQemuFlags (lib.optional (!impureMode) "-nographic" ++ [
         # "CD" drive with bootstrap pkgs
         "-drive"
         "id=virtio-win,file=${bootstrapPkgs},if=none,format=raw,readonly=on"
@@ -102,16 +90,12 @@ let
         "file=c.img,index=0,media=disk,cache=unsafe"
         # Network
         "-netdev user,id=n1,net=192.168.1.0/24,restrict=on"
-      ];
+      ]);
     in
       ''
         #!${pkgs.runtimeShell}
         set -euxo pipefail
-        export PATH=${lib.makeBinPath [ p7zip qemu libguestfs ]}:$PATH
-
-        if test -z "''${NIX_BUILD_CORES+x}"; then
-          export NIX_BUILD_CORES=$(nproc)
-        fi
+        export PATH=${lib.makeBinPath [ p7zip utils.qemu libguestfs ]}:$PATH
 
         # Create a bootable "USB" image
         # Booting in USB mode circumvents the "press any key to boot from cdrom" prompt
@@ -128,7 +112,7 @@ let
 
         # Qemu requires files to be rw
         qemu-img create -f qcow2 c.img ${diskImageSize}
-        env NIX_BUILD_CORES="''${NIX_BUILD_CORES:4}" qemu-system-x86_64 ${lib.concatStringsSep " " qemuParams}
+        qemu-system-x86_64 ${lib.concatStringsSep " " qemuParams}
       ''
   );
 
@@ -137,36 +121,19 @@ let
     mv c.img $out
   '';
 
-  # Pass empty config file to prevent ssh from failing to create ~/.ssh
-  sshOpts = "-F /dev/null -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=\$TMP/known_hosts -o ConnectTimeout=1";
-  win-exec = pkgs.writeShellScriptBin "win-exec" ''
-    ${pkgs.sshpass}/bin/sshpass -p${users.artiq.password} -- \
-      ${pkgs.openssh}/bin/ssh  -np 2022 ${sshOpts} \
-      artiq@localhost \
-      $1
-  '';
-  win-put = pkgs.writeShellScriptBin "win-put" ''
-    echo scp windows $1 -\> $2
-    ${pkgs.sshpass}/bin/sshpass -p${users.artiq.password} -- \
-      ${pkgs.openssh}/bin/scp -P 2022 ${sshOpts} \
-      $1 artiq@localhost:$2
-  '';
-
   finalImage = builtins.foldl' (acc: v: pkgs.runCommandNoCC "${v.name}.img" {
-    buildInputs = [
-      win-exec
-      win-put
-      qemu
+    buildInputs = with utils; [
+      qemu win-wait win-exec win-put
     ] ++ (v.buildInputs or []);
   } (let
     script = pkgs.writeScript "${v.name}-script" v.script;
-    qemuParams = mkQemuFlags [
+    qemuParams = utils.mkQemuFlags (lib.optional (!impureMode) "-nographic" ++ [
       # Output image
       "-drive"
       "file=c.img,index=0,media=disk,cache=unsafe"
       # Network - enable SSH forwarding
       "-netdev user,id=n1,net=192.168.1.0/24,restrict=on,hostfwd=tcp::2022-:22"
-    ];
+    ]);
 
   in ''
     # Create an image referencing the previous image in the chain
@@ -175,33 +142,11 @@ let
     set -m
     qemu-system-x86_64 ${lib.concatStringsSep " " qemuParams} &
 
-    # If the machine is not up within 10 minutes it's likely never coming up
-    timeout=600
+    win-wait
 
-    # Wait for VM to be accessible
-    sleep 20
-    echo "Waiting for SSH"
-    while true; do
-      if test "$timeout" -eq 0; then
-        echo "SSH connection timed out"
-        exit 1
-      fi
-
-      output=$(win-exec 'echo|set /p="Ran command"' || echo "")
-      if test "$output" = "Ran command"; then
-        break
-      fi
-
-      echo "Retrying in 1 second, timing out in $timeout seconds"
-
-      ((timeout=$timeout-1))
-
-      sleep 1
-    done
-
-    echo "Executing user script..."
+    echo "Executing script to build layer..."
     ${script}
-    echo "User script done"
+    echo "Layer script done"
 
     echo "Shutting down..."
     win-exec 'shutdown /s'

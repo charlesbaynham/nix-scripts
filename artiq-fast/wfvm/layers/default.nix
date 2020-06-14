@@ -10,7 +10,7 @@
       };
     in ''
       ln -s ${Anaconda3} ./Anaconda3.exe
-      win-put Anaconda3.exe 'C:\Users\artiq'
+      win-put Anaconda3.exe 'C:\Users\wfvm'
       echo Running Anaconda installer...
       win-exec 'start /wait "" .\Anaconda3.exe /S /D=%UserProfile%\Anaconda3'
       echo Anaconda installer finished
@@ -32,8 +32,8 @@
     in ''
       ln -s ${msys2} ./msys2.exe
       ln -s ${msys2-auto-install} ./auto-install.js
-      win-put msys2.exe 'C:\Users\artiq'
-      win-put auto-install.js 'C:\Users\artiq'
+      win-put msys2.exe 'C:\Users\wfvm'
+      win-put auto-install.js 'C:\Users\wfvm'
       echo Running MSYS2 installer...
       # work around MSYS2 installer bug that prevents it from closing at the end of unattended install
       expect -c 'set timeout 600; spawn win-exec ".\\msys2.exe --script auto-install.js -v InstallPrefix=C:\\msys64"; expect FinishedPageCallback { close }'
@@ -45,7 +45,7 @@
     script = let
       msys-packages = import ./msys_packages.nix { inherit pkgs; };
       msys-packages-put = pkgs.lib.strings.concatStringsSep "\n"
-          (map (package: ''win-put ${package} 'C:\Users\artiq\msyspackages' '') msys-packages);
+          (map (package: ''win-put ${package} 'C:\Users\wfvm\msyspackages' '') msys-packages);
     in
       # Windows command line is so shitty it can't even do glob expansion. Why do people use Windows?
       ''
@@ -55,9 +55,9 @@
       set MSYS=c:\msys64
       set ARCH=64
       set PATH=%MSYS%\usr\bin;%MSYS%\mingw%ARCH%\bin;%PATH%
-      bash -c "pacman -U --noconfirm C:/Users/artiq/msyspackages/*"
+      bash -c "pacman -U --noconfirm C:/Users/wfvm/msyspackages/*"
       EOF
-      win-put installmsyspackages.bat 'C:\Users\artiq'
+      win-put installmsyspackages.bat 'C:\Users\wfvm'
       win-exec installmsyspackages
       '';
   };
