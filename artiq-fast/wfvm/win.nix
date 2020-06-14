@@ -169,8 +169,6 @@ let
     ];
 
   in ''
-    export HOME=$(mktemp -d)
-
     # Create an image referencing the previous image in the chain
     qemu-img create -f qcow2 -b ${acc} c.img
 
