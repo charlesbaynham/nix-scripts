@@ -4,7 +4,6 @@
 , qemuMem ? "4G"
 , windowsImage ? null
 , autoUnattendParams ? {}
-, packages ? []
 , impureMode ? false
 , baseRtc ? "2020-04-20T14:21:42"
 , installCommands ? []
@@ -52,14 +51,9 @@ let
   bundleInstaller = pkgs.callPackage ./bundle {};
 
   # Packages required to drive installation of other packages
-  bootstrapPkgs = let
-    winPkgs = import ./pkgs.nix { inherit pkgs; };
-
-  in
+  bootstrapPkgs =
     runQemuCommand "bootstrap-win-pkgs.img" ''
       mkdir pkgs
-      mkdir pkgs/bootstrap
-      mkdir pkgs/user
       mkdir pkgs/fod
 
       cp ${bundleInstaller} pkgs/"$(stripHash "${bundleInstaller}")"
@@ -70,8 +64,6 @@ let
 
       # SSH setup script goes here because windows XML parser sucks
       cp ${autounattend.setupScript} pkgs/ssh-setup.ps1
-
-      ${lib.concatStringsSep "\n" (builtins.map (x: ''cp ${x} pkgs/bootstrap/"$(stripHash "${x}")"'') packages)}
 
       virt-make-fs --partition --type=fat pkgs/ $out
     '';

@@ -2,7 +2,6 @@
 
 let
   win = (import ./default.nix { inherit pkgs; });
-  layers = (import ./layers { inherit pkgs; });
 in
 win.makeWindowsImage {
 
@@ -40,7 +39,7 @@ win.makeWindowsImage {
   defaultUser = "artiq";
 
   # Imperative installation commands, to be installed incrementally
-  installCommands = [ layers.anaconda3 layers.msys2 layers.msys2-packages ];
+  installCommands = with win.layers; [ anaconda3 msys2 msys2-packages ];
 
   # services = {
   #   # Enable remote management
@@ -58,23 +57,5 @@ win.makeWindowsImage {
   # inputLocale = "en-US";
   # userLocale = "en-US";
   # systemLocale = "en-US";
-
-  # packages = [
-  #   (
-  #     win.pkgs.makeMSIPkg {
-  #       # Note: File not in repository, it's meant as an example to subsitute
-  #       name = "notepadplusplus";
-  #       msi = ./Notepad++7.7.msi;
-  #       # Custom cert
-  #       # cert = ./notepad++-cert.cer
-  #     }
-  #   )
-  #   (
-  #     win.pkgs.makeCrossPkg {
-  #       name = "hello";
-  #       pkg = pkgs.pkgsCross.mingwW64.hello;
-  #     }
-  #   )
-  # ];
 
 }
