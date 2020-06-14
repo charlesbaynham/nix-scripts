@@ -3,7 +3,7 @@
 { config, pkgs, ... }:
 let
   m-labs = import (fetchTarball https://nixbld.m-labs.hk/channel/custom/artiq/full/artiq-full/nixexprs.tar.xz) { inherit pkgs; };
-  pkgs-unstable = import (fetchTarball https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz) {};
+  pkgs-unstable = import (fetchTarball https://github.com/NixOS/nixpkgs/archive/master.tar.gz) {};
 in
 {
   deployment.targetHost = host;
