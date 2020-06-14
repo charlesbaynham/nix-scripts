@@ -4,6 +4,7 @@
     extraGroups = ["wheel" "plugdev" "dialout"];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyPk5WyFoWSvF4ozehxcVBoZ+UHgrI7VW/OoQfFFwIQe0qvetUZBMZwR2FwkLPAMZV8zz1v4EfncudEkVghy4P+/YVLlDjqDq9zwZnh8Nd/ifu84wmcNWHT2UcqnhjniCdshL8a44memzABnxfLLv+sXhP2x32cJAamo5y6fukr2qLp2jbXzR+3sv3klE0ruUXis/BR1lLqNJEYP8jB6fLn2sLKinnZPfn6DwVOk10mGeQsdME/eGl3phpjhODH9JW5V2V5nJBbC0rBnq+78dyArKVqjPSmIcSy72DEIpTctnMEN1W34BGrnsDd5Xd/DKxKxHKTMCHtZRwLC2X0NWN"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCMALVC8RDTHec+PC8y1s3tcpUAODgq6DEzQdHDf/cyvDMfmCaPiMxfIdmkns5lMa03hymIfSmLUF0jFFDc7biRp7uf9AAXNsrTmplHii0l0McuOOZGlSdZM4eL817P7UwJqFMxJyFXDjkubhQiX6kp25Kfuj/zLnupRCaiDvE7ho/xay6Jrv0XLz935TPDwkc7W1asLIvsZLheB+sRz9SMOb9gtrvk5WXZl5JTOFOLu+JaRwQLHL/xdcHJTOod7tqHYfpoC5JHrEwKzbhTOwxZBQBfTQjQktKENQtBxXHTe71rUEWfEZQGg60/BC4BrRmh4qJjlJu3v4VIhC7SSHn1"
     ];
   };
   rj = {
@@ -20,7 +21,7 @@
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfZGegJYOV2qCdTf2R54thWt0UjH/ycarugV5UWrdql7w9yqaGwqeadRIVoz9IH++AB8NFxPzxMiQzOH5TI4r5hVjconslSeucMvh9u/GPJqQk94uZayodgfqCeBL5v8RqW4kJE1CHrSbKhzLrtWsTsju2XFidLGqBg1v7HWmSB6UqzqmQWqPLxDCi7/JW2ECuKjYlOJY+uzGFz5cxOtJO/lUNSXT3ZSWF/VLscuMmLsdyocdVwZANgPS7A0/wArlbZZMNw72CHuWsh8WVxarKIRwhoaBgXv7Oj3ohi6fVRGo1DOC3ucDGCDNjaQG2gbXGHEiPtrpz43I7BcCeJqNH harry@juno"
+      "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBDcPNCgtdz8erFPRrAwCr4JrkeYXJUUvoRBgP0X2HlzJgDe1Inuo6sC6CGcO3IXbf4MwVA9XEp8BYPHARVeEHhufg/0wnIABLx2GcK99yxOLDUe4h/3YwtqvOcqHEsDx7w=="
     ];
   };
   astro = {
@@ -34,18 +35,21 @@
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqkGZIb57sjzcnYg6tJXrK1iPKnIP6iYkcc2h/cf4rknvOT9ZkeUra7hCTjQDCiC168Lxcdx2wQciuq2SypoUMFytQoLphGHKWpgLB6yoaQgwCUW+To55kJlbs/rOywfwaRAtiyNsCtf+1FTbl0X0mKNIibjDqVyawXaUhfDLNB0TPg1yhhHdi/fqDgq+9kI/2E++8k9TZ2SUZ6vLbERU0cRkGCrVhqR7QEV+Oqa0uFBvNzc+tp/L3BKUUOCiSThNOtUHR9mSx9/Yq31tQ/I+l+oDcJyDiQlrFvDTBRbaDiMDwTFZolsQ8pFR0aJXHOrWRP11LF/EibjqbiK6WHDG/2mTnkREgGOElbOhg4yypMg5KXPY3JhjNibXV8p4GHjRb9g59N7F0s+ez44uS85fXUVVf840+mOx7W+9hGxK5ALr1I5EjUz8q2/SsF4eYuD44xCPK5rrKP0BYjnEQcDQEe5aZ2KyX+aSBF8jeiZsXti6x3Jg7ces6zlBWOoBNOPqTug4eNtkNmmPaoAzVeiItTJZBUAehLUAzyRD+8aTyB4DWAvesHPan+uQb9HvPH0rgymSEGxTi5280VWwvEpKHTGbuB0eYNFffDYVW0Y6xx3K4mZi71r6yCRdC/tsQEyM7N/dtoknvf77+iXCpb5yVSj0j5IAIVhlyszVMiW2qmw=="
+      "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBE/sPOOiw3843+rrcYV2pOVkffNc1xsOgnuCUmy1Fa2VF8x9kqmgQv61sxsuKRkKKoinvqrASxLkWVd6nkiiDuEISibEXs8r1BwuT05cS7RkEhCakSMZ6y/iqOtjt2bx+A=="
     ];
   };
   occheung = {
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
     openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXYSxgxfvdHswDRhh30Qr3vTl6LCO9oTD0sVh/nRMjO+BgQ8HDst6jvolh/Ny6bQ710QLIthGtZxX8umFcoVebFkuAqenlXFXIpM86CYOST3zej/fRXmcvqJ2WV8EQzQGk5hLL/91bfpiYT1QQ0hg3/8x9ZVY5OkB2ehNZhFlZDBVqIPPOPYywMuaY7EXf5lHOX206kUeTygzrJFbHwX2du8/xZhcyqrgqVtN4+xy0q2OUDc3hrcSnxwdoSivbgl4LmQM5VWgOW/9fK0ji9naah9cFHNWv/lyz4uJYYttyx1C8jiqRZ7A1bhvemTK1VOvDZwVOp/o4ArjENgYIifzl" "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFljU/TppiVf8G8yORVZYpzmDtHeTV6sjnWyAl5B5//MKz7xoeg6Ear0ft35GXgFQ5mg+kUGptE+qpAuD1l5NdXuE1Qve9mIl5Gffn02HOdt4qyy8W4HX/GY7VPz1QQNWZmasYnqBiWWsFwsORhXYI8xN6LYL0UzhxS8EXGs36yC/pUn8CNS+c1f4sHJ00h+wIfn9nbypSXbxYE50IYPZlUWKfAxFaZrE7/G3/PQTIIRqI1b6+6hBmcyKfj55/URGeN8Z0Zkp1neJ2laXz/kAzct7PDteLx++ACH+U10/uT1KSQt7zhJkPdvJ2FOUBRygVYUB4w8Wo79Jr5WntH5xb"
+      "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBPEvmWmxpFpMgp5fpjKud8ev0cyf/+X5fEpQt/YD/+u4mbvZYPE300DLqQ0h/qjgvaGMz1ndf4idYnRdy+plJEC/+hmlRW5NlcpAr3S/LYAisacgKToFVl+MlBo+emS9Ig=="
     ];
   };
   dsleung = {
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
+    openssh.authorizedKeys.keys = [
+      "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBDbE7HzZKSwGbgRnzwrzCzb3gZKLSritwnEpHS4sa9oXJ5oLFkuFZOpPYDeiMlbUJ9jCk5FRmkLYIkrbz06SUr7P/eUjxu79ENi3RhfVu+ZrrPvgkhKvM/CiXvw3xCOu0w=="
+    ];
   };
 }
