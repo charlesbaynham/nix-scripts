@@ -6,7 +6,7 @@ let
 in
   pkgs.runCommand "conda-channel" { }
     ''
-    mkdir -p $out/noarch $out/linux-64
+    mkdir -p $out/noarch $out/linux-64 $out/win-64
     for storepath in ${pkgs.lib.concatMapStringsSep " " builtins.toString (builtins.attrValues jobs)}; do
       hydra_build_products=$storepath/nix-support/hydra-build-products
       if [ -f $hydra_build_products ]; then
