@@ -2,19 +2,19 @@
 
 ## Install a Windows image
 
-1. Adjust build.nix accordingly
+1. Adjust demo-image.nix accordingly
 2. Run:
 
 If in impure mode
 ```shell
-nix-build build.nix
+nix-build demo-image.nix
 ./result
 ```
 Results in a file called c.img
 
 If in pure mode
 ```shell
-nix-build build.nix
+nix-build demo-image.nix
 ls -la ./result
 ```
 Results in a symlink to the image in the nix store
