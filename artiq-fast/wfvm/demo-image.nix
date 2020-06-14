@@ -1,4 +1,4 @@
-{  pkgs ? import <nixpkgs> {}, impureMode ? false }:
+{ pkgs ? import <nixpkgs> {}, impureMode ? false }:
 
 let
   win = (import ./default.nix { inherit pkgs; });

@@ -1,5 +1,4 @@
-{ pkgs ? import <nixpkgs> {}
-, lib ? pkgs.lib
+{ pkgs
 , diskImageSize ? "22G"
 , qemuMem ? "4G"
 , windowsImage ? null
@@ -12,6 +11,7 @@
 }@attrs:
 
 let
+  lib = pkgs.lib;
   # qemu_test is a smaller closure only building for a single system arch
   qemu = pkgs.qemu_test;
   libguestfs = pkgs.libguestfs-with-appliance;

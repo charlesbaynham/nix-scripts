@@ -1,6 +1,4 @@
-{ pkgs ? import <nixpkgs> {}
-, lib ? pkgs.lib
-}:
+{ pkgs }:
 
 pkgs.runCommandNoCC "win-bundle-installer.exe" {} ''
   cp ${./main.go} main.go

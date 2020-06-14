@@ -1,5 +1,4 @@
 { pkgs
-, lib ? pkgs.lib
 , fullName
 , organization
 , administratorPassword
@@ -19,7 +18,7 @@
 }:
 
 let
-
+  lib = pkgs.lib;
   serviceCommands = lib.mapAttrsToList (
     serviceName: attrs: "powershell Set-Service -Name ${serviceName} " + (
       lib.concatStringsSep " " (

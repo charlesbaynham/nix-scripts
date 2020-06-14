@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs }:
 
 {
   makeWindowsImage = attrs: import ./win.nix ({ inherit pkgs; } // attrs);
