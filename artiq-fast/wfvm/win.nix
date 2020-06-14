@@ -186,6 +186,7 @@ let
     # Create an image referencing the previous image in the chain
     qemu-img create -f qcow2 -b ${acc} c.img
 
+    set -m
     qemu-system-x86_64 ${lib.concatStringsSep " " qemuParams} &
 
     # If the machine is not up within 10 minutes it's likely never coming up
@@ -212,14 +213,18 @@ let
       sleep 1
     done
 
-    echo "Executing user script to build layer"
-
+    echo "Executing user script..."
     ${script}
+    echo "Done"
 
     # Allow install to "settle"
     sleep 20
 
+    echo "Shutting down..."
     win-exec 'shutdown /s'
+    echo "Waiting for VM to terminate..."
+    fg
+    echo "Done"
 
     mv c.img $out
   '')) baseImage installCommands;
