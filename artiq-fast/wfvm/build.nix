@@ -85,6 +85,27 @@ win.makeWindowsImage {
         echo MSYS2 installer finished
       '';
     }
+    {
+      name = "MSYS2-with-packages";
+      script = let
+        msys-packages = import ./msys_packages.nix { inherit pkgs; };
+        msys-packages-put = pkgs.lib.strings.concatStringsSep "\n"
+            (map (package: ''win-put ${package} 'C:\Users\artiq\msyspackages' '') msys-packages);
+      in
+        # Windows command line is so shitty it can't even do glob expansion. Why do people use Windows?
+        ''
+        win-exec 'mkdir msyspackages'
+        ${msys-packages-put}
+        cat > installmsyspackages.bat << EOF
+        set MSYS=c:\msys64
+        set ARCH=64
+        set PATH=%MSYS%\usr\bin;%MSYS%\mingw%ARCH%\bin;%PATH%
+        bash -c "pacman -U --noconfirm C:/Users/artiq/msyspackages/*"
+        EOF
+        win-put installmsyspackages.bat 'C:\Users\artiq'
+        win-exec installmsyspackages
+        '';
+    }
 
   ];
 
