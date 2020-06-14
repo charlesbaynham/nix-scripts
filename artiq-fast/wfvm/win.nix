@@ -215,10 +215,7 @@ let
 
     echo "Executing user script..."
     ${script}
-    echo "Done"
-
-    # Allow install to "settle"
-    sleep 20
+    echo "User script done"
 
     echo "Shutting down..."
     win-exec 'shutdown /s'
