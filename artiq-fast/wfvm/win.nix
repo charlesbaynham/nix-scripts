@@ -53,13 +53,11 @@ let
   # Packages required to drive installation of other packages
   bootstrapPkgs =
     runQemuCommand "bootstrap-win-pkgs.img" ''
-      mkdir pkgs
-      mkdir pkgs/fod
+      mkdir -p pkgs/fod
 
       cp ${bundleInstaller} pkgs/"$(stripHash "${bundleInstaller}")"
 
       # Install optional windows features
-
       cp ${openSshServerPackage} pkgs/fod/OpenSSH-Server-Package~31bf3856ad364e35~amd64~~.cab
 
       # SSH setup script goes here because windows XML parser sucks
@@ -82,13 +80,7 @@ let
     "virtio"
     "-device"
     "piix3-usb-uhci" # USB root hub
-    # "CD" drive with windows features-on-demand
-    # "-cdrom" "${fodIso}"
-    # Set the base clock inside the VM
     "-rtc base=${baseRtc}"
-    # Always enable SSH port forward
-    # It's not really required for the initial setup but we do it here anyway
-    "-netdev user,id=n1,net=192.168.1.0/24,restrict=off,hostfwd=tcp::2022-:22"
     "-device e1000,netdev=n1"
   ] ++ lib.optional (!impureMode) "-nographic" ++ extraFlags;
 
@@ -108,6 +100,8 @@ let
         # Output image
         "-drive"
         "file=c.img,index=0,media=disk,cache=unsafe"
+        # Network
+        "-netdev user,id=n1,net=192.168.1.0/24,restrict=on"
       ];
     in
       ''
@@ -170,6 +164,8 @@ let
       # Output image
       "-drive"
       "file=c.img,index=0,media=disk,cache=unsafe"
+      # Network - enable SSH forwarding
+      "-netdev user,id=n1,net=192.168.1.0/24,restrict=on,hostfwd=tcp::2022-:22"
     ];
 
   in ''
