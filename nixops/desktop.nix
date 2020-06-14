@@ -8,9 +8,11 @@ in
 {
   deployment.targetHost = host;
 
+  disabledModules = [ "security/pam.nix" ];
   imports =
     [
       (./. + "/${host}-hardware-configuration.nix")
+      ./pam_p11
     ];
 
   networking.hostName = host;
@@ -21,6 +23,7 @@ in
   # $ nix search wget
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
+    opensc yubikey-manager yubikey-manager-qt
     wget vim gitAndTools.gitFull firefox thunderbird hexchat usbutils pciutils file lm_sensors audacious acpi
     gimp imagemagick
     (python3.withPackages(ps: with ps; [ numpy scipy matplotlib qtconsole regex ]))
@@ -52,6 +55,7 @@ in
   programs.ssh.startAgent = true;
   services.gnome3.gnome-keyring.enable = pkgs.lib.mkForce false;
   programs.ssh.agentPKCS11Whitelist = "${pkgs.opensc}/lib/opensc-pkcs11.so";
+  security.pam.p11.enable = true;
 
   # Enable CUPS to print documents.
   services.printing = {

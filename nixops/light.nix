@@ -4,9 +4,11 @@
 {
   deployment.targetHost = host;
 
+  disabledModules = [ "security/pam.nix" ];
   imports =
     [
       (./. + "/${host}-hardware-configuration.nix")
+      ./pam_p11
     ];
 
   networking.hostName = host;
@@ -18,6 +20,7 @@
   documentation.enable = false;
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
+    opensc
     wget vim git firefox usbutils pciutils file lm_sensors acpi
     gimp imagemagick
     (python3.withPackages(ps: with ps; [ numpy scipy ]))
@@ -40,6 +43,7 @@
     '';
   programs.ssh.startAgent = true;
   programs.ssh.agentPKCS11Whitelist = "${pkgs.opensc}/lib/opensc-pkcs11.so";
+  security.pam.p11.enable = true;
 
   # Enable CUPS to print documents.
   services.printing = {
