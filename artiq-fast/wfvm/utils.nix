@@ -59,7 +59,7 @@ rec {
   win-get = pkgs.writeShellScriptBin "win-get" ''
     echo win-get $1
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
-      ${pkgs.openssh}/bin/scp -P 2022 ${sshOpts} \
+      ${pkgs.openssh}/bin/scp -T -P 2022 ${sshOpts} \
       wfvm@localhost:$1 .
   '';
 
