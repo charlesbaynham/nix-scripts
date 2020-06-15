@@ -90,6 +90,17 @@ let
         dependencies = ["pyserial"];
       };
     };
+
+    conda-windows-binutils-or1k = import ./conda-windows/binutils.nix {
+      inherit pkgs;
+      inherit (binutils-or1k) version src;
+      target = "or1k-linux";
+    };
+    conda-windows-binutils-arm = import ./conda-windows/binutils.nix {
+      inherit pkgs;
+      inherit (binutils-arm) version src;
+      target = "armv7-unknown-linux-gnueabihf";
+    };
   };
 in
   mainPackages // boardPackages
