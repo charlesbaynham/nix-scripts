@@ -1,7 +1,7 @@
 { pkgs
-, fullName
-, organization
-, administratorPassword
+, fullName ? "John Doe"
+, organization ? "KVM Authority"
+, administratorPassword ? "123456"
 , uiLanguage ? "en-US"
 , inputLocale ? "en-US"
 , userLocale ? "en-US"
