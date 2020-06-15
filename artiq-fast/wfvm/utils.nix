@@ -69,7 +69,7 @@ rec {
         (map ({ listenAddr, targetAddr, port }:
           ",guestfwd=tcp:${listenAddr}:${toString port}-cmd:${pkgs.socat}/bin/socat\\ -\\ tcp:${targetAddr}:${toString port}"
         ) forwardedPorts);
-      qemuParams = mkQemuFlags (pkgs.lib.optional (!display) "-nographic" ++ [
+      qemuParams = mkQemuFlags (pkgs.lib.optional (!display) "-display none" ++ [
         "-drive"
         "file=${image},index=0,media=disk,cache=unsafe"
         "-snapshot"

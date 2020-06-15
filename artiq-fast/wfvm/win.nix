@@ -74,7 +74,7 @@ let
 
   installScript = pkgs.writeScript "windows-install-script" (
     let
-      qemuParams = utils.mkQemuFlags (lib.optional (!impureMode) "-nographic" ++ [
+      qemuParams = utils.mkQemuFlags (lib.optional (!impureMode) "-display none" ++ [
         # "CD" drive with bootstrap pkgs
         "-drive"
         "id=virtio-win,file=${bootstrapPkgs},if=none,format=raw,readonly=on"
@@ -127,7 +127,7 @@ let
     ] ++ (v.buildInputs or []);
   } (let
     script = pkgs.writeScript "${v.name}-script" v.script;
-    qemuParams = utils.mkQemuFlags (lib.optional (!impureMode) "-nographic" ++ [
+    qemuParams = utils.mkQemuFlags (lib.optional (!impureMode) "-display none" ++ [
       # Output image
       "-drive"
       "file=c.img,index=0,media=disk,cache=unsafe"
