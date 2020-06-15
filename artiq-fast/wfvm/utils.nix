@@ -51,10 +51,16 @@ rec {
     echo "SSH OK"
   '';
   win-put = pkgs.writeShellScriptBin "win-put" ''
-    echo scp windows $1 -\> $2
+    echo win-put $1 -\> $2
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
       ${pkgs.openssh}/bin/scp -P 2022 ${sshOpts} \
       $1 wfvm@localhost:$2
+  '';
+  win-get = pkgs.writeShellScriptBin "win-get" ''
+    echo win-get $1
+    ${pkgs.sshpass}/bin/sshpass -p1234 -- \
+      ${pkgs.openssh}/bin/scp -P 2022 ${sshOpts} \
+      wfvm@localhost:$1 .
   '';
 
   wfvm-run = { name, image, script, display ? false, isolateNetwork ? true, forwardedPorts ? [] }:
