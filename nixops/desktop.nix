@@ -24,7 +24,8 @@ in
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     opensc yubikey-manager yubikey-manager-qt
-    wget vim gitAndTools.gitFull firefox thunderbird hexchat usbutils pciutils file lm_sensors audacious acpi
+    wget vim gitAndTools.gitFull firefox chromium thunderbird hexchat
+    usbutils pciutils file lm_sensors audacious acpi
     gimp imagemagick
     (python3.withPackages(ps: with ps; [ numpy scipy matplotlib qtconsole regex ]))
     mosh psmisc libreoffice-fresh
