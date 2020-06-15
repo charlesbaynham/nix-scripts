@@ -18,23 +18,23 @@ wfvm.makeWindowsImage {
   # ];
 
   # User accounts
-  users = {
-    artiq = {
-      password = "1234";
-      # description = "Default user";
-      # displayName = "Display name";
-      groups = [
-        "Administrators"
-      ];
-    };
-  };
+  # users = {
+  #   artiq = {
+  #     password = "1234";
+  #     # description = "Default user";
+  #     # displayName = "Display name";
+  #     groups = [
+  #       "Administrators"
+  #     ];
+  #   };
+  # };
 
   # Auto login
-  defaultUser = "artiq";
+  # defaultUser = "artiq";
 
-  fullName = "M-Labs";
-  organization = "m-labs";
-  administratorPassword = "12345";
+  # fullName = "M-Labs";
+  # organization = "m-labs";
+  # administratorPassword = "12345";
 
   # Imperative installation commands, to be installed incrementally
   installCommands = with wfvm.layers; [ anaconda3 msys2 msys2-packages ];
