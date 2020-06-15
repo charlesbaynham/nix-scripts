@@ -83,7 +83,7 @@ rec {
       ]);
     in pkgs.writeShellScriptBin "wfvm-run-${name}" ''
       set -m
-      qemu-system-x86_64 ${pkgs.lib.concatStringsSep " " qemuParams} &
+      ${qemu}/bin/qemu-system-x86_64 ${pkgs.lib.concatStringsSep " " qemuParams} &
 
       ${win-wait}/bin/win-wait
 
