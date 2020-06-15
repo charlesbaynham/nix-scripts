@@ -15,7 +15,7 @@ in
     enable = true;
     version = 4;
   };
-  boot.kernelPackages = pkgs.lib.mkIf rpi4 pkgs.linuxPackages_rpi4;
+  boot.kernelPackages = pkgs.lib.mkIf rpi4 pkgs.linuxPackages_latest;
 
   fileSystems = if rpi4 then {
     "/boot" = {
