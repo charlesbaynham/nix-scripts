@@ -6,6 +6,7 @@ in
   wfvm.utils.wfvm-run {
     name = "demo-ssh";
     image = import ./demo-image.nix { inherit pkgs; };
-    display = true;
-    script = "${pkgs.openssh}/bin/ssh -p 2022 wfvm@localhost";
+    script = ''
+      ${pkgs.sshpass}/bin/sshpass -p1234 -- ${pkgs.openssh}/bin/ssh -p 2022 wfvm@localhost -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+    '';
   }
