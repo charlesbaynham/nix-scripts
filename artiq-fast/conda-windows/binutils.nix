@@ -41,7 +41,7 @@ let
       set LDFLAGS=-L%PREFIX:\=/%/Library/lib/
       sh ../configure --build=%TRIPLE% ^
         --prefix="%PREFIX:\=/%/Library" ^
-        --target=or1k-linux
+        --target=${target}
       if errorlevel 1 exit 1
 
       make -j4
@@ -51,7 +51,7 @@ let
       if errorlevel 1 exit 1
 
       rem this is a copy of prefixed executables
-      rmdir /S /Q %PREFIX%\Library\or1k-linux
+      rmdir /S /Q %PREFIX%\Library\${target}
       EOF
 
       ${wfvm.utils.win-exec}/bin/win-exec "mkdir binutils"
