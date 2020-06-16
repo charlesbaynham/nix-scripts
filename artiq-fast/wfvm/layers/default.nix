@@ -5,8 +5,8 @@
     script = let
       Anaconda3 = pkgs.fetchurl {
         name = "Anaconda3.exe";
-        url = "https://repo.anaconda.com/archive/Anaconda3-2019.03-Windows-x86_64.exe";
-        sha256 = "1f9icm5rwab6l1f23a70dw0qixzrl62wbglimip82h4zhxlh3jfj";
+        url = "https://repo.anaconda.com/archive/Anaconda3-2020.02-Windows-x86_64.exe";
+        sha256 = "0n31l8l89jrjrbzbifxbjnr3g320ly9i4zfyqbf3l9blf4ygbhl3";
       };
     in ''
       ln -s ${Anaconda3} ./Anaconda3.exe
