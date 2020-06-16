@@ -101,6 +101,11 @@ let
       inherit (binutils-arm) version src;
       target = "armv7-unknown-linux-gnueabihf";
     };
+    conda-windows-llvm-or1k = import ./conda-windows/llvm-or1k.nix {
+      inherit pkgs;
+      inherit (llvm-or1k) version;
+      src = llvm-or1k.llvm-src;
+    };
   };
 in
   mainPackages // boardPackages
