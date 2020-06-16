@@ -22,6 +22,10 @@ let
       source:
         url: ../src.tar.bz2
 
+      requirements:
+        run:
+          - libiconv
+
       EOF
 
       cat > bld.bat << EOF
