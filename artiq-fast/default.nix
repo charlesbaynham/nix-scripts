@@ -68,8 +68,8 @@ let
       src = import ./conda/fake-source.nix { inherit pkgs; } {
         name = "sipyco";
         inherit (pythonDeps.sipyco) version src;
+        dependencies = ["numpy"];
       };
-      dependencies = ["numpy"];
     };
     conda-quamash = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-quamash";
