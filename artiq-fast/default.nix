@@ -69,6 +69,7 @@ let
         name = "sipyco";
         inherit (pythonDeps.sipyco) version src;
       };
+      dependencies = ["numpy"];
     };
     conda-quamash = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-quamash";
