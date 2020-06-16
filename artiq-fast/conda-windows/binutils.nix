@@ -30,10 +30,9 @@ let
 
       cat > bld.bat << EOF
       set MSYS=C:\\MSYS64
-      set ARCH=32
-      set TOOLPREF=mingw-w64-i686-
-      set TRIPLE=x86_64-pc-mingw32
-      set PATH=%MSYS%\usr\bin;%MSYS%\mingw%ARCH%\bin;%PATH%
+      set TOOLPREF=mingw-w64-x86_64-
+      set TRIPLE=x86_64-pc-mingw64
+      set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH%
 
       mkdir build
       cd build

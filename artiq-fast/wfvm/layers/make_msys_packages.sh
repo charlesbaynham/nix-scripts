@@ -13,10 +13,8 @@ in
     script = ''
       cat > getmsyspackages.bat << EOF
       set MSYS=C:\\MSYS64
-      set ARCH=32
-      set TOOLPREF=mingw-w64-i686-
-      set TRIPLE=x86_64-pc-mingw32
-      set PATH=%MSYS%\usr\bin;%MSYS%\mingw%ARCH%\bin;%PATH%
+      set TOOLPREF=mingw-w64-x86_64-
+      set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH%
       pacman -Sp %TOOLPREF%gcc %TOOLPREF%binutils make autoconf automake libtool texinfo cmake > packages.txt
       EOF
       \${wfvm.utils.win-put}/bin/win-put getmsyspackages.bat
