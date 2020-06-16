@@ -106,6 +106,10 @@ let
       inherit (llvm-or1k) version;
       src = llvm-or1k.llvm-src;
     };
+    conda-windows-llvmlite-artiq = import ./conda-windows/llvmlite-artiq.nix {
+      inherit pkgs conda-windows-llvm-or1k;
+      inherit (llvmlite-artiq) version src;
+    };
   };
 in
   mainPackages // boardPackages

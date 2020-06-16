@@ -1,0 +1,42 @@
+diff --git a/ffi/CMakeLists.txt b/ffi/CMakeLists.txt
+index 15470d4..11d06a5 100755
+--- a/ffi/CMakeLists.txt
++++ b/ffi/CMakeLists.txt
+@@ -29,6 +29,7 @@ list(REMOVE_ITEM LLVM_AVAILABLE_LIBS LTO LLVM)
+ # that we wish to use
+ # llvm_map_components_to_libnames(llvm_libs support core irreader)
+ llvm_map_components_to_libnames(llvm_libs all)
++list(REMOVE_ITEM llvm_libs "LTO")
+ 
+ # Link against LLVM libraries
+ target_link_libraries(llvmlite ${llvm_libs})
+diff --git a/ffi/build.py b/ffi/build.py
+index 9169d35..41a9a40 100755
+--- a/ffi/build.py
++++ b/ffi/build.py
+@@ -24,7 +24,7 @@ def try_cmake(cmake_dir, build_dir, generator):
+     old_dir = os.getcwd()
+     try:
+         os.chdir(build_dir)
+-        subprocess.check_call(['cmake', '-G', generator, cmake_dir])
++        subprocess.check_call(['cmake', '-G', generator, '-D', 'LLVM_DIR=$LLVM/lib/cmake/llvm', cmake_dir])
+     finally:
+         os.chdir(old_dir)
+ 
+@@ -57,6 +57,7 @@ def find_win32_generator():
+         if is_64bit:
+             generator += ' Win64'
+         build_dir = tempfile.mkdtemp()
++        generator = 'MinGW Makefiles'
+         print("Trying generator %r" % (generator,))
+         try:
+             try_cmake(cmake_dir, build_dir, generator)
+@@ -78,7 +79,7 @@ def main_win32():
+     # Run configuration step
+     try_cmake(here_dir, build_dir, generator)
+     subprocess.check_call(['cmake', '--build', build_dir, '--config', config])
+-    shutil.copy(os.path.join(build_dir, config, 'llvmlite.dll'), target_dir)
++    shutil.copy(os.path.join(build_dir, 'libllvmlite.dll'), os.path.join(target_dir, 'llvmlite.dll'))
+ 
+ 
+ def main_posix(kind, library_ext):
