@@ -174,4 +174,34 @@
   url = "http://repo.msys2.org/msys/x86_64/texinfo-6.7-1-x86_64.pkg.tar.xz";
   sha256 = "0c50809yg9g95m8yib867q8m28sjabqppz2qbzh3gr83z55kknnw";
 })
+
+(pkgs.fetchurl {
+  url = "http://repo.msys2.org/msys/x86_64/jsoncpp-1.9.1-2-any.pkg.tar.xz";
+  sha256 = "02gpvddk4d037kmn5hyz8lpwg80zp1g7wcsp53d8f60dz735z1i1";
+})
+
+(pkgs.fetchurl {
+  url = "http://repo.msys2.org/msys/x86_64/libarchive-3.4.3-1-x86_64.pkg.tar.zst";
+  sha256 = "15piplgk5rqqmbhk0pvfh3d6cs0nqk5sb43kmz24rjy5wkfvwpq1";
+})
+
+(pkgs.fetchurl {
+  url = "http://repo.msys2.org/msys/x86_64/librhash-1.3.9-1-x86_64.pkg.tar.xz";
+  sha256 = "0p782qw0991zgv2shc12np9jrdna688a5hlwyrrvrxh7clfmlgzr";
+})
+
+(pkgs.fetchurl {
+  url = "http://repo.msys2.org/msys/x86_64/libuv-1.38.0-1-x86_64.pkg.tar.zst";
+  sha256 = "1gb8rq4nf7wwa0jhjwakyip2f4v31sajyjj6fsxxnb5bwf37vznb";
+})
+
+(pkgs.fetchurl {
+  url = "http://repo.msys2.org/msys/x86_64/pkg-config-0.29.2-1-x86_64.pkg.tar.xz";
+  sha256 = "12f615hnzdxpv7q3apwbqkr8fqw4jpgkfzr23g9yhbrf84qd0gvb";
+})
+
+(pkgs.fetchurl {
+  url = "http://repo.msys2.org/msys/x86_64/cmake-3.17.3-1-x86_64.pkg.tar.zst";
+  sha256 = "0yrv5b2w509pmc2apwbfgnv607ysv6c9w01736ax21dyhr8wr8a2";
+})
 ]
