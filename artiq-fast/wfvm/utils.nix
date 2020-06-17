@@ -61,7 +61,7 @@ rec {
     echo win-get $1
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
       ${pkgs.openssh}/bin/sftp -r -P 2022 ${sshOpts} \
-      wfvm@localhost:$1
+      wfvm@localhost:$1 .
   '';
 
   wfvm-run = { name, image, script, display ? false, isolateNetwork ? true, forwardedPorts ? [] }:
