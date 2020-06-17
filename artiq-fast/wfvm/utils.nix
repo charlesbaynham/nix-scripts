@@ -17,7 +17,7 @@ rec {
   ] ++ extraFlags;
 
   # Pass empty config file to prevent ssh from failing to create ~/.ssh
-  sshOpts = "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=1";
+  sshOpts = "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=1";
   win-exec = pkgs.writeShellScriptBin "win-exec" ''
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
       ${pkgs.openssh}/bin/ssh -np 2022 ${sshOpts} \
