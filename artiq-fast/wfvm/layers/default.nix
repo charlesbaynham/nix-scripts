@@ -20,7 +20,7 @@
     name = "MSYS2";
     buildInputs = [ pkgs.expect ];
     script = let
-        msys2 = pkgs.fetchurl {
+      msys2 = pkgs.fetchurl {
         name = "msys2.exe";
         url = "https://github.com/msys2/msys2-installer/releases/download/2020-06-02/msys2-x86_64-20200602.exe";
         sha256 = "1mswlfybvk42vdr4r85dypgkwhrp5ff47gcbxgjqwq86ym44xzd4";
