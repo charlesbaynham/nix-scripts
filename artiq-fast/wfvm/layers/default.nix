@@ -61,4 +61,32 @@
       win-exec installmsyspackages
       '';
   };
+  msvc = {
+    name = "MSVC";
+    script = let
+      msvc-wine = pkgs.fetchFromGitHub {
+        owner = "mstorsjo";
+        repo = "msvc-wine";
+        rev = "b953f996401c19df3039c04e4ac7f962e435a4b2";
+        sha256 = "12rqx0r3d836x4k1ccda5xmzsd2938v5gmrp27awmzv1j3wplfsq";
+      };
+      vs = pkgs.stdenv.mkDerivation {
+        name = "vs";
+
+        outputHashAlgo = "sha256";
+        outputHashMode = "recursive";
+        outputHash = "1ngq7mg02kzfysh559j3fkjh2hngmay4jjar55p2db4d9rkvqh22";
+
+        src = msvc-wine;
+
+        phases = [ "buildPhase" ];
+        buildInputs = [ pkgs.cacert (pkgs.python3.withPackages(ps: [ ps.simplejson ps.six ])) pkgs.msitools ];
+        buildPhase = "python $src/vsdownload.py --accept-license --dest $out";
+      };
+    in
+      ''
+      win-put ${vs}/VC/Tools/MSVC 'C:\'
+      win-exec 'setx PATH C:\MSVC\14.26.28801\bin\Hostx64\x64;%PATH% /m'
+      '';
+  };
 }
