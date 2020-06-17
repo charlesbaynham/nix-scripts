@@ -172,8 +172,8 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget vim git file lm_sensors acpi pciutils psmisc gdb telnet whois zip unzip nixops
-    irssi tmux tigervnc xorg.xauth icewm xterm xorg.xsetroot usbutils imagemagick jq
+    wget vim git file lm_sensors acpi pciutils psmisc telnet nixops
+    irssi tmux usbutils imagemagick jq zip unzip
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
