@@ -1,11 +1,9 @@
 # Install Vivado in /opt and add to /etc/nixos/configuration.nix:
 #  nix.sandboxPaths = ["/opt"];
 
-{ pkgs }:
-{ target
-, variant
-, buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}"
-, extraInstallCommands ? ""}:
+{ pkgs
+, vivado ? import ./vivado.nix { inherit pkgs; }
+}:
 
 let
   artiqSrc = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
@@ -44,11 +42,15 @@ let
       '';
   };
 
-  vivado = import ./vivado.nix { inherit pkgs; };
+in
+{ target
+, variant
+, buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}"
+, extraInstallCommands ? ""}:
 
 # Board packages are Python modules so that they get added to the ARTIQ Python
 # environment, and artiq_flash finds them.
-in pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
+pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
   name = "artiq-board-${target}-${variant}-${version}";
   version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
   phases = [ "buildPhase" "installCheckPhase" "installPhase" ];
