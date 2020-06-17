@@ -39,15 +39,15 @@ in
   networking.hostName = host;
   time.timeZone = "Asia/Hong_Kong";
 
-  programs.wireshark.enable = true;
-
   users.extraGroups.plugdev = { };
-  security.sudo.wheelNeedsPassword = false;
+  users.mutableUsers = false;
+  users.defaultUserShell = pkgs.fish;
   users.extraUsers = (import ./common-users.nix) // {
     nix = {
       isNormalUser = true;
     };
   };
+  security.sudo.wheelNeedsPassword = false;
   services.udev.packages = [ m-labs.openocd ];
 
   documentation.enable = false;
@@ -55,7 +55,7 @@ in
     psmisc wget vim git usbutils lm_sensors file telnet mosh tmux xc3sprog m-labs.openocd screen gdb minicom picocom
   ];
   programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
+  programs.wireshark.enable = true;
 
   nix.binaryCachePublicKeys = ["nixbld.m-labs.hk-1:5aSRVA5b320xbNvu30tqxVPXpld73bhtOeH6uAjRyHc="];
   nix.binaryCaches = ["https://cache.nixos.org" "https://nixbld.m-labs.hk"];

@@ -111,6 +111,7 @@ in
   programs.fish.promptInit = ''
     fish-nix-shell --info-right | source
   '';
+  users.mutableUsers = false;
   users.defaultUserShell = pkgs.fish;
   users.extraGroups.plugdev = { };
   users.extraUsers = (import ./common-users.nix);
