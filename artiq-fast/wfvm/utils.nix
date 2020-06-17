@@ -53,13 +53,13 @@ rec {
   win-put = pkgs.writeShellScriptBin "win-put" ''
     echo win-put $1 -\> $2
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
-      ${pkgs.openssh}/bin/scp -P 2022 ${sshOpts} \
+      ${pkgs.openssh}/bin/scp -r -P 2022 ${sshOpts} \
       $1 wfvm@localhost:$2
   '';
   win-get = pkgs.writeShellScriptBin "win-get" ''
     echo win-get $1
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
-      ${pkgs.openssh}/bin/scp -T -P 2022 ${sshOpts} \
+      ${pkgs.openssh}/bin/scp -r -T -P 2022 ${sshOpts} \
       wfvm@localhost:$1 .
   '';
 
