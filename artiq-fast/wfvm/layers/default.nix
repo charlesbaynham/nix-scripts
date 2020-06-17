@@ -1,4 +1,7 @@
 { pkgs }:
+let
+  wfvm = import ./.. { inherit pkgs; };
+in
 {
   anaconda3 = {
     name = "Anaconda3";
@@ -78,38 +81,49 @@
       '';
   };
   msvc = {
+    # https://docs.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2019
     name = "MSVC";
     script = let
-      msvc-wine = pkgs.fetchFromGitHub {
-        owner = "mstorsjo";
-        repo = "msvc-wine";
-        rev = "b953f996401c19df3039c04e4ac7f962e435a4b2";
-        sha256 = "12rqx0r3d836x4k1ccda5xmzsd2938v5gmrp27awmzv1j3wplfsq";
+      bootstrapper = pkgs.fetchurl {
+        url = "https://download.visualstudio.microsoft.com/download/pr/df6c2f11-eae3-4d3c-a0a8-9aec3421235b/313d838f54928b8e7138d6efc8387e5dfbcc0271f326bf0f60b9aaf57073cff5/vs_Community.exe";
+        sha256 = "1xfgfdqgbamrc07vy9pkf41crysxgqwcivyn71qqx2wjaj7q6g9i";
       };
-      vs = pkgs.stdenv.mkDerivation {
+      # This touchy-feely "community" piece of trash seems deliberately crafted to break Wine, so we use the VM to run it.
+      download-vs = wfvm.utils.wfvm-run {
+        name = "download-vs";
+        image = wfvm.makeWindowsImage { };
+        isolateNetwork = false;
+        script = 
+          ''
+          ln -s ${bootstrapper} vs_Community.exe
+          ${wfvm.utils.win-put}/bin/win-put vs_Community.exe
+          rm vs_Community.exe
+          ${wfvm.utils.win-exec}/bin/win-exec "vs_Community.exe --quiet --layout vslayout --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
+          ${wfvm.utils.win-get}/bin/win-get vslayout
+          '';
+      };
+      cache = pkgs.stdenv.mkDerivation {
         name = "vs";
 
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "1ngq7mg02kzfysh559j3fkjh2hngmay4jjar55p2db4d9rkvqh22";
-
-        src = msvc-wine;
+        outputHash = "0v2ivq7d5smbgi5iwkczr5zcsk4gg0jq7h0flj4r7lbk6lck7v2p";
 
         phases = [ "buildPhase" ];
-        buildInputs = [ pkgs.cacert (pkgs.python3.withPackages(ps: [ ps.simplejson ps.six ])) pkgs.msitools ];
-        buildPhase = "python $src/vsdownload.py --accept-license --dest $out";
+        buildInputs = [ download-vs ];
+        buildPhase =
+          ''
+          mkdir $out
+          cd $out
+          wfvm-run-download-vs
+          '';
       };
     in
-      # Yes, you need to write Windoze-side SFTP absolute paths like this or it won't work.
-      # Just the normal state of things on that cretinous OS.
       ''
-      win-exec "mkdir C:\VS"
-      win-exec "mkdir C:\VS\VC"
-      win-exec "mkdir C:\VS\VC\Tools"
-      win-exec "mkdir C:\VS\kits"
-      win-put ${vs}/VC/Tools/MSVC '/C:/VS/VC/Tools'
-      win-put ${vs}/kits/10 '/C:/VS/kits'
-      win-exec 'setx PATH "C:\VS\VC\Tools\MSVC\14.26.28801\bin\Hostx64\x64;C:\VS\kits\10\bin\10.0.18362.0\x64;%PATH%" /m'
+      echo ${cache}
+      ln -s ${cache}/vslayout vslayout
+      win-put vslayout .
+      win-exec ".\vslayout\vs_community.exe --quiet --noweb --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
       '';
   };
 }
