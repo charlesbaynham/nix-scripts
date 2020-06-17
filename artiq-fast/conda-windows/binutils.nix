@@ -69,6 +69,6 @@ in
   pkgs.runCommand "conda-windows-binutils-${target}" { buildInputs = [ build ]; } ''
     wfvm-run-build-binutils
     mkdir -p $out/win-64 $out/nix-support
-    cp *.tar.bz2 $out/win-64
+    cp binutils-*.tar.bz2 $out/win-64
     echo file conda $out/win-64/*.tar.bz2 >> $out/nix-support/hydra-build-products
     ''
