@@ -54,7 +54,7 @@ let
 
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate build && conda build --no-anaconda-upload --no-test llvm-or1k"
 
-      ${wfvm.utils.win-get}/bin/win-get ".\Anaconda3\conda-bld\win-64\llvm-or1k-${version}-0.tar.bz2"
+      ${wfvm.utils.win-get}/bin/win-get "Anaconda3/conda-bld/win-64/llvm-or1k-${version}-0.tar.bz2"
     '';
   };
 in
