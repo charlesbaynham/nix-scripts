@@ -8,13 +8,14 @@
         url = "https://repo.anaconda.com/archive/Anaconda3-2020.02-Windows-x86_64.exe";
         sha256 = "0n31l8l89jrjrbzbifxbjnr3g320ly9i4zfyqbf3l9blf4ygbhl3";
       };
-    in ''
+    in
+      ''
       ln -s ${Anaconda3} ./Anaconda3.exe
-      win-put Anaconda3.exe 'C:\Users\wfvm'
+      win-put Anaconda3.exe .
       echo Running Anaconda installer...
       win-exec 'start /wait "" .\Anaconda3.exe /S /D=%UserProfile%\Anaconda3'
       echo Anaconda installer finished
-    '';
+      '';
   };
   msys2 = {
     name = "MSYS2";
@@ -32,8 +33,8 @@
     in ''
       ln -s ${msys2} ./msys2.exe
       ln -s ${msys2-auto-install} ./auto-install.js
-      win-put msys2.exe 'C:\Users\wfvm'
-      win-put auto-install.js 'C:\Users\wfvm'
+      win-put msys2.exe .
+      win-put auto-install.js .
       echo Running MSYS2 installer...
       # work around MSYS2 installer bug that prevents it from closing at the end of unattended install
       expect -c 'set timeout 600; spawn win-exec ".\\msys2.exe --script auto-install.js -v InstallPrefix=C:\\msys64"; expect FinishedPageCallback { close }'
@@ -45,7 +46,7 @@
     script = let
       msys-packages = import ./msys_packages.nix { inherit pkgs; };
       msys-packages-put = pkgs.lib.strings.concatStringsSep "\n"
-          (map (package: ''win-put ${package} 'C:\Users\wfvm\msyspackages' '') msys-packages);
+          (map (package: ''win-put ${package} 'msyspackages' '') msys-packages);
     in
       # Windows command line is so shitty it can't even do glob expansion. Why do people use Windows?
       ''
@@ -57,7 +58,7 @@
       set PATH=%MSYS%\usr\bin;%MSYS%\mingw%ARCH%\bin;%PATH%
       bash -c "pacman -U --noconfirm C:/Users/wfvm/msyspackages/*"
       EOF
-      win-put installmsyspackages.bat 'C:\Users\wfvm'
+      win-put installmsyspackages.bat .
       win-exec installmsyspackages
       '';
   };
@@ -72,7 +73,7 @@
     in
       ''
       ln -s ${cmake} cmake.msi
-      win-put cmake.msi
+      win-put cmake.msi .
       win-exec "msiexec.exe /q /i cmake.msi ADD_CMAKE_TO_PATH=System"
       '';
   };
@@ -99,9 +100,16 @@
         buildPhase = "python $src/vsdownload.py --accept-license --dest $out";
       };
     in
+      # Yes, you need to write Windoze-side SFTP absolute paths like this or it won't work.
+      # Just the normal state of things on that cretinous OS.
       ''
-      win-put ${vs}/VC/Tools/MSVC 'C:\'
-      win-exec 'setx PATH C:\MSVC\14.26.28801\bin\Hostx64\x64;%PATH% /m'
+      win-exec "mkdir C:\VS"
+      win-exec "mkdir C:\VS\VC"
+      win-exec "mkdir C:\VS\VC\Tools"
+      win-exec "mkdir C:\VS\kits"
+      win-put ${vs}/VC/Tools/MSVC '/C:/VS/VC/Tools'
+      win-put ${vs}/kits/10 '/C:/VS/kits'
+      win-exec 'setx PATH "C:\VS\VC\Tools\MSVC\14.26.28801\bin\Hostx64\x64;C:\VS\kits\10\bin\10.0.18362.0\x64;%PATH%" /m'
       '';
   };
 }

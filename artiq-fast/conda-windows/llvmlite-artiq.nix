@@ -8,7 +8,8 @@ let
     name = "build-llvmlite-artiq";
     image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 msys2 msys2-packages ]; };
     script = ''
-      ${wfvm.utils.win-put}/bin/win-put "${conda-windows-llvm-or1k}/win-64/llvm-or1k-*.tar.bz2" ".\llvm-or1k.tar.bz2"
+      ln -s ${conda-windows-llvm-or1k}/win-64/llvm-or1k-*.tar.bz2 llvm-or1k.tar.bz2
+      ${wfvm.utils.win-put}/bin/win-put llvm-or1k.tar.bz2 .
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n build llvm-or1k.tar.bz2"
 
       cat > meta.yaml << EOF
@@ -32,12 +33,12 @@ let
       EOF
 
       ${wfvm.utils.win-exec}/bin/win-exec "mkdir llvmlite-artiq"
-      ${wfvm.utils.win-put}/bin/win-put meta.yaml ".\llvmlite-artiq"
-      ${wfvm.utils.win-put}/bin/win-put bld.bat ".\llvmlite-artiq"
+      ${wfvm.utils.win-put}/bin/win-put meta.yaml llvmlite-artiq
+      ${wfvm.utils.win-put}/bin/win-put bld.bat llvmlite-artiq
       cp --no-preserve=mode,ownership -R ${src} src
       patch -d src -p1 < ${./llvmlite-msys.diff}
       tar chf src.tar src
-      ${wfvm.utils.win-put}/bin/win-put src.tar ".\src.tar"
+      ${wfvm.utils.win-put}/bin/win-put src.tar .
 
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate build && conda build --no-anaconda-upload --no-test llvmlite-artiq"
 

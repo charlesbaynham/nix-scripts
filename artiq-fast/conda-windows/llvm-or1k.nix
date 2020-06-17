@@ -46,11 +46,11 @@ let
       EOF
 
       ${wfvm.utils.win-exec}/bin/win-exec "mkdir llvm-or1k"
-      ${wfvm.utils.win-put}/bin/win-put meta.yaml ".\llvm-or1k"
-      ${wfvm.utils.win-put}/bin/win-put bld.bat ".\llvm-or1k"
+      ${wfvm.utils.win-put}/bin/win-put meta.yaml llvm-or1k
+      ${wfvm.utils.win-put}/bin/win-put bld.bat llvm-or1k
       ln -s ${src} src
       tar chf src.tar src
-      ${wfvm.utils.win-put}/bin/win-put src.tar ".\src.tar"
+      ${wfvm.utils.win-put}/bin/win-put src.tar .
 
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate build && conda build --no-anaconda-upload --no-test llvm-or1k"
 

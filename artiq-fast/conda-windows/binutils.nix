@@ -11,7 +11,8 @@ let
     name = "build-binutils";
     image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 msys2 msys2-packages ]; };
     script = ''
-      ${wfvm.utils.win-put}/bin/win-put ${libiconv} ${libiconv-filename}
+      ln -s ${libiconv} ${libiconv-filename}
+      ${wfvm.utils.win-put}/bin/win-put ${libiconv-filename}
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n build ${libiconv-filename}"
 
       cat > meta.yaml << EOF
@@ -54,9 +55,10 @@ let
       EOF
 
       ${wfvm.utils.win-exec}/bin/win-exec "mkdir binutils"
-      ${wfvm.utils.win-put}/bin/win-put meta.yaml ".\binutils"
-      ${wfvm.utils.win-put}/bin/win-put bld.bat ".\binutils"
-      ${wfvm.utils.win-put}/bin/win-put ${src} ".\src.tar.bz2"
+      ${wfvm.utils.win-put}/bin/win-put meta.yaml binutils
+      ${wfvm.utils.win-put}/bin/win-put bld.bat binutils
+      ln -s ${src} src.tar.bz2
+      ${wfvm.utils.win-put}/bin/win-put src.tar.bz2 .
 
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate build && conda build --no-anaconda-upload --no-test binutils"
 
