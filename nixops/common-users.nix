@@ -19,7 +19,7 @@
   };
   harry = {
     isNormalUser = true;
-    extraGroups = ["plugdev" "dialout"];
+    extraGroups = ["plugdev" "dialout" "wireshark"];
     openssh.authorizedKeys.keys = [
       "ecdsa-sha2-nistp384 AAAAE2VjZHNhLXNoYTItbmlzdHAzODQAAAAIbmlzdHAzODQAAABhBDcPNCgtdz8erFPRrAwCr4JrkeYXJUUvoRBgP0X2HlzJgDe1Inuo6sC6CGcO3IXbf4MwVA9XEp8BYPHARVeEHhufg/0wnIABLx2GcK99yxOLDUe4h/3YwtqvOcqHEsDx7w=="
     ];
