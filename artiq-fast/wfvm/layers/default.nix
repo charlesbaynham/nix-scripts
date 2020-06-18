@@ -122,8 +122,9 @@ in
       ''
       echo ${cache}
       ln -s ${cache}/vslayout vslayout
-      win-put vslayout .
-      win-exec ".\vslayout\vs_community.exe --quiet --noweb --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
+      win-put vslayout /c:/
+      echo "Running Visual Studio installer"
+      win-exec "cd \vslayout && start /wait vs_Community.exe --passive --wait && echo %errorlevel%"
       '';
   };
 }
