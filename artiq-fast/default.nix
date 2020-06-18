@@ -93,7 +93,7 @@ let
     };
   };
 
-  condaWindows = (pkgs.lib.attrsets.optionalAttrs (pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0")) {
+  condaWindows = (pkgs.lib.attrsets.optionalAttrs (pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0")) rec {
     conda-windows-binutils-or1k = import ./conda-windows/binutils.nix {
       inherit pkgs;
       inherit (mainPackages.binutils-or1k) version src;
