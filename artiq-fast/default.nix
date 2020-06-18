@@ -91,26 +91,28 @@ let
         dependencies = ["pyserial"];
       };
     };
+  };
 
+  condaWindows = (pkgs.lib.attrsets.optionalAttrs (pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0")) {
     conda-windows-binutils-or1k = import ./conda-windows/binutils.nix {
       inherit pkgs;
-      inherit (binutils-or1k) version src;
+      inherit (mainPackages.binutils-or1k) version src;
       target = "or1k-linux";
     };
     conda-windows-binutils-arm = import ./conda-windows/binutils.nix {
       inherit pkgs;
-      inherit (binutils-arm) version src;
+      inherit (mainPackages.binutils-arm) version src;
       target = "armv7-unknown-linux-gnueabihf";
     };
     conda-windows-llvm-or1k = import ./conda-windows/llvm-or1k.nix {
       inherit pkgs;
-      inherit (llvm-or1k) version;
+      inherit (mainPackages.llvm-or1k) version;
       src = llvm-or1k.llvm-src;
     };
     conda-windows-llvmlite-artiq = import ./conda-windows/llvmlite-artiq.nix {
       inherit pkgs conda-windows-llvm-or1k;
-      inherit (llvmlite-artiq) version src;
+      inherit (mainPackages.llvmlite-artiq) version src;
     };
   };
 in
-  mainPackages // boardPackages
+  mainPackages // condaWindows // boardPackages
