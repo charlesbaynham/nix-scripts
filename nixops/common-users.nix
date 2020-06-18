@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   sb = {
     isNormalUser = true;
@@ -30,6 +32,7 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJJTSJdpDh82486uPiMhhyhnci4tScp5uUe7156MBC8 a"
     ];
+    shell = pkgs.bashInteractive;
   };
   pca006132 = {
     isNormalUser = true;

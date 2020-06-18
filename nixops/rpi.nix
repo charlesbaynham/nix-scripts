@@ -42,7 +42,7 @@ in
   users.extraGroups.plugdev = { };
   users.mutableUsers = false;
   users.defaultUserShell = pkgs.fish;
-  users.extraUsers = (import ./common-users.nix) // {
+  users.extraUsers = (import ./common-users.nix { inherit pkgs; }) // {
     nix = {
       isNormalUser = true;
     };

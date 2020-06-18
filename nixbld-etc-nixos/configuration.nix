@@ -230,6 +230,7 @@ in
   users.extraUsers.astro = {
     isNormalUser = true;
     extraGroups = ["plugdev" "dialout"];
+    shell = pkgs.bashInteractive;
   };
   users.extraUsers.nix = {
     isNormalUser = true;

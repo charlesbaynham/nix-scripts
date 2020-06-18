@@ -114,7 +114,7 @@ in
   users.mutableUsers = false;
   users.defaultUserShell = pkgs.fish;
   users.extraGroups.plugdev = { };
-  users.extraUsers = (import ./common-users.nix);
+  users.extraUsers = import ./common-users.nix { inherit pkgs; };
   security.sudo.wheelNeedsPassword = false;
   services.udev.packages = [ m-labs.openocd ];
   services.udev.extraRules = ''
