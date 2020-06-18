@@ -15,7 +15,7 @@ in
       set MSYS=C:\\MSYS64
       set TOOLPREF=mingw-w64-x86_64-
       set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH%
-      pacman -Sp %TOOLPREF%gcc %TOOLPREF%binutils make autoconf automake libtool texinfo %TOOLPREF%make %TOOLPREF%cmake > packages.txt
+      pacman -Sp %TOOLPREF%gcc %TOOLPREF%binutils make autoconf automake libtool texinfo > packages.txt
       EOF
       \${wfvm.utils.win-put}/bin/win-put getmsyspackages.bat
       \${wfvm.utils.win-exec}/bin/win-exec getmsyspackages

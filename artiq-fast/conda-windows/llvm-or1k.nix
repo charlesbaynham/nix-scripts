@@ -4,7 +4,7 @@ let
   wfvm = import ../wfvm { inherit pkgs; };
   build = wfvm.utils.wfvm-run {
     name = "build-llvm-or1k";
-    image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 msys2 msys2-packages ]; };
+    image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 cmake msvc ]; };
     script = ''
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n build --offline"
 
@@ -19,15 +19,13 @@ let
       EOF
 
       cat > bld.bat << EOF
-      set MSYS=C:\MSYS64
-      set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH%
-
       set BUILD_TYPE=Release
-      set CMAKE_GENERATOR=MinGW Makefiles
+      set CMAKE_GENERATOR=Visual Studio 15 2017 Win64
 
       mkdir build
       cd build
       cmake .. -G "%CMAKE_GENERATOR%" ^
+        -Thost=x64 ^
         -DCMAKE_BUILD_TYPE="%BUILD_TYPE%" ^
         -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
         -DLLVM_BUILD_LLVM_DYLIB=ON ^
