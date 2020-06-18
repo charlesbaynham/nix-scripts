@@ -103,7 +103,7 @@ in
   services.xserver.displayManager.gdm.autoSuspend = false;
   powerManagement.enable = false;
   services.xserver.desktopManager.gnome3.enable = true;
-  environment.gnome3.excludePackages = [ pkgs.epiphany ];
+  environment.gnome3.excludePackages = [ pkgs.epiphany pkgs.gnome3.geary ];
 
   hardware.bluetooth.enable = true;
 
