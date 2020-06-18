@@ -35,7 +35,7 @@ let
 
       requirements:
         build:
-          vs2017
+          vs2017_win-64
 
       EOF
 
