@@ -2,11 +2,28 @@
 
 let
   wfvm = import ../wfvm { inherit pkgs; };
+  conda-vswhere-filename = "vswhere-2.7.1-h21ff451_0.tar.bz2";
+  conda-vswhere = pkgs.fetchurl {
+    url = "https://anaconda.org/anaconda/vswhere/2.7.1/download/win-64/${conda-vswhere-filename}";
+    sha256 = "196bzfmrnl8l5kfarldmqy80ncjidmhz552kvv8cz2s67ljmgggn";
+  };
+  conda-vs2017-filename = "vs2017_win-64-19.16.27038-h2e3bad8_2.tar.bz2";
+  conda-vs2017 = pkgs.fetchurl {
+    url = "https://anaconda.org/conda-forge/vs2017_win-64/19.16.27038/download/win-64/${conda-vs2017-filename}";
+    sha256 = "02a7plylz4z73ipw4hzaw47qc1qpychkl8xrx0rnr13ks05bfrmh";
+  };
   build = wfvm.utils.wfvm-run {
     name = "build-llvm-or1k";
     image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 cmake msvc ]; };
     script = ''
-      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n build --offline"
+      # Create a fake channel so that the conda garbage doesn't complain about not finding the packages it just installed.
+      ln -s ${conda-vs2017} ${conda-vs2017-filename}
+      ln -s ${conda-vswhere} ${conda-vswhere-filename}
+      ${wfvm.utils.win-exec}/bin/win-exec "mkdir fake-channel && mkdir fake-channel\win-64"
+      ${wfvm.utils.win-put}/bin/win-put ${conda-vs2017-filename} ./fake-channel/win-64
+      ${wfvm.utils.win-put}/bin/win-put ${conda-vswhere-filename} ./fake-channel/win-64
+      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda index fake-channel"
+      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n build -c file:///C:/users/wfvm/fake-channel vs2017_win-64 --offline"
 
       cat > meta.yaml << EOF
       package:
@@ -15,6 +32,10 @@ let
 
       source:
         url: ../src.tar
+
+      requirements:
+        build:
+          vs2017
 
       EOF
 
