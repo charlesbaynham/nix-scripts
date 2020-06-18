@@ -2,7 +2,7 @@
 let
   wfvm = import ./.. { inherit pkgs; };
 in
-{
+rec {
   anaconda3 = {
     name = "Anaconda3";
     script = let
@@ -81,7 +81,13 @@ in
       '';
   };
   msvc = {
+    # This is quite fragile and annoying, M$ have done their best to make the VS installation process shitty.
+    # The instructions here are vaguely correct:
     # https://docs.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2019
+
+    # We are giving the VM network access here, so of course the M$ spyware does not miss the opportunity to phone home and cause problems.
+    # Split the download into two, so that each part completes before M$ Windoze 10 activation crap kicks in.
+    # TODO: Probably it is possible to block access specifically to the M$ activation server instead and still be able to download VS (more robust, better privacy).
     name = "MSVC";
     script = let
       bootstrapper = pkgs.fetchurl {
@@ -89,8 +95,8 @@ in
         sha256 = "04amc4rrxihimhy3syxzn2r3gjf5qlpxpmkn0dkp78v6gh9md5fc";
       };
       # This touchy-feely "community" piece of trash seems deliberately crafted to break Wine, so we use the VM to run it.
-      download-vs = wfvm.utils.wfvm-run {
-        name = "download-vs";
+      download-1 = wfvm.utils.wfvm-run {
+        name = "download-vs-1";
         image = wfvm.makeWindowsImage { };
         isolateNetwork = false;
         script = 
@@ -98,19 +104,23 @@ in
           ln -s ${bootstrapper} vs_Community.exe
           ${wfvm.utils.win-put}/bin/win-put vs_Community.exe
           rm vs_Community.exe
+
+          echo "Running Visual Studio installer in download mode..."
           ${wfvm.utils.win-exec}/bin/win-exec "vs_Community.exe --quiet --norestart --layout c:\vslayout --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
+
+          echo "Retrieving VS layout from VM..."
           ${wfvm.utils.win-get}/bin/win-get /c:/vslayout
           '';
       };
-      cache = pkgs.stdenv.mkDerivation {
-        name = "vs";
+      cache-1 = pkgs.stdenv.mkDerivation {
+        name = "vs-1";
 
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
         outputHash = "0fp7a6prjp8n8sirwday13wis3xyzhmrwi377y3x89nxzysp0mnv";
 
         phases = [ "buildPhase" ];
-        buildInputs = [ download-vs ];
+        buildInputs = [ download-1 ];
         buildPhase =
           ''
           mkdir $out
@@ -118,10 +128,45 @@ in
           wfvm-run-download-vs
           '';
       };
+      download-2 = wfvm.utils.wfvm-run {
+        name = "download-vs-2";
+        image = wfvm.makeWindowsImage { };
+        isolateNetwork = false;
+        script =
+          ''
+          echo "Sending previous VS layout to VM..."
+          # If we don't do that, it breaks on reception with permission issues. Unfortunately, it seems there is no way to tell sftp
+          # not to set files to read-only mode on the Windows VM.
+          cp --no-preserve=mode,ownership -R ${cache-1}/vslayout vslayout
+          ${wfvm.utils.win-put}/bin/win-put vslayout /c:/
+          rm -rf vslayout
+
+          echo "Running Visual Studio installer in download mode..."
+          ${wfvm.utils.win-exec}/bin/win-exec "cd \vslayout && vs_Community.exe --quiet --norestart --layout c:\vslayout --add Microsoft.VisualStudio.Component.Windows81SDK --includeRecommended --lang en-US"
+
+          echo "Retrieving VS layout from VM..."
+          ${wfvm.utils.win-get}/bin/win-get /c:/vslayout
+          '';
+      };
+      cache-2 = pkgs.stdenv.mkDerivation {
+        name = "vs-2";
+
+        outputHashAlgo = "sha256";
+        outputHashMode = "recursive";
+        outputHash = "0wgwnq142mm3rjg1fmpi5aadbn1m798da14g47prcd1m1ynp7l0p";
+
+        phases = [ "buildPhase" ];
+        buildInputs = [ download-2 ];
+        buildPhase =
+          ''
+          mkdir $out
+          cd $out
+          wfvm-run-download-vs-2
+          '';
+      };
     in
       ''
-      echo ${cache}
-      ln -s ${cache}/vslayout vslayout
+      ln -s ${cache-2}/vslayout vslayout
       win-put vslayout /c:/
       echo "Running Visual Studio installer"
       win-exec "cd \vslayout && start /wait vs_Community.exe --passive --wait && echo %errorlevel%"
