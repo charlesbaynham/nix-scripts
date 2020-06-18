@@ -125,7 +125,7 @@ rec {
           ''
           mkdir $out
           cd $out
-          wfvm-run-download-vs
+          wfvm-run-download-vs-1
           '';
       };
       download-2 = wfvm.utils.wfvm-run {
