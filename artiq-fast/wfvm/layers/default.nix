@@ -98,8 +98,8 @@ in
           ln -s ${bootstrapper} vs_Community.exe
           ${wfvm.utils.win-put}/bin/win-put vs_Community.exe
           rm vs_Community.exe
-          ${wfvm.utils.win-exec}/bin/win-exec "vs_Community.exe --quiet --layout vslayout --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
-          ${wfvm.utils.win-get}/bin/win-get vslayout
+          ${wfvm.utils.win-exec}/bin/win-exec "vs_Community.exe --quiet --layout c:\vslayout --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
+          ${wfvm.utils.win-get}/bin/win-get /c:/vslayout
           '';
       };
       cache = pkgs.stdenv.mkDerivation {
