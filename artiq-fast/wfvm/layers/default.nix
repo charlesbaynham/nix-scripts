@@ -85,8 +85,8 @@ in
     name = "MSVC";
     script = let
       bootstrapper = pkgs.fetchurl {
-        url = "https://download.visualstudio.microsoft.com/download/pr/df6c2f11-eae3-4d3c-a0a8-9aec3421235b/313d838f54928b8e7138d6efc8387e5dfbcc0271f326bf0f60b9aaf57073cff5/vs_Community.exe";
-        sha256 = "1xfgfdqgbamrc07vy9pkf41crysxgqwcivyn71qqx2wjaj7q6g9i";
+        url = "https://download.visualstudio.microsoft.com/download/pr/ac05c4f5-0da1-429f-8701-ce509ac69926/cc9556137c66a373670376d6db2fc5c5c937b2b0bf7b3d3cac11c69e33615511/vs_Community.exe";
+        sha256 = "04amc4rrxihimhy3syxzn2r3gjf5qlpxpmkn0dkp78v6gh9md5fc";
       };
       # This touchy-feely "community" piece of trash seems deliberately crafted to break Wine, so we use the VM to run it.
       download-vs = wfvm.utils.wfvm-run {
@@ -98,7 +98,7 @@ in
           ln -s ${bootstrapper} vs_Community.exe
           ${wfvm.utils.win-put}/bin/win-put vs_Community.exe
           rm vs_Community.exe
-          ${wfvm.utils.win-exec}/bin/win-exec "vs_Community.exe --quiet --layout c:\vslayout --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
+          ${wfvm.utils.win-exec}/bin/win-exec "vs_Community.exe --quiet --norestart --layout c:\vslayout --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
           ${wfvm.utils.win-get}/bin/win-get /c:/vslayout
           '';
       };
@@ -107,7 +107,7 @@ in
 
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
-        outputHash = "0v2ivq7d5smbgi5iwkczr5zcsk4gg0jq7h0flj4r7lbk6lck7v2p";
+        outputHash = "0fp7a6prjp8n8sirwday13wis3xyzhmrwi377y3x89nxzysp0mnv";
 
         phases = [ "buildPhase" ];
         buildInputs = [ download-vs ];
