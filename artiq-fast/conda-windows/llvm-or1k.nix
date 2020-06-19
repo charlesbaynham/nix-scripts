@@ -23,6 +23,7 @@ let
       ${wfvm.utils.win-put}/bin/win-put ${conda-vs2017-filename} ./fake-channel/win-64
       ${wfvm.utils.win-put}/bin/win-put ${conda-vswhere-filename} ./fake-channel/win-64
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda index fake-channel"
+      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda config --prepend channels file:///C:/users/wfvm/fake-channel"
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n build -c file:///C:/users/wfvm/fake-channel vs2017_win-64 --offline"
 
       cat > meta.yaml << EOF
