@@ -1,5 +1,5 @@
 { pkgs
-, diskImageSize ? "22G"
+, diskImageSize ? "70G"
 , windowsImage ? null
 , autoUnattendParams ? {}
 , impureMode ? false
