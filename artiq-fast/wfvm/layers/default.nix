@@ -62,19 +62,4 @@
       win-exec installmsyspackages
       '';
   };
-  cmake = {
-    name = "CMake";
-    script = let
-      cmake = pkgs.fetchurl {
-        name = "cmake.msi";
-        url = "https://github.com/Kitware/CMake/releases/download/v3.18.0-rc1/cmake-3.18.0-rc1-win64-x64.msi";
-        sha256 = "1n32jzbg9w3vfbvyi9jqijz97gn1zsk1w5226wlrxd2a9d4w1hrn";
-      };
-    in
-      ''
-      ln -s ${cmake} cmake.msi
-      win-put cmake.msi .
-      win-exec "msiexec.exe /q /i cmake.msi ADD_CMAKE_TO_PATH=System"
-      '';
-  };
 }
