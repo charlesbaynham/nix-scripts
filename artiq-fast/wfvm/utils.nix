@@ -10,7 +10,6 @@ rec {
     "-smp ${cores}"
     "-m ${qemuMem}"
     "-bios ${pkgs.OVMF.fd}/FV/OVMF.fd"
-    "-vga virtio"
     "-rtc base=${baseRtc}"
     "-device piix3-usb-uhci"
     "-device e1000,netdev=n1"
