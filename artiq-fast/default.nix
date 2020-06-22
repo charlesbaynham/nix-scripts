@@ -17,6 +17,7 @@ let
       start // {
         "artiq-board-${board.target}-${board.variant}" = boardBinaries;
       }) {} boards;
+
   mainPackages = rec {
     inherit (pythonDeps) sipyco asyncserial pythonparser pyqtgraph-qt5 misoc migen microscope jesd204b migen-axi lit outputcheck;
     binutils-or1k = callPackage ./pkgs/binutils.nix { platform = "or1k"; target = "or1k-linux"; };
@@ -34,7 +35,9 @@ let
     artiq = callPackage ./pkgs/artiq.nix { inherit binutils-or1k llvm-or1k llvmlite-artiq libartiq-support lit outputcheck; };
     artiq-env = (pkgs.python3.withPackages(ps: [ artiq ])).overrideAttrs (oldAttrs: { name = "${pkgs.python3.name}-artiq-env-${artiq.version}"; });
     openocd = callPackage ./pkgs/openocd.nix {};
+  };
 
+  condaNoarch = {
     conda-pythonparser = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-pythonparser";
       src = import ./conda/fake-source.nix { inherit pkgs; } {
@@ -43,25 +46,6 @@ let
         extraSrcCommands = "patch -p1 < ${./pkgs/python37hack.patch}";
         dependencies = ["regex"];
       };
-    };
-    conda-binutils-or1k = import ./conda/binutils.nix {
-      inherit pkgs;
-      inherit (binutils-or1k) version src;
-      target = "or1k-linux";
-    };
-    conda-binutils-arm = import ./conda/binutils.nix {
-      inherit pkgs;
-      inherit (binutils-arm) version src;
-      target = "armv7-unknown-linux-gnueabihf";
-    };
-    conda-llvm-or1k = import ./conda/llvm-or1k.nix {
-      inherit pkgs;
-      inherit (llvm-or1k) version;
-      src = llvm-or1k.llvm-src;
-    };
-    conda-llvmlite-artiq = import ./conda/llvmlite-artiq.nix {
-      inherit pkgs conda-llvm-or1k;
-      inherit (llvmlite-artiq) version src;
     };
     conda-sipyco = import ./conda/build.nix { inherit pkgs; } {
       name = "conda-sipyco";
@@ -90,6 +74,28 @@ let
         inherit (pythonDeps.asyncserial) version src;
         dependencies = ["pyserial"];
       };
+    };
+  };
+
+  condaLinux = {
+    conda-binutils-or1k = import ./conda/binutils.nix {
+      inherit pkgs;
+      inherit (mainPackages.binutils-or1k) version src;
+      target = "or1k-linux";
+    };
+    conda-binutils-arm = import ./conda/binutils.nix {
+      inherit pkgs;
+      inherit (mainPackages.binutils-arm) version src;
+      target = "armv7-unknown-linux-gnueabihf";
+    };
+    conda-llvm-or1k = import ./conda/llvm-or1k.nix {
+      inherit pkgs;
+      inherit (mainPackages.llvm-or1k) version;
+      src = mainPackages.llvm-or1k.llvm-src;
+    };
+    conda-llvmlite-artiq = import ./conda/llvmlite-artiq.nix {
+      inherit pkgs conda-llvm-or1k;
+      inherit (mainPackages.llvmlite-artiq) version src;
     };
   };
 
@@ -146,4 +152,4 @@ let
 
   condaWindows = if (pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0") then condaWindowsExperimental else condaWindowsLegacy;
 in
-  mainPackages // condaWindows // boardPackages
+  boardPackages // mainPackages // condaNoarch // condaLinux // condaWindows
