@@ -59,7 +59,7 @@ in
       buildInputs = [ (windowsRunner {}) ];
       phases = [ "buildPhase" ];
       buildPhase = ''
-        ${windowsRunner {}}/bin/wfvm-run-windows-tests
+        ${windowsRunner { testCommand = "python -m unittest discover -v sipyco.test && python -m unittest discover -v artiq.test"; }}/bin/wfvm-run-windows-tests
         touch $out
       '';
     };
