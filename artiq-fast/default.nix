@@ -123,6 +123,11 @@ let
       inherit (mainPackages.binutils-or1k) version src;
       target = "or1k-linux";
     };
+    conda-windows-binutils-arm = import ./conda-windows/binutils.nix {
+      inherit pkgs;
+      inherit (mainPackages.binutils-or1k) version src;
+      target = "armv7-unknown-linux-gnueabihf";
+    };
     conda-windows-llvm-or1k = import ./conda-windows/redistribute.nix {
       inherit pkgs;
       name = "llvm-or1k";
