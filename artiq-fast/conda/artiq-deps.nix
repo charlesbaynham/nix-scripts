@@ -6,7 +6,7 @@
   "scipy"
   "numpy"
   "prettytable"
-  "h5py 2.8"
+  "h5py"
   "python-dateutil"
   "pyqt >=5.5"
   "quamash"
