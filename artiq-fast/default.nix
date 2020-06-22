@@ -64,7 +64,7 @@ let
     };
     conda-bscan-spi-bitstreams = import ./conda/bscan-spi-bitstreams.nix {
       inherit pkgs;
-      inherit (openocd) bscan_spi_bitstreams;
+      inherit (mainPackages.openocd) bscan_spi_bitstreams;
     };
     conda-artiq = import ./conda/artiq.nix { inherit pkgs; };
     conda-asyncserial = import ./conda/build.nix { inherit pkgs; } {
@@ -77,7 +77,7 @@ let
     };
   };
 
-  condaLinux = {
+  condaLinux = rec {
     conda-binutils-or1k = import ./conda/binutils.nix {
       inherit pkgs;
       inherit (mainPackages.binutils-or1k) version src;
