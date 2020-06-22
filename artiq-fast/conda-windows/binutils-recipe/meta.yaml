@@ -1,0 +1,17 @@
+package:
+  name: binutils-or1k-linux
+  version: 2.30
+
+source:
+  url: ../src.tar.bz2
+
+requirements:
+  build:
+    - libiconv
+  run:
+    - libiconv
+
+about:
+  home: https://www.gnu.org/software/binutils/
+  license: GPL
+  summary: 'A set of programming tools for creating and managing binary programs, object files, libraries, profile data, and assembly source code.'

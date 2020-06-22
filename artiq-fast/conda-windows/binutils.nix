@@ -2,65 +2,43 @@
 
 let
   wfvm = import ../wfvm { inherit pkgs; };
-  libiconv-filename = "libiconv-1.15-h0c8e037_1006.tar.bz2";
+  libiconv-filename = "libiconv-1.15-h1df5818_7.tar.bz2";
   libiconv = pkgs.fetchurl {
-    url = "https://anaconda.org/conda-forge/libiconv/1.15/download/win-64/${libiconv-filename}";
-    sha256 = "1jaxnpg5y5pkhvpp9kaq0kpvz7jlj5hynp567q35l7hpfk6xxghh";
+    url = "https://anaconda.org/anaconda/libiconv/1.15/download/win-64/${libiconv-filename}";
+    sha256 = "0p431madykrjmi9sbl2sy9kzb0l3vhgs677i8q7cx8g210ab5g52";
+  };
+  vc14-filename = "vc-14.1-h0510ff6_4.tar.bz2";
+  vc14 = pkgs.fetchurl {
+    url = "https://anaconda.org/anaconda/vc/14.1/download/win-64/${vc14-filename}";
+    sha256 = "0nsyxph667x8ky1nybakpnk816dkrzbf1684jd7pp6wm5x73p34v";
+  };
+  vs2015_runtime-filename = "vs2015_runtime-14.16.27012-hf0eaf9b_2.tar.bz2";
+  vs2015_runtime = pkgs.fetchurl {
+    url = "https://anaconda.org/anaconda/vs2015_runtime/14.16.27012/download/win-64/${vs2015_runtime-filename}";
+    sha256 = "1gbm6i6nkp8linmak5mm42hj1nzqd5ppak8kv1n3wfn52p21ngvs";
   };
   build = wfvm.utils.wfvm-run {
     name = "build-binutils";
     image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 msys2 msys2-packages ]; };
     script = ''
+      # Create a fake channel to work around another pile of bugs and cretinous design decisions from conda.
+      ${wfvm.utils.win-exec}/bin/win-exec "mkdir fake-channel && mkdir fake-channel\win-64"
       ln -s ${libiconv} ${libiconv-filename}
-      ${wfvm.utils.win-put}/bin/win-put ${libiconv-filename}
-      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n build ${libiconv-filename}"
+      ${wfvm.utils.win-put}/bin/win-put ${libiconv-filename} ./fake-channel/win-64
+      ln -s ${vc14} ${vc14-filename}
+      ${wfvm.utils.win-put}/bin/win-put ${vc14-filename} ./fake-channel/win-64
+      ln -s ${vs2015_runtime} ${vs2015_runtime-filename}
+      ${wfvm.utils.win-put}/bin/win-put ${vs2015_runtime-filename} ./fake-channel/win-64
+      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda index fake-channel"
 
-      cat > meta.yaml << EOF
-      package:
-        name: binutils-${target}
-        version: ${version}
-
-      source:
-        url: ../src.tar.bz2
-
-      requirements:
-        run:
-          - libiconv
-
-      EOF
-
-      cat > bld.bat << EOF
-      set MSYS=C:\MSYS64
-      set TOOLPREF=mingw-w64-x86_64-
-      set TRIPLE=x86_64-pc-mingw64
-      set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH%
-
-      mkdir build
-      cd build
-      set CFLAGS=-I%PREFIX:\=/%/Library/include/
-      set LDFLAGS=-L%PREFIX:\=/%/Library/lib/
-      sh ../configure --build=%TRIPLE% ^
-        --prefix="%PREFIX:\=/%/Library" ^
-        --target=${target}
-      if errorlevel 1 exit 1
-
-      make -j4
-      if errorlevel 1 exit 1
-
-      make install
-      if errorlevel 1 exit 1
-
-      rem this is a copy of prefixed executables
-      rmdir /S /Q %PREFIX%\Library\${target}
-      EOF
-
-      ${wfvm.utils.win-exec}/bin/win-exec "mkdir binutils"
-      ${wfvm.utils.win-put}/bin/win-put meta.yaml binutils
-      ${wfvm.utils.win-put}/bin/win-put bld.bat binutils
-      ln -s ${src} src.tar.bz2
+      ln -s ${./binutils-recipe} binutils
+      ${wfvm.utils.win-put}/bin/win-put binutils .
+      tar xjf ${src}
+      patch -d binutils-2.30 -p1 < ${./binutils-hack-libiconv.patch}
+      tar cjf src.tar.bz2 binutils-2.30
       ${wfvm.utils.win-put}/bin/win-put src.tar.bz2 .
 
-      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate build && conda build --no-anaconda-upload --no-test binutils"
+      ${wfvm.utils.win-exec}/bin/win-exec "set MSYS=C:\MSYS64 && set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH% && .\Anaconda3\scripts\activate && conda build --no-anaconda-upload --no-test -c file:///C:/users/wfvm/fake-channel --override-channels binutils"
 
       ${wfvm.utils.win-get}/bin/win-get "Anaconda3/conda-bld/win-64/binutils-${target}-${version}-0.tar.bz2"
     '';

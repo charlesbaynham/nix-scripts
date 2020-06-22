@@ -93,7 +93,7 @@ let
     };
   };
 
-  condaWindows = {
+  condaWindowsLegacy = {
     conda-windows-binutils-or1k = import ./conda-windows/redistribute.nix {
       inherit pkgs;
       name = "binutils-or1k";
@@ -116,5 +116,29 @@ let
       sha256 = "10w24w5ljvan06pbvwqj4pzal072jnyynmwm42dn06pq88ryz9wj";
     };
   };
+
+  condaWindowsExperimental = {
+    conda-windows-binutils-or1k = import ./conda-windows/binutils.nix {
+      inherit pkgs;
+      inherit (mainPackages.binutils-or1k) version src;
+      target = "or1k-linux";
+    };
+    conda-windows-llvm-or1k = import ./conda-windows/redistribute.nix {
+      inherit pkgs;
+      name = "llvm-or1k";
+      filename = "llvm-or1k-6.0.0-25.tar.bz2";
+      baseurl = "https://anaconda.org/m-labs/llvm-or1k/6.0.0/download/win-64/";
+      sha256 = "06mnrg79rn9ni0d5z0x3jzb300nhqhbc2h9qbq5m50x3sgm8km63";
+    };
+    conda-windows-llvmlite-artiq = import ./conda-windows/redistribute.nix {
+      inherit pkgs;
+      name = "llvmlite-artiq";
+      filename = "llvmlite-artiq-0.23.0.dev-py35_5.tar.bz2";
+      baseurl = "https://anaconda.org/m-labs/llvmlite-artiq/0.23.0.dev/download/win-64/";
+      sha256 = "10w24w5ljvan06pbvwqj4pzal072jnyynmwm42dn06pq88ryz9wj";
+    };
+  };
+
+  condaWindows = if (pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0") then condaWindowsExperimental else condaWindowsLegacy;
 in
   mainPackages // condaWindows // boardPackages
