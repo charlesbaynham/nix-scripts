@@ -18,12 +18,15 @@ rec {
   # Pass empty config file to prevent ssh from failing to create ~/.ssh
   sshOpts = "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=1";
   win-exec = pkgs.writeShellScriptBin "win-exec" ''
+    set -e
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
       ${pkgs.openssh}/bin/ssh -np 2022 ${sshOpts} \
       wfvm@localhost \
       $1
   '';
   win-wait = pkgs.writeShellScriptBin "win-wait" ''
+    set -e
+
     # If the machine is not up within 10 minutes it's likely never coming up
     timeout=600
 
@@ -50,6 +53,7 @@ rec {
     echo "SSH OK"
   '';
   win-put = pkgs.writeShellScriptBin "win-put" ''
+    set -e
     echo win-put $1 -\> $2
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
       ${pkgs.openssh}/bin/sftp -r -P 2022 ${sshOpts} \
@@ -57,6 +61,7 @@ rec {
         put $1"
   '';
   win-get = pkgs.writeShellScriptBin "win-get" ''
+    set -e
     echo win-get $1
     ${pkgs.sshpass}/bin/sshpass -p1234 -- \
       ${pkgs.openssh}/bin/sftp -r -P 2022 ${sshOpts} \
@@ -82,7 +87,7 @@ rec {
         "-netdev user,id=n1,net=192.168.1.0/24,restrict=${restrict},hostfwd=tcp::2022-:22${guestfwds}"
       ]);
     in pkgs.writeShellScriptBin "wfvm-run-${name}" ''
-      set -m
+      set -e -m
       ${qemu}/bin/qemu-system-x86_64 ${pkgs.lib.concatStringsSep " " qemuParams} &
 
       ${win-wait}/bin/win-wait
