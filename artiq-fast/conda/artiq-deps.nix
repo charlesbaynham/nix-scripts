@@ -1,5 +1,4 @@
 [
-  "python"
   "llvmlite-artiq"
   "binutils-or1k-linux"
   "pythonparser"
