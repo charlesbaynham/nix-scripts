@@ -42,9 +42,7 @@ let
   artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix" (with pkgs; { inherit stdenv fetchgit git; });
   windowsRunner = overrides:
     import "${generatedNix}/windows/run-test.nix" ({
-      inherit pkgs;
-      sipycoPkg = artiqpkgs.conda-sipyco;
-      artiqPkg = artiqpkgs.conda-artiq;
+      inherit pkgs artiqpkgs;
     } // overrides);
   jobs = (builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiqpkgs);
 in
@@ -61,7 +59,7 @@ in
       buildInputs = [ (windowsRunner {}) ];
       phases = [ "buildPhase" ];
       buildPhase = ''
-        ${windowsRunner {}}/bin/run.sh
+        ${windowsRunner {}}/bin/wfvm-run-windows-tests
         touch $out
       '';
     };
@@ -119,7 +117,7 @@ in
         export ARTIQ_LOW_LATENCY=1
         python -m unittest discover -v artiq.test.coredevice
 
-        ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\anaconda\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&&python -m unittest discover -v artiq.test.coredevice"; }}/bin/run.sh
+        ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\Anaconda3\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&& python -m unittest discover -v artiq.test.coredevice"; }}/bin/wfvm-run-windows-tests
       )
 
       mkdir $out
