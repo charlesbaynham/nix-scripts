@@ -56,7 +56,6 @@ in
 
     windows-no-hardware-tests = pkgs.stdenv.mkDerivation {
       name = "windows-no-hardware-tests";
-      buildInputs = [ (windowsRunner {}) ];
       phases = [ "buildPhase" ];
       buildPhase = ''
         ${windowsRunner { testCommand = "python -m unittest discover -v sipyco.test && python -m unittest discover -v artiq.test"; }}/bin/wfvm-run-windows-tests
