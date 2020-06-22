@@ -1,6 +1,6 @@
 package:
-  name: binutils-or1k-linux
-  version: 2.30
+  name: binutils-##TARGET##
+  version: ##VERSION##
 
 source:
   url: ../src.tar.bz2

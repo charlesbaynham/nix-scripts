@@ -31,11 +31,13 @@ let
       ${wfvm.utils.win-put}/bin/win-put ${vs2015_runtime-filename} ./fake-channel/win-64
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda index fake-channel"
 
-      ln -s ${./binutils-recipe} binutils
+      cp --no-preserve=mode,ownership -R ${./binutils-recipe} binutils
+      sed -i s/##TARGET##/${target}/g binutils/*
+      sed -i s/##VERSION##/${version}/g binutils/*
       ${wfvm.utils.win-put}/bin/win-put binutils .
       tar xjf ${src}
-      patch -d binutils-2.30 -p1 < ${./binutils-hack-libiconv.patch}
-      tar cjf src.tar.bz2 binutils-2.30
+      patch -d binutils-${version} -p1 < ${./binutils-hack-libiconv.patch}
+      tar cjf src.tar.bz2 binutils-${version}
       ${wfvm.utils.win-put}/bin/win-put src.tar.bz2 .
 
       ${wfvm.utils.win-exec}/bin/win-exec "set MSYS=C:\MSYS64 && set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH% && .\Anaconda3\scripts\activate && conda build --no-anaconda-upload --no-test -c file:///C:/users/wfvm/fake-channel --override-channels binutils"
