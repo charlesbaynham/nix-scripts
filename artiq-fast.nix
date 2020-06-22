@@ -83,7 +83,6 @@ in
         (pkgs.python3.withPackages(ps: [ ps.paramiko artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock ]))
         artiqpkgs.binutils-or1k
         artiqpkgs.openocd
-        pkgs.iputils
         pkgs.openssh
       ];
       phases = [ "buildPhase" ];
@@ -115,8 +114,6 @@ in
 
         artiq_flash -t kc705 -H rpi-1
         sleep 15
-        # ping: socket: Operation not permitted
-        #ping kc705-1 -c10 -w30
 
         export ARTIQ_ROOT=`python -c "import artiq; print(artiq.__path__[0])"`/examples/kc705_nist_clock
         export ARTIQ_LOW_LATENCY=1
