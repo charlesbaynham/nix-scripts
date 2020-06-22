@@ -47,7 +47,10 @@ with open('packages_noarch.txt', 'w') as list_noarch:
                     list = list_win64
                 else:
                     raise ValueError
-                print(fetch['url'], file=list)
+                url = fetch['url']
+                if url.endswith('.conda'):
+                  url = url[:-6] + '.tar.bz2'
+                print(url, file=list)
 "
 
 for type in "noarch" "win-64"; do

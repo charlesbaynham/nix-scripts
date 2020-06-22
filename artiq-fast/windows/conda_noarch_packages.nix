@@ -6,12 +6,12 @@
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/noarch/six-1.15.0-py_0.conda";
-  sha256 = "057vci1j78fzkg4qnamfjhz47s0x2v6ygli565a56hvna7h11kng";
+  url = "https://repo.anaconda.com/pkgs/main/noarch/pycparser-2.20-py_0.tar.bz2";
+  sha256 = "1qwcb07q8cjz0qpj6pfxb0qb68kddmx9bv9wr5pghwz78q8073z9";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/noarch/pycparser-2.20-py_0.conda";
-  sha256 = "00rx3nqa21dpqq4lx7g7rahsds0248ky4rw8xjxv5xik5x5xrqnd";
+  url = "https://repo.anaconda.com/pkgs/main/noarch/six-1.15.0-py_0.tar.bz2";
+  sha256 = "08rsfp9bd2mz8r120s8w5vgncy0gn732xa0lfgbmx833548cfqmb";
 })
 ]

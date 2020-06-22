@@ -1,98 +1,43 @@
 { pkgs } : [
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/openssl-1.1.1g-he774522_0.conda";
-  sha256 = "1hjddbhkk8409k9x4ncxb2z76pj8gbs03bfv8nfwazxpygjhfm99";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/pyqt-5.9.2-py35h6538335_2.tar.bz2";
+  sha256 = "1anwq53nic50cijngxaylpn6232j9wdc2wz2rykqpgzvs1ms108s";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/icu-58.2-ha925a31_3.conda";
-  sha256 = "1387x1xa1h2wivz1gw8ip2xgy0v5yb261nq1f3jfiiynn7hc8gdf";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/zlib-1.2.11-h62dcd97_4.tar.bz2";
+  sha256 = "1jxd7sg0c278hqv09q6hridpdnyhkd34gbs92wkravj3gwsr1adk";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/pyqtgraph-0.10.0-py35h28b3542_3.conda";
-  sha256 = "0n5l3p0r9fchra3dygp5jbxlb52fbwvrgnmbhq8xghnyvzyjw18c";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/openssl-1.1.1g-he774522_0.tar.bz2";
+  sha256 = "1gwfj33qb8inikdhmgcm30iz1ag8x71lzicsxbdr7ni4153df5gb";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/sip-4.19.8-py35h6538335_0.conda";
-  sha256 = "09v80qdd6xhmmqbgvb5vm4r2hcid0zd45zzc6pyaxxnh2x9h8mss";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/mkl_random-1.0.1-py35h77b88f5_1.tar.bz2";
+  sha256 = "0899qg9ih8srpw9q5mxd85hg4gpawb7lmz25x9xi401cfwhgwq7l";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/certifi-2018.8.24-py35_1.conda";
-  sha256 = "06yc1a1cvc7rnqxmjk6sax8f38f41f9zksghf5h539s05cp24jhq";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/hdf5-1.10.2-hac2f561_1.tar.bz2";
+  sha256 = "0l1i5bpxl0bn9hf738ywygjwc32d4cq5fjkgzij3x27cxi8nvd21";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/regex-2018.08.29-py35hfa6e2cd_0.conda";
-  sha256 = "0grlb566c2m2cgx4h7bcg0249fpll8n4h4idwbkjssr258sd2dbi";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/tbb4py-2018.0.5-py35he980bc4_0.tar.bz2";
+  sha256 = "0gypjcmciw3rnd2cq0sqmvspgzaas13fghv633dqj8g3bvl4lfif";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/pyqt-5.9.2-py35h6538335_2.conda";
-  sha256 = "1njyr4hanppfibg075mslcbj8fq899ila9haivp8pl8f7n8zah1v";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/wheel-0.31.1-py35_0.tar.bz2";
+  sha256 = "07zmbg57lpvqd9nmahiff1mhzxmzchx1v128dcrj4iamymjcdlzf";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/intel-openmp-2019.4-245.conda";
-  sha256 = "0kwvhxv219nkgcgcrlsff6gabcd2wln2c6qj7a6ahp6j99dqrz9s";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/numpy-1.15.2-py35ha559c80_0.conda";
-  sha256 = "1yqvwgw0fspxn0ckq4gcz5ag8w3wsqnrbqykz3hqspd1pvb7k7rk";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/curl-7.69.1-h2a8f88b_0.conda";
-  sha256 = "02s0wfwq8hn8l0f0j2516vabnfvywm1drlvkwrsrc4vg76n00gwx";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/numpy-base-1.15.2-py35h8128ebf_0.conda";
-  sha256 = "0z8k3z4qjgwp45p0x15w741afkamql6g9sampl3hf9sachs8mypx";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/tbb4py-2018.0.5-py35he980bc4_0.conda";
-  sha256 = "1wpw02cra3pzqw1s4x8mq447yqwd4qsv71yrsx9m2q4f5im887mp";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/setuptools-40.2.0-py35_0.conda";
-  sha256 = "19lfrbp28hng6l2pdai14x93jxd9yr0mpz585ws2kjqnz74wapn4";
-})
-
-(pkgs.fetchurl {
-  url = "https://conda.anaconda.org/conda-forge/win-64/libgit2-0.27.8-hfac1375_0.tar.bz2";
-  sha256 = "05pjzwmm5vyxwcgi6vv3i961x3dgdd9c4b1ihagq9kyxgqfy21kd";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/mkl-2018.0.3-1.conda";
-  sha256 = "0qk1nvvw37kzdxfyyzk3ibikw9s8v1y1dvzvd6ridczsyck3if9c";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/h5py-2.8.0-py35h3bdd7fb_2.conda";
-  sha256 = "1bnydwv3s6bhdw70w7vyx0vmb93002pnpwyhbi3zxibvrfdfjaqi";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/hdf5-1.10.2-hac2f561_1.conda";
-  sha256 = "12m8wnz9k6zkaja47iwfncm6srrcljgyy3l3nhkiyf0c3hwgalbg";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/vs2015_runtime-14.16.27012-hf0eaf9b_2.conda";
-  sha256 = "1k73y8r17r84m2663mffl8g0gx50va1pxspy6b2n7yp8jphhmy8d";
-})
-
-(pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/mkl_random-1.0.1-py35h77b88f5_1.conda";
-  sha256 = "0p1bwjl799mxnxa0qn4bbh2w2qgg5c866zf4rgh98hlz7yx3vrzy";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/vs2015_runtime-14.16.27012-hf0eaf9b_2.tar.bz2";
+  sha256 = "1gbm6i6nkp8linmak5mm42hj1nzqd5ppak8kv1n3wfn52p21ngvs";
 })
 
 (pkgs.fetchurl {
@@ -101,48 +46,88 @@
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/libcurl-7.69.1-h2a8f88b_0.conda";
-  sha256 = "1j627520y8lishi60yk48291cqhjg82by2l2cnhdlc8wn1ldbi5s";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/pip-10.0.1-py35_0.tar.bz2";
+  sha256 = "0zwlkfgnag1s64wbwdcg44zqj2dpfcq1g4b6dsk82q24j7fw40i3";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/wheel-0.31.1-py35_0.conda";
-  sha256 = "1adgbzqg5ibw8p4mdijgy13pybl273xzfvm1w8ii2k064pfazbdv";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/h5py-2.8.0-py35h3bdd7fb_2.tar.bz2";
+  sha256 = "0743wrf51b2vs8ybasjpn7ricbh740r7drxcimkhbxp8r6vd66vp";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/pip-10.0.1-py35_0.conda";
-  sha256 = "0b41585m4rc1a90xh5jrhw23x0sd4m1jdq6wn4gw1f4yazyxbn6d";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/numpy-1.15.2-py35ha559c80_0.tar.bz2";
+  sha256 = "1igf4gm726s4kg7km24flxdxr73fafaz3z18y3ndcb5f6r9zwa44";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/libssh2-1.9.0-h7a1dbc1_1.conda";
-  sha256 = "1jv3nxsc1vky450v18nbz8mhk0wpw0k34ibfh53d4dfzimyii1dw";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/mkl-2018.0.3-1.tar.bz2";
+  sha256 = "01pq0f2787q58avg5ylfrbpf4jlg2b6rbajvf3swjpm1cmzxkm81";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/cffi-1.11.5-py35h74b6da3_1.conda";
-  sha256 = "1lw70385i73m3x060xdhydc5v946w5jxk13wx70z8rypvlgzqnhz";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/libssh2-1.9.0-h7a1dbc1_1.tar.bz2";
+  sha256 = "0sz405ab3n7991hxy8l9affs1slivsimgadxsdr6wvpgx3j4aqgx";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/zlib-1.2.11-h62dcd97_4.conda";
-  sha256 = "1jcbdw7sv4mfkr70pcxa9cnvx17izif1a6wna8b5jj1barizp6g3";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/tk-8.6.10-he774522_0.tar.bz2";
+  sha256 = "15bfncacdxmcbn4xixmfz2m7a09k7hcpwxvwn1lki84bx0fmzsis";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/sqlite-3.32.2-h2a8f88b_0.conda";
-  sha256 = "01acaapsra2ii132vx9wykas75pgcb0yb428bs2x4nfl0v391xlp";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/sqlite-3.32.2-h2a8f88b_0.tar.bz2";
+  sha256 = "086jjnxfchypkr8cp1q8nsis0jfvl293bv4bcg7ikv7aia3vda8p";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/wincertstore-0.2-py35hfebbdb8_0.conda";
-  sha256 = "1rg7xlygy19ici9114pyg1i1s1w0bgsd5qcb59s0g0ndj1704s08";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/wincertstore-0.2-py35hfebbdb8_0.tar.bz2";
+  sha256 = "1624bzqlbiq4jlz46l65574smw739p7l38ydzxmayq3jmwx6zaar";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/python-3.5.6-he025d50_0.conda";
-  sha256 = "0hdkj7kn5dsi8gfx551n9lyan1a45iwswkh03rwxzvpxbllylm56";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/certifi-2018.8.24-py35_1.tar.bz2";
+  sha256 = "06ygpkx3f71rwmq9lgc29r6jj4g1zi8rvrmn4mrrsb9b5sf0rzgf";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/icu-58.2-ha925a31_3.tar.bz2";
+  sha256 = "0vcl0j3v9ab022s2g3a9iv1pn7sflh670yyf5m08hdyf049m3jz7";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/regex-2018.08.29-py35hfa6e2cd_0.tar.bz2";
+  sha256 = "16cjgwpaqnfy8bg35iz12bb9whpws4abiz4cq4shpnh6gnwpwzj3";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/cffi-1.11.5-py35h74b6da3_1.tar.bz2";
+  sha256 = "0nc3ps4xl8rqpwiqaqqr5lrqzk8lx1a4hh3fpm7i7rlppqn5pm6a";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/libcurl-7.69.1-h2a8f88b_0.tar.bz2";
+  sha256 = "182zrmgl2142gfgnbgjsk0gbj85vw75xzxvhn9lzm485ghxsasvg";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/mkl_fft-1.0.6-py35hdbbee80_0.tar.bz2";
+  sha256 = "0xb02rx28rjlp5clavg19jb129ihcarrkz46pncaar91qxckbbxz";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/pyqtgraph-0.10.0-py35h28b3542_3.tar.bz2";
+  sha256 = "0ywzw3i4kf5ccck9whmg1j7s22x6i5fpywndy8rkr9va38g4nazq";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/sip-4.19.8-py35h6538335_0.tar.bz2";
+  sha256 = "1y761zpm6bi0pb61x1y26ap56hylh6mjg1xq9zl08bmcl2dlkwfy";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/setuptools-40.2.0-py35_0.tar.bz2";
+  sha256 = "146piyifnip1flqph19nxilnhfbzzsxlhfyx0i61wv7krr6ln9yy";
 })
 
 (pkgs.fetchurl {
@@ -151,17 +136,32 @@
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/scipy-1.1.0-py35h4f6bf74_1.conda";
-  sha256 = "0f93xlmwppgs6znlc4w15bij9v41p80g25nxxpxcdqc0niv260ga";
+  url = "https://conda.anaconda.org/conda-forge/win-64/libgit2-0.27.8-hfac1375_0.tar.bz2";
+  sha256 = "05pjzwmm5vyxwcgi6vv3i961x3dgdd9c4b1ihagq9kyxgqfy21kd";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/tk-8.6.10-he774522_0.conda";
-  sha256 = "1f1pv99y4jy7knmk3jsrhf4kj63qknr692wajzna0kp71gj0hsfm";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/scipy-1.1.0-py35h4f6bf74_1.tar.bz2";
+  sha256 = "0sdyj5nlycv4krz7f8rzhi0kxv302gpx65x1zwhj8dn6b2c50li0";
 })
 
 (pkgs.fetchurl {
-  url = "https://repo.anaconda.com/pkgs/main/win-64/mkl_fft-1.0.6-py35hdbbee80_0.conda";
-  sha256 = "0as5hb049gcakcqymh7k84dqisaa760xv71469b7m2658bmrni66";
+  url = "https://repo.anaconda.com/pkgs/main/win-64/curl-7.69.1-h2a8f88b_0.tar.bz2";
+  sha256 = "0hw5dh7gzx8fap4c3vkc2xc2q9by3f5ndbigr6pm6w5v29qaydn4";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/intel-openmp-2019.4-245.tar.bz2";
+  sha256 = "13qid5aagyxsfy5ng4bbwb7hs9jj29jvqbpvvkjiy6bgv36m8kr8";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/numpy-base-1.15.2-py35h8128ebf_0.tar.bz2";
+  sha256 = "166w4wkp9dwl505hc00hny1mq2mlvb169n7c9nws7dz8j36pqfrx";
+})
+
+(pkgs.fetchurl {
+  url = "https://repo.anaconda.com/pkgs/main/win-64/python-3.5.6-he025d50_0.tar.bz2";
+  sha256 = "0ygvmbyvhc2jisb5bzb0r5709qmn8392gr7rv6c8vrdiylfiqr73";
 })
 ]
