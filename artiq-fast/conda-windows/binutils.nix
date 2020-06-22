@@ -40,7 +40,7 @@ let
       tar cjf src.tar.bz2 binutils-${version}
       ${wfvm.utils.win-put}/bin/win-put src.tar.bz2 .
 
-      ${wfvm.utils.win-exec}/bin/win-exec "set MSYS=C:\MSYS64 && set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH% && .\Anaconda3\scripts\activate && conda build --no-anaconda-upload --no-test -c file:///C:/users/wfvm/fake-channel --override-channels binutils"
+      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda build --no-anaconda-upload --no-test -c file:///C:/users/wfvm/fake-channel --override-channels binutils"
 
       ${wfvm.utils.win-get}/bin/win-get "Anaconda3/conda-bld/win-64/binutils-${target}-${version}-0.tar.bz2"
     '';
