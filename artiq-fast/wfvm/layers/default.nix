@@ -1,4 +1,7 @@
 { pkgs }:
+let
+  wfvm = import ../. { inherit pkgs; };
+in
 {
   anaconda3 = {
     name = "Anaconda3";
@@ -60,6 +63,66 @@
       EOF
       win-put installmsyspackages.bat .
       win-exec installmsyspackages
+      '';
+  };
+  msvc = {
+    # Those instructions are vaguely correct:
+    # https://docs.microsoft.com/en-us/visualstudio/install/create-an-offline-installation-of-visual-studio?view=vs-2019
+    name = "MSVC";
+    script = let
+      bootstrapper = pkgs.fetchurl {
+        url = "https://download.visualstudio.microsoft.com/download/pr/ac05c4f5-0da1-429f-8701-ce509ac69926/cc9556137c66a373670376d6db2fc5c5c937b2b0bf7b3d3cac11c69e33615511/vs_Community.exe";
+        sha256 = "04amc4rrxihimhy3syxzn2r3gjf5qlpxpmkn0dkp78v6gh9md5fc";
+      };
+      # This touchy-feely "community" piece of trash seems deliberately crafted to break Wine, so we use the VM to run it.
+      download-vs = wfvm.utils.wfvm-run {
+        name = "download-vs";
+        image = wfvm.makeWindowsImage { };
+        isolateNetwork = false;
+        script =
+          ''
+          ln -s ${bootstrapper} vs_Community.exe
+          ${wfvm.utils.win-put}/bin/win-put vs_Community.exe
+          rm vs_Community.exe
+          ${wfvm.utils.win-exec}/bin/win-exec "vs_Community.exe --quiet --norestart --layout c:\vslayout --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended --lang en-US"
+          ${wfvm.utils.win-get}/bin/win-get /c:/vslayout
+          '';
+      };
+      cache = pkgs.stdenv.mkDerivation {
+        name = "vs";
+
+        outputHashAlgo = "sha256";
+        outputHashMode = "recursive";
+        outputHash = "0fp7a6prjp8n8sirwday13wis3xyzhmrwi377y3x89nxzysp0mnv";
+
+        phases = [ "buildPhase" ];
+        buildInputs = [ download-vs ];
+        buildPhase =
+          ''
+          mkdir $out
+          cd $out
+          wfvm-run-download-vs
+          '';
+      };
+    in
+      ''
+      echo ${cache}
+      ln -s ${cache}/vslayout vslayout
+      win-put vslayout /c:/
+      echo "Running Visual Studio installer"
+      win-exec "cd \vslayout && start /wait vs_Community.exe --passive --wait && echo %errorlevel%"
+      '';
+  };
+  # You need to run the IDE at least once or else most of the Visual Studio trashware won't actually work.
+  msvc-ide-unbreak = {
+    name = "MSVC-ide-unbreak";
+    script =
+      ''
+      echo 1
+      win-exec 'cd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE" && devenv /ResetSettings'
+      echo 2
+      sleep 40
+      echo 3
       '';
   };
 }
