@@ -5,10 +5,10 @@
 
 let
   llvm-src = fetchFromGitHub {
-    rev = "527aa86b578da5dfb9cf4510b71f0f46a11249f7";
+    rev = "7746fe85489e92e1caffda18b9d7b2ae9e5da1a8";
     owner = "m-labs";
     repo = "llvm-or1k";
-    sha256 = "0lmcg9xj66pf4mb6racipw67vm8kwm84dl861hyqnywd61kvhrwa";
+    sha256 = "0jqbb3k9r91swsyrdak8fzvs1qi451zy8dqmpqriaxk5g83ny5b7";
   };
   clang-src = fetchFromGitHub {
     rev = "9e996136d52ed506ed8f57ef8b13b0f0f735e6a3";
