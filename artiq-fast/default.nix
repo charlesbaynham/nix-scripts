@@ -134,12 +134,10 @@ let
       inherit (mainPackages.binutils-or1k) version src;
       target = "armv7-unknown-linux-gnueabihf";
     };
-    conda-windows-llvm-or1k = import ./conda-windows/redistribute.nix {
+    conda-windows-llvm-or1k = import ./conda-windows/llvm-or1k.nix {
       inherit pkgs;
-      name = "llvm-or1k";
-      filename = "llvm-or1k-6.0.0-25.tar.bz2";
-      baseurl = "https://anaconda.org/m-labs/llvm-or1k/6.0.0/download/win-64/";
-      sha256 = "06mnrg79rn9ni0d5z0x3jzb300nhqhbc2h9qbq5m50x3sgm8km63";
+      inherit (mainPackages.llvm-or1k) version;
+      src = mainPackages.llvm-or1k.llvm-src;
     };
     conda-windows-llvmlite-artiq = import ./conda-windows/redistribute.nix {
       inherit pkgs;

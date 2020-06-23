@@ -2,29 +2,27 @@
 
 let
   wfvm = import ../wfvm { inherit pkgs; };
-  conda-vswhere-filename = "vswhere-2.7.1-h21ff451_0.tar.bz2";
-  conda-vswhere = pkgs.fetchurl {
-    url = "https://anaconda.org/anaconda/vswhere/2.7.1/download/win-64/${conda-vswhere-filename}";
-    sha256 = "196bzfmrnl8l5kfarldmqy80ncjidmhz552kvv8cz2s67ljmgggn";
+  conda-vs2015_runtime-filename = "vs2015_runtime-14.16.27012-hf0eaf9b_2.tar.bz2";
+  conda-vs2015_runtime = pkgs.fetchurl {
+    url = "https://anaconda.org/anaconda/vs2015_runtime/14.16.27012/download/win-64/${conda-vs2015_runtime-filename}";
+    sha256 = "1gbm6i6nkp8linmak5mm42hj1nzqd5ppak8kv1n3wfn52p21ngvs";
   };
-  conda-vs2017-filename = "vs2017_win-64-19.16.27038-h2e3bad8_2.tar.bz2";
-  conda-vs2017 = pkgs.fetchurl {
-    url = "https://anaconda.org/conda-forge/vs2017_win-64/19.16.27038/download/win-64/${conda-vs2017-filename}";
-    sha256 = "02a7plylz4z73ipw4hzaw47qc1qpychkl8xrx0rnr13ks05bfrmh";
+  conda-cmake-filename = "cmake-3.17.2-h33f27b4_0.tar.bz2";
+  conda-cmake = pkgs.fetchurl {
+    url = "https://anaconda.org/anaconda/cmake/3.17.2/download/win-64/${conda-cmake-filename}";
+    sha256 = "0lg782pj2i9h20rwfkwwskis038r98b3z4c9j1a6ih95rc6m2acn";
   };
   build = wfvm.utils.wfvm-run {
     name = "build-llvm-or1k";
-    image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 cmake msvc ]; };
+    image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 msvc msvc-ide-unbreak ]; };
     script = ''
       # Create a fake channel so that the conda garbage doesn't complain about not finding the packages it just installed.
-      ln -s ${conda-vs2017} ${conda-vs2017-filename}
-      ln -s ${conda-vswhere} ${conda-vswhere-filename}
+      ln -s ${conda-vs2015_runtime} ${conda-vs2015_runtime-filename}
+      ln -s ${conda-cmake} ${conda-cmake-filename}
       ${wfvm.utils.win-exec}/bin/win-exec "mkdir fake-channel && mkdir fake-channel\win-64"
-      ${wfvm.utils.win-put}/bin/win-put ${conda-vs2017-filename} ./fake-channel/win-64
-      ${wfvm.utils.win-put}/bin/win-put ${conda-vswhere-filename} ./fake-channel/win-64
+      ${wfvm.utils.win-put}/bin/win-put ${conda-vs2015_runtime-filename} ./fake-channel/win-64
+      ${wfvm.utils.win-put}/bin/win-put ${conda-cmake-filename} ./fake-channel/win-64
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda index fake-channel"
-      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda config --prepend channels file:///C:/users/wfvm/fake-channel"
-      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n build -c file:///C:/users/wfvm/fake-channel vs2017_win-64 --offline"
 
       cat > meta.yaml << EOF
       package:
@@ -36,7 +34,7 @@ let
 
       requirements:
         build:
-          vs2017_win-64
+          cmake
 
       EOF
 
@@ -72,7 +70,7 @@ let
       tar chf src.tar src
       ${wfvm.utils.win-put}/bin/win-put src.tar .
 
-      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate build && conda build --no-anaconda-upload --no-test llvm-or1k"
+      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda build --no-anaconda-upload --no-test -c file:///C:/users/wfvm/fake-channel --override-channels llvm-or1k"
 
       ${wfvm.utils.win-get}/bin/win-get "Anaconda3/conda-bld/win-64/llvm-or1k-${version}-0.tar.bz2"
     '';
