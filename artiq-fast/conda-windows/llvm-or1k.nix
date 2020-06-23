@@ -34,8 +34,7 @@ let
 
       requirements:
         build:
-          cmake
-
+          - cmake
       EOF
 
       cat > bld.bat << EOF
