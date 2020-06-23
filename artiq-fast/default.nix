@@ -139,12 +139,11 @@ let
       inherit (mainPackages.llvm-or1k) version;
       src = mainPackages.llvm-or1k.llvm-src;
     };
-    conda-windows-llvmlite-artiq = import ./conda-windows/redistribute.nix {
+    conda-windows-llvmlite-artiq = import ./conda-windows/llvmlite-artiq.nix {
       inherit pkgs;
-      name = "llvmlite-artiq";
-      filename = "llvmlite-artiq-0.23.0.dev-py35_5.tar.bz2";
-      baseurl = "https://anaconda.org/m-labs/llvmlite-artiq/0.23.0.dev/download/win-64/";
-      sha256 = "10w24w5ljvan06pbvwqj4pzal072jnyynmwm42dn06pq88ryz9wj";
+      # TODO: stop using the legacy package after https://github.com/m-labs/artiq/issues/1473 is fixed
+      inherit (condaWindowsLegacy) conda-windows-llvm-or1k;
+      inherit (mainPackages.llvmlite-artiq) version src;
     };
   };
 
