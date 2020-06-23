@@ -118,11 +118,8 @@ in
     name = "MSVC-ide-unbreak";
     script =
       ''
-      echo 1
       win-exec 'cd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE" && devenv /ResetSettings'
-      echo 2
       sleep 40
-      echo 3
       '';
   };
 }
