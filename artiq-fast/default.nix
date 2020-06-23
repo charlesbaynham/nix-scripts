@@ -123,7 +123,7 @@ let
     };
   };
 
-  condaWindowsExperimental = {
+  condaWindowsExperimental = rec {
     conda-windows-binutils-or1k = import ./conda-windows/binutils.nix {
       inherit pkgs;
       inherit (mainPackages.binutils-or1k) version src;
@@ -140,9 +140,7 @@ let
       src = mainPackages.llvm-or1k.llvm-src;
     };
     conda-windows-llvmlite-artiq = import ./conda-windows/llvmlite-artiq.nix {
-      inherit pkgs;
-      # TODO: stop using the legacy package after https://github.com/m-labs/artiq/issues/1473 is fixed
-      inherit (condaWindowsLegacy) conda-windows-llvm-or1k;
+      inherit pkgs conda-windows-llvm-or1k;
       inherit (mainPackages.llvmlite-artiq) version src;
     };
   };
