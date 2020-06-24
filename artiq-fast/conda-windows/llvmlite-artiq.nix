@@ -45,7 +45,11 @@ let
       @rem Ensure there are no build leftovers (CMake can complain)
       if exist ffi\build rmdir /S /Q ffi\build
 
-      python setup.py install
+      python setup.py install \
+        --prefix=%PREFIX% \
+        --single-version-externally-managed \
+        --record=record.txt \
+        --no-compile
       if errorlevel 1 exit 1
       EOF
 
