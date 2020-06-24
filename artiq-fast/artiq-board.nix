@@ -53,7 +53,7 @@ in
 pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
   name = "artiq-board-${target}-${variant}-${version}";
   version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
-  phases = [ "buildPhase" "installCheckPhase" "installPhase" ];
+  phases = [ "buildPhase" "installCheckPhase" "installPhase" "checkPhase" ];
   buildInputs = [
     vivado
     pkgs.gnumake
@@ -69,16 +69,11 @@ pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
     export TARGET_AR=or1k-linux-ar
     ${buildCommand}
     '';
+  doCheck = true;
   checkPhase = ''
     # Search for PCREs in the Vivado output to check for errors
     check_log() {
-      set +e
-      grep -Pe "$1" artiq_${target}/${variant}/gateware/vivado.log
-      FOUND=$?
-      set -e
-      if [ $FOUND != 1 ]; then
-        exit 1
-      fi
+      grep -Pe "$1" artiq_${target}/${variant}/gateware/vivado.log && exit 1 || true
     }
     check_log "\d+ constraint not met\."
     check_log "Timing constraints are not met\."
