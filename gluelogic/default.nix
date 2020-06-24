@@ -43,6 +43,15 @@ in
         sha256 = "1962jpzqzn22cwkcmfnvwqlj5i89pljhgfk64n6pk73clir9mp0w";
       };
     };
+    urukul-cpld-legacy = buildUrukulCpld rec {
+      version = "1.3.1";
+      src = pkgs.fetchFromGitHub {
+        owner = "quartiq";
+        repo = "urukul";
+        rev = "v${version}";
+        sha256 = "1nvarspqbf9f7b27j34jkkh4mj6rwrlmccmfpz5nnzk3h2j6zbqc";
+      };
+    };
     mirny-cpld-master = buildMirnyCpld {
       version = "master";
       src = <mirnySrc>;
