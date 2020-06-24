@@ -1,4 +1,4 @@
-{ pkgs, artiqpkgs, testCommand }:
+{ pkgs, artiqpkgs, testCommand, testTimeout ? 600 }:
 
 let
   condaEnv = "artiq-env";
@@ -45,8 +45,14 @@ in
 
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda index fake-channel"
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda create -n ${condaEnv} --offline"
-      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate ${condaEnv} && conda install -y -c file:///C:/users/wfvm/fake-channel --offline artiq"
-      #${pkgs.sshpass}/bin/sshpass -p1234 -- ${pkgs.openssh}/bin/ssh -p 2022 wfvm@localhost -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+      ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate ${condaEnv} && conda install -y -c file:///C:/users/wfvm/fake-channel --offline artiq"\
+
+      # Schedule a timed shutdown against hanging test runs
+      ${wfvm.utils.win-exec}/bin/win-exec "shutdown -s -t ${toString testTimeout}"
+
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate ${condaEnv} && ${testCommand}"
+
+      # Abort timeouted shutdown
+      ${wfvm.utils.win-exec}/bin/win-exec "shutdown -a"
       '';
   }
