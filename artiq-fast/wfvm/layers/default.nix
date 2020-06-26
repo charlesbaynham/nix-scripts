@@ -71,6 +71,7 @@ in
     name = "MSVC";
     script = let
       bootstrapper = pkgs.fetchurl {
+        name = "RESTRICTDIST-vs_Community.exe";
         url = "https://download.visualstudio.microsoft.com/download/pr/ac05c4f5-0da1-429f-8701-ce509ac69926/cc9556137c66a373670376d6db2fc5c5c937b2b0bf7b3d3cac11c69e33615511/vs_Community.exe";
         sha256 = "04amc4rrxihimhy3syxzn2r3gjf5qlpxpmkn0dkp78v6gh9md5fc";
       };

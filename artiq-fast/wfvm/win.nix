@@ -33,6 +33,7 @@ let
   );
 
   windowsIso = if windowsImage != null then windowsImage else pkgs.fetchurl {
+    name = "RESTRICTDIST-release_svc_refresh_CLIENT_LTSC_EVAL_x64FRE_en-us.iso";
     url = "https://software-download.microsoft.com/download/sg/17763.107.101029-1455.rs5_release_svc_refresh_CLIENT_LTSC_EVAL_x64FRE_en-us.iso";
     sha256 = "668fe1af70c2f7416328aee3a0bb066b12dc6bbd2576f40f812b95741e18bc3a";
   };
@@ -116,12 +117,12 @@ let
       ''
   );
 
-  baseImage = pkgs.runCommandNoCC "windows.img" {} ''
+  baseImage = pkgs.runCommandNoCC "RESTRICTDIST-windows.img" {} ''
     ${installScript}
     mv c.img $out
   '';
 
-  finalImage = builtins.foldl' (acc: v: pkgs.runCommandNoCC "${v.name}.img" {
+  finalImage = builtins.foldl' (acc: v: pkgs.runCommandNoCC "RESTRICTDIST-${v.name}.img" {
     buildInputs = with utils; [
       qemu win-wait win-exec win-put
     ] ++ (v.buildInputs or []);
