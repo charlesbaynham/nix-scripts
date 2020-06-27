@@ -14,8 +14,9 @@ let
   conda-deps = {
     name = "conda-deps";
     script = let
-      conda-deps-noarch = import ./conda_noarch_packages.nix { inherit pkgs; };
-      conda-deps-win-64 = import ./conda_win-64_packages.nix { inherit pkgs; };
+      artiq6 = pkgs.lib.strings.versionAtLeast artiqpkgs.artiq.version "6.0";
+      conda-deps-noarch = import (if artiq6 then ./conda_noarch_packages.nix else ./conda_noarch_packages-legacy.nix) { inherit pkgs; };
+      conda-deps-win-64 = import (if artiq6 then ./conda_win-64_packages.nix else ./conda_win-64_packages-legacy.nix) { inherit pkgs; };
       conda-packages-put = pkgs.lib.strings.concatStringsSep "\n"
           ( (map (package: ''win-put ${package} 'fake-channel/noarch' '') conda-deps-noarch)
              ++ (map (package: ''win-put ${package} 'fake-channel/win-64' '') conda-deps-win-64) );
