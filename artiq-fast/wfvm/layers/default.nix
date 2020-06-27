@@ -44,10 +44,9 @@ in
       echo MSYS2 installer finished
     '';
   };
-  msys2-packages = {
+  msys2-packages = msys-packages: {
     name = "MSYS2-packages";
     script = let
-      msys-packages = import ./msys_packages.nix { inherit pkgs; };
       msys-packages-put = pkgs.lib.strings.concatStringsSep "\n"
           (map (package: ''win-put ${package} 'msyspackages' '') msys-packages);
     in

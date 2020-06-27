@@ -19,7 +19,7 @@ let
   };
   build = wfvm.utils.wfvm-run {
     name = "build-binutils";
-    image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 msys2 msys2-packages ]; };
+    image = wfvm.makeWindowsImage { installCommands = with wfvm.layers; [ anaconda3 msys2 (msys2-packages (import ./msys_packages.nix { inherit pkgs; } )) ]; };
     script = ''
       # Create a fake channel to work around another pile of bugs and cretinous design decisions from conda.
       ${wfvm.utils.win-exec}/bin/win-exec "mkdir fake-channel && mkdir fake-channel\win-64"

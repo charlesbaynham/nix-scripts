@@ -37,7 +37,7 @@ wfvm.makeWindowsImage {
   # administratorPassword = "12345";
 
   # Imperative installation commands, to be installed incrementally
-  installCommands = with wfvm.layers; [ anaconda3 msys2 msys2-packages ];
+  installCommands = with wfvm.layers; [ anaconda3 msys2 msvc msvc-ide-unbreak ];
 
   # services = {
   #   # Enable remote management
