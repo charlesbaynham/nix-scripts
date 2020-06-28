@@ -106,7 +106,6 @@ in
       };
     in
       ''
-      echo ${cache}
       ln -s ${cache}/vslayout vslayout
       win-put vslayout /c:/
       echo "Running Visual Studio installer"
