@@ -5,7 +5,7 @@ set -e
 nix-build -E "
 let
   pkgs = import <nixpkgs> {};
-  wfvm = import ../../wfvm.nix { inherit pkgs; };
+  wfvm = import ../wfvm.nix { inherit pkgs; };
 in
   wfvm.utils.wfvm-run {
     name = \"get-conda-packages\";

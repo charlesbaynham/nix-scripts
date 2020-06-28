@@ -10,7 +10,7 @@ let
       inherit port;
     }) tcpPorts;
 
-  wfvm = import ../../wfvm.nix { inherit pkgs; };
+  wfvm = import ../wfvm.nix { inherit pkgs; };
   conda-deps = {
     name = "conda-deps";
     script = let
