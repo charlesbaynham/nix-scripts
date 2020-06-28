@@ -89,7 +89,7 @@ in
           '';
       };
       cache = pkgs.stdenv.mkDerivation {
-        name = "vs";
+        name = "RESTRICTDIST-vs";
 
         outputHashAlgo = "sha256";
         outputHashMode = "recursive";
