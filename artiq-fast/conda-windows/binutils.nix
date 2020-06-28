@@ -1,7 +1,7 @@
 { pkgs, version, src, target }:
 
 let
-  wfvm = import ../wfvm { inherit pkgs; };
+  wfvm = import ../../wfvm.nix { inherit pkgs; };
   libiconv-filename = "libiconv-1.15-h1df5818_7.tar.bz2";
   libiconv = pkgs.fetchurl {
     url = "https://anaconda.org/anaconda/libiconv/1.15/download/win-64/${libiconv-filename}";

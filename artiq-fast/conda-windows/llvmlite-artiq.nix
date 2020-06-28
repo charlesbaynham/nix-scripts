@@ -1,7 +1,7 @@
 { pkgs, conda-windows-llvm-or1k, version, src }:
 
 let
-  wfvm = import ../wfvm { inherit pkgs; };
+  wfvm = import ../../wfvm.nix { inherit pkgs; };
   conda-vs2015_runtime-filename = "vs2015_runtime-14.16.27012-hf0eaf9b_2.tar.bz2";
   conda-vs2015_runtime = pkgs.fetchurl {
     url = "https://anaconda.org/anaconda/vs2015_runtime/14.16.27012/download/win-64/${conda-vs2015_runtime-filename}";
