@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# run manually to build the list of conda dependencies to install in the
+# test environments.
+
 set -e
 
 nix-build -E "
