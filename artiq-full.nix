@@ -264,7 +264,7 @@ in
     artiq-full = pkgs.releaseTools.channel {
       name = "artiq-full";
       src = generatedNix;
-      constituents = builtins.attrValues jobs;
+      constituents = [];
     };
     conda-channel = import ./artiq-full/conda-channel.nix { inherit pkgs; } { inherit jobs; };
   }
