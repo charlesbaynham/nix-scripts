@@ -75,6 +75,7 @@ let
         "ptbin"
         "purdue"
         "qe"
+        "qleds"
         "rice"
         "saymamaster"
         "siegen"
