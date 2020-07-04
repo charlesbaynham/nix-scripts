@@ -34,13 +34,7 @@ in
 
       buildPhase =
         ''
-        export HOME=`mktemp -d`
-        mkdir $HOME/.ssh
-        cp /opt/hydra_id_rsa $HOME/.ssh/id_rsa
-        cp /opt/hydra_id_rsa.pub $HOME/.ssh/id_rsa.pub
-        chmod 600 $HOME/.ssh/id_rsa
-
-        bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR" -d ${artiq-zynq.zc706-simple-jtag}
+        bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa" -d ${artiq-zynq.zc706-simple-jtag}
 
         touch $out
         '';
