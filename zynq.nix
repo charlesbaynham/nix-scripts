@@ -38,10 +38,10 @@ in
         mkdir $HOME/.ssh
         cp /opt/hydra_id_rsa $HOME/.ssh/id_rsa
         cp /opt/hydra_id_rsa.pub $HOME/.ssh/id_rsa.pub
-        echo "rpi-4 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJu+HhQmQAclub9K/B3xUQ28lBg+MEdqSeBuQNZgPGKB" > $HOME/.ssh/known_hosts
+        echo "rpi-4.m-labs.hk ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJu+HhQmQAclub9K/B3xUQ28lBg+MEdqSeBuQNZgPGKB" > $HOME/.ssh/known_hosts
         chmod 600 $HOME/.ssh/id_rsa
 
-        bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -d ${artiq-zynq.zc706-simple-jtag}
+        bash ${<artiq-zynq>}/remote_run.sh -d ${artiq-zynq.zc706-simple-jtag}
 
         touch $out
         '';
