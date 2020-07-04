@@ -42,7 +42,6 @@ in
 
         sleep 15
 
-        cd examples
         artiq_run --device-db ${<artiq-zynq>}/examples/device_db.py ${<artiq-zynq>}/examples/mandelbrot.py
 
         touch $out
