@@ -31,13 +31,6 @@ let
     echo "{ stdenv, git, fetchgit }: \"$MAJOR_VERSION.$COMMIT_COUNT.`cut -c1-8 <<< $REV`$SUFFIX\"" > $out/pkgs/artiq-version.nix
     echo "{ stdenv, git, fetchgit }: \"$TIMESTAMP\"" > $out/pkgs/artiq-timestamp.nix
     '';
-  generateTestOkHash = pkgs.runCommand "generate-test-ok-hash" { buildInputs = [ pkgs.nix ]; }
-    ''
-    TMPDIR=`mktemp -d`
-    cp ${generatedNix}/pkgs/artiq-version.nix $TMPDIR/passed
-    HASH=`nix-hash --type sha256 --base32 $TMPDIR`
-    echo \"$HASH\" > $out
-    '';
   artiqpkgs = import "${generatedNix}/default.nix" { inherit pkgs; };
   artiqVersion = import "${generatedNix}/pkgs/artiq-version.nix" (with pkgs; { inherit stdenv fetchgit git; });
   windowsRunner = overrides:
@@ -63,18 +56,11 @@ in
       '';
     };
 
-    # HACK: Abuse fixed-output derivations to escape the sandbox and run the hardware
-    # unit tests, all integrated in the Hydra interface.
-    # One major downside of this hack is the tests are only run when generateTestOkHash
-    # changes, i.e. when the ARTIQ version changes (and not the dependencies).
-    # Impure derivations, when they land in Nix/Hydra, should improve the situation.
     extended-tests = pkgs.stdenv.mkDerivation {
       name = "extended-tests";
 
-      outputHashAlgo = "sha256";
-      outputHashMode = "recursive";
-      outputHash = import generateTestOkHash;
-      __hydraRetry = false;
+      # requires patched Nix
+      __networked = true;
 
       buildInputs = [
         (pkgs.python3.withPackages(ps: [ ps.paramiko artiqpkgs.artiq artiqpkgs.artiq-board-kc705-nist_clock ]))
@@ -119,8 +105,7 @@ in
         ${windowsRunner { testCommand = "set ARTIQ_ROOT=%cd%\\Anaconda3\\envs\\artiq-env\\Lib\\site-packages\\artiq\\examples\\kc705_nist_clock&& python -m unittest discover -v artiq.test.coredevice"; }}/bin/wfvm-run-windows-tests
       )
 
-      mkdir $out
-      cp ${generatedNix}/pkgs/artiq-version.nix $out/passed
+      touch $out
       '';
     };
   }
