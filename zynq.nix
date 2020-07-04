@@ -34,6 +34,7 @@ in
 
       buildPhase =
         ''
+        cd ${<artiq-zynq>}
         bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa" -d ${artiq-zynq.zc706-simple-jtag}
 
         touch $out
