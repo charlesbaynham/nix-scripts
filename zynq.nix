@@ -29,12 +29,15 @@ in
       __networked = true;
 
       buildInputs = [
-        pkgs.openssh pkgs.rsync artiq-fast.artiq
+        pkgs.netcat pkgs.openssh pkgs.rsync artiq-fast.artiq
       ];
       phases = [ "buildPhase" ];
 
       buildPhase =
         ''
+        (echo b; sleep 5; echo B) | nc -N 192.168.1.31 3131
+        sleep 5
+
         export USER=hydra
         pushd ${<artiq-zynq>}
         bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa" -d ${artiq-zynq.zc706-simple-jtag}
