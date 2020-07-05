@@ -45,6 +45,8 @@ in
         artiq_run --device-db ${<artiq-zynq>}/examples/device_db.py ${<artiq-zynq>}/examples/mandelbrot.py
 
         touch $out
+
+        echo Completed
         '';
     });
   }
