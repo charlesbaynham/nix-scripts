@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
-# run manually to build the list of conda dependencies to install in the
+# Run manually to build the list of conda dependencies to install in the
 # test environments.
+
+# NOTE: This procedure encounters failing HTTPS handshakes. To circumvent just
+# for testing, insert `call conda config --set ssl_verify no` into
+# getcondapackages.bat. To securely update the sources lists update the RTC
+# hack to the proper date instead.
 
 set -e
 
