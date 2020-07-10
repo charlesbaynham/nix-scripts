@@ -74,6 +74,7 @@ let
         "ptbal"
         "ptbin"
         "purdue"
+        "purpleberry"
         "qe"
         "qleds"
         "rice"
