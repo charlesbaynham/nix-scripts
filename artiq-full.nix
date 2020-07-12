@@ -111,7 +111,8 @@ let
           json = builtins.toPath (src + "/\''${variant}.json");
           boardBinaries = artiq-board {
             inherit target variant;
-            buildCommand = "python -m artiq.gateware.targets.kasli_generic \''${json}";
+            src = json;
+            buildCommand = "python -m artiq.gateware.targets.kasli_generic \$src";
           };
         in
           start // {
