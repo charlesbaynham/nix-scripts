@@ -45,6 +45,7 @@ let
 in
 { target
 , variant
+, src ? null,
 , buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}"
 , extraInstallCommands ? ""}:
 
@@ -53,6 +54,7 @@ in
 pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
   name = "artiq-board-${target}-${variant}-${version}";
   version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
+  inherit src;
   phases = [ "buildPhase" "installCheckPhase" "installPhase" "checkPhase" ];
   buildInputs = [
     vivado
