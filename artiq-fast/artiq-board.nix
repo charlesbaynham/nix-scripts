@@ -45,7 +45,7 @@ let
 in
 { target
 , variant
-, src ? null,
+, src ? null
 , buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}"
 , extraInstallCommands ? ""}:
 
