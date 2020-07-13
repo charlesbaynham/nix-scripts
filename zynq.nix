@@ -22,6 +22,18 @@ in
   ) // (
     builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiq-zynq
   ) // {
+    gateware-sim = pkgs.lib.hydraJob (pkgs.stdenv.mkDerivation {
+      name = "gateware-sim";
+      buildInputs = [ artiq-fast.migen artiq-fast.migen-axi artiq-fast.artiq ];
+
+      phases = [ "buildPhase" ];
+
+      buildPhase =
+        ''
+        python -m unittest discover ${<artiq-zynq>}/src/gateware -v
+        touch $out
+        '';
+    });
     zc706-hitl-tests = pkgs.lib.hydraJob (pkgs.stdenv.mkDerivation {
       name = "zc706-hitl-tests";
 
