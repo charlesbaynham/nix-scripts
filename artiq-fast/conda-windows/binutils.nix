@@ -1,4 +1,4 @@
-{ pkgs, version, src, target }:
+{ pkgs, version, target, windows-binutils }:
 
 let
   wfvm = import ../wfvm.nix { inherit pkgs; };
@@ -34,11 +34,13 @@ let
       cp --no-preserve=mode,ownership -R ${./binutils-recipe} binutils
       sed -i s/##TARGET##/${target}/g binutils/*
       sed -i s/##VERSION##/${version}/g binutils/*
+      sed -i 's!##PREFIX##!${windows-binutils.prefix}!g' binutils/*
       ${wfvm.utils.win-put}/bin/win-put binutils .
-      tar xjf ${src}
-      patch -d binutils-${version} -p1 < ${./binutils-hack-libiconv.patch}
-      tar cjf src.tar.bz2 binutils-${version}
+      cp ${windows-binutils} src.tar.bz2
       ${wfvm.utils.win-put}/bin/win-put src.tar.bz2 .
+      cp ${./patch_prefix.py} patch_prefix.py
+      ls -l patch_prefix.py
+      ${wfvm.utils.win-put}/bin/win-put patch_prefix.py .
 
       ${wfvm.utils.win-exec}/bin/win-exec ".\Anaconda3\scripts\activate && conda build --no-anaconda-upload --no-test -c file:///C:/users/wfvm/fake-channel --override-channels binutils"
 
