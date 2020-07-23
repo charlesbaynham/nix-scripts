@@ -70,8 +70,6 @@ let
         "ptb6"
         "ptbal"
         "ptbin"
-        "purduemaster"
-        "purduesatellite"
         "purpleberry"
         "qe"
         "qleds"
@@ -96,6 +94,8 @@ let
         "bonn1satellite"
         "hw2master"
         "hw2satellite"
+        "purduemaster"
+        "purduesatellite"
         "uamsterdam"
       ]);
 
@@ -171,6 +171,12 @@ let
           master = "hw2master";
           satellites = {
             "1" = "hw2satellite";
+          };
+        };
+        purdue = {
+          master = "purduemaster";
+          satellites = {
+            "1" = "purduesatellite";
           };
         };
       });
