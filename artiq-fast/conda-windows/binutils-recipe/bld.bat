@@ -1,5 +1,5 @@
 set MSYS=C:\MSYS64
-set TRIPLE=x86_64-pc-mingw64
+set TRIPLE=x86_64-w64-mingw32
 set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH%
 
 mkdir build
