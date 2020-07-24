@@ -24,7 +24,7 @@ let
       set MSYS=c:\msys64
       set PATH=%MSYS%\usr\bin;%MSYS%\mingw64\bin;%PATH%
       tar xjf src.tar.bz2
-      bash -c "cd binutils-${version} && ./configure --build=x86_64-pc-mingw64 --prefix=${prefix}/Library --target=${target} && make -j$NIX_BUILD_CORES && make install"
+      bash -c "cd binutils-${version} && ./configure --build=x86_64-w64-mingw32 --prefix=${prefix}/Library --target=${target} && make -j$NIX_BUILD_CORES && make install"
       rm -r ${prefix}/Library/or1k-linux
       cp %MSYS%/mingw64/bin/libiconv-2.dll ${prefix}/Library/bin/
       tar cjf ${outName} -C ${prefix} .
