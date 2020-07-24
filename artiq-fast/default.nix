@@ -123,24 +123,22 @@ let
     };
   };
 
-  windowsBinutils = targetName: target:
-    import ./windows/binutils.nix {
-      inherit pkgs target;
-      inherit (mainPackages."binutils-${targetName}") version src;
-    };
-
   condaWindowsExperimental = rec {
-    conda-windows-binutils-or1k = import ./conda-windows/binutils.nix rec {
+    windows-binutils-or1k = import ./windows/binutils.nix {
+      inherit pkgs;
+      inherit (mainPackages.binutils-or1k) version src;
+      target = "or1k-linux";
+    };
+    conda-windows-binutils-or1k = import ./conda-windows/binutils.nix {
       inherit pkgs;
       inherit (mainPackages.binutils-or1k) version;
       target = "or1k-linux";
-      windows-binutils = windowsBinutils "or1k" target;
+      windows-binutils = windows-binutils-or1k;
     };
-    conda-windows-binutils-arm = import ./conda-windows/binutils.nix rec {
+    conda-windows-binutils-arm = import ./conda-windows/binutils.nix {
       inherit pkgs;
       inherit (mainPackages.binutils-or1k) version src;
       target = "armv7-unknown-linux-gnueabihf";
-      windows-binutils = windowsBinutils "arm" target;
     };
     conda-windows-llvm-or1k = import ./conda-windows/llvm-or1k.nix {
       inherit pkgs;
