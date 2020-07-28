@@ -35,7 +35,7 @@ rec {
       rev = "5b391fe86f43bb9f4f96c5bc0532e2a112db2936";
       sha256 = "1gw1fk4y2l6bwq0fg2a9dfc1rvq8cv492dyil96amjdhsxvnx35b";
     };
-    patches = [ ./python37hack.patch ];
+    patches = [ ./pythonparserver.patch ];
     propagatedBuildInputs = with python3Packages; [ regex ];
   };
 
