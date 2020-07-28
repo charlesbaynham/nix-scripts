@@ -43,7 +43,7 @@ let
       src = import ./conda/fake-source.nix { inherit pkgs; } {
         name = "pythonparser";
         inherit (pythonDeps.pythonparser) version src;
-        extraSrcCommands = "patch -p1 < ${./pkgs/python37hack.patch}";
+        extraSrcCommands = "patch -p1 < ${./pkgs/pythonparserver.patch}";
         dependencies = ["regex"];
       };
     };
