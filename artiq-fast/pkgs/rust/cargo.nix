@@ -7,10 +7,10 @@ rustPlatform.buildRustPackage rec {
   # Note: we can't build cargo 1.28.0 because rustc tightened the borrow checker rules and broke
   # backward compatibility, which affects old cargo versions.
   name = "cargo-${version}";
-  version = "1.37.0";
+  version = "1.39.0";
   src = fetchurl {
-    url = "https://static.rust-lang.org/dist/rustc-1.37.0-src.tar.gz";
-    sha256 = "1hrqprybhkhs6d9b5pjskfnc5z9v2l2gync7nb39qjb5s0h703hj";
+    url = "https://static.rust-lang.org/dist/rustc-1.39.0-src.tar.gz";
+    sha256 = "0mwkc1bnil2cfyf6nglpvbn2y0zfbv44zfhsd5qg4c9rm6vgd8dl";
   };
 
   # the rust source tarball already has all the dependencies vendored, no need to fetch them again
