@@ -1,7 +1,8 @@
 { pkgs ? import <nixpkgs> {}}:
 with pkgs;
 let
-  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; };
+  artiq6 = pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0";
+  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; misoc-new = artiq6; };
 
   boards = [
     { target = "kasli"; variant = "tester"; }
@@ -145,6 +146,6 @@ let
     };
   };
 
-  condaWindows = if (pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0") then condaWindowsExperimental else condaWindowsLegacy;
+  condaWindows = if artiq6 then condaWindowsExperimental else condaWindowsLegacy;
 in
   boardPackages // mainPackages // condaNoarch // condaLinux // condaWindows

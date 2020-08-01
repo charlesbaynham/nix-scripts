@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, python3Packages }:
+{ stdenv, fetchFromGitHub, python3Packages, misoc-new }:
 
 rec {
   # User dependencies
@@ -53,16 +53,24 @@ rec {
   };
 
   # Development/firmware dependencies
-  misoc = python3Packages.buildPythonPackage rec {
+  misoc = python3Packages.buildPythonPackage {
     name = "misoc";
     
-    src = fetchFromGitHub {
-      owner = "m-labs";
-      repo = "misoc";
-      rev = "7e5fe8d38835175202dad2c51d37b20b76fd9e16";
-      sha256 = "0i8bppz7x2s45lx9n49c0r87pqps09z35yzc17amvx21qsplahxn";
-      fetchSubmodules = true;
-    };
+    src = if misoc-new
+      then (fetchFromGitHub {
+        owner = "m-labs";
+        repo = "misoc";
+        rev = "9cad449a283d3b7a6e496afa523547df06e75829";
+        sha256 = "1fw3qfhaa435iv5qnvhhfwj29skhkj6yagr6ila9va9nb2zvklf5";
+        fetchSubmodules = true;
+      })
+      else (fetchFromGitHub {
+        owner = "m-labs";
+        repo = "misoc";
+        rev = "7e5fe8d38835175202dad2c51d37b20b76fd9e16";
+        sha256 = "0i8bppz7x2s45lx9n49c0r87pqps09z35yzc17amvx21qsplahxn";
+        fetchSubmodules = true;
+      });
 
     # TODO: fix misoc bitrot and re-enable tests
     doCheck = false;
