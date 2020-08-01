@@ -20,6 +20,7 @@ in
     postFixup = ''
       wrapQtApp "$out/bin/artiq_dashboard"
       wrapQtApp "$out/bin/artiq_browser"
+      wrapQtApp "$out/bin/artiq_session"
     '';
 
     checkInputs = [ binutils-or1k outputcheck ];
