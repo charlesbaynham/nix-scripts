@@ -76,7 +76,6 @@ let
         "rice"
         "saymamaster"
         "siegen"
-        "su"
         "sydney"
         "uaarhus"
         "ubirmingham"
