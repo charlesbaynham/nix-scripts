@@ -1,6 +1,6 @@
 let
   pkgs = import <nixpkgs> {};
-  zc706 = import <zc706> { mozillaOverlay = import <mozillaOverlay>; };
+  zynq-rs = import <zynq-rs> { mozillaOverlay = import <mozillaOverlay>; };
   artiq-zynq = import <artiq-zynq> { mozillaOverlay = import <mozillaOverlay>; };
   artiq-fast = import <artiq-fast> { inherit pkgs; };
   addBuildProducts = drv: drv.overrideAttrs (oldAttrs: {
@@ -18,7 +18,7 @@ in
       pkgs.lib.hydraJob (
         addBuildProducts drv
       )
-    ) zc706.zc706
+    ) zynq-rs.zc706
   ) // (
     builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiq-zynq
   ) // {
