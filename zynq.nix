@@ -64,7 +64,7 @@ in
         artiq_run --device-db ${<artiq-zynq>}/examples/device_db.py ${<artiq-zynq>}/examples/mandelbrot.py
 
         echo Running ARTIQ unit tests...
-        ARTIQ_ROOT=${<artiq-zynq>}/examples/examples python -m unittest discover artiq.test.coredevice -v
+        ARTIQ_ROOT=${<artiq-zynq>}/examples python -m unittest discover artiq.test.coredevice -v
 
         touch $out
 
