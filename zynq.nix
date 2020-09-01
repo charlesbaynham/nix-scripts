@@ -54,7 +54,7 @@ in
 
         export USER=hydra
         pushd ${<artiq-zynq>}
-        bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa" -d ${artiq-zynq.zc706-simple-jtag}
+        bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa" -d ${artiq-zynq.zc706-nist_qc2-jtag}
         popd
 
         echo Waiting for the firmware to boot...
@@ -62,6 +62,9 @@ in
 
         echo Running test kernel...
         artiq_run --device-db ${<artiq-zynq>}/examples/device_db.py ${<artiq-zynq>}/examples/mandelbrot.py
+
+        echo Running ARTIQ unit tests...
+        ARTIQ_ROOT=${<artiq-zynq>}/examples/examples python -m unittest discover artiq.test.coredevice -v
 
         touch $out
 
