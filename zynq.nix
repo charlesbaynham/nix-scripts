@@ -1,7 +1,7 @@
 let
   pkgs = import <nixpkgs> {};
   zynq-rs = import <zynq-rs> { mozillaOverlay = import <mozillaOverlay>; };
-  artiq-zynq = import <artiq-zynq> { mozillaOverlay = import <mozillaOverlay>; };
+  artiq-zynq = import <artiq-zynq>;
   artiq-fast = import <artiq-fast> { inherit pkgs; };
   addBuildProducts = drv: drv.overrideAttrs (oldAttrs: {
       installPhase = ''
