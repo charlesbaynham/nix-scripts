@@ -2,6 +2,8 @@ let
   pkgs = import <nixpkgs> {};
   zynq-rs-latest = import <zynq-rs>;
   artiq-zynq = import <artiq-zynq>;
+  zynq-rs = import artiq-zynq.zynq-rs;
+  zc706-szl = (import zynq-rs).zc706-szl;
   artiq-fast = import <artiq-fast> { inherit pkgs; };
 in
   (
@@ -21,10 +23,7 @@ in
         touch $out
         '';
     });
-    zc706-hitl-tests = pkgs.lib.hydraJob (let
-      zynq-rs = import "${<artiq-zynq>}/zynq-rs.nix";
-      zc706-szl = (import zynq-rs).zc706-szl;
-    in pkgs.stdenv.mkDerivation {
+    zc706-hitl-tests = pkgs.lib.hydraJob (pkgs.stdenv.mkDerivation {
       name = "zc706-hitl-tests";
 
       # requires patched Nix
