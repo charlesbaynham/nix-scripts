@@ -1,11 +1,12 @@
 let
-  zynq-rs = import <zynq-rs>;
+  zynq-rs-latest = import <zynq-rs>;
   artiq-zynq = import <artiq-zynq>;
+  zynq-rs = import "${artiq-zynq}/zynq-rs.nix";
   pkgs = import <nixpkgs> {};
   artiq-fast = import <artiq-fast> { inherit pkgs; };
 in
   (
-    builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) zynq-rs
+    builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) zynq-rs-latest
   ) // (
     builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiq-zynq
   ) // {
