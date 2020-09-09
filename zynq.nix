@@ -1,24 +1,11 @@
 let
-  pkgs = import <nixpkgs> {};
-  zynq-rs = import <zynq-rs> { mozillaOverlay = import <mozillaOverlay>; };
+  zynq-rs = import <zynq-rs>;
   artiq-zynq = import <artiq-zynq>;
+  pkgs = import <nixpkgs> {};
   artiq-fast = import <artiq-fast> { inherit pkgs; };
-  addBuildProducts = drv: drv.overrideAttrs (oldAttrs: {
-      installPhase = ''
-        ${oldAttrs.installPhase}
-        mkdir -p $out/nix-support
-        for f in $out/*.elf ; do
-          echo file binary-dist $f >> $out/nix-support/hydra-build-products
-        done
-      '';
-    });
 in
   (
-    builtins.mapAttrs (name: drv:
-      pkgs.lib.hydraJob (
-        addBuildProducts drv
-      )
-    ) zynq-rs.zc706
+    builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) zynq-rs
   ) // (
     builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiq-zynq
   ) // {
