@@ -48,7 +48,7 @@ in
       buildPhase =
         ''
         echo Power cycling board...
-        (echo b; sleep 5; echo B; sleep 5) | nc 192.168.1.31 3131
+        (echo b; sleep 5; echo B; sleep 5) | nc -N -w6 192.168.1.31 3131
         echo Power cycle done.
 
         export USER=hydra
