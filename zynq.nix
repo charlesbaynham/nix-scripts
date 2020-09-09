@@ -2,7 +2,7 @@ let
   pkgs = import <nixpkgs> {};
   zynq-rs-latest = import <zynq-rs>;
   artiq-zynq = import <artiq-zynq>;
-  zynq-rs = import "${artiq-zynq}/zynq-rs.nix";
+  zynq-rs = import "${<artiq-zynq>}/zynq-rs.nix";
   zc706-szl = (import zynq-rs).zc706-szl;
   artiq-fast = import <artiq-fast> { inherit pkgs; };
 in
