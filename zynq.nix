@@ -2,8 +2,6 @@ let
   pkgs = import <nixpkgs> {};
   zynq-rs-latest = import <zynq-rs>;
   artiq-zynq = import <artiq-zynq>;
-  zynq-rs = import artiq-zynq.zynq-rs;
-  zc706-szl = (import zynq-rs).zc706-szl;
   artiq-fast = import <artiq-fast> { inherit pkgs; };
 in
   (
@@ -41,8 +39,8 @@ in
         echo Power cycle done.
 
         export USER=hydra
-        export OPENOCD_ZYNQ=${zynq-rs}/openocd
-        export SZL=${zc706-szl}/szl.elf
+        export OPENOCD_ZYNQ=${artiq-zynq.zynq-rs}/openocd
+        export SZL=${(import artiq-zynq.zynq-rs).zc706-szl}/szl.elf
         pushd ${<artiq-zynq>}
         bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa" -d ${artiq-zynq.zc706-nist_qc2-jtag}
         popd
