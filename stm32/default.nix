@@ -39,8 +39,8 @@ in
       src = <stabilizerSrc>;
       patchPhase = ''
         substituteInPlace src/main.rs \
-          --replace "let local_addr = net::wire::IpAddress::v4(10, 0, 16, 99);" \
-                    "let local_addr = net::wire::IpAddress::v4(192, 168, 1, 76);"
+          --replace "net::wire::IpAddress::v4(10, 0, 16, 99)," \
+                    "net::wire::IpAddress::v4(192, 168, 1, 76),"
       '';
     };
     thermostat = buildStm32Firmware {
