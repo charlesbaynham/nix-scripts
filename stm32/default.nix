@@ -1,6 +1,6 @@
 { # Use master branch of the overlay by default
   mozillaOverlay ? import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz),
-  rustManifest ? builtins.fetchurl "https://static.rust-lang.org/dist/channel-rust-nightly.toml"
+  rustManifest ? ./channel-rust-nightly.toml
 }:
 
 let
