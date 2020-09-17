@@ -20,6 +20,7 @@ let
         cargoSha256 = (import cargoSha256Drv);
 
         inherit patchPhase;
+        buildInputs = [ pkgs.llvm ];
         buildPhase = ''
           export CARGO_HOME=$(mktemp -d cargo-home.XXX)
           cargo build --release
@@ -30,6 +31,8 @@ let
           mkdir -p $out $out/nix-support
           cp target/thumbv7em-none-eabihf/release/${name} $out/${name}.elf
           echo file binary-dist $out/${name}.elf >> $out/nix-support/hydra-build-products
+          llvm-objcopy -O binary target/thumbv7em-none-eabihf/release/${name} $out/${name}.bin
+          echo file binary-dist $out/${name}.bin >> $out/nix-support/hydra-build-products
         '';
       };
 in
