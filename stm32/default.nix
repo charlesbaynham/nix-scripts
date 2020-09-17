@@ -8,7 +8,7 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  buildStm32Firmware = { name, src, patchPhase ? "" }:
+  buildStm32Firmware = { name, src, patchPhase ? "", checkPhase ? "" }:
     let
       cargoSha256Drv = pkgs.runCommand "${name}-cargosha256" { } ''cp "${src}/cargosha256.nix" $out'';
     in
@@ -26,7 +26,7 @@ let
           cargo build --release
         '';
 
-        doCheck = false;
+        inherit checkPhase;
         installPhase = ''
           mkdir -p $out $out/nix-support
           cp target/thumbv7em-none-eabihf/release/${name} $out/${name}.elf
@@ -49,5 +49,8 @@ in
     thermostat = buildStm32Firmware {
       name = "thermostat";
       src = <thermostatSrc>;
+      checkPhase = ''
+        cargo test --target=${pkgs.rust.toRustTarget pkgs.stdenv.targetPlatform}
+      '';
     };
   }
