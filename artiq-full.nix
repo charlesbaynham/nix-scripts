@@ -78,6 +78,7 @@ let
         "sydney"
         "uaarhus"
         "ubirmingham"
+        "ucsd"
         "ugranada"
         "unlv"
         "ustc2"
