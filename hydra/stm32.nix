@@ -20,7 +20,8 @@
                 "mozillaOverlay": { "type": "git", "value": "git://github.com/mozilla/nixpkgs-mozilla.git", "emailresponsible": false },
                 "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
                 "stabilizerSrc": { "type": "git", "value": "git://github.com/quartiq/stabilizer.git", "emailresponsible": false },
-                "thermostatSrc": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/thermostat.git", "emailresponsible": false }
+                "thermostatSrc": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/thermostat.git", "emailresponsible": false },
+                "humpbackDdsSrc": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/humpback-dds.git", "emailresponsible": false }
             }
         }
     }

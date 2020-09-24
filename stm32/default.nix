@@ -55,4 +55,8 @@ in
         cargo test --target=${pkgs.rust.toRustTarget pkgs.stdenv.targetPlatform}
       '';
     };
+    humpback-dds = buildStm32Firmware {
+      name = "humpback-dds";
+      src = <humpbackDdsSrc>;
+    };
   }
