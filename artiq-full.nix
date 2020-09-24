@@ -28,7 +28,6 @@ let
       variants = [
         "afmaster"
         "afsatellite"
-        "berkeley3"
         "csu"
         "duke3"
         "femto1"
@@ -38,7 +37,6 @@ let
         "griffith"
         "hub"
         "hw"
-        "indiana"
         "innsbruck2"
         "ist"
         "liaf"
