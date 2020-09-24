@@ -34,6 +34,8 @@ let
           llvm-objcopy -O binary target/thumbv7em-none-eabihf/release/${name} $out/${name}.bin
           echo file binary-dist $out/${name}.bin >> $out/nix-support/hydra-build-products
         '';
+
+        dontFixup = true;
       };
 in
   {
