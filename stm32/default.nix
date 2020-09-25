@@ -37,7 +37,7 @@ let
 
         dontFixup = true;
       };
-  humpbackMigen = pkgs.callPackage "${<humpbackDdsSrc>}/nix/migen.nix" {};
+  migen = (import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; misoc-new = true; }).migen;
 in
   {
     stabilizer = buildStm32Firmware {
@@ -60,7 +60,7 @@ in
       name = "humpback-dds";
       src = <humpbackDdsSrc>;
       extraBuildInputs = [
-        (pkgs.python3.withPackages(ps: [ humpbackMigen ]))
+        (pkgs.python3.withPackages(ps: [ migen ]))
         pkgs.yosys
         pkgs.nextpnr
         pkgs.icestorm
