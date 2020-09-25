@@ -37,6 +37,7 @@ let
 
         dontFixup = true;
       };
+  humpbackMigen = pkgs.callPackage "${<humpbackDdsSrc>}/nix/migen.nix" {};
 in
   {
     stabilizer = buildStm32Firmware {
@@ -59,7 +60,7 @@ in
       name = "humpback-dds";
       src = <humpbackDdsSrc>;
       extraBuildInputs = [
-        (pkgs.python3.withPackages(ps: [ (pkgs.callPackage "${<humpbackDdsSrc>}/nix/migen.nix" {}) ]))
+        (pkgs.python3.withPackages(ps: [ humpbackMigen ]))
         pkgs.yosys
         pkgs.nextpnr
         pkgs.icestorm
