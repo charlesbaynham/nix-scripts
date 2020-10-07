@@ -3,11 +3,11 @@
 rec {
   wavedrom = pkgs.python3Packages.buildPythonPackage rec {
     pname = "wavedrom";
-    version = "0.1";
+    version = "2.0.3.post2";
 
     src = pkgs.python3Packages.fetchPypi {
       inherit pname version;
-      sha256 = "006w683zlmmwcw5xz1n5dwg34ims5jg3gl2700ql4wr0myjz6710";
+      sha256 = "13a4086417nv836s2wbj3f4r31gwapbyw5smgl00jsqizwsk96r3";
     };
 
     buildInputs = [ pkgs.python3Packages.setuptools_scm ];
@@ -23,11 +23,11 @@ rec {
 
   sphinxcontrib-wavedrom = pkgs.python3Packages.buildPythonPackage rec {
     pname = "sphinxcontrib-wavedrom";
-    version = "2.0.0";
+    version = "2.1.1";
 
     src = pkgs.python3Packages.fetchPypi {
       inherit pname version;
-      sha256 = "0nk36zqq5ipxqx9izz2iazb3iraasanv3nm05bjr21gw42zgkz22";
+      sha256 = "09xq4csdcil2x8mm38yd5k6lfbkazicvm278xnzwbfc9vghkqqs2";
     };
 
     buildInputs = [ pkgs.python3Packages.setuptools_scm ];
