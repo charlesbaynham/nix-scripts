@@ -1,18 +1,16 @@
 {
-    "artiq": {
-        "enabled": 1,
-        "hidden": true,
-        "description": "js",
-        "nixexprinput": "nixScripts",
-        "nixexprpath": "hydra/artiq.nix",
-        "checkinterval": 300,
-        "schedulingshares": 10,
-        "enableemail": false,
-        "emailoverride": "",
-        "keepnr": 10,
-        "inputs": {
-            "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-20.03", "emailresponsible": false },
-            "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false }
-        }
+    "enabled": 1,
+    "hidden": true,
+    "description": "js",
+    "nixexprinput": "nixScripts",
+    "nixexprpath": "hydra/artiq.nix",
+    "checkinterval": 300,
+    "schedulingshares": 10,
+    "enableemail": false,
+    "emailoverride": "",
+    "keepnr": 10,
+    "inputs": {
+        "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-20.03", "emailresponsible": false },
+        "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false }
     }
 }
