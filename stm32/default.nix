@@ -8,7 +8,7 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  buildStm32Firmware = { name, src, patchPhase ? "", extraBuildInputs ? [], checkPhase ? "" }:
+  buildStm32Firmware = { name, src, patchPhase ? "", extraNativeBuildInputs ? [], checkPhase ? "" }:
     let
       cargoSha256Drv = pkgs.runCommand "${name}-cargosha256" { } ''cp "${src}/cargosha256.nix" $out'';
     in
@@ -20,7 +20,7 @@ let
         cargoSha256 = (import cargoSha256Drv);
 
         inherit patchPhase;
-        buildInputs = [ pkgs.llvm ] ++ extraBuildInputs;
+        nativeBuildInputs = [ pkgs.llvm ] ++ extraNativeBuildInputs;
         buildPhase = ''
           export CARGO_HOME=$(mktemp -d cargo-home.XXX)
           cargo build --release
@@ -59,7 +59,7 @@ in
     humpback-dds = buildStm32Firmware {
       name = "humpback-dds";
       src = <humpbackDdsSrc>;
-      extraBuildInputs = [
+      extraNativeBuildInputs = [
         (pkgs.python3.withPackages(ps: [ migen ]))
         pkgs.yosys
         pkgs.nextpnr
