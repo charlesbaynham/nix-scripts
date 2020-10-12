@@ -60,8 +60,8 @@ rec {
       then (fetchFromGitHub {
         owner = "m-labs";
         repo = "misoc";
-        rev = "9cad449a283d3b7a6e496afa523547df06e75829";
-        sha256 = "1fw3qfhaa435iv5qnvhhfwj29skhkj6yagr6ila9va9nb2zvklf5";
+        rev = "a8a33f6559da77a1d3ffc383939c1dc3a4a7795d";
+        sha256 = "145hzxs6cf8p46m1lvrdr9af5c1vp0ix57adk9d8iwqj1rjw13f7";
         fetchSubmodules = true;
       })
       else (fetchFromGitHub {
@@ -91,8 +91,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "06c8ea9b29092b37c177d3fde62bf4a6b8ba6d1a";
-      sha256 = "0xzdmyifkwnx6nnc35sr6f484frvizmbb2ib3p8j9apalhfx7bzn";
+      rev = "c50ecdebd0e93c90ff44ca2e13d9f55fa97947d5";
+      sha256 = "1pagvh8ibkd97ivd1dz9xxj0bi2m28hbnvrhkhhhnsx0n9yy2fqd";
     };
 
     propagatedBuildInputs = with python3Packages; [ colorama ];
