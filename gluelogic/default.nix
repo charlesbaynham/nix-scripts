@@ -1,7 +1,8 @@
 { pkgs ? import <nixpkgs> {} }:
 let
-  artiqpkgs = import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; misoc-new = false; };
+  artiqpkgs = import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; misoc-new = true; };
   ise = import ./ise.nix { inherit pkgs; };
+  vivado = import ../artiq-fast/vivado.nix { inherit pkgs; };
   buildUrukulCpld = {version, src}: pkgs.stdenv.mkDerivation {
     name = "urukul-cpld-${version}";
     inherit src;
@@ -77,5 +78,28 @@ in
         cp build/fastino.bin $out
         echo file binary-dist $out/fastino.bin >> $out/nix-support/hydra-build-products
         '';
+    };
+    phaser-fpga = pkgs.stdenv.mkDerivation {
+      name = "phaser-fpga";
+      src = <phaserSrc>;
+      patchPhase = ''
+        substituteInPlace phaser.py \
+          --replace "Platform(load=True)" \
+                    "Platform()"
+      '';
+
+      buildInputs = [ (pkgs.python3.withPackages(ps: [ artiqpkgs.migen artiqpkgs.misoc ])) ] ++ [ vivado ];
+      buildPhase = "python phaser.py";
+      installPhase =
+        ''
+        mkdir -p $out $out/nix-support
+        cp build/phaser.bit $out
+        echo file binary-dist $out/phaser.bit >> $out/nix-support/hydra-build-products
+        '';
+      dontFixup = true;
+
+      doCheck = true;
+      checkInputs = [ pkgs.python3Packages.pytest ];
+      checkPhase = "pytest";
     };
   }

@@ -85,7 +85,8 @@
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
             "urukulSrc": { "type": "git", "value": "git://github.com/quartiq/urukul", "emailresponsible": false },
             "mirnySrc": { "type": "git", "value": "git://github.com/quartiq/mirny", "emailresponsible": false },
-            "fastinoSrc": { "type": "git", "value": "git://github.com/quartiq/fastino", "emailresponsible": false }
+            "fastinoSrc": { "type": "git", "value": "git://github.com/quartiq/fastino", "emailresponsible": false },
+            "phaserSrc": { "type": "git", "value": "git://github.com/quartiq/phaser", "emailresponsible": false }
         }
     },
     "zynq": {
