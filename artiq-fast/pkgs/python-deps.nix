@@ -196,8 +196,8 @@ rec {
     src = fetchFromGitHub {
       owner = "peteut";
       repo = "migen-axi";
-      rev = "623f368702c1380afff51f67cc744427b871f967";
-      sha256 = "0nca8piril1lwwffdxi3x32drgq4mgj88r23mxwzdfa28ws506il";
+      rev = "b9dd2b24a7d2f5c5cc97067ffd2535492dc64001";
+      sha256 = "1rgm33gf8j4c8kynvwaq0907zisncqhx4wnb0wfryszv4lcz6jrk";
     };
 
     nativeBuildInputs = [ python3Packages.pbr ];
