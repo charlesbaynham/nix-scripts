@@ -81,6 +81,7 @@ let
         "ugranada"
         "unlv"
         "ustc2"
+        "ustc3"
         "vlbaimaster"
         "vlbaisatellite"
         "wipm"
