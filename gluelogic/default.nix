@@ -1,6 +1,6 @@
 { pkgs ? import <nixpkgs> {} }:
 let
-  artiqpkgs = import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; misoc-new = true; };
+  artiqpkgs = import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) stdenv fetchgit fetchFromGitHub python3Packages; misoc-new = true; };
   ise = import ./ise.nix { inherit pkgs; };
   vivado = import ../artiq-fast/vivado.nix { inherit pkgs; };
   buildUrukulCpld = {version, src}: pkgs.stdenv.mkDerivation {

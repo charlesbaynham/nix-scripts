@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, python3Packages, misoc-new }:
+{ stdenv, fetchgit, fetchFromGitHub, python3Packages, misoc-new }:
 
 rec {
   # User dependencies
@@ -53,6 +53,16 @@ rec {
   };
 
   # Development/firmware dependencies
+  artiq-netboot = python3Packages.buildPythonPackage rec {
+    name = "artiq-netboot";
+
+    src = fetchgit {
+      url = "https://git.m-labs.hk/m-labs/artiq-netboot.git";
+      rev = "04f69eb07df73abe4b89fde2c24084f7664f2104";
+      sha256 = "0ql4fr8m8gpb2yql8aqsdqsssxb8zqd6l65kl1f6s9845zy7shs9";
+    };
+  };
+
   misoc = python3Packages.buildPythonPackage {
     name = "misoc";
     

@@ -2,7 +2,7 @@
 with pkgs;
 let
   artiq6 = pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0";
-  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; misoc-new = artiq6; };
+  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) stdenv fetchgit fetchFromGitHub python3Packages; misoc-new = artiq6; };
 
   boards = [
     { target = "kasli"; variant = "tester"; }
@@ -20,7 +20,7 @@ let
       }) {} boards;
 
   mainPackages = rec {
-    inherit (pythonDeps) sipyco asyncserial pythonparser pyqtgraph-qt5 misoc migen microscope jesd204b migen-axi lit outputcheck;
+    inherit (pythonDeps) sipyco asyncserial pythonparser pyqtgraph-qt5 artiq-netboot misoc migen microscope jesd204b migen-axi lit outputcheck;
     binutils-or1k = callPackage ./pkgs/binutils.nix { platform = "or1k"; target = "or1k-linux"; };
     binutils-arm = callPackage ./pkgs/binutils.nix { platform = "arm"; target = "armv7-unknown-linux-gnueabihf"; };
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};

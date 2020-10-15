@@ -37,7 +37,7 @@ let
 
         dontFixup = true;
       };
-  migen = (import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) stdenv fetchFromGitHub python3Packages; misoc-new = true; }).migen;
+  migen = (import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) stdenv fetchgit fetchFromGitHub python3Packages; misoc-new = true; }).migen;
 in
   {
     stabilizer = buildStm32Firmware {
