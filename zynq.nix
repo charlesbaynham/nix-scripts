@@ -28,7 +28,7 @@ in
       __networked = true;
 
       buildInputs = [
-        pkgs.netcat pkgs.openssh pkgs.rsync artiq-fast.artiq
+        pkgs.netcat pkgs.openssh pkgs.rsync artiq-fast.artiq artiq-fast.artiq-netboot
       ];
       phases = [ "buildPhase" ];
 
