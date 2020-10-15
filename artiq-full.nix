@@ -95,6 +95,7 @@ let
         "luh"
         "purduemaster"
         "purduesatellite"
+        "siom"
         "uamsterdam"
       ]);
 
