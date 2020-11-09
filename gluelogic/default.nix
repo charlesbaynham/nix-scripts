@@ -82,6 +82,11 @@ in
     phaser-fpga = pkgs.stdenv.mkDerivation {
       name = "phaser-fpga";
       src = <phaserSrc>;
+      patchPhase = ''
+        substituteInPlace phaser.py \
+          --replace "source ../load.tcl" \
+                    ""
+      '';
 
       buildInputs = [ (pkgs.python3.withPackages(ps: [ artiqpkgs.migen artiqpkgs.misoc ])) ] ++ [ vivado ];
       buildPhase = "python phaser.py";
