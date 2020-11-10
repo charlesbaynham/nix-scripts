@@ -57,6 +57,9 @@ in
         touch $out
 
         echo Completed
+
+        (echo b; sleep 5) | nc -N -w6 192.168.1.31 3131
+        echo Board powered off
         '';
     });
   }
