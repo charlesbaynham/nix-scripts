@@ -84,7 +84,7 @@ in
         -i $HOME/.ssh/id_rsa \
         -o UserKnownHostsFile=$HOME/.ssh/known_hosts \
         sb@rpi-1 \
-        'flock /tmp/board_lock-kc705-1 -c "echo Ok; cat"' \
+        'mkdir -p /tmp/board_lock && flock /tmp/board_lock/kc705-1 -c "echo Ok; cat"' \
       | (
         # End remote flock via FIFO
         atexit_unlock() {
