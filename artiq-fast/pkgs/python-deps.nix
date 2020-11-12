@@ -101,8 +101,8 @@ rec {
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "cc6e76e179c20558c344cf1f2b80781fff023ad1";
-      sha256 = "19sx9hlzn7bvg40ajzr4ax7ij00jcvnvakxjwigpvh8lddpn45gf";
+      rev = "a5cc037a510b68374d2b7cd8cd13e6f17534cd2a";
+      sha256 = "03y8k3a0kakh1ial6y2g7gwm9h53x8inbsw9f1rr18314j4l0lfk";
     };
 
     propagatedBuildInputs = with python3Packages; [ colorama ];
@@ -206,8 +206,8 @@ rec {
     src = fetchFromGitHub {
       owner = "peteut";
       repo = "migen-axi";
-      rev = "b9dd2b24a7d2f5c5cc97067ffd2535492dc64001";
-      sha256 = "1rgm33gf8j4c8kynvwaq0907zisncqhx4wnb0wfryszv4lcz6jrk";
+      rev = "cf992cc71d376b24168411e106016cd1a5707eee";
+      sha256 = "0n4hiic81rzkqr2nz9gfrbrfg5h5gps7g29nkykllc0iqbl8p4kk";
     };
 
     nativeBuildInputs = [ python3Packages.pbr ];
