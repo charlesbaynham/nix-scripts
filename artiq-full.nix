@@ -61,8 +61,8 @@ let
         "oregon"
         "osaka"
         "ptb"
-        "ptb2"
-        "ptb3"
+        "ptb3master"
+        "ptb3satellite"
         "ptb4"
         "ptb5"
         "ptb6"
@@ -95,6 +95,8 @@ let
         "hw2master"
         "hw2satellite"
         "luh"
+        "ptb3master"
+        "ptb3satellite"
         "purduemaster"
         "purduesatellite"
         "siom"
@@ -173,6 +175,12 @@ let
           master = "hw2master";
           satellites = {
             "1" = "hw2satellite";
+          };
+        };
+        ptb3 = {
+          master = "ptb3master";
+          satellites = {
+            "1" = "ptb3satellite";
           };
         };
         purdue = {
