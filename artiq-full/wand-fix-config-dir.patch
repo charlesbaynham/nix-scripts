@@ -1,0 +1,30 @@
+diff --git a/wand/tools.py b/wand/tools.py
+index a51dabd..4d5a9d1 100644
+--- a/wand/tools.py
++++ b/wand/tools.py
+@@ -6,6 +6,7 @@ import shutil
+ import logging
+ 
+ from sipyco import pyon
++from artiq.appdirs import user_config_dir
+ import wand
+ 
+ logger = logging.getLogger(__name__)
+@@ -26,10 +27,15 @@ class LockException(Exception):
+     pass
+ 
+ 
++def get_user_config_dir():
++    dir = user_config_dir("wand", "oitg", "1")
++    os.makedirs(dir, exist_ok=True)
++    return dir
++
++
+ def get_config_path(args, name_suffix=""):
+     config_file = "{}{}_config.pyon".format(args.name, name_suffix)
+-    wand_dir = os.path.dirname(wand.__file__)
+-    config_path = os.path.join(wand_dir, config_file)
++    config_path = os.path.join(get_user_config_dir(), config_file)
+ 
+     if args.backup_dir == "":
+         backup_path = ""

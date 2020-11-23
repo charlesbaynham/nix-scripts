@@ -203,4 +203,22 @@ in
         dependencies = [ "sipyco" "numpy" "aiohttp >=3" ];
       };
     };
+  } // {
+    wand = pkgs.python3Packages.buildPythonApplication rec {
+      name = "wand";
+      version = "0.4.dev";
+      src = pkgs.fetchFromGitHub {
+        owner = "OxfordIonTrapGroup";
+        repo = "wand";
+        rev = "0bf1cfef4aa37e5761c20ac8702abec125b45e23";
+        sha256 = "0jfw6w6id7qkx2f6rklrmp13b2hsnvii1qbls60ampx399lcb43g";
+      };
+      patches = [ ./wand-fix-config-dir.patch ];
+      nativeBuildInputs = [ pkgs.qt5.wrapQtAppsHook ];
+      dontWrapQtApps = true;
+      postFixup = ''
+        wrapQtApp "$out/bin/wand_gui"
+      '';
+      propagatedBuildInputs = [ artiq pkgs.python3Packages.numpy pkgs.python3Packages.scipy pkgs.python3Packages.influxdb pkgs.python3Packages.setuptools ];
+    };
   }

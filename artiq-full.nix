@@ -8,8 +8,9 @@ let
     mkdir $out
 
     cp -a ${<artiq-fast>} $out/fast
-    cp ${./artiq-full/conda-artiq-board.nix} $out/conda-artiq-board.nix
-    cp ${./artiq-full/extras.nix} $out/extras.nix
+    cp ${./artiq-full}/conda-artiq-board.nix $out
+    cp ${./artiq-full}/extras.nix $out
+    cp ${./artiq-full}/*.patch $out
 
     REV=`git --git-dir ${sinaraSystemsSrc}/.git rev-parse HEAD`
     SINARA_SRC_CLEAN=`mktemp -d`
