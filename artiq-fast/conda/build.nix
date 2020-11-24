@@ -2,12 +2,22 @@
 # recipe must be a string pointing to a path within the source.
 
 { pkgs }:
-{ name, src, recipe ? "fake-conda"}:
+{ name ? null
+, src
+, pname ? null
+, version ? null
+, recipe ? "fake-conda"
+}:
 
+# Check that either name is specified or both pname & version are specified.
+assert (name == null) -> pname != null && version != null;
+assert (name != null) -> pname == null && version == null;
 let
   condaBuilderEnv = import ./builder-env.nix { inherit pkgs; };
+  realName = if (name != null) then name else "${pname}-${version}";
 in pkgs.stdenv.mkDerivation {
-  inherit name src;
+  name = realName;
+  inherit src;
   buildCommand =
     ''
     HOME=`pwd`
