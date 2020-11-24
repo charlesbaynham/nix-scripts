@@ -41,13 +41,14 @@ rec {
 
   pyqtgraph-qt5 = python3Packages.buildPythonPackage rec {
     name = "pyqtgraph_qt5-${version}";
-    version = "0.10.0";
+    version = "0.11.0";
     doCheck = false;
+    pythonImportsCheck = [ "pyqtgraph" ];
     src = fetchFromGitHub {
       owner = "pyqtgraph";
       repo = "pyqtgraph";
-      rev = "1426e334e1d20542400d77c72c132b04c6d17ddb";
-      sha256 = "1079haxyr316jf0wpirxdj0ry6j8mr16cqr0dyyrd5cnxwl7zssh";
+      rev = "pyqtgraph-${version}";
+      sha256 = "03fvpkqdn80ni51msvyivmghw41qk4vplwdqndkvzzzlppimdjbn";
     };
     propagatedBuildInputs = with python3Packages; [ scipy numpy pyqt5 pyopengl ];
   };
