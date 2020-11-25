@@ -56,15 +56,18 @@ pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
   version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
   inherit src;
   phases = [ "buildPhase" "installCheckPhase" "installPhase" "checkPhase" ];
-  buildInputs = [
+  nativeBuildInputs = [
     vivado
     pkgs.gnumake
-    (pkgs.python3.withPackages(ps: with ps; [ jinja2 numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq ]))
     artiqpkgs.cargo
     artiqpkgs.rustc
     artiqpkgs.binutils-or1k
     artiqpkgs.llvm-or1k
   ];
+  buildInputs =
+    [ (pkgs.python3.withPackages (ps: with ps; [
+    jinja2 numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq
+  ])) ];
   buildPhase = 
     ''
     export CARGO_HOME=${cargoVendored}
