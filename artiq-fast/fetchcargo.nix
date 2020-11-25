@@ -3,7 +3,6 @@
 stdenv.mkDerivation {
   name = "${name}-vendor";
   nativeBuildInputs = [ cacert git cargo cargo-vendor ];
-  strictDeps = true;
   inherit src;
 
   phases = "unpackPhase patchPhase installPhase";
