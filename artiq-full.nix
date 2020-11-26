@@ -95,6 +95,7 @@ let
         "hw2master"
         "hw2satellite"
         "innsbruck3"
+        "innsbruck4"
         "luh"
         "ptb3satellite"
         "ptb7"
@@ -102,6 +103,7 @@ let
         "purduesatellite"
         "siom"
         "uamsterdam"
+        "ubirmingham2"
       ]);
 
       vivado = import ./fast/vivado.nix { inherit pkgs; };
