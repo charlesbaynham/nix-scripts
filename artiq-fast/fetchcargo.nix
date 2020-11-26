@@ -2,6 +2,7 @@
 { name, src, sha256 }:
 stdenv.mkDerivation {
   name = "${name}-vendor";
+  strictDeps = true;
   nativeBuildInputs = [ cacert git cargo cargo-vendor ];
   inherit src;
 
