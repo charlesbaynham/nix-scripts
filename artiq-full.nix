@@ -89,6 +89,7 @@ let
         "wipm5satellite"
         "wipm6"
       ] ++ (pkgs.lib.lists.optionals (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
+        "apm"
         "atomionics"
         "bonn1master"
         "bonn1satellite"
