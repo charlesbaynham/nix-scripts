@@ -100,6 +100,7 @@ let
         "luh"
         "ptb3satellite"
         "ptb7"
+        "ptb8"
         "purduemaster"
         "purduesatellite"
         "siom"
