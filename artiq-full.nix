@@ -108,7 +108,11 @@ let
       ]);
 
       vivado = import ./fast/vivado.nix { inherit pkgs; };
-      artiq-board = import ./fast/artiq-board.nix { inherit pkgs vivado; };
+      artiq-board-import =
+        if pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0"
+        then ./fast/artiq-board.nix
+        else ./fast/artiq-board-legacy.nix;
+      artiq-board = import artiq-board-import { inherit pkgs vivado; };
       conda-artiq-board = import ./conda-artiq-board.nix { inherit pkgs; };
       src = pkgs.fetchgit {
         url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
