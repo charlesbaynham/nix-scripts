@@ -96,4 +96,6 @@ pkgs.python3Packages.toPythonModule (pkgs.stdenv.mkDerivation rec {
     fi
     ${extraInstallCommands}
     '';
+  # don't mangle ELF files as they are not for NixOS
+  dontFixup = true;
 })

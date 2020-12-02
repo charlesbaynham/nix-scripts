@@ -91,6 +91,8 @@ let
         fi
         ${extraInstallCommands}
         '';
+      # don't mangle ELF files as they are not for NixOS
+      dontFixup = true;
     };
 
   identifierStr = "${version};${variant}";
