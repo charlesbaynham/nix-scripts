@@ -266,7 +266,13 @@ let
           variant = "nist_qc2";
           boardBinaries = artiq-board-kc705-nist_qc2;
         };
-      }
+      } // (pkgs.lib.optionalAttrs (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") rec {
+        artiq-board-sayma-satellite-st = artiq-board {
+          target = "sayma";
+          variant = "satellite";
+          buildCommand = "python -m artiq.gateware.targets.sayma_amc --sfp --jdcg-type syncdds";
+        };
+      })
     EOF
     '';
   pythonDeps = import ./artiq-full/python-deps.nix { inherit pkgs; };
