@@ -91,6 +91,7 @@ let
       ] ++ (pkgs.lib.lists.optionals (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
         "apm"
         "atomionics"
+        "basel"
         "bonn1master"
         "bonn1satellite"
         "hw2master"
