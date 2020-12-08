@@ -221,4 +221,23 @@ in
       '';
       propagatedBuildInputs = [ artiq pkgs.python3Packages.numpy pkgs.python3Packages.scipy pkgs.python3Packages.influxdb pkgs.python3Packages.setuptools ];
     };
-  }
+  } // (dualPackage {
+    name = "flake8-artiq";
+    version = "0.1";
+    src = pkgs.fetchgit {
+      url = "https://gitlab.com/duke-artiq/flake8-artiq.git";
+      rev = "f16bda40526dc0821c6b86b07f2764098df5f905";
+      sha256 = "0r8p0nz3v8wap3iwhv1saak0djdh2lq7bzjsg897jzg1dnv0n44w";
+    };
+    pythonOptions = {
+      propagatedBuildInputs = [ pkgs.python3Packages.flake8 ];
+      checkInputs = [ pkgs.python3Packages.pytest pkgs.python3Packages.mypy pkgs.python3Packages.flake8 ];
+      checkPhase =
+        ''
+        pytest
+        mypy
+        flake8
+        '';
+    };
+    condaOptions = { dependencies = [ "flake8" ]; };
+  })
