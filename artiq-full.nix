@@ -98,6 +98,7 @@ let
         "hw2satellite"
         "innsbruck3"
         "innsbruck4"
+        "innsbruck5"
         "luh"
         "ptb3satellite"
         "ptb7"
