@@ -27,24 +27,19 @@ let
 
       target = "kasli";
       variants = [
-        "afmaster"
-        "afsatellite"
         "berkeley3"
-        "csu"
         "femto1"
         "femto2"
         "femto3"
         "freiburg1"
         "griffith"
         "hub"
-        "hw"
         "innsbruck2"
         "ist"
         "liaf"
         "luh2"
         "luh3"
         "mikes"
-        "mit"
         "mitll3"
         "mitll4master"
         "mitll4satellite"
@@ -85,8 +80,6 @@ let
         "vlbaimaster"
         "vlbaisatellite"
         "wipm"
-        "wipm5master"
-        "wipm5satellite"
         "wipm6"
       ] ++ (pkgs.lib.lists.optionals (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
         "apm"
@@ -150,12 +143,6 @@ let
             };
           })) {} variants;
       drtio-systems = {
-        af = {
-          master = "afmaster";
-          satellites = {
-            "1" = "afsatellite";
-          };
-        };
         mitll4 = {
           master = "mitll4master";
           satellites = {
@@ -166,12 +153,6 @@ let
           master = "vlbaimaster";
           satellites = {
             "1" = "vlbaisatellite";
-          };
-        };
-        wipm5 = {
-          master = "wipm5master";
-          satellites = {
-            "1" = "wipm5satellite";
           };
         };
       } // (pkgs.lib.optionalAttrs (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") {
