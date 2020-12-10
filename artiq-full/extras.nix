@@ -3,14 +3,21 @@ let
   condaBuild = import ./fast/conda/build.nix { inherit pkgs; };
   condaFakeSource = import ./fast/conda/fake-source.nix { inherit pkgs; };
   dualPackage = (
-    { name, version, src, pythonOptions ? {}, condaOptions ? {}}:
+    { name, version, src, pythonOptions ? {}, condaOptions ? {}, withManual ? true}:
       {
         "${name}" = pkgs.python3Packages.buildPythonPackage ({
           inherit version;
           name = "${name}-${version}";
           inherit src;
         } // pythonOptions);
-        "${name}-manual-html" = pkgs.stdenv.mkDerivation {
+        "conda-${name}" = condaBuild {
+          name = "conda-${name}";
+          src = condaFakeSource ({
+            inherit name version src;
+          } // condaOptions);
+        };
+      } // (pkgs.lib.optionalAttrs withManual {
+        ${name}-manual-html" = pkgs.stdenv.mkDerivation {
           name = "${name}-manual-html-${version}";
           inherit version src;
           buildInputs = (with pkgs.python3Packages; [ sphinx sphinx_rtd_theme sphinx-argparse ]) ++ [ artiq ];
@@ -31,13 +38,7 @@ let
               echo doc manual ${dest}/html index.html >> $out/nix-support/hydra-build-products
               '';
         };
-        "conda-${name}" = condaBuild {
-          name = "conda-${name}";
-          src = condaFakeSource ({
-            inherit name version src;
-          } // condaOptions);
-        };
-      }
+      })
     );
   # https://github.com/m-labs/artiq/issues/23
   hidapi = pkgs.hidapi.overrideAttrs (oa: {
@@ -224,6 +225,7 @@ in
   } // (dualPackage {
     name = "flake8-artiq";
     version = "0.1";
+    withManual = false;
     src = pkgs.fetchgit {
       url = "https://gitlab.com/duke-artiq/flake8-artiq.git";
       rev = "f16bda40526dc0821c6b86b07f2764098df5f905";
