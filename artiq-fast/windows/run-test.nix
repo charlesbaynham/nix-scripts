@@ -15,6 +15,7 @@ let
     name = "conda-deps";
     script = let
       artiq6 = pkgs.lib.strings.versionAtLeast artiqpkgs.artiq.version "6.0";
+      qt-asyncio-package = if artiq6 then artiqpkgs.conda-qasync else artiqpkgs.conda-quamash;
       conda-deps-noarch = import (if artiq6 then ./conda_noarch_packages.nix else ./conda_noarch_packages-legacy.nix) { inherit pkgs; };
       conda-deps-win-64 = import (if artiq6 then ./conda_win-64_packages.nix else ./conda_win-64_packages-legacy.nix) { inherit pkgs; };
       conda-packages-put = pkgs.lib.strings.concatStringsSep "\n"
@@ -32,8 +33,7 @@ let
 
       win-put ${artiqpkgs.conda-pythonparser}/noarch/*.tar.bz2 'fake-channel/noarch'
       win-put ${artiqpkgs.conda-sipyco}/noarch/*.tar.bz2 'fake-channel/noarch'
-      win-put ${artiqpkgs.conda-quamash}/noarch/*.tar.bz2 'fake-channel/noarch'
-      win-put ${artiqpkgs.conda-qasync}/noarch/*.tar.bz2 'fake-channel/noarch'
+      win-put ${qt-asyncio-package}/noarch/*.tar.bz2 'fake-channel/noarch'
       '';
   };
 in
