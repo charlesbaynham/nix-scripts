@@ -53,6 +53,25 @@ rec {
     propagatedBuildInputs = with python3Packages; [ scipy numpy pyqt5 pyopengl ];
   };
 
+  qasync = python3Packages.buildPythonPackage rec {
+    pname = "qasync";
+    version = "0.10.0";
+
+    src = fetchFromGitHub {
+      owner = "CabbageDevelopment";
+      repo = "qasync";
+      rev = "v${version}";
+      sha256 = "1zga8s6dr7gk6awmxkh4pf25gbg8n6dv1j4b0by7y0fhi949qakq";
+    };
+
+    propagatedBuildInputs = [ python3Packages.pyqt5 ];
+
+    checkInputs = [ python3Packages.pytest ];
+    checkPhase = ''
+      pytest -k 'test_qthreadexec.py' # the others cause the test execution to be aborted, I think because of asyncio
+    '';
+  };
+
   # Development/firmware dependencies
   artiq-netboot = python3Packages.buildPythonPackage rec {
     name = "artiq-netboot";

@@ -11,7 +11,8 @@ python3Packages.buildPythonPackage rec {
   propagatedBuildInputs = [ binutils-or1k llvm-or1k llvmlite-artiq ]
     ++ (lib.lists.optionals (lib.strings.versionAtLeast version "6.0") [ binutils-arm ])
     ++ (with pythonDeps; [ sipyco pyqtgraph-qt5 pythonparser ])
-    ++ (with python3Packages; [ pygit2 numpy dateutil quamash scipy prettytable pyserial python-Levenshtein h5py pyqt5 ]);
+    ++ (with python3Packages; [ pygit2 numpy dateutil scipy prettytable pyserial python-Levenshtein h5py pyqt5 ])
+    ++ [(if (lib.strings.versionAtLeast version "6.0") then pythonDeps.qasync else python3Packages.quamash)];
 
   dontWrapQtApps = true;
   postFixup = ''

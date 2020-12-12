@@ -66,6 +66,13 @@ let
         name = "quamash";
         inherit (pkgs.python3Packages.quamash) version src;
       };
+     };
+    conda-qasync = import ./conda/build.nix { inherit pkgs; } {
+      name = "conda-qasync";
+      src = import ./conda/fake-source.nix { inherit pkgs; } {
+        name = "qasync";
+        inherit (pythonDeps.qasync) version src;
+      };
     };
     conda-bscan-spi-bitstreams = import ./conda/bscan-spi-bitstreams.nix {
       inherit pkgs;

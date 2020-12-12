@@ -33,6 +33,7 @@ let
       win-put ${artiqpkgs.conda-pythonparser}/noarch/*.tar.bz2 'fake-channel/noarch'
       win-put ${artiqpkgs.conda-sipyco}/noarch/*.tar.bz2 'fake-channel/noarch'
       win-put ${artiqpkgs.conda-quamash}/noarch/*.tar.bz2 'fake-channel/noarch'
+      win-put ${artiqpkgs.conda-qasync}/noarch/*.tar.bz2 'fake-channel/noarch'
       '';
   };
 in

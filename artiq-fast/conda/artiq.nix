@@ -6,7 +6,22 @@ let
     name = "artiq";
     inherit version;
     src = import ../pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
-    dependencies = import ./artiq-deps.nix;
+    dependencies = [
+      "llvmlite-artiq"
+      "binutils-or1k-linux"
+      "pythonparser"
+      "scipy"
+      "numpy"
+      "prettytable"
+      "h5py"
+      "python-dateutil"
+      "pyqt"
+      (if (pkgs.lib.strings.versionAtLeast version "6.0") then "qasync" else "quamash")
+      "pyqtgraph"
+      "pygit2"
+      "python-levenshtein"
+      "sipyco"
+    ];
     extraYaml =
     ''
     about:
