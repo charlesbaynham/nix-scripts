@@ -17,7 +17,7 @@ let
           } // condaOptions);
         };
       } // (pkgs.lib.optionalAttrs withManual {
-        ${name}-manual-html" = pkgs.stdenv.mkDerivation {
+        "${name}-manual-html" = pkgs.stdenv.mkDerivation {
           name = "${name}-manual-html-${version}";
           inherit version src;
           buildInputs = (with pkgs.python3Packages; [ sphinx sphinx_rtd_theme sphinx-argparse ]) ++ [ artiq ];
