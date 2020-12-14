@@ -183,6 +183,12 @@ let
             "1" = "purduesatellite";
           };
         };
+        wipm7 = {
+          master = "wipm7master";
+          satellites = {
+            "1" = "wipm7satellite";
+          };
+        };
       });
       drtio-ddbs = pkgs.lib.attrsets.mapAttrs'
         (system: crates: pkgs.lib.attrsets.nameValuePair ("device-db-" + system)
