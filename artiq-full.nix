@@ -101,6 +101,7 @@ let
         "siom"
         "uamsterdam"
         "ubirmingham2"
+        "ucsb"
         "wipm7master"
         "wipm7satellite"
       ]);
