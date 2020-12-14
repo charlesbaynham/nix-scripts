@@ -262,7 +262,7 @@ let
         artiq-board-sayma-satellite-st = artiq-board {
           target = "sayma";
           variant = "satellite";
-          buildCommand = "python -m artiq.gateware.targets.sayma_amc --sfp --jdcg-type syncdds";
+          buildCommand = "python -m artiq.gateware.targets.sayma_amc --jdcg-type syncdds";
         };
       })
     EOF
