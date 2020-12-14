@@ -101,6 +101,8 @@ let
         "siom"
         "uamsterdam"
         "ubirmingham2"
+        "wipm7master"
+        "wipm7satellite"
       ]);
 
       vivado = import ./fast/vivado.nix { inherit pkgs; };
