@@ -93,6 +93,7 @@ let
         "innsbruck4"
         "innsbruck5"
         "luh"
+        "nus"
         "ptb3satellite"
         "ptb7"
         "ptb8"
