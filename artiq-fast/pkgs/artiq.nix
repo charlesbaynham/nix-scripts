@@ -1,7 +1,7 @@
 { stdenv, lib, pythonDeps, fetchgit, git, python3Packages, qt5, binutils-or1k, binutils-arm, llvm-or1k, llvmlite-artiq, libartiq-support, lit, outputcheck }:
 
 python3Packages.buildPythonPackage rec {
-  name = "artiq-${version}";
+  pname = "artiq";
   version = import ./artiq-version.nix { inherit stdenv fetchgit git; };
   src = import ./artiq-src.nix { inherit fetchgit; };
 

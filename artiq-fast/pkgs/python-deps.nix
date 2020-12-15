@@ -3,7 +3,7 @@
 rec {
   # User dependencies
   sipyco = python3Packages.buildPythonPackage rec {
-    name = "sipyco";
+    pname = "sipyco";
     version = "1.1";
     src = fetchFromGitHub {
       owner = "m-labs";
@@ -15,7 +15,7 @@ rec {
   };
 
   asyncserial = python3Packages.buildPythonPackage rec {
-    name = "asyncserial";
+    pname = "asyncserial";
     version = "0.1";
     src = fetchFromGitHub {
       owner = "m-labs";
@@ -27,7 +27,7 @@ rec {
   };
 
   pythonparser = python3Packages.buildPythonPackage rec {
-    name = "pythonparser";
+    pname = "pythonparser";
     version = "1.3";
     src = fetchFromGitHub {
       owner = "m-labs";
@@ -40,7 +40,7 @@ rec {
   };
 
   pyqtgraph-qt5 = python3Packages.buildPythonPackage rec {
-    name = "pyqtgraph_qt5-${version}";
+    pname = "pyqtgraph_qt5";
     version = "0.11.0";
     doCheck = false;
     pythonImportsCheck = [ "pyqtgraph" ];
@@ -74,7 +74,8 @@ rec {
 
   # Development/firmware dependencies
   artiq-netboot = python3Packages.buildPythonPackage rec {
-    name = "artiq-netboot";
+    pname = "artiq-netboot";
+    version = "unstable-2020-10-15";
 
     src = fetchgit {
       url = "https://git.m-labs.hk/m-labs/artiq-netboot.git";
@@ -84,8 +85,9 @@ rec {
   };
 
   misoc = python3Packages.buildPythonPackage {
-    name = "misoc";
-    
+    pname = "misoc";
+    version = if misoc-new then "unstable-2020-10-06" else "unstable-2020-05-29";
+
     src = if misoc-new
       then (fetchFromGitHub {
         owner = "m-labs";
@@ -104,7 +106,7 @@ rec {
 
     # TODO: fix misoc bitrot and re-enable tests
     doCheck = false;
-    
+
     propagatedBuildInputs = with python3Packages; [ pyserial jinja2 numpy asyncserial migen ];
 
     meta = with stdenv.lib; {
@@ -116,7 +118,8 @@ rec {
   };
 
   migen = python3Packages.buildPythonPackage rec {
-    name = "migen";
+    pname = "migen";
+    version = "unstable-2020-11-11";
 
     src = fetchFromGitHub {
       owner = "m-labs";
@@ -136,7 +139,8 @@ rec {
   };
 
   microscope = python3Packages.buildPythonPackage rec {
-    name = "microscope";
+    pname = "microscope";
+    version = "unstable-2019-05-17";
 
     src = fetchFromGitHub {
       owner = "m-labs";
@@ -156,7 +160,8 @@ rec {
   };
 
   jesd204b = python3Packages.buildPythonPackage rec {
-    name = "jesd204b";
+    pname = "jesd204b";
+    version = "0.11";
 
     src = fetchFromGitHub {
       owner = "m-labs";
@@ -193,7 +198,8 @@ rec {
   };
 
   ramda = python3Packages.buildPythonPackage {
-    name = "ramda";
+    pname = "ramda";
+    version = "unstable-2019-02-01";
 
     src = fetchFromGitHub {
       owner = "peteut";
@@ -221,7 +227,8 @@ rec {
   };
 
   migen-axi = python3Packages.buildPythonPackage {
-    name = "migen-axi";
+    pname = "migen-axi";
+    version = "unstable-2020-11-11";
 
     src = fetchFromGitHub {
       owner = "peteut";

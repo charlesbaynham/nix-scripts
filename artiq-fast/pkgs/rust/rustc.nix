@@ -26,7 +26,7 @@ let
 in
 
 stdenv.mkDerivation {
-  name = "rustc-${version}";
+  pname = "rustc";
   inherit version;
 
   inherit src;

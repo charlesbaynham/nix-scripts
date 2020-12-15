@@ -4,12 +4,12 @@ let
   ise = import ./ise.nix { inherit pkgs; };
   vivado = import ../artiq-fast/vivado.nix { inherit pkgs; };
   buildUrukulCpld = {version, src}: pkgs.stdenv.mkDerivation {
-    name = "urukul-cpld-${version}";
-    inherit src;
+    pname = "urukul-cpld";
+    inherit src version;
     buildInputs = [(pkgs.python3.withPackages(ps: [artiqpkgs.migen]))] ++ (builtins.attrValues ise);
     phases = ["buildPhase" "installPhase"];
     buildPhase = "python $src/urukul_impl.py";
-    installPhase = 
+    installPhase =
       ''
       mkdir -p $out $out/nix-support
       cp build/urukul.jed $out
@@ -17,12 +17,12 @@ let
       '';
   };
   buildMirnyCpld = {version, src}: pkgs.stdenv.mkDerivation {
-    name = "mirny-cpld-${version}";
-    inherit src;
+    pname = "mirny-cpld";
+    inherit src version;
     buildInputs = [(pkgs.python3.withPackages(ps: [artiqpkgs.migen]))] ++ (builtins.attrValues ise);
     phases = ["buildPhase" "installPhase"];
     buildPhase = "python $src/mirny_impl.py";
-    installPhase = 
+    installPhase =
       ''
       mkdir -p $out $out/nix-support
       cp build/mirny.jed $out

@@ -7,7 +7,7 @@ rustPlatform.buildRustPackage rec {
   # Note: we can't build cargo 1.28.0 because rustc tightened the borrow checker rules and broke
   # backward compatibility, which affects old cargo versions.
   # There are also issues with asm/llvm_asm with recent rustc and cargo versions prior to 1.39.
-  name = "cargo-${version}";
+  pname = "cargo";
   version = "1.39.0";
   src = fetchurl {
     url = "https://static.rust-lang.org/dist/rustc-1.39.0-src.tar.gz";

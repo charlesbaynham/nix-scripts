@@ -1,6 +1,6 @@
 { stdenv, fetchgit, git, rustc }:
 stdenv.mkDerivation rec {
-  name = "libartiq-support-${version}";
+  pname = "libartiq-support";
   version = import ./artiq-version.nix { inherit stdenv fetchgit git; };
 
   src = import ./artiq-src.nix { inherit fetchgit; };

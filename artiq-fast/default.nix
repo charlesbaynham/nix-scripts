@@ -44,7 +44,8 @@ let
 
   condaNoarch = {
     conda-pythonparser = import ./conda/build.nix { inherit pkgs; } {
-      name = "conda-pythonparser";
+      pname = "conda-pythonparser";
+      inherit (pythonDeps.pythonparser) version;
       src = import ./conda/fake-source.nix { inherit pkgs; } {
         name = "pythonparser";
         inherit (pythonDeps.pythonparser) version src;
@@ -53,7 +54,8 @@ let
       };
     };
     conda-sipyco = import ./conda/build.nix { inherit pkgs; } {
-      name = "conda-sipyco";
+      pname = "conda-sipyco";
+      inherit (pythonDeps.sipyco) version;
       src = import ./conda/fake-source.nix { inherit pkgs; } {
         name = "sipyco";
         inherit (pythonDeps.sipyco) version src;
@@ -61,14 +63,16 @@ let
       };
     };
     conda-quamash = import ./conda/build.nix { inherit pkgs; } {
-      name = "conda-quamash";
+      pname = "conda-quamash";
+      inherit (pkgs.python3Packages.quamash) version;
       src = import ./conda/fake-source.nix { inherit pkgs; } {
         name = "quamash";
         inherit (pkgs.python3Packages.quamash) version src;
       };
      };
     conda-qasync = import ./conda/build.nix { inherit pkgs; } {
-      name = "conda-qasync";
+      pname = "conda-qasync";
+      inherit (pythonDeps.qasync) version;
       src = import ./conda/fake-source.nix { inherit pkgs; } {
         name = "qasync";
         inherit (pythonDeps.qasync) version src;
@@ -80,7 +84,8 @@ let
     };
     conda-artiq = import ./conda/artiq.nix { inherit pkgs; };
     conda-asyncserial = import ./conda/build.nix { inherit pkgs; } {
-      name = "conda-asyncserial";
+      pname = "conda-asyncserial";
+      inherit (pythonDeps.asyncserial) version;
       src = import ./conda/fake-source.nix { inherit pkgs; } {
         name = "asyncserial";
         inherit (pythonDeps.asyncserial) version src;
