@@ -220,7 +220,7 @@ in
       postFixup = ''
         wrapQtApp "$out/bin/wand_gui"
       '';
-      propagatedBuildInputs = [ artiq pkgs.python3Packages.numpy pkgs.python3Packages.scipy pkgs.python3Packages.influxdb pkgs.python3Packages.setuptools ];
+      propagatedBuildInputs = with pkgs.python3Packages; [ artiq quamash numpy scipy influxdb setuptools ];
     };
   } // (dualPackage {
     name = "flake8-artiq";
