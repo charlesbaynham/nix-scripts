@@ -42,7 +42,6 @@ let
         "mitll3"
         "mitll4master"
         "mitll4satellite"
-        "mpik"
         "mpq"
         "nict"
         "nist"
