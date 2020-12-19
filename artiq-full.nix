@@ -73,8 +73,6 @@ let
         "unlv"
         "ustc2"
         "ustc3"
-        "vlbaimaster"
-        "vlbaisatellite"
         "wipm"
         "wipm6"
       ] ++ (pkgs.lib.lists.optionals (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
