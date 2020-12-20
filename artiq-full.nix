@@ -8,6 +8,7 @@ let
     mkdir $out
 
     cp -a ${<artiq-fast>} $out/fast
+    cp ${./artiq-full}/artiq-board.nix $out
     cp ${./artiq-full}/conda-artiq-board.nix $out
     cp ${./artiq-full}/extras.nix $out
     cp ${./artiq-full}/*.patch $out
@@ -104,8 +105,8 @@ let
       vivado = import ./fast/vivado.nix { inherit pkgs; };
       artiq-board-import =
         if pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0"
-        then ./fast/artiq-board.nix
-        else ./fast/artiq-board-legacy.nix;
+        then ./artiq-board.nix
+        else ./fast/artiq-board.nix;
       artiq-board = import artiq-board-import { inherit pkgs vivado; };
       conda-artiq-board = import ./conda-artiq-board.nix { inherit pkgs; };
       src = pkgs.fetchgit {

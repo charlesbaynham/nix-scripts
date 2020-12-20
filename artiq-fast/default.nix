@@ -10,11 +10,7 @@ let
   ];
   boardPackages = pkgs.lib.lists.foldr (board: start:
     let
-      packageImport =
-        if artiq6
-        then ./artiq-board.nix
-        else ./artiq-board-legacy.nix;
-      boardBinaries = import packageImport { inherit pkgs; } {
+      boardBinaries = import ./artiq-board.nix { inherit pkgs; } {
         target = board.target;
         variant = board.variant;
       };
