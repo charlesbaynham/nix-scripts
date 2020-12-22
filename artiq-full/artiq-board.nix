@@ -50,44 +50,65 @@ in
 , extraInstallCommands ? ""}:
 let
   name = "artiq-board-${target}-${variant}-${version}";
-  installPath = "${pkgs.python3Packages.python.sitePackages}/artiq/board-support/${target}-${variant}";
+  installPath = builtins.unsafeDiscardStringContext "${pkgs.python3Packages.python.sitePackages}/artiq/board-support/${target}-${variant}";
+  pythonEnv = pkgs.python3.withPackages (ps: with ps; [
+    jinja2 numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq
+  ]);
 
-  boardModule =
-    # Board packages are Python modules so that they get added to the ARTIQ Python
-    # environment, and artiq_flash finds them.
+  generatedSources =
     pkgs.stdenv.mkDerivation {
-      name = "${name}-firmware";
+      name = "${name}-src";
       inherit version src;
       phases = [ "buildPhase" "installCheckPhase" "installPhase" "checkPhase" ];
+      buildInputs = [ pythonEnv ];
+      buildPhase =
+        ''
+        ${buildCommand} --no-compile-software --no-compile-gateware --gateware-identifier-str=unprogrammed
+        '';
+      installPhase =
+        ''
+        mkdir -p $out
+        cp -ar artiq_${target}/${variant}/{gateware,software} $out
+        substituteInPlace $out/software/Makefile \
+          --replace /build/artiq_${target}/${variant}/software/ ""
+        '';
+    };
+  # Board packages are Python modules so that they get added to the ARTIQ Python
+  # environment, and artiq_flash finds them.
+  software =
+    pkgs.stdenv.mkDerivation {
+      name = "${name}-software";
+      src = generatedSources;
       nativeBuildInputs = [
-        pkgs.gnumake pkgs.which
+        pkgs.gnumake pkgs.which pythonEnv
         artiqpkgs.cargo
         artiqpkgs.rustc
         artiqpkgs.binutils-or1k
         artiqpkgs.llvm-or1k
       ];
-      buildInputs = [
-        (pkgs.python3.withPackages(ps: with ps; [ jinja2 numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq ]))
-      ];
       buildPhase =
         ''
         export CARGO_HOME=${cargoVendored}
         export TARGET_AR=or1k-linux-ar
-        ${buildCommand} --no-compile-gateware --gateware-identifier-str=unprogrammed
+
+        for PKG in software/{libunwind,libm,libprintf,ksupport,bootloader,runtime,satman} ; do
+            [ -e $PKG/Makefile ] && make -C $PKG BUILDINC_DIRECTORY=`pwd`/software/include
+        done
+        echo Ok
+        # TODO: https://github.com/m-labs/misoc/pull/104
+        # make -C software BUILDINC_DIRECTORY=`pwd`/software/include
         '';
       installPhase =
         ''
         TARGET_DIR=$out/${installPath}
-        mkdir -p $TARGET_DIR $out/src
+        mkdir -p $TARGET_DIR
 
-        cp -ar artiq_${target}/${variant}/gateware $out/src/
-
-        if [ -e artiq_${target}/${variant}/software/bootloader/bootloader.bin ]
-        then cp artiq_${target}/${variant}/software/bootloader/bootloader.bin $TARGET_DIR
+        if [ -e software/bootloader/bootloader.bin ]
+        then cp software/bootloader/bootloader.bin $TARGET_DIR
         fi
-        if [ -e artiq_${target}/${variant}/software/runtime ]
-        then cp artiq_${target}/${variant}/software/runtime/runtime.{elf,fbi} $TARGET_DIR
-        else cp artiq_${target}/${variant}/software/satman/satman.{elf,fbi} $TARGET_DIR
+        if [ -e software/runtime ]
+        then cp software/runtime/runtime.{elf,fbi} $TARGET_DIR
+        else cp software/satman/satman.{elf,fbi} $TARGET_DIR
         fi
         ${extraInstallCommands}
         '';
@@ -106,7 +127,7 @@ let
     name = "${name}-vivado-input.nar.base64";
     buildInputs = [ pkgs.nix ];
     phases = [ "installPhase" ];
-    installPhase = "nix-store --dump ${boardModule}/src/gateware | base64 -w0 > $out";
+    installPhase = "nix-store --dump ${generatedSources}/gateware | base64 -w0 > $out";
   };
 
   # Funnelling the source code through a Nix string allows dropping
@@ -157,7 +178,7 @@ let
       vivado -mode batch -source top.tcl
       '';
     installPhase = ''
-      TARGET_DIR=$out/${builtins.unsafeDiscardStringContext installPath}
+      TARGET_DIR=$out/${installPath}
       mkdir -p $TARGET_DIR
       chmod a+r top.bit
       cp top.bit $TARGET_DIR/
@@ -185,6 +206,6 @@ in
 pkgs.python3Packages.toPythonModule (
   pkgs.buildEnv rec {
     inherit name;
-    paths = [ boardModule vivadoOutput ];
+    paths = [ software vivadoOutput ];
     pathsToLink = [ "/${installPath}" ];
   })
