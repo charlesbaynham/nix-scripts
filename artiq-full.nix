@@ -148,12 +148,6 @@ let
             "1" = "mitll4satellite";
           };
         };
-        vlbai = {
-          master = "vlbaimaster";
-          satellites = {
-            "1" = "vlbaisatellite";
-          };
-        };
       } // (pkgs.lib.optionalAttrs (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") {
         bonn1 = {
           master = "bonn1master";
