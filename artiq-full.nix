@@ -9,6 +9,7 @@ let
 
     cp -a ${<artiq-fast>} $out/fast
     cp ${./artiq-full}/artiq-board.nix $out
+    cp ${./artiq-full}/generate-identifier.py $out
     cp ${./artiq-full}/conda-artiq-board.nix $out
     cp ${./artiq-full}/extras.nix $out
     cp ${./artiq-full}/*.patch $out

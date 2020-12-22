@@ -2,14 +2,14 @@
 #  nix.sandboxPaths = ["/opt"];
 
 { pkgs
-, vivado ? import ./vivado.nix { inherit pkgs; }
+, vivado ? import ./fast/vivado.nix { inherit pkgs; }
 }:
 
 let
-  version = import ./pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
-  artiqSrc = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
-  artiqpkgs = import ./default.nix { inherit pkgs; };
-  fetchcargo = import ./fetchcargo.nix {
+  version = import ./fast/pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
+  artiqSrc = import ./fast/pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
+  artiqpkgs = import ./fast/default.nix { inherit pkgs; };
+  fetchcargo = import ./fast/fetchcargo.nix {
     inherit (pkgs) stdenv cacert git;
     inherit (artiqpkgs) cargo cargo-vendor;
   };
