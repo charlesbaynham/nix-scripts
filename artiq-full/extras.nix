@@ -195,6 +195,9 @@ in
         sha256 = "165j12k9nnrkf2pv0idcv6xhnp1hnsllna4rps2dssnqgjfaw1ss";
       };
       propagatedBuildInputs = [ sipyco pkgs.python3Packages.numpy pkgs.python3Packages.aiohttp ];
+      # Modifies PATH to pass the wrapped python environment (i.e. python3.withPackages(...) to subprocesses.
+      # Allows subprocesses using python to find all packages you have installed
+      makeWrapperArgs = [ ''--run 'if [ ! -z "$NIX_PYTHONPREFIX" ]; then export PATH=$NIX_PYTHONPREFIX/bin:$PATH;fi' '' ];
     };
     conda-artiq-comtools = condaBuild {
       name = "conda-artiq-comtools";

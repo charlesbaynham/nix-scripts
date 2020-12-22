@@ -21,6 +21,10 @@ python3Packages.buildPythonPackage rec {
     wrapQtApp "$out/bin/artiq_session"
   '';
 
+  # Modifies PATH to pass the wrapped python environment (i.e. python3.withPackages(...) to subprocesses.
+  # Allows subprocesses using python to find all packages you have installed
+  makeWrapperArgs = [ ''--run 'if [ ! -z "$NIX_PYTHONPREFIX" ]; then export PATH=$NIX_PYTHONPREFIX/bin:$PATH;fi' '' ];
+
   checkInputs = [ binutils-or1k outputcheck ];
   checkPhase =
   ''
