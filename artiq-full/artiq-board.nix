@@ -91,12 +91,7 @@ let
         export CARGO_HOME=${cargoVendored}
         export TARGET_AR=or1k-linux-ar
 
-        for PKG in software/{libunwind,libm,libprintf,ksupport,bootloader,runtime,satman} ; do
-            [ -e $PKG/Makefile ] && make -C $PKG BUILDINC_DIRECTORY=`pwd`/software/include
-        done
-        echo Ok
-        # TODO: https://github.com/m-labs/misoc/pull/104
-        # make -C software BUILDINC_DIRECTORY=`pwd`/software/include
+        make BUILDINC_DIRECTORY=`pwd`/include
         '';
       installPhase =
         ''
