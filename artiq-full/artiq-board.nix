@@ -42,6 +42,31 @@ let
       cp -R * $out/registry
       '';
   };
+
+  # Funnelling the source code through a Nix string allows dropping
+  # all dependencies via `unsafeDiscardStringContext`.
+  discardContextFromPath = { name, src }:
+    let
+      packed = pkgs.stdenv.mkDerivation {
+          name = "${name}.nar.base64";
+          buildInputs = [ pkgs.nix ];
+          phases = [ "installPhase" ];
+          installPhase = "nix-store --dump ${src} | base64 -w0 > $out";
+        };
+      unpacked = archive:
+        pkgs.stdenvNoCC.mkDerivation {
+          name = builtins.unsafeDiscardStringContext name;
+
+          phases = [ "installPhase" ];
+          buildInputs = [ pkgs.nix ];
+          installPhase = "base64 -d < ${archive} | nix-store --restore $out";
+        };
+    in
+      unpacked (
+        builtins.toFile "${builtins.unsafeDiscardStringContext name}.nar.base64" (
+          builtins.unsafeDiscardStringContext (
+            builtins.readFile packed
+          ))) ;
 in
 { target
 , variant
@@ -78,7 +103,7 @@ let
   software =
     pkgs.stdenv.mkDerivation {
       name = "${name}-software";
-      src = generatedSources;
+      src = "${generatedSources}/software";
       nativeBuildInputs = [
         pkgs.gnumake pkgs.which pythonEnv
         artiqpkgs.cargo
@@ -98,12 +123,12 @@ let
         TARGET_DIR=$out/${installPath}
         mkdir -p $TARGET_DIR
 
-        if [ -e software/bootloader/bootloader.bin ]
-        then cp software/bootloader/bootloader.bin $TARGET_DIR
+        if [ -e bootloader/bootloader.bin ]
+        then cp bootloader/bootloader.bin $TARGET_DIR
         fi
-        if [ -e software/runtime ]
-        then cp software/runtime/runtime.{elf,fbi} $TARGET_DIR
-        else cp software/satman/satman.{elf,fbi} $TARGET_DIR
+        if [ -e runtime ]
+        then cp runtime/runtime.{elf,fbi} $TARGET_DIR
+        else cp satman/satman.{elf,fbi} $TARGET_DIR
         fi
         ${extraInstallCommands}
         '';
@@ -118,29 +143,16 @@ let
     } ''python ${./generate-identifier.py} "${identifierStr}" > $out''
   );
 
-  vivadoInputArchive = pkgs.stdenv.mkDerivation {
-    name = "${name}-vivado-input.nar.base64";
-    buildInputs = [ pkgs.nix ];
-    phases = [ "installPhase" ];
-    installPhase = "nix-store --dump ${generatedSources}/gateware | base64 -w0 > $out";
-  };
-
-  # Funnelling the source code through a Nix string allows dropping
-  # all dependencies via `unsafeDiscardStringContext`. The gateware
-  # will then be rebuilt only when these contents have changed.
-  pureVivadoInputArchive = builtins.toFile "${name}-vivado-input.nar.base64" (
-    builtins.unsafeDiscardStringContext (
-      builtins.readFile vivadoInputArchive
-    ));
-
   # Depends on just Vivado and the generated Bitstream source
   vivadoCheckpoint = pkgs.stdenvNoCC.mkDerivation {
     name = builtins.unsafeDiscardStringContext "${name}-vivado-checkpoint";
 
-    unpackPhase = "base64 -d < ${pureVivadoInputArchive} | nix-store --restore gateware";
+    src = discardContextFromPath {
+      name = "${name}-gateware";
+      src = "${generatedSources}/gateware";
+    };
     buildInputs = [ vivado pkgs.nix ];
     buildPhase = ''
-      cd gateware
       vivado -mode batch -source top_route.tcl
     '';
 
