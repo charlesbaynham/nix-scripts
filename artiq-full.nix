@@ -102,13 +102,22 @@ let
         "wipm7master"
         "wipm7satellite"
       ]);
+      # Splitting the build process into software+gateware does
+      # not work when artiq embeds compiled firmware into generated
+      # Vivado input.
+      boardsWithoutBuildSplit = [
+        { target = "sayma"; variant = "rtm"; }
+      ];
 
       vivado = import ./fast/vivado.nix { inherit pkgs; };
-      artiq-board-import =
+      artiq-board-import = path: import path { inherit pkgs vivado; };
+      artiq-board = args:
         if pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0"
-        then ./artiq-board.nix
-        else ./fast/artiq-board.nix;
-      artiq-board = import artiq-board-import { inherit pkgs vivado; };
+        && ! builtins.elem { inherit (args) target variant; } boardsWithoutBuildSplit
+        then
+          artiq-board-import ./artiq-board.nix args
+        else
+          artiq-board-import ./fast/artiq-board.nix args;
       conda-artiq-board = import ./conda-artiq-board.nix { inherit pkgs; };
       src = pkgs.fetchgit {
         url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
