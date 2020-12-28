@@ -29,7 +29,7 @@ let
 
       target = "kasli";
       variants = [
-        "berkeley3"
+        "berkeley3master"
         "femto1"
         "femto2"
         "femto3"
@@ -80,6 +80,7 @@ let
         "apm"
         "atomionics"
         "basel"
+        "berkeley3satellite"
         "bonn1master"
         "bonn1satellite"
         "hw2master"
@@ -160,6 +161,12 @@ let
           };
         };
       } // (pkgs.lib.optionalAttrs (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") {
+        berkeley3 = {
+          master = "berkeley3master";
+          satellites = {
+            "1" = "berkeley3satellite";
+          };
+        };
         bonn1 = {
           master = "bonn1master";
           satellites = {
