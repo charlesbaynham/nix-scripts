@@ -90,6 +90,7 @@ let
         "innsbruck5"
         "luh"
         "nist2"
+        "nist3"
         "nus"
         "ptb3satellite"
         "ptb7"
