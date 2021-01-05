@@ -92,6 +92,7 @@ let
         "nist2"
         "nist3"
         "nus"
+        "okinawa"
         "ptb3satellite"
         "ptb7"
         "ptb8"
