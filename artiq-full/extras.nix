@@ -56,8 +56,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "korad_ka3005p";
-      rev = "a0cfaa5792a211e166d224314c4d0be4881b9b8d";
-      sha256 = "1bxzyjyvdhsbm9hj7ypf0vgkd1lvc340bb6lx3wchvh30n7bv9gv";
+      rev = "a1898409cb188b388ed1cf84e76ca69e9c8a74eb";
+      sha256 = "0h20qss70nssqiagc2fx75mravq1pji7rizhag3nq8xrcz2w20nc";
     };
     pythonOptions = { propagatedBuildInputs = [ sipyco asyncserial ]; };
     condaOptions = { dependencies = [ "sipyco" "asyncserial" ]; };
@@ -67,8 +67,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "novatech409b";
-      rev = "8740b3e7b254e03395135e6bc128bbaca70d4fbb";
-      sha256 = "0mwm434y83y8jb30fpz69z6z3b6sxbc8dv3nw0hq4wc7iginx89d";
+      rev = "3bd559753972f07d881df66b7c6819afc5436053";
+      sha256 = "1g9qv6fn5h7d393mb1v7w8sg6fimqg34blqdj22qnayb4agw1wyg";
     };
     pythonOptions = { propagatedBuildInputs = [ sipyco asyncserial ]; };
     condaOptions = { dependencies = [ "sipyco" "asyncserial" ]; };
@@ -78,8 +78,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "lda";
-      rev = "6138a94a1116c8f7b40b8bd8bb161f847065aab6";
-      sha256 = "1009k9pq8wx5zxrljkxr1g95g8q979i7mq3csksdkd3d0v2jvqif";
+      rev = "e6bf828b6dfd7fbf59b61b691712736c98c95970";
+      sha256 = "1w4ykzsl3386bz4ggpd6i60b6a3k7rnc6qjw59xm3hk0vs3w2vyn";
     };
     pythonOptions = {
       propagatedBuildInputs = [ sipyco ];
@@ -96,8 +96,8 @@ in
     src = pkgs.fetchFromGitHub {
       owner = "m-labs";
       repo = "thorlabs_tcube";
-      rev = "8b85292d76a69ae72ba8da32b894c87c794574ba";
-      sha256 = "09cy9nhydcwdib21wb0qg1cinvibfbszwgphrmf2ajw5kqpr1d6a";
+      rev = "0cb0c15fc7e660a150e193245f5338d48f8b97db";
+      sha256 = "1n4zmjcj2kpd97217y602pq6x8s80w39fgyi6qjmal92aicqdg07";
     };
     pythonOptions = { propagatedBuildInputs = [ sipyco asyncserial ]; };
     condaOptions = { dependencies = [ "sipyco" "asyncserial" ]; };
