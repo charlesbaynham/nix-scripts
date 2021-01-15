@@ -26,6 +26,7 @@ let
 
     let
       artiq-fast = import ./fast { inherit pkgs; };
+      ddbDeps = pkgs.python3.withPackages (ps: [ ps.jsonschema ]);
 
       target = "kasli";
       variants = [
@@ -145,7 +146,7 @@ let
           } // (pkgs.lib.optionalAttrs ((builtins.fromJSON (builtins.readFile json)).base == "standalone") {
             "device-db-\''${target}-\''${variant}" = pkgs.stdenv.mkDerivation {
               name = "device-db-\''${target}-\''${variant}";
-              buildInputs = [ artiq-fast.artiq ];
+              buildInputs = [ artiq-fast.artiq ddbDeps ];
               phases = [ "buildPhase" ];
               buildPhase = "
                 mkdir \$out
@@ -210,7 +211,7 @@ let
         (system: crates: pkgs.lib.attrsets.nameValuePair ("device-db-" + system)
         (pkgs.stdenv.mkDerivation {
           name = "device-db-\''${system}";
-          buildInputs = [ artiq-fast.artiq ];
+          buildInputs = [ artiq-fast.artiq ddbDeps ];
           phases = [ "buildPhase" ];
           buildPhase = "
             mkdir \$out
