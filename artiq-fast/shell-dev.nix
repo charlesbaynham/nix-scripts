@@ -8,7 +8,7 @@ in
     buildInputs = [
       vivado
       pkgs.gnumake
-      (pkgs.python3.withPackages(ps: (with ps; [ jinja2 numpy paramiko ]) ++ (with artiqpkgs; [ migen microscope misoc jesd204b migen-axi artiq ])))
+      (pkgs.python3.withPackages(ps: (with ps; [ jinja2 jsonschema numpy paramiko ]) ++ (with artiqpkgs; [ migen microscope misoc jesd204b migen-axi artiq ])))
       artiqpkgs.cargo
       artiqpkgs.rustc
       artiqpkgs.binutils-or1k
