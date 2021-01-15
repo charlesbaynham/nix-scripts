@@ -99,6 +99,8 @@ let
         "purduemaster"
         "purduesatellite"
         "siom"
+        "stfcmaster"
+        "stfcsatellite"
         "uamsterdam"
         "ubirmingham2"
         "ucsb"
@@ -191,6 +193,12 @@ let
           master = "purduemaster";
           satellites = {
             "1" = "purduesatellite";
+          };
+        };
+        stfc = {
+          master = "stfcmaster";
+          satellites = {
+            "1" = "stfcsatellite";
           };
         };
         wipm7 = {
