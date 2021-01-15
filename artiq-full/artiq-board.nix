@@ -78,7 +78,7 @@ let
   installPath = builtins.unsafeDiscardStringContext "${pkgs.python3Packages.python.sitePackages}/artiq/board-support/${target}-${variant}";
   pythonEnv = pkgs.python3.withPackages (ps: with ps; [
     jinja2 jsonschema numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq
-  ];
+  ]);
 
   generatedSources =
     pkgs.stdenv.mkDerivation {
