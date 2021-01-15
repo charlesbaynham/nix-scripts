@@ -46,7 +46,6 @@ let
         "mitll4satellite"
         "mpq"
         "nict"
-        "nist"
         "no"
         "npl1"
         "npl2"
@@ -74,7 +73,6 @@ let
         "unlv"
         "ustc2"
         "ustc3"
-        "wipm"
         "wipm6"
       ] ++ (pkgs.lib.lists.optionals (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
         "apm"
