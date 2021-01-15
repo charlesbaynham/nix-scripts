@@ -1,4 +1,7 @@
 { pkgs, artiq-full }:
+let
+  matplotlib-qt = (pkgs.python3Packages.matplotlib.override { enableQt = true; });
+in
 {
   artiq-example-user-env = pkgs.runCommand "artiq-example-user-env" {
     buildInputs = [
@@ -17,10 +20,11 @@
         ps.numpy
         ps.scipy
         ps.numba
-        (ps.matplotlib.override { enableQt = true; })
         ps.bokeh
-        ps.cirq
-        ps.qiskit
+        matplotlib-qt
+        (ps.cirq.override { matplotlib = matplotlib-qt; })
+        # qiskit does not work with matplotlib-qt
+        #ps.qiskit
       ]))
 
       artiq-full.openocd
