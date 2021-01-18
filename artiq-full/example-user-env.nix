@@ -9,6 +9,7 @@ in
         artiq-full.artiq
         artiq-full.artiq-comtools
         artiq-full.wand
+        artiq-full.flake8-artiq
         artiq-full.lda
         artiq-full.korad_ka3005p
         artiq-full.novatech409b
