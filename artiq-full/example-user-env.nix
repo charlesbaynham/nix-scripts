@@ -15,7 +15,7 @@ in
         artiq-full.novatech409b
         artiq-full.thorlabs_tcube
         artiq-full.artiq-board-kc705-nist_clock
-        artiq-full.artiq-board-kasli-nist2
+        artiq-full.artiq-board-kasli-oregon
         ps.paramiko
         ps.pandas
         ps.numpy
