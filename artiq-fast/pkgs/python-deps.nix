@@ -4,12 +4,12 @@ rec {
   # User dependencies
   sipyco = python3Packages.buildPythonPackage rec {
     pname = "sipyco";
-    version = "1.1";
+    version = "1.2";
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "sipyco";
       rev = "v${version}";
-      sha256 = "09vyrzfhnbp65ybd7w2g96gvvnhzafpn72syls2kbg2paqjjf9gs";
+      sha256 = "02x2s66x9bbzj82d823vjg2i73w7iqwvkrjbbyrsav6ccj7f90sj";
     };
     propagatedBuildInputs = with python3Packages; [ numpy ];
   };
