@@ -3,46 +3,11 @@
 
 { pkgs
 , vivado ? import ./fast/vivado.nix { inherit pkgs; }
+, board-generated
+, version
 }:
 
 let
-  version = import ./fast/pkgs/artiq-version.nix (with pkgs; { inherit stdenv fetchgit git; });
-  artiqSrc = import ./fast/pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
-  artiqpkgs = import ./fast/default.nix { inherit pkgs; };
-  fetchcargo = import ./fast/fetchcargo.nix {
-    inherit (pkgs) stdenv cacert git;
-    inherit (artiqpkgs) cargo cargo-vendor;
-  };
-  cargoDeps = fetchcargo rec {
-    name = "artiq-firmware-cargo-deps";
-    src = "${artiqSrc}/artiq/firmware";
-    sha256 = import (artiqSrc + "/artiq/firmware/cargosha256.nix");
-  };
-
-  cargoVendored = pkgs.stdenv.mkDerivation {
-    name = "artiq-firmware-cargo-vendored";
-    src = cargoDeps;
-    phases = [ "unpackPhase" "installPhase" ];
-    installPhase =
-      ''
-      mkdir -p $out/registry
-      cat << EOF > $out/config
-        [source.crates-io]
-        registry = "https://github.com/rust-lang/crates.io-index"
-        replace-with = "vendored-sources"
-
-        [source."https://github.com/m-labs/libfringe"]
-        git = "https://github.com/m-labs/libfringe"
-        rev = "b8a6d8f"
-        replace-with = "vendored-sources"
-
-        [source.vendored-sources]
-        directory = "$out/registry"
-      EOF
-      cp -R * $out/registry
-      '';
-  };
-
   # Funnelling the source code through a Nix string allows dropping
   # all dependencies via `unsafeDiscardStringContext`.
   discardContextFromPath = { name, src }:
@@ -70,71 +35,13 @@ let
 in
 { target
 , variant
-, src ? null
-, buildCommand ? "python -m artiq.gateware.targets.${target} -V ${variant}"
-, extraInstallCommands ? ""}:
+, extraInstallCommands ? ""
+, ... }:
 let
   name = "artiq-board-${target}-${variant}-${version}";
   installPath = builtins.unsafeDiscardStringContext "${pkgs.python3Packages.python.sitePackages}/artiq/board-support/${target}-${variant}";
-  pythonEnv = pkgs.python3.withPackages (ps: with ps; [
-    jinja2 jsonschema numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq
-  ]);
 
-  generatedSources =
-    pkgs.stdenv.mkDerivation {
-      name = "${name}-src";
-      inherit version src;
-      phases = [ "buildPhase" "installCheckPhase" "installPhase" "checkPhase" ];
-      buildInputs = [ pythonEnv ];
-      buildPhase =
-        ''
-        ${buildCommand} --no-compile-software --no-compile-gateware --gateware-identifier-str=unprogrammed
-        '';
-      installPhase =
-        ''
-        mkdir -p $out
-        cp -ar artiq_${target}/${variant}/{gateware,software} $out
-        substituteInPlace $out/software/Makefile \
-          --replace /build/artiq_${target}/${variant}/software/ ""
-        '';
-    };
-  # Board packages are Python modules so that they get added to the ARTIQ Python
-  # environment, and artiq_flash finds them.
-  software =
-    pkgs.stdenv.mkDerivation {
-      name = "${name}-software";
-      src = "${generatedSources}/software";
-      nativeBuildInputs = [
-        pkgs.gnumake pkgs.which pythonEnv
-        artiqpkgs.cargo
-        artiqpkgs.rustc
-        artiqpkgs.binutils-or1k
-        artiqpkgs.llvm-or1k
-      ];
-      buildPhase =
-        ''
-        export CARGO_HOME=${cargoVendored}
-        export TARGET_AR=or1k-linux-ar
-
-        make BUILDINC_DIRECTORY=`pwd`/include
-        '';
-      installPhase =
-        ''
-        TARGET_DIR=$out/${installPath}
-        mkdir -p $TARGET_DIR
-
-        if [ -e bootloader/bootloader.bin ]
-        then cp bootloader/bootloader.bin $TARGET_DIR
-        fi
-        if [ -e runtime ]
-        then cp runtime/runtime.{elf,fbi} $TARGET_DIR
-        else cp satman/satman.{elf,fbi} $TARGET_DIR
-        fi
-        ${extraInstallCommands}
-        '';
-      # don't mangle ELF files as they are not for NixOS
-      dontFixup = true;
-    };
+  generated = board-generated."artiq-board-${target}-${variant}";
 
   identifierStr = "${version};${variant}";
   identifiers = import (
@@ -149,7 +56,7 @@ let
 
     src = discardContextFromPath {
       name = "${name}-gateware";
-      src = "${generatedSources}/gateware";
+      src = "${generated}/gateware";
     };
     buildInputs = [ vivado pkgs.nix ];
     buildPhase = ''
@@ -213,6 +120,6 @@ in
 pkgs.python3Packages.toPythonModule (
   pkgs.buildEnv rec {
     inherit name;
-    paths = [ software vivadoOutput ];
+    paths = [ generated vivadoOutput ];
     pathsToLink = [ "/${installPath}" ];
   })

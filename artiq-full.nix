@@ -1,110 +1,127 @@
-{ pkgs ? import <nixpkgs> {}}:
+{ pkgs ? import <nixpkgs> {}
+, beta ? <beta>
+}:
 
 let
-  sinaraSystemsSrc = <sinaraSystemsSrc>;
-  artiqVersion = import <artiq-fast/pkgs/artiq-version.nix> {
+  sinaraSystemsRev = builtins.readFile <artiq-board-generated/sinara-rev.txt>;
+  sinaraSystemsHash = builtins.readFile <artiq-board-generated/sinara-hash.txt>;
+  sinaraSystemsSrc =
+    if beta
+    then pkgs.fetchgit {
+      url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
+      rev = sinaraSystemsRev;
+      sha256 = sinaraSystemsHash;
+    }
+    else <sinaraSystemsSrc>;
+  artiq-fast =
+    if beta
+    then <artiq-board-generated/fast>
+    else <artiq-fast>;
+  artiqVersion = import (artiq-fast + "/pkgs/artiq-version.nix") {
     inherit (pkgs) stdenv git fetchgit;
   };
-  variantsJson =
-    let
-      jsonFiles =
-        builtins.attrNames (
-          pkgs.lib.filterAttrs (name: type:
-            type != "directory" &&
-            builtins.match ".+\\.json" name != null
-          ) (builtins.readDir sinaraSystemsSrc)
-        );
-    in
-      builtins.listToAttrs (
-        map (jsonFile: {
-          name = builtins.replaceStrings [".json"] [""] jsonFile;
-          value = builtins.fromJSON (
-            builtins.readFile (<sinaraSystemsSrc> + "/${jsonFile}")
-          );
-        }) jsonFiles
-      );
-  variants =
-    builtins.attrNames (
-      pkgs.lib.filterAttrs (_: json:
-        pkgs.lib.strings.versionAtLeast artiqVersion (
-          if json ? min_artiq_version
-          then json.min_artiq_version
-          else "0"
-        )
-      ) variantsJson
-    );
-  standaloneVariants =
-    builtins.attrNames (
-      pkgs.lib.filterAttrs (_: json:
-        json.base == "standalone"
-      ) variantsJson
-    );
+  targets = import ./artiq-full/artiq-targets.nix {
+    inherit pkgs artiqVersion sinaraSystemsSrc;
+  };
+  kasliVariants = map ({ variant, ... }: variant) (
+    builtins.filter ({ target, ... }: target == "kasli") (
+      builtins.attrValues targets
+    )
+  );
+  standaloneVariants = map ({ variant, ... }: variant) (
+    builtins.filter ({ target, standalone ? false, ... }: target == "kasli" && standalone) (
+      builtins.attrValues targets
+    )
+  );
+  serializedTargets = pkgs.lib.generators.toPretty {} (
+    map (conf:
+      if conf ? buildCommand
+      then conf // {
+        buildCommand = builtins.replaceStrings ["$"] ["\\\\\\$"]  conf.buildCommand;
+      }
+      else conf
+    ) (builtins.attrValues targets)
+  );
 
   generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
     ''
     mkdir $out
 
-    cp -a ${<artiq-fast>} $out/fast
-    cp ${./artiq-full}/artiq-board.nix $out
+    ${if beta
+      then ''
+        cp -a ${<artiq-board-generated>} $out/board-generated
+        ln -s board-generated/fast $out/fast
+      ''
+      else "cp -a ${<artiq-fast>} $out/fast"}
+    cp ${./artiq-full}/artiq-board-vivado.nix $out
     cp ${./artiq-full}/generate-identifier.py $out
     cp ${./artiq-full}/conda-artiq-board.nix $out
     cp ${./artiq-full}/extras.nix $out
     cp ${./artiq-full}/*.patch $out
 
-    REV=`git --git-dir ${sinaraSystemsSrc}/.git rev-parse HEAD`
-    SINARA_SRC_CLEAN=`mktemp -d`
-    cp -a ${sinaraSystemsSrc}/. $SINARA_SRC_CLEAN
-    chmod -R 755 $SINARA_SRC_CLEAN/.git
-    chmod 755 $SINARA_SRC_CLEAN
-    rm -rf $SINARA_SRC_CLEAN/.git
-    HASH=`nix-hash --type sha256 --base32 $SINARA_SRC_CLEAN`
+    ${if beta
+      then ''
+        REV=${sinaraSystemsRev}
+        HASH=${sinaraSystemsHash}
+      ''
+      else ''
+        REV=`git --git-dir ${sinaraSystemsSrc}/.git rev-parse HEAD`
+        SINARA_SRC_CLEAN=`mktemp -d`
+        cp -a ${sinaraSystemsSrc}/. $SINARA_SRC_CLEAN
+        chmod -R 755 $SINARA_SRC_CLEAN/.git
+        chmod 755 $SINARA_SRC_CLEAN
+        rm -rf $SINARA_SRC_CLEAN/.git
+        HASH=`nix-hash --type sha256 --base32 $SINARA_SRC_CLEAN`
+      ''}
     cat > $out/default.nix << EOF
     { pkgs ? import <nixpkgs> {}}:
 
     let
-      artiq-fast = import ./fast { inherit pkgs; };
+      artiq-fast = import ${if beta then "./board-generated" else "."}/fast { inherit pkgs; };
       ddbDeps = [
         artiq-fast.artiq
         (pkgs.python3.withPackages (ps: [ ps.jsonschema ]))
       ];
 
-      target = "kasli";
-      variants = [${builtins.concatStringsSep " " (
-        builtins.map (variant: "\"${variant}\"") variants
+      kasliVariants = [${builtins.concatStringsSep " " (
+        builtins.map (variant: "\"${variant}\"") kasliVariants
       )}];
       standaloneVariants = [${builtins.concatStringsSep " " (
         builtins.map (variant: "\"${variant}\"") standaloneVariants
       )}];
-      # Splitting the build process into software+gateware does
-      # not work when artiq embeds compiled firmware into generated
-      # Vivado input.
-      boardsWithoutBuildSplit = [
-        { target = "sayma"; variant = "rtm"; }
-      ];
 
-      vivado = import ./fast/vivado.nix { inherit pkgs; };
-      artiq-board-import = path: import path { inherit pkgs vivado; };
-      artiq-board = args:
-        if pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0"
-        && ! builtins.elem { inherit (args) target variant; } boardsWithoutBuildSplit
-        then
-          artiq-board-import ./artiq-board.nix args
-        else
-          artiq-board-import ./fast/artiq-board.nix args;
+      vivado = import ${if beta then "./board-generated" else "."}/fast/vivado.nix {
+        inherit pkgs;
+      };
+      artiq-board =
+        ${if beta
+        then ''
+          import ./artiq-board-vivado.nix {
+            inherit pkgs vivado;
+            version = artiq-fast.artiq.version;
+            board-generated = import ./board-generated {
+              inherit pkgs;
+            };
+          }
+        ''
+        else ''
+          import ./fast/artiq-board.nix {
+            inherit pkgs vivado;
+          }
+        ''};
       conda-artiq-board = import ./conda-artiq-board.nix { inherit pkgs; };
       src = pkgs.fetchgit {
         url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
         rev = "$REV";
         sha256 = "$HASH";
       };
-      generic-kasli = pkgs.lib.lists.foldr (variant: start:
+      artiq-targets = pkgs.lib.lists.foldr (conf: start:
         let
-          json = builtins.toPath (src + "/\''${variant}.json");
-          boardBinaries = artiq-board {
-            inherit target variant;
+          inherit (conf) target variant;
+          json = src + "/\''${variant}.json";
+          boardBinaries = artiq-board (conf // {
             src = json;
-            buildCommand = "python -m artiq.gateware.targets.kasli_generic \$src";
-          };
+          });
         in
           start // {
             "artiq-board-\''${target}-\''${variant}" = boardBinaries;
@@ -112,7 +129,10 @@ let
               boardBinaries = boardBinaries;
               inherit target variant;
             };
-          } // (pkgs.lib.optionalAttrs (builtins.elem variant standaloneVariants) {
+          } // (pkgs.lib.optionalAttrs (
+            target == "kasli" &&
+             builtins.elem variant standaloneVariants
+          ) {
             "device-db-\''${target}-\''${variant}" = pkgs.stdenv.mkDerivation {
               name = "device-db-\''${target}-\''${variant}";
               buildInputs = ddbDeps;
@@ -124,52 +144,54 @@ let
                 echo file device_db_template \$out/device_db.py >> \$out/nix-support/hydra-build-products
                 ";
             };
-          })) {} variants;
+          })
+      ) {} ${serializedTargets};
       drtio-systems = {
-      } // (pkgs.lib.optionalAttrs (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") {
-        berkeley3 = {
-          master = "berkeley3master";
-          satellites = {
-            "1" = "berkeley3satellite";
+        ${pkgs.lib.optionalString beta ''
+          berkeley3 = {
+            master = "berkeley3master";
+            satellites = {
+              "1" = "berkeley3satellite";
+            };
           };
-        };
-        bonn1 = {
-          master = "bonn1master";
-          satellites = {
-            "1" = "bonn1satellite";
+          bonn1 = {
+            master = "bonn1master";
+            satellites = {
+              "1" = "bonn1satellite";
+            };
           };
-        };
-        hw2 = {
-          master = "hw2master";
-          satellites = {
-            "1" = "hw2satellite";
+          hw2 = {
+            master = "hw2master";
+            satellites = {
+              "1" = "hw2satellite";
+            };
           };
-        };
-        ptb3 = {
-          master = "ptb3master";
-          satellites = {
-            "1" = "ptb3satellite";
+          ptb3 = {
+            master = "ptb3master";
+            satellites = {
+              "1" = "ptb3satellite";
+            };
           };
-        };
-        purdue = {
-          master = "purduemaster";
-          satellites = {
-            "1" = "purduesatellite";
+          purdue = {
+            master = "purduemaster";
+            satellites = {
+              "1" = "purduesatellite";
+            };
           };
-        };
-        stfc = {
-          master = "stfcmaster";
-          satellites = {
-            "1" = "stfcsatellite";
+          stfc = {
+            master = "stfcmaster";
+            satellites = {
+              "1" = "stfcsatellite";
+            };
           };
-        };
-        wipm7 = {
-          master = "wipm7master";
-          satellites = {
-            "1" = "wipm7satellite";
+          wipm7 = {
+            master = "wipm7master";
+            satellites = {
+              "1" = "wipm7satellite";
+            };
           };
-        };
-      });
+        ''}
+      };
       drtio-ddbs = pkgs.lib.attrsets.mapAttrs'
         (system: crates: pkgs.lib.attrsets.nameValuePair ("device-db-" + system)
         (pkgs.stdenv.mkDerivation {
@@ -187,42 +209,7 @@ let
         })) drtio-systems;
       extras = import ./extras.nix { inherit pkgs; inherit (artiq-fast) sipyco asyncserial artiq; };
     in
-      artiq-fast // generic-kasli // drtio-ddbs // extras // rec {
-        artiq-board-sayma-rtm = artiq-board {
-          target = "sayma";
-          variant = "rtm";
-          buildCommand = "python -m artiq.gateware.targets.sayma_rtm";
-        };
-        artiq-board-sayma-satellite = artiq-board {
-          target = "sayma";
-          variant = "satellite";
-          buildCommand = "python -m artiq.gateware.targets.sayma_amc";
-        };
-        artiq-board-metlino-master = artiq-board {
-          target = "metlino";
-          variant = "master";
-          buildCommand = "python -m artiq.gateware.targets.metlino";
-        };
-        artiq-board-kc705-nist_qc2 = artiq-board {
-          target = "kc705";
-          variant = "nist_qc2";
-        };
-
-        conda-artiq-board-sayma-rtm = conda-artiq-board {
-          target = "sayma";
-          variant = "rtm";
-          boardBinaries = artiq-board-sayma-rtm;
-        };
-        conda-artiq-board-sayma-satellite = conda-artiq-board {
-          target = "sayma";
-          variant = "satellite";
-          boardBinaries = artiq-board-sayma-satellite;
-        };
-        conda-artiq-board-metlino-master = conda-artiq-board {
-          target = "metlino";
-          variant = "master";
-          boardBinaries = artiq-board-metlino-master;
-        };
+      artiq-fast // artiq-targets // drtio-ddbs // extras // rec {
         conda-artiq-board-kasli-tester = conda-artiq-board {
           target = "kasli";
           variant = "tester";
@@ -233,28 +220,18 @@ let
           variant = "nist_clock";
           boardBinaries = artiq-fast.artiq-board-kc705-nist_clock;
         };
-        conda-artiq-board-kc705-nist_qc2 = conda-artiq-board {
-          target = "kc705";
-          variant = "nist_qc2";
-          boardBinaries = artiq-board-kc705-nist_qc2;
-        };
-      } // (pkgs.lib.optionalAttrs (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") rec {
-        artiq-board-sayma-satellite-st = artiq-board {
-          target = "sayma";
-          variant = "satellite";
-          buildCommand = "python -m artiq.gateware.targets.sayma_amc --jdcg-type syncdds";
-        };
-      })
+      }
     EOF
     '';
   pythonDeps = import ./artiq-full/python-deps.nix { inherit pkgs; };
   sipycoManualPackages = import ./artiq-full/sipyco-manual.nix {
     inherit (pkgs) stdenv lib python3Packages texlive texinfo;
-    inherit (import <artiq-fast> { inherit pkgs; }) sipyco;
+    inherit (import artiq-fast { inherit pkgs; }) sipyco;
   };
   artiqManualPackages = import ./artiq-full/artiq-manual.nix {
     inherit (pkgs) stdenv lib fetchgit git python3Packages texlive texinfo;
     inherit (pythonDeps) sphinxcontrib-wavedrom;
+    inherit artiq-fast;
   };
   artiq-full = import generatedNix { inherit pkgs; };
   exampleUserEnv = import ./artiq-full/example-user-env.nix { inherit pkgs artiq-full; };
