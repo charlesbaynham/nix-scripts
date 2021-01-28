@@ -30,7 +30,7 @@ in
 
       artiq-full.openocd
       pkgs.gtkwave
-      pkgs.spyder
+      #pkgs.spyder  # broken on 20.03
       pkgs.R
     ];
   } "touch $out";
