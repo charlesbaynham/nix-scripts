@@ -2,6 +2,23 @@
 
 let
   sinaraSystemsSrc = <sinaraSystemsSrc>;
+  standaloneVariants =
+    let
+      jsonFiles =
+        builtins.attrNames (
+          pkgs.lib.filterAttrs (name: type:
+            type != "directory" &&
+            builtins.match ".+\\.json" name != null
+          ) (builtins.readDir sinaraSystemsSrc)
+        );
+      isStandalone = jsonFile:
+        (builtins.fromJSON (
+          builtins.readFile "${sinaraSystemsSrc}/${jsonFile}"
+        )).base == "standalone";
+    in
+      map (builtins.replaceStrings [".json"] [""]) (
+        builtins.filter isStandalone jsonFiles
+      );
 
   generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
     ''
@@ -111,6 +128,9 @@ let
         "wipm7master"
         "wipm7satellite"
       ]);
+      standaloneVariants = [${builtins.concatStringsSep " " (
+        builtins.map (variant: "\"${variant}\"") standaloneVariants
+      )}];
       # Splitting the build process into software+gateware does
       # not work when artiq embeds compiled firmware into generated
       # Vivado input.
@@ -148,7 +168,7 @@ let
               boardBinaries = boardBinaries;
               inherit target variant;
             };
-          } // (pkgs.lib.optionalAttrs ((builtins.fromJSON (builtins.readFile json)).base == "standalone") {
+          } // (pkgs.lib.optionalAttrs (builtins.elem variant standaloneVariants) {
             "device-db-\''${target}-\''${variant}" = pkgs.stdenv.mkDerivation {
               name = "device-db-\''${target}-\''${variant}";
               buildInputs = ddbDeps;
