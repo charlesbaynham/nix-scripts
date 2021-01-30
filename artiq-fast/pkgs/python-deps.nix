@@ -228,13 +228,13 @@ rec {
 
   migen-axi = python3Packages.buildPythonPackage {
     pname = "migen-axi";
-    version = "unstable-2020-11-11";
+    version = "unstable-2021-01-22";
 
     src = fetchFromGitHub {
       owner = "peteut";
       repo = "migen-axi";
-      rev = "cf992cc71d376b24168411e106016cd1a5707eee";
-      sha256 = "0n4hiic81rzkqr2nz9gfrbrfg5h5gps7g29nkykllc0iqbl8p4kk";
+      rev = "9439ee900358598cecc682db327aa30e506172b5";
+      sha256 = "1z5s8ifq7fbpqi6sx2i87rmz63kbgh9ck94fs2qf21ixhxi46nm3";
     };
 
     nativeBuildInputs = [ python3Packages.pbr ];
