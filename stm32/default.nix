@@ -44,9 +44,11 @@ in
       name = "stabilizer";
       src = <stabilizerSrc>;
       patchPhase = ''
-        substituteInPlace src/main.rs \
-          --replace "net::wire::IpAddress::v4(10, 0, 16, 99)," \
-                    "net::wire::IpAddress::v4(192, 168, 1, 76),"
+        substituteInPlace src/hardware/configuration.rs \
+          --replace "IpAddress::v4(10, 0, 16, 99)" \
+                    "IpAddress::v4(192, 168, 1, 76)" \
+          --replace "Ipv4Address::new(10, 0, 16, 1)" \
+                    "Ipv4Address::new(192, 168, 1, 1)"
       '';
     };
     thermostat = buildStm32Firmware {
