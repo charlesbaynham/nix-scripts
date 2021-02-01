@@ -85,6 +85,7 @@ let
         "berkeley3satellite"
         "bonn1master"
         "bonn1satellite"
+        "cu"
         "hw2master"
         "hw2satellite"
         "hw3"
