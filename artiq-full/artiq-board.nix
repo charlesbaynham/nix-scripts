@@ -16,7 +16,7 @@ let
   cargoDeps = fetchcargo rec {
     name = "artiq-firmware-cargo-deps";
     src = "${artiqSrc}/artiq/firmware";
-    sha256 = (import "${artiqSrc}/artiq/firmware/cargosha256.nix");
+    sha256 = import (artiqSrc + "/artiq/firmware/cargosha256.nix");
   };
 
   cargoVendored = pkgs.stdenv.mkDerivation {

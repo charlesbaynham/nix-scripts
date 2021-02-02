@@ -13,7 +13,7 @@ let
         );
       isStandalone = jsonFile:
         (builtins.fromJSON (
-          builtins.readFile "${sinaraSystemsSrc}/${jsonFile}"
+          builtins.readFile (<sinaraSystemsSrc> + "/${jsonFile}")
         )).base == "standalone";
     in
       map (builtins.replaceStrings [".json"] [""]) (
