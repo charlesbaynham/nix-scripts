@@ -57,9 +57,9 @@ in
       src = <stabilizerSrc>;
       patchPhase = ''
         substituteInPlace src/hardware/configuration.rs \
-          --replace "IpAddress::v4(10, 0, 16, 99)" \
+          --replace "IpAddress::v4(10, 34, 16, 103)" \
                     "IpAddress::v4(192, 168, 1, 76)" \
-          --replace "Ipv4Address::new(10, 0, 16, 1)" \
+          --replace "Ipv4Address::new(10, 34, 16, 1)" \
                     "Ipv4Address::new(192, 168, 1, 1)"
       '';
     };
