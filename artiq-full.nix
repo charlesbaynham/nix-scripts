@@ -241,7 +241,7 @@ let
           buildPhase = "
             mkdir \$out
             artiq_ddb_template \
-              \''${pkgs.lib.strings.concatStringsSep " " (pkgs.lib.attrsets.mapAttrsToList (dest: desc: "-s " + dest + " " + src + "/" + desc + ".json") crates.satellites) } \
+              \''${pkgs.lib.strings.concatStringsSep " " (pkgs.lib.attrsets.mapAttrsToList (dest: desc: "-s " + dest + " " + (src + "/\''${desc}.json")) crates.satellites) } \
               \''${src}/\''${crates.master}.json -o \$out/device_db.py
             mkdir \$out/nix-support
             echo file device_db_template \$out/device_db.py >> \$out/nix-support/hydra-build-products
