@@ -106,6 +106,7 @@ let
         "hw2master"
         "hw2satellite"
         "hw3"
+        "illinois"
         "innsbruck3"
         "innsbruck4"
         "innsbruck5"
