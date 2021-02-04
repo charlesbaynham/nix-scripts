@@ -103,6 +103,7 @@ let
         "bonn1master"
         "bonn1satellite"
         "cu"
+        "cu3"
         "hw2master"
         "hw2satellite"
         "hw3"
