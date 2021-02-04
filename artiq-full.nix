@@ -128,6 +128,7 @@ let
         "ucsb"
         "wipm7master"
         "wipm7satellite"
+        "sydney2"
       ]);
       standaloneVariants = [${builtins.concatStringsSep " " (
         builtins.map (variant: "\"${variant}\"") standaloneVariants
