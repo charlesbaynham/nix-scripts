@@ -123,6 +123,7 @@ let
         "purduemaster"
         "purduesatellite"
         "siom"
+        "stanford"
         "stfcmaster"
         "stfcsatellite"
         "uamsterdam"
