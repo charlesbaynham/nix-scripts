@@ -80,4 +80,26 @@ in
         pkgs.icestorm
       ];
     };
+    # openMMC build system breaks if host compiler is not available, so do not use stdenvNoCC here
+    sayma-mmc = pkgs.stdenv.mkDerivation {
+      name = "sayma-mmc";
+      src = <saymaMmcSrc>;
+      phases = [ "unpackPhase" "buildPhase" "installPhase" ];
+      nativeBuildInputs = [ pkgs.cmake pkgs.gcc-arm-embedded ];
+      buildPhase =
+        ''
+        mkdir build
+        cd build
+        cmake .. -DBOARD=sayma -DBOARD_RTM=sayma -DVERSION= -DTARGET_CONTROLLER=LPC1776 -DCMAKE_BUILD_TYPE=Debug
+        make
+        '';
+      installPhase =
+        ''
+        mkdir $out
+        cp out/* $out
+        mkdir -p $out $out/nix-support
+        echo file binary-dist $out/openMMC.axf >> $out/nix-support/hydra-build-products
+        echo file binary-dist $out/openMMC.bin >> $out/nix-support/hydra-build-products
+        '';
+    };
   }
