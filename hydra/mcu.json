@@ -1,10 +1,10 @@
 {
-    "stm32": {
+    "mcu": {
         "enabled": 1,
         "hidden": false,
-        "description": "STM32 firmware",
+        "description": "MCU firmware",
         "nixexprinput": "nixScripts",
-        "nixexprpath": "stm32.nix",
+        "nixexprpath": "mcu.nix",
         "checkinterval": 300,
         "schedulingshares": 10,
         "enableemail": false,

@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  jobs = import ./stm32/default.nix {
+  jobs = import ./mcu/default.nix {
     mozillaOverlay = import <mozillaOverlay>;
   };
 in
