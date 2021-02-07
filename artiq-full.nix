@@ -55,16 +55,12 @@ let
         "femto2"
         "femto3"
         "freiburg1"
-        "griffith"
         "innsbruck2"
         "ist"
         "liaf"
         "luh2"
         "luh3"
         "mikes"
-        "mitll3"
-        "mitll4master"
-        "mitll4satellite"
         "mpq"
         "nict"
         "no"
@@ -83,7 +79,6 @@ let
         "purpleberry"
         "qe"
         "qleds"
-        "rice"
         "saymamaster"
         "siegen"
         "sydney"
@@ -187,12 +182,6 @@ let
             };
           })) {} variants;
       drtio-systems = {
-        mitll4 = {
-          master = "mitll4master";
-          satellites = {
-            "1" = "mitll4satellite";
-          };
-        };
       } // (pkgs.lib.optionalAttrs (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") {
         berkeley3 = {
           master = "berkeley3master";
