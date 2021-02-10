@@ -2,7 +2,10 @@
 
 let
   sinaraSystemsSrc = <sinaraSystemsSrc>;
-  standaloneVariants =
+  artiqVersion = import <artiq-fast/pkgs/artiq-version.nix> {
+    inherit (pkgs) stdenv git fetchgit;
+  };
+  variantsJson =
     let
       jsonFiles =
         builtins.attrNames (
@@ -11,14 +14,31 @@ let
             builtins.match ".+\\.json" name != null
           ) (builtins.readDir sinaraSystemsSrc)
         );
-      isStandalone = jsonFile:
-        (builtins.fromJSON (
-          builtins.readFile (<sinaraSystemsSrc> + "/${jsonFile}")
-        )).base == "standalone";
     in
-      map (builtins.replaceStrings [".json"] [""]) (
-        builtins.filter isStandalone jsonFiles
+      builtins.listToAttrs (
+        map (jsonFile: {
+          name = builtins.replaceStrings [".json"] [""] jsonFile;
+          value = builtins.fromJSON (
+            builtins.readFile (<sinaraSystemsSrc> + "/${jsonFile}")
+          );
+        }) jsonFiles
       );
+  variants =
+    builtins.attrNames (
+      pkgs.lib.filterAttrs (_: json:
+        pkgs.lib.strings.versionAtLeast artiqVersion (
+          if json ? min_artiq_version
+          then json.min_artiq_version
+          else "0"
+        )
+      ) variantsJson
+    );
+  standaloneVariants =
+    builtins.attrNames (
+      pkgs.lib.filterAttrs (_: json:
+        json.base == "standalone"
+      ) variantsJson
+    );
 
   generatedNix = pkgs.runCommand "generated-nix" { buildInputs = [ pkgs.nix pkgs.git ]; }
     ''
@@ -49,85 +69,9 @@ let
       ];
 
       target = "kasli";
-      variants = [
-        "berkeley3master"
-        "femto1"
-        "femto2"
-        "femto3"
-        "freiburg1"
-        "innsbruck2"
-        "ist"
-        "liaf"
-        "luh2"
-        "luh3"
-        "mikes"
-        "mpq"
-        "nict"
-        "no"
-        "npl1"
-        "npl2"
-        "oklahoma"
-        "olomouc"
-        "oregon"
-        "osaka"
-        "ptb3master"
-        "ptb4"
-        "ptb5"
-        "ptb6"
-        "ptbal"
-        "ptbin"
-        "purpleberry"
-        "qe"
-        "qleds"
-        "saymamaster"
-        "siegen"
-        "sydney"
-        "uaarhus"
-        "ubirmingham"
-        "ucsd"
-        "ugranada"
-        "unlv"
-        "ustc2"
-        "ustc3"
-        "wipm6"
-      ] ++ (pkgs.lib.lists.optionals (pkgs.lib.strings.versionAtLeast artiq-fast.artiq.version "6.0") [
-        "apm"
-        "atomionics"
-        "basel"
-        "berkeley3satellite"
-        "bonn1master"
-        "bonn1satellite"
-        "cu"
-        "cu2"
-        "cu3"
-        "hw2master"
-        "hw2satellite"
-        "hw3"
-        "illinois"
-        "innsbruck3"
-        "innsbruck4"
-        "innsbruck5"
-        "luh"
-        "nist2"
-        "nist3"
-        "nus"
-        "okinawa"
-        "ptb3satellite"
-        "ptb7"
-        "ptb8"
-        "purduemaster"
-        "purduesatellite"
-        "siom"
-        "stanford"
-        "stfcmaster"
-        "stfcsatellite"
-        "uamsterdam"
-        "ubirmingham2"
-        "ucsb"
-        "wipm7master"
-        "wipm7satellite"
-        "sydney2"
-      ]);
+      variants = [${builtins.concatStringsSep " " (
+        builtins.map (variant: "\"${variant}\"") variants
+      )}];
       standaloneVariants = [${builtins.concatStringsSep " " (
         builtins.map (variant: "\"${variant}\"") standaloneVariants
       )}];
