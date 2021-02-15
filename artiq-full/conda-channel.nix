@@ -1,8 +1,8 @@
-{ pkgs }:
+{ pkgs, artiq-fast }:
 { jobs }:
 
 let 
-  condaBuilderEnv = import <artiq-fast/conda/builder-env.nix> { inherit pkgs; };
+  condaBuilderEnv = import ../artiq-fast/conda/builder-env.nix { inherit pkgs; };
 in
   pkgs.runCommand "conda-channel" { }
     ''

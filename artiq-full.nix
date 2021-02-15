@@ -243,5 +243,5 @@ in
       src = generatedNix;
       constituents = [];
     };
-    conda-channel = import ./artiq-full/conda-channel.nix { inherit pkgs; } { inherit jobs; };
+    conda-channel = import ./artiq-full/conda-channel.nix { inherit pkgs artiq-fast; } { inherit jobs; };
   }
