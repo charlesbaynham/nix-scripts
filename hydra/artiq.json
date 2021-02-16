@@ -22,7 +22,7 @@
         "description": "Generated code for ARTIQ targets (beta version)",
         "nixexprinput": "nixScripts",
         "nixexprpath": "artiq-board-generated",
-        "checkinterval": 86400,
+        "checkinterval": 14400,
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
