@@ -19,7 +19,7 @@
     "board-generated-beta": {
         "enabled": 1,
         "hidden": false,
-        "description": "Generated code for ARTIQ targets (beta version)",
+        "description": "Generated code for ARTIQ boards (beta version)",
         "nixexprinput": "nixScripts",
         "nixexprpath": "artiq-board-generated",
         "checkinterval": 14400,
@@ -73,7 +73,7 @@
     "board-generated": {
         "enabled": 1,
         "hidden": false,
-        "description": "Generated code for ARTIQ targets",
+        "description": "Generated code for ARTIQ boards",
         "nixexprinput": "nixScripts",
         "nixexprpath": "artiq-board-generated",
         "checkinterval": 14400,
