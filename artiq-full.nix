@@ -1,12 +1,12 @@
 { pkgs ? import <nixpkgs> {}
-, beta ? <beta>
+, a6p ? <a6p>
 }:
 
 let
   sinaraSystemsRev = builtins.readFile <artiq-board-generated/sinara-rev.txt>;
   sinaraSystemsHash = builtins.readFile <artiq-board-generated/sinara-hash.txt>;
   sinaraSystemsSrc =
-    if beta
+    if a6p
     then pkgs.fetchgit {
       url = "https://git.m-labs.hk/M-Labs/sinara-systems.git";
       rev = sinaraSystemsRev;
@@ -14,7 +14,7 @@ let
     }
     else <sinaraSystemsSrc>;
   artiq-fast =
-    if beta
+    if a6p
     then <artiq-board-generated/fast>
     else <artiq-fast>;
   artiqVersion = import (artiq-fast + "/pkgs/artiq-version.nix") {
@@ -47,7 +47,7 @@ let
     ''
     mkdir $out
 
-    ${if beta
+    ${if a6p
       then ''
         cp -a ${<artiq-board-generated>} $out/board-generated
         ln -s board-generated/fast $out/fast
@@ -59,7 +59,7 @@ let
     cp ${./artiq-full}/extras.nix $out
     cp ${./artiq-full}/*.patch $out
 
-    ${if beta
+    ${if a6p
       then ''
         REV=${sinaraSystemsRev}
         HASH=${sinaraSystemsHash}
@@ -77,7 +77,7 @@ let
     { pkgs ? import <nixpkgs> {}}:
 
     let
-      artiq-fast = import ${if beta then "./board-generated" else "."}/fast { inherit pkgs; };
+      artiq-fast = import ${if a6p then "./board-generated" else "."}/fast { inherit pkgs; };
       ddbDeps = [
         artiq-fast.artiq
         (pkgs.python3.withPackages (ps: [ ps.jsonschema ]))
@@ -90,11 +90,11 @@ let
         builtins.map (variant: "\"${variant}\"") standaloneVariants
       )}];
 
-      vivado = import ${if beta then "./board-generated" else "."}/fast/vivado.nix {
+      vivado = import ${if a6p then "./board-generated" else "."}/fast/vivado.nix {
         inherit pkgs;
       };
       artiq-board =
-        ${if beta
+        ${if a6p
         then ''
           import ./artiq-board-vivado.nix {
             inherit pkgs vivado;
@@ -147,7 +147,7 @@ let
           })
       ) {} ${serializedTargets};
       drtio-systems = {
-        ${pkgs.lib.optionalString beta ''
+        ${pkgs.lib.optionalString a6p ''
           berkeley3 = {
             master = "berkeley3master";
             satellites = {
