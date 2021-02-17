@@ -52,6 +52,7 @@
             "artiq-board-generated": { "type": "sysbuild", "value": "artiq:board-generated-beta:generated-nix", "emailresponsible": false }
         }
     },
+
     "fast": {
         "enabled": 1,
         "hidden": false,
@@ -64,9 +65,27 @@
         "emailoverride": "",
         "keepnr": 10,
         "inputs": {
-            "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-20.03", "emailresponsible": false },
+            "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-20.09", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
-            "artiqSrc": { "type": "git", "value": "git://github.com/m-labs/artiq.git release-5 1", "emailresponsible": false }
+            "artiqSrc": { "type": "git", "value": "git://github.com/m-labs/artiq.git release-6 1", "emailresponsible": false }
+        }
+    },
+    "board-generated": {
+        "enabled": 1,
+        "hidden": false,
+        "description": "Generated code for ARTIQ targets",
+        "nixexprinput": "nixScripts",
+        "nixexprpath": "artiq-board-generated",
+        "checkinterval": 14400,
+        "schedulingshares": 1,
+        "enableemail": false,
+        "emailoverride": "",
+        "keepnr": 10,
+        "inputs": {
+            "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-20.09", "emailresponsible": false },
+            "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
+            "sinaraSystemsSrc": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/sinara-systems.git master 1", "emailresponsible": false },
+            "artiq-fast": { "type": "sysbuild", "value": "artiq:fast:generated-nix", "emailresponsible": false }
         }
     },
     "full": {
@@ -81,13 +100,50 @@
         "emailoverride": "",
         "keepnr": 10,
         "inputs": {
+            "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-20.09", "emailresponsible": false },
+            "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
+            "a6p": { "type": "boolean", "value": "true" },
+            "artiq-board-generated": { "type": "sysbuild", "value": "artiq:board-generated:generated-nix", "emailresponsible": false }
+        }
+    },
+
+    "fast-legacy": {
+        "enabled": 1,
+        "hidden": false,
+        "description": "Core ARTIQ packages to build fast for CI purposes (legacy version)",
+        "nixexprinput": "nixScripts",
+        "nixexprpath": "artiq-fast.nix",
+        "checkinterval": 300,
+        "schedulingshares": 10,
+        "enableemail": false,
+        "emailoverride": "",
+        "keepnr": 10,
+        "inputs": {
+            "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-20.03", "emailresponsible": false },
+            "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
+            "artiqSrc": { "type": "git", "value": "git://github.com/m-labs/artiq.git release-5 1", "emailresponsible": false }
+        }
+    },
+    "full-legacy": {
+        "enabled": 1,
+        "hidden": false,
+        "description": "Full set of ARTIQ packages (legacy version)",
+        "nixexprinput": "nixScripts",
+        "nixexprpath": "artiq-full.nix",
+        "checkinterval": 86400,
+        "schedulingshares": 1,
+        "enableemail": false,
+        "emailoverride": "",
+        "keepnr": 10,
+        "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-20.03", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
             "sinaraSystemsSrc": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/sinara-systems.git master 1", "emailresponsible": false },
             "a6p": { "type": "boolean", "value": "false" },
-            "artiq-fast": { "type": "sysbuild", "value": "artiq:fast:generated-nix", "emailresponsible": false }
+            "artiq-fast": { "type": "sysbuild", "value": "artiq:fast-legacy:generated-nix", "emailresponsible": false }
         }
     },
+
     "gluelogic": {
         "enabled": 1,
         "hidden": false,
@@ -108,6 +164,7 @@
             "phaserSrc": { "type": "git", "value": "git://github.com/quartiq/phaser", "emailresponsible": false }
         }
     },
+
     "zynq": {
         "enabled": 1,
         "hidden": false,
