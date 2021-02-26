@@ -23,7 +23,8 @@ in
         ps.numba
         ps.bokeh
         matplotlib-qt
-        (ps.cirq.override { matplotlib = matplotlib-qt; })
+        # cirq is broken and doesn't build (as of 20.09.3281.06b11191834)
+        #(ps.cirq.override { matplotlib = matplotlib-qt; })
         # qiskit does not work with matplotlib-qt
         #ps.qiskit
       ]))
