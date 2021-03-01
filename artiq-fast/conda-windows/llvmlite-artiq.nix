@@ -36,6 +36,8 @@ let
         build:
           - cmake
           - llvm-or1k
+        run:
+          - python<3.8
       EOF
 
       cat > bld.bat << EOF
