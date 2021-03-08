@@ -227,12 +227,12 @@ in
     };
   } // (dualPackage {
     name = "flake8-artiq";
-    version = "0.1";
+    version = "0.1.0";
     withManual = false;
     src = pkgs.fetchgit {
       url = "https://gitlab.com/duke-artiq/flake8-artiq.git";
-      rev = "ed5c4f56c391fe11c6c81020f06a1dc80c2cae9e";
-      sha256 = "112qlx3rx4w7l23f0n16xldc49x4wvf65fx4wdyzq85rxlvl72kh";
+      rev = "3d011bdadc41bb5d4b7e536fbfdb3744d9d9a6de";
+      sha256 = "1i6vk2j97fr1fnm6lzi5n33l6ldvcyfjgfxgr59pcpbz6xhbbgp2";
     };
     pythonOptions = {
       propagatedBuildInputs = [ pkgs.python3Packages.flake8 ];
