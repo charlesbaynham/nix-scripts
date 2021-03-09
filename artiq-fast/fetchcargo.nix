@@ -1,4 +1,4 @@
-{ stdenv, cacert, git, cargo, cargo-vendor }:
+{ stdenv, lib, cacert, git, cargo, cargo-vendor }:
 { name, src, sha256 }:
 stdenv.mkDerivation {
   name = "${name}-vendor";
@@ -31,6 +31,6 @@ stdenv.mkDerivation {
   outputHashMode = "recursive";
   outputHash = sha256;
 
-  impureEnvVars = stdenv.lib.fetchers.proxyImpureEnvVars;
+  impureEnvVars = lib.fetchers.proxyImpureEnvVars;
   preferLocalBuild = true;
 }

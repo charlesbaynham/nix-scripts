@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, fetchFromGitHub, python3Packages, misoc-new }:
+{ lib, fetchgit, fetchFromGitHub, python3Packages, misoc-new }:
 
 rec {
   # User dependencies
@@ -109,7 +109,7 @@ rec {
 
     propagatedBuildInputs = with python3Packages; [ pyserial jinja2 numpy asyncserial migen ];
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "A high performance and small footprint system-on-chip based on Migen";
       homepage    = "https://m-labs.hk/migen";
       license     = licenses.bsd2;
@@ -130,7 +130,7 @@ rec {
 
     propagatedBuildInputs = with python3Packages; [ colorama ];
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "A Python toolbox for building complex digital hardware";
       homepage    = "https://m-labs.hk/migen";
       license     = licenses.bsd2;
@@ -151,7 +151,7 @@ rec {
 
     propagatedBuildInputs = with python3Packages; [ pyserial prettytable msgpack migen ];
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "Finding the bacteria in rotting FPGA designs";
       homepage    = "https://m-labs.hk/migen";
       license     = licenses.bsd2;
@@ -172,7 +172,7 @@ rec {
 
     propagatedBuildInputs = with python3Packages; [ migen misoc ];
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "JESD204B core for Migen/MiSoC";
       homepage    = "https://m-labs.hk/migen";
       license     = licenses.bsd2;
@@ -189,7 +189,7 @@ rec {
       sha256 = "0j15i54p7nri6hkzn1wal9pxri4pgql01wgjccig6ar0v5jjbvsy";
     };
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "Super-fast and clean conversions to numbers";
       homepage    = "https://github.com/SethMMorton/fastnumbers";
       license     = licenses.mit;
@@ -218,7 +218,7 @@ rec {
       export PBR_VERSION=0.0.1
     '';
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "Ramda, ported to Python";
       homepage    = "https://github.com/peteut/ramda.py";
       license     = licenses.mit;
@@ -259,7 +259,7 @@ rec {
       export PBR_VERSION=0.0.1
     '';
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "AXI support for Migen/MiSoC";
       homepage    = "https://github.com/peteut/migen-axi";
       license     = licenses.mit;
@@ -280,7 +280,7 @@ rec {
     # Non-standard test suite. Needs custom checkPhase.
     doCheck = false;
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "Portable tool for executing LLVM and Clang style test suites";
       homepage = http://llvm.org/docs/CommandGuide/lit.html;
       license = licenses.ncsa;
@@ -299,7 +299,7 @@ rec {
     };
     prePatch = "echo ${version} > RELEASE-VERSION";
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "A tool for checking tool output inspired by LLVM's FileCheck";
       homepage    = "https://github.com/stp/OutputCheck";
       license     = licenses.bsd3;

@@ -1,4 +1,4 @@
-{ stdenv, targetPackages
+{ stdenv, lib, targetPackages
 , fetchurl, file, python2, tzdata, ps
 , llvm-or1k, ncurses, zlib, darwin, rustPlatform, git, cmake, curl
 , which, libffi, gdb
@@ -14,7 +14,7 @@
 }:
 
 let
-  inherit (stdenv.lib) optional optionalString;
+  inherit (lib) optional optionalString;
   inherit (darwin.apple_sdk.frameworks) Security;
 
   target = builtins.replaceStrings [" "] [","] (builtins.toString targets);
@@ -171,7 +171,7 @@ stdenv.mkDerivation {
   # https://github.com/rust-lang/rust/issues/30181
   # enableParallelBuilding = false;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = https://www.rust-lang.org/;
     description = "A safe, concurrent, practical language";
     maintainers = with maintainers; [ sb0 ];

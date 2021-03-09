@@ -36,7 +36,7 @@ python3Packages.buildPythonPackage rec {
   '';
 
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A leading-edge control system for quantum information experiments";
     homepage = https://m-labs/artiq;
     license = licenses.lgpl3;

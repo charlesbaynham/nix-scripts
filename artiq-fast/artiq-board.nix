@@ -9,7 +9,7 @@ let
   artiqSrc = import ./pkgs/artiq-src.nix { fetchgit = pkgs.fetchgit; };
   artiqpkgs = import ./default.nix { inherit pkgs; };
   fetchcargo = import ./fetchcargo.nix {
-    inherit (pkgs) stdenv cacert git;
+    inherit (pkgs) stdenv lib cacert git;
     inherit (artiqpkgs) cargo cargo-vendor;
   };
   cargoDeps = fetchcargo rec {

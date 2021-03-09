@@ -2,7 +2,7 @@
 with pkgs;
 let
   artiq6 = pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0";
-  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) stdenv fetchgit fetchFromGitHub python3Packages; misoc-new = artiq6; };
+  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) lib fetchgit fetchFromGitHub python3Packages; misoc-new = artiq6; };
 
   boards = [
     { target = "kasli"; variant = "tester"; }
@@ -25,7 +25,7 @@ let
     binutils-arm = callPackage ./pkgs/binutils.nix { platform = "arm"; target = "armv7-unknown-linux-gnueabihf"; };
     llvm-or1k = callPackage ./pkgs/llvm-or1k.nix {};
     rustc = callPackage ./pkgs/rust/rustc-with-crates.nix
-      ((stdenv.lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
+      ((lib.optionalAttrs (stdenv.cc.isGNU && stdenv.hostPlatform.isi686) {
          stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
        }) //
        { inherit llvm-or1k; });

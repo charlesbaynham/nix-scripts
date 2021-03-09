@@ -1,4 +1,4 @@
-{ stdenv
+{ stdenv, lib
 , fetchFromGitHub, runCommand
 , perl, groff, cmake, libxml2, python, libffi, valgrind
 }:
@@ -30,7 +30,7 @@ in
     passthru.llvm-src = llvm-src;
     src = llvm-clang-src;
 
-    buildInputs = [ perl groff cmake libxml2 python libffi ] ++ stdenv.lib.optional stdenv.isLinux valgrind;
+    buildInputs = [ perl groff cmake libxml2 python libffi ] ++ lib.optional stdenv.isLinux valgrind;
 
     preBuild = ''
       NIX_BUILD_CORES=4
@@ -59,8 +59,8 @@ in
     meta = {
       description = "Collection of modular and reusable compiler and toolchain technologies";
       homepage = http://llvm.org/;
-      license = stdenv.lib.licenses.bsd3;
-      maintainers = with stdenv.lib.maintainers; [ sb0 ];
-      platforms = stdenv.lib.platforms.all;
+      license = lib.licenses.bsd3;
+      maintainers = with lib.maintainers; [ sb0 ];
+      platforms = lib.platforms.all;
     };
   }

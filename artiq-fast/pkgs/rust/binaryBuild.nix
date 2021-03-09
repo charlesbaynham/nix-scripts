@@ -1,4 +1,4 @@
-{ stdenv, makeWrapper, bash, buildRustPackage, curl, darwin
+{ stdenv, lib, makeWrapper, bash, buildRustPackage, curl, darwin
 , version
 , src
 , platform
@@ -6,7 +6,7 @@
 }:
 
 let
-  inherit (stdenv.lib) optionalString;
+  inherit (lib) optionalString;
   inherit (darwin.apple_sdk.frameworks) Security;
 
   bootstrapping = versionType == "bootstrap";
@@ -26,14 +26,14 @@ rec {
     inherit version;
     inherit src;
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       homepage = http://www.rust-lang.org/;
       description = "A safe, concurrent, practical language";
       maintainers = with maintainers; [ sb0 ];
       license = [ licenses.mit licenses.asl20 ];
     };
 
-    buildInputs = [ bash ] ++ stdenv.lib.optional stdenv.isDarwin Security;
+    buildInputs = [ bash ] ++ lib.optional stdenv.isDarwin Security;
 
     postPatch = ''
       patchShebangs .
@@ -60,7 +60,7 @@ rec {
         install_name_tool -change /usr/lib/libresolv.9.dylib '${darwin.libresolv}/lib/libresolv.9.dylib' "$out/bin/rustdoc"
         install_name_tool -change /usr/lib/libiconv.2.dylib '${darwin.libiconv}/lib/libiconv.2.dylib' "$out/bin/cargo"
         install_name_tool -change /usr/lib/libresolv.9.dylib '${darwin.libresolv}/lib/libresolv.9.dylib' "$out/bin/cargo"
-        install_name_tool -change /usr/lib/libcurl.4.dylib '${stdenv.lib.getLib curl}/lib/libcurl.4.dylib' "$out/bin/cargo"
+        install_name_tool -change /usr/lib/libcurl.4.dylib '${lib.getLib curl}/lib/libcurl.4.dylib' "$out/bin/cargo"
         for f in $out/lib/lib*.dylib; do
           install_name_tool -change /usr/lib/libresolv.9.dylib '${darwin.libresolv}/lib/libresolv.9.dylib' "$f"
         done
@@ -80,14 +80,14 @@ rec {
     inherit version;
     inherit src;
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       homepage = http://www.rust-lang.org/;
       description = "A safe, concurrent, practical language";
       maintainers = with maintainers; [ sb0 ];
       license = [ licenses.mit licenses.asl20 ];
     };
 
-    buildInputs = [ makeWrapper bash ] ++ stdenv.lib.optional stdenv.isDarwin Security;
+    buildInputs = [ makeWrapper bash ] ++ lib.optional stdenv.isDarwin Security;
 
     postPatch = ''
       patchShebangs .
@@ -107,7 +107,7 @@ rec {
       ${optionalString (stdenv.isDarwin && bootstrapping) ''
         install_name_tool -change /usr/lib/libiconv.2.dylib '${darwin.libiconv}/lib/libiconv.2.dylib' "$out/bin/cargo"
         install_name_tool -change /usr/lib/libresolv.9.dylib '${darwin.libresolv}/lib/libresolv.9.dylib' "$out/bin/cargo"
-        install_name_tool -change /usr/lib/libcurl.4.dylib '${stdenv.lib.getLib curl}/lib/libcurl.4.dylib' "$out/bin/cargo"
+        install_name_tool -change /usr/lib/libcurl.4.dylib '${lib.getLib curl}/lib/libcurl.4.dylib' "$out/bin/cargo"
       ''}
 
       wrapProgram "$out/bin/cargo" \

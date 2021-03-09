@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, libftdi, libusb1, pkgconfig, hidapi }:
+{ stdenv, lib, fetchFromGitHub, autoreconfHook, libftdi, libusb1, pkgconfig, hidapi }:
 
 stdenv.mkDerivation rec {
   pname = "openocd-mlabs";
@@ -55,7 +55,7 @@ stdenv.mkDerivation rec {
     cp ${bscan_spi_bitstreams}/*.bit "$out/share/bscan-spi-bitstreams"
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing";
     longDescription = ''
       OpenOCD provides on-chip programming and debugging support with a layered

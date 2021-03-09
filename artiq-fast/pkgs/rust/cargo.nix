@@ -1,4 +1,4 @@
-{ stdenv, file, curl, pkgconfig, python, openssl, cmake, zlib
+{ stdenv, lib, file, curl, pkgconfig, python, openssl, cmake, zlib
 , makeWrapper, libiconv, cacert, rustPlatform, rustc, libgit2
 , fetchurl
 }:
@@ -52,7 +52,7 @@ rustPlatform.buildRustPackage rec {
   # Disable check phase as there are failures (4 tests fail)
   doCheck = false;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = https://crates.io;
     description = "Downloads your Rust project's dependencies and builds your project";
     maintainers = with maintainers; [ wizeman retrry ];

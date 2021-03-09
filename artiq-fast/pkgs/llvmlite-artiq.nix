@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, llvm-or1k, makeWrapper, python3, ncurses, zlib, python3Packages }:
+{ stdenv, lib, fetchFromGitHub, llvm-or1k, makeWrapper, python3, ncurses, zlib, python3Packages }:
 python3Packages.buildPythonPackage rec {
   pname = "llvmlite-artiq";
   version = "0.23.0.dev";
@@ -13,7 +13,7 @@ python3Packages.buildPythonPackage rec {
 
   preBuild = "export LLVM_CONFIG=${llvm-or1k}/bin/llvm-config";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
       description = "A lightweight LLVM python binding for writing JIT compilers";
       homepage    = "http://llvmlite.pydata.org/";
       maintainers = with maintainers; [ sb0 ];

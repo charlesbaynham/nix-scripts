@@ -14,7 +14,7 @@ rec {
     propagatedBuildInputs = with pkgs.python3Packages; [ svgwrite attrdict ];
     doCheck = false;
 
-    meta = with pkgs.stdenv.lib; {
+    meta = with pkgs.lib; {
       description = "WaveDrom compatible Python module and command line";
       homepage    = "https://pypi.org/project/wavedrom/";
       license     = licenses.mit;
@@ -34,7 +34,7 @@ rec {
     propagatedBuildInputs = [ wavedrom ] ++ (with pkgs.python3Packages; [ sphinx xcffib cairosvg ]);
     doCheck = false;
 
-    meta = with pkgs.stdenv.lib; {
+    meta = with pkgs.lib; {
       description = "A Sphinx extension that allows including WaveDrom diagrams";
       homepage    = "https://pypi.org/project/sphinxcontrib-wavedrom/";
       license     = licenses.mit;

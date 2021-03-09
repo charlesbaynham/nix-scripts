@@ -1,4 +1,4 @@
-{ stdenv, buildPackages
+{ stdenv, lib, buildPackages
 , fetchurl, zlib
 , platform, target
 }:
@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
       `gprof', `nm', `strip', etc.
     '';
     homepage = http://www.gnu.org/software/binutils/;
-    license = stdenv.lib.licenses.gpl3Plus;
+    license = lib.licenses.gpl3Plus;
     /* Give binutils a lower priority than gcc-wrapper to prevent a
        collision due to the ld/as wrappers/symlinks in the latter. */
     priority = "10";

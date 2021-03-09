@@ -12,7 +12,7 @@ let
     jinja2 jsonschema numpy artiqpkgs.migen artiqpkgs.microscope artiqpkgs.misoc artiqpkgs.jesd204b artiqpkgs.artiq
   ]);
   fetchcargo = import (artiq-fast + "/fetchcargo.nix") {
-    inherit (pkgs) stdenv cacert git;
+    inherit (pkgs) stdenv lib cacert git;
     inherit (artiqpkgs) cargo cargo-vendor;
   };
   cargoDeps = fetchcargo rec {
