@@ -148,6 +148,13 @@ let
       ) {} ${serializedTargets};
       drtio-systems = {
         ${pkgs.lib.optionalString a6p ''
+          ap = {
+            master = "apmaster";
+            satellites = {
+              "1" = "apsatellite1";
+              "2" = "apsatellite2";
+            };
+          };
           berkeley3 = {
             master = "berkeley3master";
             satellites = {
