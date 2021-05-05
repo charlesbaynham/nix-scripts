@@ -161,13 +161,13 @@ rec {
 
   jesd204b = python3Packages.buildPythonPackage rec {
     pname = "jesd204b";
-    version = "unstable-2020-12-18";
+    version = "unstable-2021-05-05";
 
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "jesd204b";
-      rev = "23bd08f5ee95eb42502f9fbe1c2a45e8c083eab9";
-      sha256 = "0x2mh5fv4q0b1f8pjc2kcyjqbfgiyp1hlvbfgk8dbsraj50i566h";
+      rev = "bf1cd9014c8b7a9db67609f653634daaf3bcd39b";
+      sha256 = "035csm6as4p75cjz7kd6gnras14856i2jzi9g1gd800g284hw9n3";
     };
 
     propagatedBuildInputs = with python3Packages; [ migen misoc ];
