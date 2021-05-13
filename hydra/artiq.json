@@ -184,7 +184,7 @@
             "artiq-zynq": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/artiq-zynq.git", "emailresponsible": false },
 
             "gitea_repo_name": { "value": "artiq-zynq", "type": "string" },
-            "gitea_repo_owner": { "value": "m-labs", "type": "string" },
+            "gitea_repo_owner": { "value": "M-Labs", "type": "string" },
             "gitea_status_repo": { "value": "artiq-zynq", "type": "string" }
         }
     }
