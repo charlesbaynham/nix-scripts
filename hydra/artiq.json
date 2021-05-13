@@ -181,7 +181,11 @@
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
             "artiq-fast": { "type": "sysbuild", "value": "artiq:fast:generated-nix", "emailresponsible": false },
             "zynq-rs": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/zynq-rs.git", "emailresponsible": false },
-            "artiq-zynq": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/artiq-zynq.git", "emailresponsible": false }
+            "artiq-zynq": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/artiq-zynq.git", "emailresponsible": false },
+
+            "gitea_repo_name": { "value": "artiq-zynq", "type": "string" },
+            "gitea_repo_owner": { "value": "m-labs", "type": "string" },
+            "gitea_status_repo": { "value": "artiq-zynq", "type": "string" }
         }
     }
 }
