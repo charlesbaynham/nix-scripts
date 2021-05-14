@@ -167,12 +167,6 @@ let
               "1" = "bonn1satellite";
             };
           };
-          hw2 = {
-            master = "hw2master";
-            satellites = {
-              "1" = "hw2satellite";
-            };
-          };
           ptb3 = {
             master = "ptb3master";
             satellites = {
