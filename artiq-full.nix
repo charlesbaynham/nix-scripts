@@ -185,6 +185,12 @@ let
               "1" = "stfcsatellite";
             };
           };
+          ubirmingham3 = {
+            master = "ubirmingham3master";
+            satellites = {
+              "1" = "ubirmingham3satellite";
+            };
+          };
           wipm7 = {
             master = "wipm7master";
             satellites = {
