@@ -29,7 +29,7 @@ let
          stdenv = overrideCC stdenv gcc6; # with gcc-7: undefined reference to `__divmoddi4'
        }) //
        { inherit llvm-or1k; });
-    cargo = callPackage ./pkgs/rust/cargo.nix { inherit rustc; };
+    cargo = callPackage ./pkgs/rust/cargo.nix { inherit rustc; rustPlatform = rustPackages_1_45.rustPlatform; };
     cargo-vendor = callPackage ./pkgs/rust/cargo-vendor.nix {};
     llvmlite-artiq = callPackage ./pkgs/llvmlite-artiq.nix { inherit llvm-or1k; };
     libartiq-support = callPackage ./pkgs/libartiq-support.nix { inherit rustc; };
