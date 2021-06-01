@@ -35,7 +35,7 @@ let
     libartiq-support = callPackage ./pkgs/libartiq-support.nix { inherit rustc; };
     artiq = callPackage ./pkgs/artiq.nix { inherit pythonDeps binutils-or1k binutils-arm llvm-or1k llvmlite-artiq libartiq-support lit outputcheck; };
     artiq-env = (pkgs.python3.withPackages(ps: [ artiq ])).overrideAttrs (oldAttrs: { name = "${pkgs.python3.name}-artiq-env-${artiq.version}"; });
-    openocd = callPackage ./pkgs/openocd.nix {};
+    openocd = callPackage ./pkgs/openocd.nix { autoreconfHook = pkgs.autoreconfHook269 or pkgs.autoreconfHook; };
   };
 
   condaNoarch = {
