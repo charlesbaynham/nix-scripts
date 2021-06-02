@@ -256,7 +256,7 @@ rec {
     '';
 
 
-    checkInputs = [ python3Packages.pytest python3Packages.pytest-flake8 ];
+    checkInputs = [ python3Packages.pytest python3Packages.pytest-timeout python3Packages.pytest-flake8 ];
     checkPhase = "pytest";
 
     preBuild = ''
