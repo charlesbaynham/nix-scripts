@@ -249,6 +249,10 @@ rec {
         --replace "ramda==0.5.5" "ramda"
       substituteInPlace requirements.txt \
         --replace "colorama==0.4.3" "colorama"
+      substituteInPlace requirements.txt \
+        --replace "toolz==0.10.0" "toolz"
+      substituteInPlace requirements.txt \
+        --replace "pyserial==3.4" "pyserial"
     '';
 
 
