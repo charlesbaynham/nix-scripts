@@ -1,4 +1,4 @@
-{ stdenv, lib, pythonDeps, fetchgit, git, python3Packages, qt5, binutils-or1k, binutils-arm, llvm-or1k, llvmlite-artiq, libartiq-support, lit, outputcheck }:
+{ stdenv, lib, pythonDeps, fetchgit, git, python3Packages, qt5, binutils-or1k, binutils-arm, llvm-or1k, llvmlite-artiq, libartiq-support, lit, outputcheck, fontconfig }:
 
 python3Packages.buildPythonPackage rec {
   pname = "artiq";
@@ -23,7 +23,10 @@ python3Packages.buildPythonPackage rec {
 
   # Modifies PATH to pass the wrapped python environment (i.e. python3.withPackages(...) to subprocesses.
   # Allows subprocesses using python to find all packages you have installed
-  makeWrapperArgs = [ ''--run 'if [ ! -z "$NIX_PYTHONPREFIX" ]; then export PATH=$NIX_PYTHONPREFIX/bin:$PATH;fi' '' ];
+  makeWrapperArgs = [
+    ''--run 'if [ ! -z "$NIX_PYTHONPREFIX" ]; then export PATH=$NIX_PYTHONPREFIX/bin:$PATH;fi' ''
+    "--set FONTCONFIG_FILE ${fontconfig.out}/etc/fonts/fonts.conf"
+  ];
 
   checkInputs = [ binutils-or1k outputcheck ];
   checkPhase =
