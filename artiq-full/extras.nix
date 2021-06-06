@@ -245,4 +245,27 @@ in
         '';
     };
     condaOptions = { dependencies = [ "flake8" ]; };
+  }) // (dualPackage {
+    name = "dax";
+    version = "6.3";
+    withManual = false;
+    src = pkgs.fetchgit {
+      url = "https://gitlab.com/duke-artiq/dax.git";
+      rev = "v${version}";
+      sha256 = "1agxyx2rxylrwc3zyz2czdbfv2sxrx5mrwahm0n7gnn87f32h36v";
+    };
+    pythonOptions = {
+      VERSIONEER_OVERRIDE = version;
+      inherit (pkgs.python3Packages.pygit2) SSL_CERT_FILE;
+      propagatedBuildInputs = [ artiq sipyco ]
+        ++ (with pkgs.python3Packages; [ numpy scipy pyvcd natsort pygit2 matplotlib graphviz h5py networkx ]);
+      checkInputs = [ pkgs.python3Packages.pytest pkgs.python3Packages.mypy pkgs.python3Packages.flake8 ];
+      checkPhase =
+        ''
+        pytest
+        mypy
+        flake8
+        '';
+    };
+    condaOptions = { dependencies = [ "python>=3.7" "artiq" "sipyco" "numpy" "scipy" "pyvcd" "natsort" "pygit2" "matplotlib" "python-graphviz" "h5py" "networkx" ]; };
   })
