@@ -231,8 +231,8 @@ in
     withManual = false;
     src = pkgs.fetchgit {
       url = "https://gitlab.com/duke-artiq/flake8-artiq.git";
-      rev = "1e521fe76f8c2adeaec1c6c6301ec9a2bd2c6382";
-      sha256 = "1w698i1yp1v3sp09i90mcswjk0i3vpfdr7hd73dplk7wjldxrmv8";
+      rev = "779e41c8cf3e05dac4b7c2802640eb0442cf65d9";
+      sha256 = "1vz6m1w1i1xf72wqzl4ahlv9mcxa6zn8wv05s4yq4cph0hk6inn0";
     };
     pythonOptions = {
       propagatedBuildInputs = [ pkgs.python3Packages.flake8 ];
