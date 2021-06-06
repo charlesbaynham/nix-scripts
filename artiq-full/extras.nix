@@ -1,4 +1,4 @@
-{ pkgs, sipyco, asyncserial, artiq }:
+{ pkgs, sipyco, asyncserial, pyqtgraph-qt5, artiq }:
 let
   condaBuild = import ./fast/conda/build.nix { inherit pkgs; };
   condaFakeSource = import ./fast/conda/fake-source.nix { inherit pkgs; };
@@ -268,4 +268,24 @@ in
         '';
     };
     condaOptions = { dependencies = [ "python>=3.7" "artiq" "sipyco" "numpy" "scipy" "pyvcd" "natsort" "pygit2" "matplotlib" "python-graphviz" "h5py" "networkx" ]; };
+  }) // (dualPackage {
+    name = "dax-applets";
+    version = "0.0.0";
+    withManual = false;
+    src = pkgs.fetchgit {
+      url = "https://gitlab.com/duke-artiq/dax-applets.git";
+      rev = "e25f0c83ef246d2913cbd97379b67ac02896745b";
+      sha256 = "0d0fkw27bhd0hky512km6iiiagwkdzw4vxgcd4cjq08nmh72jxv1";
+    };
+    pythonOptions = {
+      propagatedBuildInputs = [ artiq pyqtgraph-qt5 ];
+        ++ (with pkgs.python3Packages; [ numpy pyqt5 ]);
+      checkInputs = [ pkgs.python3Packages.mypy pkgs.python3Packages.flake8 ];
+      checkPhase =
+        ''
+        mypy
+        flake8
+        '';
+    };
+    condaOptions = { dependencies = [ "python>=3.5" "artiq" "numpy" "pyqt" "pyqtgraph" ]; };
   })
