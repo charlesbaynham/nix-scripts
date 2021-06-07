@@ -278,7 +278,7 @@ in
       sha256 = "0d0fkw27bhd0hky512km6iiiagwkdzw4vxgcd4cjq08nmh72jxv1";
     };
     pythonOptions = {
-      propagatedBuildInputs = [ artiq pyqtgraph-qt5 ];
+      propagatedBuildInputs = [ artiq pyqtgraph-qt5 ]
         ++ (with pkgs.python3Packages; [ numpy pyqt5 ]);
       checkInputs = [ pkgs.python3Packages.mypy pkgs.python3Packages.flake8 ];
       checkPhase =
