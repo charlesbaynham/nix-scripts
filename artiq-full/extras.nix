@@ -245,7 +245,7 @@ in
         '';
     };
     condaOptions = { dependencies = [ "flake8" ]; };
-  }) // (dualPackage {
+  }) // (dualPackage rec {
     name = "dax";
     version = "6.3";
     withManual = false;
