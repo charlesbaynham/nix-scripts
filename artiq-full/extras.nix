@@ -252,7 +252,7 @@ in
     src = pkgs.fetchgit {
       url = "https://gitlab.com/duke-artiq/dax.git";
       rev = "v${version}";
-      sha256 = "1agxyx2rxylrwc3zyz2czdbfv2sxrx5mrwahm0n7gnn87f32h36v";
+      sha256 = "17bgqal8iyajnmp11wd59k4i8gpa3zf3cm7v8mjail5c8bnwyl4c";
     };
     pythonOptions = {
       VERSIONEER_OVERRIDE = version;
