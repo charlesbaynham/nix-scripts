@@ -161,12 +161,6 @@ let
               "1" = "berkeley3satellite";
             };
           };
-          bonn1 = {
-            master = "bonn1master";
-            satellites = {
-              "1" = "bonn1satellite";
-            };
-          };
           ptb3 = {
             master = "ptb3master";
             satellites = {
