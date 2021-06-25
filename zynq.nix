@@ -40,7 +40,7 @@ in
 
         export USER=hydra
         export OPENOCD_ZYNQ=${artiq-zynq.zynq-rs}/openocd
-        export SZL=${(import artiq-zynq.zynq-rs).zc706-szl}/szl.elf
+        export SZL=${(import artiq-zynq.zynq-rs).szl}
         pushd ${<artiq-zynq>}
         bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa" -d ${artiq-zynq.zc706-nist_qc2-jtag}
         popd
