@@ -259,14 +259,7 @@ in
       inherit (pkgs.python3Packages.pygit2) SSL_CERT_FILE;
       propagatedBuildInputs = [ artiq sipyco ]
         ++ (with pkgs.python3Packages; [ numpy scipy pyvcd natsort pygit2 matplotlib graphviz h5py networkx ]);
-      doCheck = false;
-      checkInputs = [ pkgs.python3Packages.pytest pkgs.python3Packages.mypy pkgs.python3Packages.flake8 ];
-      checkPhase =
-        ''
-        pytest
-        mypy
-        flake8
-        '';
+      checkInputs = [ pkgs.python3Packages.pytestCheckHook ];
     };
     condaOptions = { dependencies = [ "python>=3.7" "artiq" "sipyco" "numpy" "scipy" "pyvcd" "natsort" "pygit2" "matplotlib" "python-graphviz" "h5py" "networkx" ]; };
   }) // (dualPackage {
