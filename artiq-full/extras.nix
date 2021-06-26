@@ -236,13 +236,7 @@ in
     };
     pythonOptions = {
       propagatedBuildInputs = [ pkgs.python3Packages.flake8 ];
-      checkInputs = [ pkgs.python3Packages.pytest pkgs.python3Packages.mypy pkgs.python3Packages.flake8 ];
-      checkPhase =
-        ''
-        pytest
-        mypy
-        flake8
-        '';
+      checkInputs = [ pkgs.python3Packages.pytestCheckHook ];
     };
     condaOptions = { dependencies = [ "flake8" ]; };
   }) // (dualPackage rec {
@@ -274,12 +268,7 @@ in
     pythonOptions = {
       propagatedBuildInputs = [ artiq pyqtgraph-qt5 ]
         ++ (with pkgs.python3Packages; [ numpy pyqt5 ]);
-      checkInputs = [ pkgs.python3Packages.mypy pkgs.python3Packages.flake8 ];
-      checkPhase =
-        ''
-        mypy
-        flake8
-        '';
+      doCheck = false;
     };
     condaOptions = { dependencies = [ "python>=3.5" "artiq" "numpy" "pyqt" "pyqtgraph" ]; };
   })
