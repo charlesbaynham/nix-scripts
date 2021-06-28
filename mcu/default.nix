@@ -8,7 +8,7 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  buildStm32Firmware = { name, src, patchPhase ? "", extraNativeBuildInputs ? [], checkPhase ? "", ... } @ args:
+  buildStm32Firmware = { name, src, patchPhase ? "", extraNativeBuildInputs ? [], checkPhase ? "", doCheck ? true, ... } @ args:
     let
       # If binaryName is specified as an arg of buildStm32Firmware,
       # then the .nix containing the cargoSha256 must be named "cargosha256-${binaryName}.nix";
@@ -37,7 +37,7 @@ let
           cargo build --release
         '';
 
-        inherit checkPhase;
+        inherit checkPhase doCheck;
         installPhase = ''
           mkdir -p $out $out/nix-support
           cp target/thumbv7em-none-eabihf/release/${binaryName} $out/${name}.elf
@@ -62,6 +62,7 @@ in
           --replace "Ipv4Address::new(10, 34, 16, 1)" \
                     "Ipv4Address::new(192, 168, 1, 1)"
       '';
+      doCheck = false;
     };
     thermostat = buildStm32Firmware {
       name = "thermostat";
