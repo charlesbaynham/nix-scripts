@@ -8,17 +8,12 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  buildStm32Firmware = { name, src, patchPhase ? "", extraNativeBuildInputs ? [], checkPhase ? "", doCheck ? true, ... } @ args:
+  buildStm32Firmware = { name, src, cargoDepsName ? name, patchPhase ? "", extraNativeBuildInputs ? [], checkPhase ? "", doCheck ? true, ... } @ args:
     let
-      # If binaryName is specified as an arg of buildStm32Firmware,
-      # then the .nix containing the cargoSha256 must be named "cargosha256-${binaryName}.nix";
-      # otherwise, the .nix must be named "cargosha256.nix".
       cargoSha256Drv = pkgs.runCommand "${name}-cargosha256" { } ''
-        cp "${src}/cargosha256${
-          if (args ? binaryName) then "-" + args.binaryName else ""
-        }.nix" $out
+        cp "${src}/cargosha256.nix" $out
         '';
-      # If binaryName is specified as an arg of buildStm32Firmware,
+      # If binaryName is specified,
       # then pass it as an argument for `cargo build`; otherwise, do not add such argument.
       extraCargoBuildArgs = (
         (if (args ? extraCargoBuildArgs) then (args.extraCargoBuildArgs + " ") else "") +
@@ -30,7 +25,7 @@ let
       binaryName = if (args ? binaryName) then args.binaryName else name;
     in
       rustPlatform.buildRustPackage rec {
-        inherit name;
+        inherit name cargoDepsName;
         version = "0.0.0";
 
         inherit src;
@@ -60,6 +55,7 @@ in
     stabilizer-dual-iir = buildStm32Firmware {
       name = "stabilizer-dual-iir";
       binaryName = "dual-iir";
+      cargoDepsName = "stabilizer";
       src = <stabilizerSrc>;
       patchPhase = ''
         substituteInPlace src/hardware/configuration.rs \
