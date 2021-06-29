@@ -241,12 +241,12 @@ in
     condaOptions = { dependencies = [ "flake8" ]; };
   }) // (dualPackage rec {
     name = "dax";
-    version = "6.3";
+    version = "6.4";
     withManual = false;
     src = pkgs.fetchgit {
       url = "https://gitlab.com/duke-artiq/dax.git";
       rev = "v${version}";
-      sha256 = "17bgqal8iyajnmp11wd59k4i8gpa3zf3cm7v8mjail5c8bnwyl4c";
+      sha256 = "08w0fpyyhk78i1qmych9kq3va02sm5k1z14yhzrfk9hhf5r7ypf8";
     };
     pythonOptions = {
       VERSIONEER_OVERRIDE = version;
