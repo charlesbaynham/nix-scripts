@@ -51,10 +51,12 @@ let
       };
   migen = (import ../artiq-fast/pkgs/python-deps.nix { inherit (pkgs) lib fetchgit fetchFromGitHub python3Packages; misoc-new = true; }).migen;
 in
-  {
-    stabilizer-dual-iir = buildStm32Firmware {
-      name = "stabilizer-dual-iir";
-      binaryName = "dual-iir";
+  pkgs.lib.attrsets.mapAttrs'
+    (name: value: pkgs.lib.attrsets.nameValuePair ("stabilizer-" + name)
+    (buildStm32Firmware {
+      name = "stabilizer-" + name;
+      # If binaryName is not specified, use the attribute name as binaryName by default.
+      binaryName = if (value ? binaryName) then value.binaryName else name;
       cargoDepsName = "stabilizer";
       src = <stabilizerSrc>;
       patchPhase = ''
@@ -65,7 +67,24 @@ in
                     "Ipv4Address::new(192, 168, 1, 1)"
       '';
       doCheck = false;
-    };
+    })) {
+      dual-iir = {};
+      dual-iir-pounder_v1_1 = {
+        binaryName = "dual-iir";
+        extraCargoBuildArgs = "--features pounder_v1_1";
+      };
+      lockin-external = {};
+      lockin-external-pounder_v1_1 = {
+        binaryName = "lockin-external";
+        extraCargoBuildArgs = "--features pounder_v1_1";
+      };
+      lockin-internal = {};
+      lockin-internal-pounder_v1_1 = {
+        binaryName = "lockin-internal";
+        extraCargoBuildArgs = "--features pounder_v1_1";
+      };
+    } //
+  {
     thermostat = buildStm32Firmware {
       name = "thermostat";
       src = <thermostatSrc>;
