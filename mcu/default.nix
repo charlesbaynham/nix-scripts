@@ -19,6 +19,12 @@ let
         }.nix" $out
         '';
       # If binaryName is specified as an arg of buildStm32Firmware,
+      # then pass it as an argument for `cargo build`; otherwise, do not add such argument.
+      extraCargoBuildArgs = (
+        (if (args ? extraCargoBuildArgs) then (args.extraCargoBuildArgs + " ") else "") +
+        (if (args ? binaryName) then ("--bin " + binaryName) else "")
+      );
+      # If binaryName is specified,
       # then use it as the filename of the ELF generated from `cargo build`;
       # otherwise, use the `name` arg (i.e. the Rust package name) as the ELF filename.
       binaryName = if (args ? binaryName) then args.binaryName else name;
@@ -34,7 +40,7 @@ let
         nativeBuildInputs = [ pkgs.llvm ] ++ extraNativeBuildInputs;
         buildPhase = ''
           export CARGO_HOME=$(mktemp -d cargo-home.XXX)
-          cargo build --release
+          cargo build --release ${extraCargoBuildArgs}
         '';
 
         inherit checkPhase doCheck;
