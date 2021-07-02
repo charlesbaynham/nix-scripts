@@ -231,8 +231,8 @@ in
     withManual = false;
     src = pkgs.fetchgit {
       url = "https://gitlab.com/duke-artiq/flake8-artiq.git";
-      rev = "779e41c8cf3e05dac4b7c2802640eb0442cf65d9";
-      sha256 = "1vz6m1w1i1xf72wqzl4ahlv9mcxa6zn8wv05s4yq4cph0hk6inn0";
+      rev = "24bbd3e7f1b3735ac4f40fe54d3666b35a147df0";
+      sha256 = "1rjy1lxcyyq5bak2swfww08vibd1n1l39vrsdb1cg8sl5jpg5in2";
     };
     pythonOptions = {
       propagatedBuildInputs = [ pkgs.python3Packages.flake8 ];
@@ -275,8 +275,8 @@ in
     withManual = false;
     src = pkgs.fetchgit {
       url = "https://gitlab.com/duke-artiq/dax-applets.git";
-      rev = "e25f0c83ef246d2913cbd97379b67ac02896745b";
-      sha256 = "0d0fkw27bhd0hky512km6iiiagwkdzw4vxgcd4cjq08nmh72jxv1";
+      rev = "584ea3e54131242ec1da5365abd21670cdf4a169";
+      sha256 = "0mgjd92yifs24dg4b14vhawx5mdisbx6jqi5xf7fgkijzjp9hvs3";
     };
     pythonOptions = {
       propagatedBuildInputs = [ artiq pyqtgraph-qt5 ]
