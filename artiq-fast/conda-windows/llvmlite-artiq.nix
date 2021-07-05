@@ -37,7 +37,7 @@ let
           - cmake
           - llvm-or1k
         run:
-          - python<3.8
+          - python<3.9
       EOF
 
       cat > bld.bat << EOF

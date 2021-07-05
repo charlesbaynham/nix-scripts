@@ -25,7 +25,7 @@ let
     # that they are not there if they have been installed from files.
     requirements:
       run:
-        - python<3.8
+        - python<3.9
         - ncurses [linux]
     EOF
 
