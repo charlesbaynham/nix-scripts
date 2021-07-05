@@ -10,7 +10,7 @@ let
   };
   wfvm = pkgs.fetchgit {
     url = "https://git.m-labs.hk/M-Labs/wfvm.git";
-    rev = "4b497938ffd9fcddf84a3dbe2f01524395292adb";
-    sha256 = "0m3kdbbcskqc1lf8b5f7ccbll9b7vkl4r00kbyx3yjb2rs6cqvil";
+    rev = "6d9d9d91f66929574b7c8e5dacb3a611939bfaf1";
+    sha256 = "02b7rs46ia3vvw0r98ih6i2xb6k952hza4i8h4gi0r8dzplsg004";
   };
 in import "${wfvm}/wfvm" { pkgs = (import wfvm-pkgs {}); }
