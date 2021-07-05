@@ -10,11 +10,11 @@ let
       inherit port;
     }) tcpPorts;
 
-  wfvm = import ../wfvm.nix { inherit pkgs; };
+  artiq6 = pkgs.lib.strings.versionAtLeast artiqpkgs.artiq.version "6.0";
+  wfvm = import (if artiq6 then ../wfvm.nix else ../wfvm-legacy.nix) { inherit pkgs; };
   conda-deps = {
     name = "conda-deps";
     script = let
-      artiq6 = pkgs.lib.strings.versionAtLeast artiqpkgs.artiq.version "6.0";
       qt-asyncio-package = if artiq6 then artiqpkgs.conda-qasync else artiqpkgs.conda-quamash;
       conda-deps-noarch = import (if artiq6 then ./conda_noarch_packages.nix else ./conda_noarch_packages-legacy.nix) { inherit pkgs; };
       conda-deps-win-64 = import (if artiq6 then ./conda_win-64_packages.nix else ./conda_win-64_packages-legacy.nix) { inherit pkgs; };
