@@ -3,8 +3,8 @@ let
   condaBuild = import ./fast/conda/build.nix { inherit pkgs; };
   condaFakeSource = import ./fast/conda/fake-source.nix { inherit pkgs; };
   dualPackage = (
-    { name, version, src, pythonOptions ? {}, condaOptions ? {}, withManual ? true}:
-      {
+    { name, version, src, pythonOptions ? {}, condaOptions ? {}, enabled ? true, withManual ? true}:
+      pkgs.lib.optionalAttrs enabled ({
         "${name}" = pkgs.python3Packages.buildPythonPackage ({
           inherit version;
           name = "${name}-${version}";
@@ -38,7 +38,7 @@ let
               echo doc manual ${dest}/html index.html >> $out/nix-support/hydra-build-products
               '';
         };
-      })
+      }))
     );
   # https://github.com/m-labs/artiq/issues/23
   hidapi = pkgs.hidapi.overrideAttrs (oa: {
@@ -242,6 +242,7 @@ in
   }) // (dualPackage rec {
     name = "dax";
     version = "6.4";
+    enabled = builtins.head (builtins.splitVersion version) == builtins.head (builtins.splitVersion artiq.version);
     withManual = false;
     src = pkgs.fetchgit {
       url = "https://gitlab.com/duke-artiq/dax.git";
