@@ -1,12 +1,9 @@
 let
   pkgs = import <nixpkgs> {};
-  zynq-rs-latest = import <zynq-rs>;
   artiq-zynq = import <artiq-zynq>;
   artiq-fast = import <artiq-fast> { inherit pkgs; };
 in
   (
-    builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) zynq-rs-latest
-  ) // (
     builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiq-zynq
   ) // {
     gateware-sim = pkgs.lib.hydraJob (pkgs.stdenv.mkDerivation {
@@ -32,7 +29,12 @@ in
       ];
       phases = [ "buildPhase" ];
 
-      buildPhase =
+      let
+        zynq-rs = import artiq-zynq.zynq-rs;
+        # New zynq-rs versions with Kasli-SoC support have the multiboard "szl" package.
+        # Older versions need the SZL environment variable set to the SZL ELF to be loaded.
+        szlEnv = if zynq-rs ? "szl" then "${zynq-rs.szl}" else "${zynq-rs.zc706-szl}/szl.elf";
+      in buildPhase =
         ''
         echo Power cycling board...
         (echo b; sleep 5; echo B; sleep 5) | nc -N -w6 192.168.1.31 3131
@@ -40,7 +42,7 @@ in
 
         export USER=hydra
         export OPENOCD_ZYNQ=${artiq-zynq.zynq-rs}/openocd
-        export SZL=${(import artiq-zynq.zynq-rs).szl}
+        export SZL=${szlEnv}
         pushd ${<artiq-zynq>}
         bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa" -d ${artiq-zynq.zc706-nist_qc2-jtag}
         popd
