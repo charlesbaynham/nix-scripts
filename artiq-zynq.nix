@@ -2,6 +2,11 @@ let
   pkgs = import <nixpkgs> {};
   artiq-zynq = import <artiq-zynq>;
   artiq-fast = import <artiq-fast> { inherit pkgs; };
+
+  zynq-rs = import artiq-zynq.zynq-rs;
+  # New zynq-rs versions with Kasli-SoC support have the multiboard "szl" package.
+  # Older versions need the SZL environment variable set to the SZL ELF to be loaded.
+  szlEnv = if zynq-rs ? "szl" then "${zynq-rs.szl}" else "${zynq-rs.zc706-szl}/szl.elf";
 in
   (
     builtins.mapAttrs (key: value: pkgs.lib.hydraJob value) artiq-zynq
@@ -29,12 +34,7 @@ in
       ];
       phases = [ "buildPhase" ];
 
-      let
-        zynq-rs = import artiq-zynq.zynq-rs;
-        # New zynq-rs versions with Kasli-SoC support have the multiboard "szl" package.
-        # Older versions need the SZL environment variable set to the SZL ELF to be loaded.
-        szlEnv = if zynq-rs ? "szl" then "${zynq-rs.szl}" else "${zynq-rs.zc706-szl}/szl.elf";
-      in buildPhase =
+      buildPhase =
         ''
         echo Power cycling board...
         (echo b; sleep 5; echo B; sleep 5) | nc -N -w6 192.168.1.31 3131
