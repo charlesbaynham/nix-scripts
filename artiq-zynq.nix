@@ -46,7 +46,7 @@ in
         pushd ${<artiq-zynq>}
         export NIX_SSHOPTS="-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa"
         ssh $NIX_SSHOPTS rpi-4 "nix-store -r ${<nixpkgs>} --add-root openocd-pkgs --indirect && nix-env -e openocd && nix-env -iA openocd -f openocd-pkgs && rm openocd-pkgs"
-        bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o $NIX_SSHOPTS -d ${artiq-zynq.zc706-nist_qc2-jtag}
+        bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "$NIX_SSHOPTS" -d ${artiq-zynq.zc706-nist_qc2-jtag}
         popd
 
         echo Waiting for the firmware to boot...
