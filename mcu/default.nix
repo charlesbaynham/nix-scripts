@@ -53,10 +53,10 @@ let
 in
   pkgs.lib.attrsets.mapAttrs'
     (name: value: pkgs.lib.attrsets.nameValuePair ("stabilizer-" + name)
-    (buildStm32Firmware {
+    (buildStm32Firmware ({
       name = "stabilizer-" + name;
       # If binaryName is not specified, use the attribute name as binaryName by default.
-      binaryName = if (value ? binaryName) then value.binaryName else name;
+      binaryName = name;
       cargoDepsName = "stabilizer";
       src = <stabilizerSrc>;
       patchPhase = ''
@@ -67,7 +67,7 @@ in
                     "Ipv4Address::new(192, 168, 1, 1)"
       '';
       doCheck = false;
-    })) {
+    } // value))) {
       dual-iir = {};
       dual-iir-pounder_v1_1 = {
         binaryName = "dual-iir";
