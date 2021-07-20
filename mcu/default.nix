@@ -8,21 +8,11 @@ let
   rustPlatform = pkgs.recurseIntoAttrs (pkgs.callPackage ./rustPlatform.nix {
     inherit rustManifest;
   });
-  buildStm32Firmware = { name, src, cargoDepsName ? name, patchPhase ? "", extraNativeBuildInputs ? [], checkPhase ? "", doCheck ? true, ... } @ args:
+  buildStm32Firmware = { name, src, cargoDepsName ? name, patchPhase ? "", extraNativeBuildInputs ? [], checkPhase ? "", doCheck ? true, binaryName ? name, extraCargoBuildArgs ? "" }:
     let
       cargoSha256Drv = pkgs.runCommand "${name}-cargosha256" { } ''
         cp "${src}/cargosha256.nix" $out
         '';
-      # If binaryName is specified,
-      # then pass it as an argument for `cargo build`; otherwise, do not add such argument.
-      extraCargoBuildArgs = (
-        (if (args ? extraCargoBuildArgs) then (args.extraCargoBuildArgs + " ") else "") +
-        (if (args ? binaryName) then ("--bin " + binaryName) else "")
-      );
-      # If binaryName is specified,
-      # then use it as the filename of the ELF generated from `cargo build`;
-      # otherwise, use the `name` arg (i.e. the Rust package name) as the ELF filename.
-      binaryName = if (args ? binaryName) then args.binaryName else name;
     in
       rustPlatform.buildRustPackage rec {
         inherit name cargoDepsName;
@@ -35,10 +25,12 @@ let
         nativeBuildInputs = [ pkgs.llvm ] ++ extraNativeBuildInputs;
         buildPhase = ''
           export CARGO_HOME=$(mktemp -d cargo-home.XXX)
-          cargo build --release ${extraCargoBuildArgs}
+          cargo build --release --bin ${binaryName} ${extraCargoBuildArgs}
         '';
 
         inherit checkPhase doCheck;
+        # binaryName defaults to the `name` arg (i.e. the Rust package name);
+        # it is used as the Cargo binary filename
         installPhase = ''
           mkdir -p $out $out/nix-support
           cp target/thumbv7em-none-eabihf/release/${binaryName} $out/${name}.elf
