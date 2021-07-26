@@ -6,7 +6,7 @@ let
     mkdir -p $out/fake-conda;
 
     # work around yet more idiotic conda behavior - build breaks if write permissions aren't set on source files.
-    cp --no-preserve=mode,ownership -R ${bscan_spi_bitstreams} workaround-conda
+    cp --no-preserve=mode,ownership -L -R ${bscan_spi_bitstreams} workaround-conda
     pushd workaround-conda
     tar cf $out/src.tar .
     popd

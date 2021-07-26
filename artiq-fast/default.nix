@@ -76,7 +76,7 @@ let
     };
     conda-bscan-spi-bitstreams = import ./conda/bscan-spi-bitstreams.nix {
       inherit pkgs;
-      inherit (mainPackages.openocd) bscan_spi_bitstreams;
+      bscan_spi_bitstreams = "${mainPackages.openocd}/share/bscan-spi-bitstreams";
     };
     conda-artiq = import ./conda/artiq.nix { inherit pkgs; };
     conda-asyncserial = import ./conda/build.nix { inherit pkgs; } {
