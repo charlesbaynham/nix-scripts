@@ -15,7 +15,7 @@ let
     cp $src/*.bit $out/share/bscan-spi-bitstreams
     '';
   };
-  # https://docs.lambdaconcept.com/screamer/troubleshooting.html#error-contents-differ
+  # based on https://github.com/m-labs/openocd/commit/17395320816c0bcc4f3401633197a851aeda20ce
   openocd-fixed = openocd.overrideAttrs(oa: {
     patches = oa.patches or [] ++ [ ./openocd-jtagspi.nix ];
   });

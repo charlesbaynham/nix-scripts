@@ -1,24 +1,571 @@
-diff --git a/src/flash/nor/spi.c b/src/flash/nor/spi.c
-index af72ffc4..e5c9a9bd 100644
---- a/src/flash/nor/spi.c
-+++ b/src/flash/nor/spi.c
-@@ -90,8 +90,8 @@ const struct flash_device flash_devices[] = {
- 	FLASH_ID("mac 25r6435f",        0x03, 0x00, 0x02, 0xd8, 0xc7, 0x001728c2, 0x100, 0x10000, 0x800000),
- 	FLASH_ID("micron n25q064",      0x03, 0xeb, 0x02, 0xd8, 0xc7, 0x0017ba20, 0x100, 0x10000, 0x800000),
- 	FLASH_ID("micron n25q128",      0x03, 0xeb, 0x02, 0xd8, 0xc7, 0x0018ba20, 0x100, 0x10000, 0x1000000),
--	FLASH_ID("micron n25q256 3v",   0x13, 0xec, 0x12, 0xdc, 0xc7, 0x0019ba20, 0x100, 0x10000, 0x2000000),
--	FLASH_ID("micron n25q256 1.8v", 0x13, 0xec, 0x12, 0xdc, 0xc7, 0x0019bb20, 0x100, 0x10000, 0x2000000),
-+	FLASH_ID("micron n25q256 3v",   0x03, 0xeb, 0x02, 0xd8, 0xc7, 0x0019ba20, 0x100, 0x10000, 0x2000000),
-+	FLASH_ID("micron n25q256 1.8v", 0x03, 0xeb, 0x02, 0xd8, 0xc7, 0x0019bb20, 0x100, 0x10000, 0x2000000),
- 	FLASH_ID("micron mt25ql512",    0x13, 0xec, 0x12, 0xdc, 0xc7, 0x0020ba20, 0x100, 0x10000, 0x4000000),
- 	FLASH_ID("micron mt25ql01",     0x13, 0xec, 0x12, 0xdc, 0xc7, 0x0021ba20, 0x100, 0x10000, 0x8000000),
- 	FLASH_ID("micron mt25ql02",     0x13, 0xec, 0x12, 0xdc, 0xc7, 0x0022ba20, 0x100, 0x10000, 0x10000000),
-@@ -124,7 +124,7 @@ const struct flash_device flash_devices[] = {
- 	FLASH_ID("issi is25lp064",      0x03, 0x00, 0x02, 0xd8, 0xc7, 0x0017609d, 0x100, 0x10000, 0x800000),
- 	FLASH_ID("issi is25lp128d",     0x03, 0xeb, 0x02, 0xd8, 0xc7, 0x0018609d, 0x100, 0x10000, 0x1000000),
- 	FLASH_ID("issi is25wp128d",     0x03, 0xeb, 0x02, 0xd8, 0xc7, 0x0018709d, 0x100, 0x10000, 0x1000000),
--	FLASH_ID("issi is25lp256d",     0x13, 0xec, 0x12, 0xdc, 0xc7, 0x0019609d, 0x100, 0x10000, 0x2000000),
-+	FLASH_ID("issi is25lp256d",     0x03, 0xeb, 0x02, 0xd8, 0xc7, 0x0019609d, 0x100, 0x10000, 0x2000000),
- 	FLASH_ID("issi is25wp256d",     0x13, 0xec, 0x12, 0xdc, 0xc7, 0x0019709d, 0x100, 0x10000, 0x2000000),
- 	FLASH_ID("issi is25lp512m",     0x13, 0xec, 0x12, 0xdc, 0xc7, 0x001a609d, 0x100, 0x10000, 0x4000000),
- 	FLASH_ID("issi is25wp512m",     0x13, 0xec, 0x12, 0xdc, 0xc7, 0x001a709d, 0x100, 0x10000, 0x4000000),
+diff '--color=auto' -Naur openocd-0.11.0/src/flash/nor/jtagspi.c openocd-0.11.0.new/src/flash/nor/jtagspi.c
+--- openocd-0.11.0/src/flash/nor/jtagspi.c	2020-12-10 03:43:09.000000000 +0800
++++ openocd-0.11.0.new/src/flash/nor/jtagspi.c	2021-07-27 18:31:32.179205804 +0800
+@@ -82,7 +82,7 @@
+ 	struct scan_field fields[6];
+ 	uint8_t marker = 1;
+ 	uint8_t xfer_bits_buf[4];
+-	uint8_t addr_buf[3];
++	uint8_t addr_buf[4];
+ 	uint8_t *data_buf;
+ 	uint32_t xfer_bits;
+ 	int is_read, lenb, n;
+@@ -102,9 +102,12 @@
+ 
+ 	xfer_bits = 8 + len - 1;
+ 	/* cmd + read/write - 1 due to the counter implementation */
+-	if (addr)
+-		xfer_bits += 24;
+-	h_u32_to_be(xfer_bits_buf, xfer_bits);
++	if (addr) {
++		if (bank->size > (1 << 24))
++			xfer_bits += 32;
++		else
++			xfer_bits += 24;
++	}
+ 	flip_u8(xfer_bits_buf, xfer_bits_buf, 4);
+ 	fields[n].num_bits = 32;
+ 	fields[n].out_value = xfer_bits_buf;
+@@ -118,9 +121,15 @@
+ 	n++;
+ 
+ 	if (addr) {
+-		h_u24_to_be(addr_buf, *addr);
+-		flip_u8(addr_buf, addr_buf, 3);
+-		fields[n].num_bits = 24;
++		if (bank->size > (1 << 24)) {
++			h_u32_to_be(addr_buf, *addr);
++			flip_u8(addr_buf, addr_buf, 4);
++			fields[n].num_bits = 32;
++		} else {
++			h_u24_to_be(addr_buf, *addr);
++			flip_u8(addr_buf, addr_buf, 3);
++			fields[n].num_bits = 24;
++		}
+ 		fields[n].out_value = addr_buf;
+ 		fields[n].in_value = NULL;
+ 		n++;
+@@ -304,11 +313,14 @@
+ 	struct jtagspi_flash_bank *info = bank->driver_priv;
+ 	int retval;
+ 	int64_t t0 = timeval_ms();
++	uint8_t erase_cmd = info->dev->erase_cmd;
+ 
+ 	retval = jtagspi_write_enable(bank);
+ 	if (retval != ERROR_OK)
+ 		return retval;
+-	jtagspi_cmd(bank, info->dev->erase_cmd, &bank->sectors[sector].offset, NULL, 0);
++	if (bank->size > (1 << 24))
++		erase_cmd = SPIFLASH_4BYTE_SECTOR_ERASE;
++	jtagspi_cmd(bank, erase_cmd, &bank->sectors[sector].offset, NULL, 0);
+ 	retval = jtagspi_wait(bank, JTAGSPI_MAX_TIMEOUT);
+ 	LOG_INFO("sector %u took %" PRId64 " ms", sector, timeval_ms() - t0);
+ 	return retval;
+@@ -374,24 +386,36 @@
+ static int jtagspi_read(struct flash_bank *bank, uint8_t *buffer, uint32_t offset, uint32_t count)
+ {
+ 	struct jtagspi_flash_bank *info = bank->driver_priv;
++	uint8_t read_cmd = SPIFLASH_READ;
+ 
+ 	if (!(info->probed)) {
+ 		LOG_ERROR("Flash bank not yet probed.");
+ 		return ERROR_FLASH_BANK_NOT_PROBED;
+ 	}
++	if (count >= (1 << 28)) {
++		LOG_ERROR("Read too large.");
++		return ERROR_FAIL;
++	}
+ 
+-	jtagspi_cmd(bank, SPIFLASH_READ, &offset, buffer, -count*8);
++	if (bank->size > (1 << 24))
++		read_cmd = SPIFLASH_4BYTE_READ;
++	jtagspi_cmd(bank, read_cmd, &offset, buffer, -count*8);
+ 	return ERROR_OK;
+ }
+ 
+ static int jtagspi_page_write(struct flash_bank *bank, const uint8_t *buffer, uint32_t offset, uint32_t count)
+ {
+ 	int retval;
++	uint8_t program_cmd = SPIFLASH_PAGE_PROGRAM;
+ 
+ 	retval = jtagspi_write_enable(bank);
+ 	if (retval != ERROR_OK)
+ 		return retval;
+-	jtagspi_cmd(bank, SPIFLASH_PAGE_PROGRAM, &offset, (uint8_t *) buffer, count*8);
++
++	if (bank->size > (1 << 24))
++		program_cmd = SPIFLASH_4BYTE_PAGE_PROGRAM;
++
++	jtagspi_cmd(bank, program_cmd, &offset, (uint8_t *) buffer, count*8);
+ 	return jtagspi_wait(bank, JTAGSPI_MAX_TIMEOUT);
+ }
+ 
+diff '--color=auto' -Naur openocd-0.11.0/src/flash/nor/jtagspi.c.orig openocd-0.11.0.new/src/flash/nor/jtagspi.c.orig
+--- openocd-0.11.0/src/flash/nor/jtagspi.c.orig	1970-01-01 08:00:00.000000000 +0800
++++ openocd-0.11.0.new/src/flash/nor/jtagspi.c.orig	2020-12-10 03:43:09.000000000 +0800
+@@ -0,0 +1,452 @@
++/***************************************************************************
++ *   Copyright (C) 2015 Robert Jordens <jordens@gmail.com>                 *
++ *                                                                         *
++ *   This program is free software; you can redistribute it and/or modify  *
++ *   it under the terms of the GNU General Public License as published by  *
++ *   the Free Software Foundation; either version 2 of the License, or     *
++ *   (at your option) any later version.                                   *
++ *                                                                         *
++ *   This program is distributed in the hope that it will be useful,       *
++ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
++ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
++ *   GNU General Public License for more details.                          *
++ *                                                                         *
++ *   You should have received a copy of the GNU General Public License     *
++ *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
++ ***************************************************************************/
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include "imp.h"
++#include <jtag/jtag.h>
++#include <flash/nor/spi.h>
++#include <helper/time_support.h>
++
++#define JTAGSPI_MAX_TIMEOUT 3000
++
++
++struct jtagspi_flash_bank {
++	struct jtag_tap *tap;
++	const struct flash_device *dev;
++	bool probed;
++	uint32_t ir;
++};
++
++FLASH_BANK_COMMAND_HANDLER(jtagspi_flash_bank_command)
++{
++	struct jtagspi_flash_bank *info;
++
++	if (CMD_ARGC < 7)
++		return ERROR_COMMAND_SYNTAX_ERROR;
++
++	info = malloc(sizeof(struct jtagspi_flash_bank));
++	if (info == NULL) {
++		LOG_ERROR("no memory for flash bank info");
++		return ERROR_FAIL;
++	}
++	bank->driver_priv = info;
++
++	info->tap = NULL;
++	info->probed = false;
++	COMMAND_PARSE_NUMBER(u32, CMD_ARGV[6], info->ir);
++
++	return ERROR_OK;
++}
++
++static void jtagspi_set_ir(struct flash_bank *bank)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++	struct scan_field field;
++	uint8_t buf[4] = { 0 };
++
++	LOG_DEBUG("loading jtagspi ir");
++	buf_set_u32(buf, 0, info->tap->ir_length, info->ir);
++	field.num_bits = info->tap->ir_length;
++	field.out_value = buf;
++	field.in_value = NULL;
++	jtag_add_ir_scan(info->tap, &field, TAP_IDLE);
++}
++
++static void flip_u8(uint8_t *in, uint8_t *out, int len)
++{
++	for (int i = 0; i < len; i++)
++		out[i] = flip_u32(in[i], 8);
++}
++
++static int jtagspi_cmd(struct flash_bank *bank, uint8_t cmd,
++		uint32_t *addr, uint8_t *data, int len)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++	struct scan_field fields[6];
++	uint8_t marker = 1;
++	uint8_t xfer_bits_buf[4];
++	uint8_t addr_buf[3];
++	uint8_t *data_buf;
++	uint32_t xfer_bits;
++	int is_read, lenb, n;
++
++	/* LOG_DEBUG("cmd=0x%02x len=%i", cmd, len); */
++
++	is_read = (len < 0);
++	if (is_read)
++		len = -len;
++
++	n = 0;
++
++	fields[n].num_bits = 1;
++	fields[n].out_value = &marker;
++	fields[n].in_value = NULL;
++	n++;
++
++	xfer_bits = 8 + len - 1;
++	/* cmd + read/write - 1 due to the counter implementation */
++	if (addr)
++		xfer_bits += 24;
++	h_u32_to_be(xfer_bits_buf, xfer_bits);
++	flip_u8(xfer_bits_buf, xfer_bits_buf, 4);
++	fields[n].num_bits = 32;
++	fields[n].out_value = xfer_bits_buf;
++	fields[n].in_value = NULL;
++	n++;
++
++	cmd = flip_u32(cmd, 8);
++	fields[n].num_bits = 8;
++	fields[n].out_value = &cmd;
++	fields[n].in_value = NULL;
++	n++;
++
++	if (addr) {
++		h_u24_to_be(addr_buf, *addr);
++		flip_u8(addr_buf, addr_buf, 3);
++		fields[n].num_bits = 24;
++		fields[n].out_value = addr_buf;
++		fields[n].in_value = NULL;
++		n++;
++	}
++
++	lenb = DIV_ROUND_UP(len, 8);
++	data_buf = malloc(lenb);
++	if (lenb > 0) {
++		if (data_buf == NULL) {
++			LOG_ERROR("no memory for spi buffer");
++			return ERROR_FAIL;
++		}
++		if (is_read) {
++			fields[n].num_bits = jtag_tap_count_enabled();
++			fields[n].out_value = NULL;
++			fields[n].in_value = NULL;
++			n++;
++
++			fields[n].out_value = NULL;
++			fields[n].in_value = data_buf;
++		} else {
++			flip_u8(data, data_buf, lenb);
++			fields[n].out_value = data_buf;
++			fields[n].in_value = NULL;
++		}
++		fields[n].num_bits = len;
++		n++;
++	}
++
++	jtagspi_set_ir(bank);
++	/* passing from an IR scan to SHIFT-DR clears BYPASS registers */
++	jtag_add_dr_scan(info->tap, n, fields, TAP_IDLE);
++	int retval = jtag_execute_queue();
++
++	if (is_read)
++		flip_u8(data_buf, data, lenb);
++	free(data_buf);
++	return retval;
++}
++
++static int jtagspi_probe(struct flash_bank *bank)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++	struct flash_sector *sectors;
++	uint8_t in_buf[3];
++	uint32_t id, sectorsize;
++
++	if (info->probed)
++		free(bank->sectors);
++	info->probed = false;
++
++	if (bank->target->tap == NULL) {
++		LOG_ERROR("Target has no JTAG tap");
++		return ERROR_FAIL;
++	}
++	info->tap = bank->target->tap;
++
++	jtagspi_cmd(bank, SPIFLASH_READ_ID, NULL, in_buf, -24);
++	/* the table in spi.c has the manufacturer byte (first) as the lsb */
++	id = le_to_h_u24(in_buf);
++
++	info->dev = NULL;
++	for (const struct flash_device *p = flash_devices; p->name ; p++)
++		if (p->device_id == id) {
++			info->dev = p;
++			break;
++		}
++
++	if (!(info->dev)) {
++		LOG_ERROR("Unknown flash device (ID 0x%08" PRIx32 ")", id);
++		return ERROR_FAIL;
++	}
++
++	LOG_INFO("Found flash device \'%s\' (ID 0x%08" PRIx32 ")",
++		info->dev->name, info->dev->device_id);
++
++	/* Set correct size value */
++	bank->size = info->dev->size_in_bytes;
++	if (bank->size <= (1UL << 16))
++		LOG_WARNING("device needs 2-byte addresses - not implemented");
++	if (bank->size > (1UL << 24))
++		LOG_WARNING("device needs paging or 4-byte addresses - not implemented");
++
++	/* if no sectors, treat whole bank as single sector */
++	sectorsize = info->dev->sectorsize ?
++		info->dev->sectorsize : info->dev->size_in_bytes;
++
++	/* create and fill sectors array */
++	bank->num_sectors = info->dev->size_in_bytes / sectorsize;
++	sectors = malloc(sizeof(struct flash_sector) * bank->num_sectors);
++	if (sectors == NULL) {
++		LOG_ERROR("not enough memory");
++		return ERROR_FAIL;
++	}
++
++	for (unsigned int sector = 0; sector < bank->num_sectors; sector++) {
++		sectors[sector].offset = sector * sectorsize;
++		sectors[sector].size = sectorsize;
++		sectors[sector].is_erased = -1;
++		sectors[sector].is_protected = 0;
++	}
++
++	bank->sectors = sectors;
++	info->probed = true;
++	return ERROR_OK;
++}
++
++static int jtagspi_read_status(struct flash_bank *bank, uint32_t *status)
++{
++	uint8_t buf;
++	int err = jtagspi_cmd(bank, SPIFLASH_READ_STATUS, NULL, &buf, -8);
++	if (err == ERROR_OK) {
++		*status = buf;
++		/* LOG_DEBUG("status=0x%08" PRIx32, *status); */
++	}
++
++	return err;
++}
++
++static int jtagspi_wait(struct flash_bank *bank, int timeout_ms)
++{
++	uint32_t status;
++	int64_t t0 = timeval_ms();
++	int64_t dt;
++
++	do {
++		dt = timeval_ms() - t0;
++
++		int retval = jtagspi_read_status(bank, &status);
++		if (retval != ERROR_OK)
++			return retval;
++
++		if ((status & SPIFLASH_BSY_BIT) == 0) {
++			LOG_DEBUG("waited %" PRId64 " ms", dt);
++			return ERROR_OK;
++		}
++		alive_sleep(1);
++	} while (dt <= timeout_ms);
++
++	LOG_ERROR("timeout, device still busy");
++	return ERROR_FAIL;
++}
++
++static int jtagspi_write_enable(struct flash_bank *bank)
++{
++	uint32_t status;
++
++	jtagspi_cmd(bank, SPIFLASH_WRITE_ENABLE, NULL, NULL, 0);
++
++	int retval = jtagspi_read_status(bank, &status);
++	if (retval != ERROR_OK)
++		return retval;
++
++	if ((status & SPIFLASH_WE_BIT) == 0) {
++		LOG_ERROR("Cannot enable write to flash. Status=0x%08" PRIx32, status);
++		return ERROR_FAIL;
++	}
++	return ERROR_OK;
++}
++
++static int jtagspi_bulk_erase(struct flash_bank *bank)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++	int retval;
++	int64_t t0 = timeval_ms();
++
++	if (info->dev->chip_erase_cmd == 0x00)
++		return ERROR_FLASH_OPER_UNSUPPORTED;
++
++	retval = jtagspi_write_enable(bank);
++	if (retval != ERROR_OK)
++		return retval;
++	jtagspi_cmd(bank, info->dev->chip_erase_cmd, NULL, NULL, 0);
++	retval = jtagspi_wait(bank, bank->num_sectors*JTAGSPI_MAX_TIMEOUT);
++	LOG_INFO("took %" PRId64 " ms", timeval_ms() - t0);
++	return retval;
++}
++
++static int jtagspi_sector_erase(struct flash_bank *bank, unsigned int sector)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++	int retval;
++	int64_t t0 = timeval_ms();
++
++	retval = jtagspi_write_enable(bank);
++	if (retval != ERROR_OK)
++		return retval;
++	jtagspi_cmd(bank, info->dev->erase_cmd, &bank->sectors[sector].offset, NULL, 0);
++	retval = jtagspi_wait(bank, JTAGSPI_MAX_TIMEOUT);
++	LOG_INFO("sector %u took %" PRId64 " ms", sector, timeval_ms() - t0);
++	return retval;
++}
++
++static int jtagspi_erase(struct flash_bank *bank, unsigned int first,
++		unsigned int last)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++	int retval = ERROR_OK;
++
++	LOG_DEBUG("erase from sector %u to sector %u", first, last);
++
++	if ((last < first) || (last >= bank->num_sectors)) {
++		LOG_ERROR("Flash sector invalid");
++		return ERROR_FLASH_SECTOR_INVALID;
++	}
++
++	if (!(info->probed)) {
++		LOG_ERROR("Flash bank not probed");
++		return ERROR_FLASH_BANK_NOT_PROBED;
++	}
++
++	for (unsigned int sector = first; sector <= last; sector++) {
++		if (bank->sectors[sector].is_protected) {
++			LOG_ERROR("Flash sector %u protected", sector);
++			return ERROR_FAIL;
++		}
++	}
++
++	if (first == 0 && last == (bank->num_sectors - 1)
++		&& info->dev->chip_erase_cmd != info->dev->erase_cmd) {
++		LOG_DEBUG("Trying bulk erase.");
++		retval = jtagspi_bulk_erase(bank);
++		if (retval == ERROR_OK)
++			return retval;
++		else
++			LOG_WARNING("Bulk flash erase failed. Falling back to sector erase.");
++	}
++
++	if (info->dev->erase_cmd == 0x00)
++		return ERROR_FLASH_OPER_UNSUPPORTED;
++
++	for (unsigned int sector = first; sector <= last; sector++) {
++		retval = jtagspi_sector_erase(bank, sector);
++		if (retval != ERROR_OK) {
++			LOG_ERROR("Sector erase failed.");
++			break;
++		}
++	}
++
++	return retval;
++}
++
++static int jtagspi_protect(struct flash_bank *bank, int set, unsigned int first,
++		unsigned int last)
++{
++	for (unsigned int sector = first; sector <= last; sector++)
++		bank->sectors[sector].is_protected = set;
++	return ERROR_OK;
++}
++
++static int jtagspi_read(struct flash_bank *bank, uint8_t *buffer, uint32_t offset, uint32_t count)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++
++	if (!(info->probed)) {
++		LOG_ERROR("Flash bank not yet probed.");
++		return ERROR_FLASH_BANK_NOT_PROBED;
++	}
++
++	jtagspi_cmd(bank, SPIFLASH_READ, &offset, buffer, -count*8);
++	return ERROR_OK;
++}
++
++static int jtagspi_page_write(struct flash_bank *bank, const uint8_t *buffer, uint32_t offset, uint32_t count)
++{
++	int retval;
++
++	retval = jtagspi_write_enable(bank);
++	if (retval != ERROR_OK)
++		return retval;
++	jtagspi_cmd(bank, SPIFLASH_PAGE_PROGRAM, &offset, (uint8_t *) buffer, count*8);
++	return jtagspi_wait(bank, JTAGSPI_MAX_TIMEOUT);
++}
++
++static int jtagspi_write(struct flash_bank *bank, const uint8_t *buffer, uint32_t offset, uint32_t count)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++	int retval;
++	uint32_t n, pagesize;
++
++	if (!(info->probed)) {
++		LOG_ERROR("Flash bank not yet probed.");
++		return ERROR_FLASH_BANK_NOT_PROBED;
++	}
++
++	/* if no write pagesize, use reasonable default */
++	pagesize = info->dev->pagesize ? info->dev->pagesize : SPIFLASH_DEF_PAGESIZE;
++
++	for (n = 0; n < count; n += pagesize) {
++		retval = jtagspi_page_write(bank, buffer + n, offset + n,
++				MIN(count - n, pagesize));
++		if (retval != ERROR_OK) {
++			LOG_ERROR("page write error");
++			return retval;
++		}
++		LOG_DEBUG("wrote page at 0x%08" PRIx32, offset + n);
++	}
++	return ERROR_OK;
++}
++
++static int jtagspi_info(struct flash_bank *bank, char *buf, int buf_size)
++{
++	struct jtagspi_flash_bank *info = bank->driver_priv;
++
++	if (!(info->probed)) {
++		snprintf(buf, buf_size, "\nJTAGSPI flash bank not probed yet\n");
++		return ERROR_OK;
++	}
++
++	snprintf(buf, buf_size, "\nSPIFI flash information:\n"
++		"  Device \'%s\' (ID 0x%08" PRIx32 ")\n",
++		info->dev->name, info->dev->device_id);
++
++	return ERROR_OK;
++}
++
++const struct flash_driver jtagspi_flash = {
++	.name = "jtagspi",
++	.flash_bank_command = jtagspi_flash_bank_command,
++	.erase = jtagspi_erase,
++	.protect = jtagspi_protect,
++	.write = jtagspi_write,
++	.read = jtagspi_read,
++	.probe = jtagspi_probe,
++	.auto_probe = jtagspi_probe,
++	.erase_check = default_flash_blank_check,
++	.info = jtagspi_info,
++	.free_driver_priv = default_flash_free_driver_priv,
++};
+diff '--color=auto' -Naur openocd-0.11.0/src/flash/nor/spi.h openocd-0.11.0.new/src/flash/nor/spi.h
+--- openocd-0.11.0/src/flash/nor/spi.h	2020-12-10 03:43:09.000000000 +0800
++++ openocd-0.11.0.new/src/flash/nor/spi.h	2021-07-27 18:32:08.106935700 +0800
+@@ -87,6 +87,9 @@
+ #define SPIFLASH_PAGE_PROGRAM	0x02 /* Page Program */
+ #define SPIFLASH_FAST_READ		0x0B /* Fast Read */
+ #define SPIFLASH_READ			0x03 /* Normal Read */
++#define SPIFLASH_4BYTE_READ		0x13 /* Read with 4 byte address */
++#define SPIFLASH_4BYTE_SECTOR_ERASE	0xDC /* Sector Erase with 4 byte address */
++#define SPIFLASH_4BYTE_PAGE_PROGRAM	0x12 /* Page Program with 4 byte address */
+ #define SPIFLASH_MASS_ERASE		0xC7 /* Mass Erase */
+ #define SPIFLASH_READ_SFDP		0x5A /* Read Serial Flash Discoverable Parameters */
+ 
