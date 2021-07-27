@@ -15,8 +15,12 @@ let
     cp $src/*.bit $out/share/bscan-spi-bitstreams
     '';
   };
+  # https://docs.lambdaconcept.com/screamer/troubleshooting.html#error-contents-differ
+  openocd-fixed = openocd.overrideAttrs(oa: {
+    patches = oa.patches or [] ++ [ ./openocd-jtagspi.nix ];
+  });
 in
   buildEnv {
     name = "openocd-bscanspi";
-    paths = [ openocd bscan_spi_bitstreams-pkg ];
+    paths = [ openocd-fixed bscan_spi_bitstreams-pkg ];
   }
