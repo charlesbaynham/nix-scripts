@@ -2,7 +2,8 @@
 with pkgs;
 let
   artiq6 = pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "6.0";
-  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) lib fetchgit fetchFromGitHub python3Packages; misoc-new = artiq6; };
+  artiq7 = pkgs.lib.strings.versionAtLeast mainPackages.artiq.version "7.0";
+  pythonDeps = import ./pkgs/python-deps.nix { inherit (pkgs) lib fetchgit fetchFromGitHub python3Packages; misoc-new = artiq7; };
 
   boards = [
     { target = "kasli"; variant = "tester"; }
