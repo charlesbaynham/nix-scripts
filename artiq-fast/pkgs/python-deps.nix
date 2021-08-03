@@ -119,13 +119,13 @@ rec {
 
   migen = python3Packages.buildPythonPackage rec {
     pname = "migen";
-    version = "unstable-2021-02-08";
+    version = "unstable-2021-07-30";
 
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "migen";
-      rev = "7014bdccc11270764186e6a4441fb58238c612aa";
-      sha256 = "12mhmcdf0jqv33ald9x9zb1qi26sw4ywdfgg5saqvmx0pmbmvynk";
+      rev = "35203d600b7ae1c29f8926237b236390004ddbd9";
+      sha256 = "1grbgsknmzcdr46pr0psvim4dqrcjp9q9f44mw1vqp092irkkym7";
     };
 
     propagatedBuildInputs = with python3Packages; [ colorama ];
