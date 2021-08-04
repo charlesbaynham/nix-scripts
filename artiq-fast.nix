@@ -83,7 +83,7 @@ in
       cat $LOCKCTL/lockctl | ${pkgs.openssh}/bin/ssh \
         -i $HOME/.ssh/id_rsa \
         -o UserKnownHostsFile=$HOME/.ssh/known_hosts \
-        sb@rpi-1 \
+        rpi-1 \
         'mkdir -p /tmp/board_lock && flock /tmp/board_lock/kc705-1 -c "echo Ok; cat"' \
       | (
         # End remote flock via FIFO
