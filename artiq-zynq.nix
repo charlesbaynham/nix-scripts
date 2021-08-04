@@ -36,33 +36,51 @@ in
 
       buildPhase =
         ''
-        echo Power cycling board...
-        (echo b; sleep 5; echo B; sleep 5) | nc -N -w6 192.168.1.31 3131
-        echo Power cycle done.
-
-        export USER=hydra
-        export OPENOCD_ZYNQ=${artiq-zynq.zynq-rs}/openocd
-        export SZL=${szlEnv}
-        pushd ${<artiq-zynq>}
         export NIX_SSHOPTS="-F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -i /opt/hydra_id_rsa"
-        bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "$NIX_SSHOPTS" -d ${artiq-zynq.zc706-nist_qc2-jtag}
-        popd
+        LOCKCTL=$(mktemp -d)
+        mkfifo $LOCKCTL/lockctl
 
-        echo Waiting for the firmware to boot...
-        sleep 15
+        cat $LOCKCTL/lockctl | ${pkgs.openssh}/bin/ssh \
+        $NIX_SSHOPTS \
+        rpi-4 \
+        'mkdir -p /tmp/board_lock && flock /tmp/board_lock/zc706-1 -c "echo Ok; cat"' \
+        | (
+          # End remote flock via FIFO
+          atexit_unlock() {
+            echo > $LOCKCTL/lockctl
+          }
+          trap atexit_unlock EXIT
 
-        echo Running test kernel...
-        artiq_run --device-db ${<artiq-zynq>}/examples/device_db.py ${<artiq-zynq>}/examples/mandelbrot.py
+          # Read "Ok" line when remote successfully locked
+          read LOCK_OK
 
-        echo Running ARTIQ unit tests...
-        ARTIQ_ROOT=${<artiq-zynq>}/examples python -m unittest discover artiq.test.coredevice -v
+          echo Power cycling board...
+          (echo b; sleep 5; echo B; sleep 5) | nc -N -w6 192.168.1.31 3131
+          echo Power cycle done.
 
-        touch $out
+          export USER=hydra
+          export OPENOCD_ZYNQ=${artiq-zynq.zynq-rs}/openocd
+          export SZL=${szlEnv}
+          pushd ${<artiq-zynq>}
+          bash ${<artiq-zynq>}/remote_run.sh -h rpi-4 -o "$NIX_SSHOPTS" -d ${artiq-zynq.zc706-nist_qc2-jtag}
+          popd
 
-        echo Completed
+          echo Waiting for the firmware to boot...
+          sleep 15
 
-        (echo b; sleep 5) | nc -N -w6 192.168.1.31 3131
-        echo Board powered off
+          echo Running test kernel...
+          artiq_run --device-db ${<artiq-zynq>}/examples/device_db.py ${<artiq-zynq>}/examples/mandelbrot.py
+
+          echo Running ARTIQ unit tests...
+          ARTIQ_ROOT=${<artiq-zynq>}/examples python -m unittest discover artiq.test.coredevice -v
+
+          touch $out
+
+          echo Completed
+
+          (echo b; sleep 5) | nc -N -w6 192.168.1.31 3131
+          echo Board powered off
+        )
         '';
     });
   }
