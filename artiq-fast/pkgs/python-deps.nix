@@ -86,14 +86,14 @@ rec {
 
   misoc = python3Packages.buildPythonPackage {
     pname = "misoc";
-    version = if misoc-new then "unstable-2021-07-29" else "unstable-2021-02-15";
+    version = if misoc-new then "unstable-2021-08-04" else "unstable-2021-02-15";
 
     src = if misoc-new
       then (fetchFromGitHub {
         owner = "m-labs";
         repo = "misoc";
-        rev = "f048d1fbfd48c93542d2f1e591139f95c7c9cde6";
-        sha256 = "1ny0d0q6mnjsxq746q4chn2grfac8brs4w60k9fxk2h5abvfgij8";
+        rev = "fa663cd05129f1e10678ab132e7668569f787ead";
+        sha256 = "1813llhlk5jyzyd1xmkcdziz48yx9m41p03pivv2sn7cja8l1l1x";
         fetchSubmodules = true;
       })
       else (fetchFromGitHub {
