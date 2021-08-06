@@ -62,4 +62,21 @@ kasli // {
     variant = "satellite";
     buildCommand = "python -m artiq.gateware.targets.sayma_amc --jdcg-type syncdds";
   };
+}) // (pkgs.lib.optionalAttrs (pkgs.lib.strings.versionAtLeast artiqVersion "7.0") {
+  artiq-board-kc705-nist_clock_master = {
+    target = "kc705";
+    variant = "nist_clock_master";
+  };
+  artiq-board-kc705-nist_qc2_master = {
+    target = "kc705";
+    variant = "nist_qc2_master";
+  };
+  artiq-board-kc705-nist_clock_satellite = {
+    target = "kc705";
+    variant = "nist_clock_satellite";
+  };
+  artiq-board-kc705-nist_qc2_satellite = {
+    target = "kc705";
+    variant = "nist_qc2_satellite";
+  };
 })
