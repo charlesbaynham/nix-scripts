@@ -9,7 +9,7 @@
         "schedulingshares": 10,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -26,7 +26,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -44,7 +44,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -63,7 +63,7 @@
         "schedulingshares": 10,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -80,7 +80,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -98,7 +98,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -117,7 +117,7 @@
         "schedulingshares": 10,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -134,7 +134,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -154,7 +154,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -175,7 +175,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -196,7 +196,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
@@ -218,7 +218,7 @@
         "schedulingshares": 1,
         "enableemail": false,
         "emailoverride": "",
-        "keepnr": 10,
+        "keepnr": 50,
         "inputs": {
             "nixpkgs": { "type": "git", "value": "git://github.com/NixOS/nixpkgs nixos-21.05", "emailresponsible": false },
             "nixScripts": { "type": "git", "value": "https://git.m-labs.hk/M-Labs/nix-scripts.git", "emailresponsible": false },
