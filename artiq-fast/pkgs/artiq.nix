@@ -10,8 +10,8 @@ python3Packages.buildPythonPackage rec {
   nativeBuildInputs = [ qt5.wrapQtAppsHook ];
   propagatedBuildInputs = [ binutils-or1k llvm-or1k llvmlite-artiq ]
     ++ (lib.lists.optionals (lib.strings.versionAtLeast version "6.0") [ binutils-arm ])
-    ++ (with pythonDeps; [ sipyco pyqtgraph-qt5 pythonparser ])
-    ++ (with python3Packages; [ pygit2 numpy dateutil scipy prettytable pyserial python-Levenshtein h5py pyqt5 ])
+    ++ (with pythonDeps; [ sipyco pythonparser ])
+    ++ (with python3Packages; [ pygit2 numpy dateutil scipy prettytable pyserial python-Levenshtein h5py pyqt5 pyqtgraph ])
     ++ [(if (lib.strings.versionAtLeast version "6.0") then pythonDeps.qasync else python3Packages.quamash)];
 
   dontWrapQtApps = true;

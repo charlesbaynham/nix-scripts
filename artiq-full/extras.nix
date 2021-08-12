@@ -1,4 +1,4 @@
-{ pkgs, sipyco, asyncserial, pyqtgraph-qt5, artiq }:
+{ pkgs, sipyco, asyncserial, artiq }:
 let
   condaBuild = import ./fast/conda/build.nix { inherit pkgs; };
   condaFakeSource = import ./fast/conda/fake-source.nix { inherit pkgs; };
@@ -267,8 +267,8 @@ in
       sha256 = "0mgjd92yifs24dg4b14vhawx5mdisbx6jqi5xf7fgkijzjp9hvs3";
     };
     pythonOptions = {
-      propagatedBuildInputs = [ artiq pyqtgraph-qt5 ]
-        ++ (with pkgs.python3Packages; [ numpy pyqt5 ]);
+      propagatedBuildInputs = [ artiq ]
+        ++ (with pkgs.python3Packages; [ numpy pyqt5 pyqtgraph ]);
       doCheck = false;
     };
     condaOptions = { dependencies = [ "python>=3.5" "artiq" "numpy" "pyqt" "pyqtgraph" ]; };

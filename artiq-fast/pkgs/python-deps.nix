@@ -39,20 +39,6 @@ rec {
     propagatedBuildInputs = with python3Packages; [ regex ];
   };
 
-  pyqtgraph-qt5 = python3Packages.buildPythonPackage rec {
-    pname = "pyqtgraph_qt5";
-    version = "0.11.0";
-    doCheck = false;
-    pythonImportsCheck = [ "pyqtgraph" ];
-    src = fetchFromGitHub {
-      owner = "pyqtgraph";
-      repo = "pyqtgraph";
-      rev = "pyqtgraph-${version}";
-      sha256 = "03fvpkqdn80ni51msvyivmghw41qk4vplwdqndkvzzzlppimdjbn";
-    };
-    propagatedBuildInputs = with python3Packages; [ scipy numpy pyqt5 pyopengl ];
-  };
-
   qasync = python3Packages.buildPythonPackage rec {
     pname = "qasync";
     version = "0.10.0";
