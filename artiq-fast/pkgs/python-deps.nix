@@ -28,14 +28,13 @@ rec {
 
   pythonparser = python3Packages.buildPythonPackage rec {
     pname = "pythonparser";
-    version = "1.3";
+    version = "1.4";
     src = fetchFromGitHub {
       owner = "m-labs";
       repo = "pythonparser";
-      rev = "5b391fe86f43bb9f4f96c5bc0532e2a112db2936";
-      sha256 = "1gw1fk4y2l6bwq0fg2a9dfc1rvq8cv492dyil96amjdhsxvnx35b";
+      rev = "5413ee5c9f8760e95c6acd5d6e88dabb831ad201";
+      sha256 = "1b9p3pjnfaiaf2k0a3iq39aj2vymfxx139hqdqkd3q4awrwy1957";
     };
-    patches = [ ./pythonparserver.patch ];
     propagatedBuildInputs = with python3Packages; [ regex ];
   };
 
